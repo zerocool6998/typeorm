@@ -38,7 +38,7 @@ describe("entity > soft-remove", () => {
         await newPost1.softRemove();
 
         // load to check
-        const loadedPosts = await postRepository.find({ withDeleted: true });
+        const loadedPosts = await postRepository.find({ options: { withDeleted: true } });
 
         // assert
         loadedPosts.length.should.be.equal(2);
@@ -55,7 +55,7 @@ describe("entity > soft-remove", () => {
         // recover one
         await loadedPost1!.recover();
         // load to check
-        const recoveredPosts = await postRepository.find({ withDeleted: true });
+        const recoveredPosts = await postRepository.find({ options: { withDeleted: true } });
 
         // assert
         recoveredPosts.length.should.be.equal(2);
