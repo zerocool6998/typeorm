@@ -19,7 +19,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
             let error: Error | undefined;
             try {
                 // @ts-ignore
-                await connection.manager.findOne(User, {unknownProp: "John Doe"});
+                await connection.manager.findOne(User, { unknownProp: "John Doe" });
             } catch (err) {
                 error = err;
             }
@@ -28,7 +28,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
         it("update", () => Promise.all(connections.map(async connection => {
             let error: Error | undefined;
             try {
-                await connection.manager.update(User, { unknownProp: "Something" }, { name: "John doe "});
+                await connection.manager.update(User, { unknownProp: "Something" } as any, { name: "John doe "});
             } catch (err) {
                 error = err;
             }
@@ -37,7 +37,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
         it("delete", () => Promise.all(connections.map(async connection => {
             let error: Error | undefined;
             try {
-                await connection.manager.delete(User, { unknownProp: "Something" });
+                await connection.manager.delete(User, { unknownProp: "Something" } as any);
             } catch (err) {
                 error = err;
             }
