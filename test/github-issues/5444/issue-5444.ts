@@ -4,14 +4,29 @@ import {expect} from "chai";
 
 import { Post, PostSchema } from "./entity/Post";
 import { Author, AuthorSchema } from "./entity/Author";
-import {EntitySchema} from "../../../src";
+import {Connection, EntitySchema} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils.js";
 
 
 describe("github issues > #5444 EntitySchema missing support for multiple joinColumns in relations", () => {
-  it("Update query returns the number of affected rows", async () => {
+  let connections: Connection[];
+
+  before(async () => {
+    return connections = await createTestingConnections({
+        entities: [Post, Author],
+        schemaCreate: true,
+        dropSchema: true,
+        enabledDrivers: ["sqlite"]
+    });
+  });
+  beforeEach(() => reloadTestingDatabases(connections));
+  after(() => closeTestingConnections(connections));
+
+  it("Update query returns the number of affected rows", async () => Promise.all(connections.map(async (connection) => {
       const transformer = new EntitySchemaTransformer();
 
       const actual = transformer.transform(
+        connection,
         [
           new EntitySchema<Author>(AuthorSchema),
           new EntitySchema<Post>(PostSchema)
@@ -36,5 +51,5 @@ describe("github issues > #5444 EntitySchema missing support for multiple joinCo
           },
 
       ]);
-  });
+  })));
 });
