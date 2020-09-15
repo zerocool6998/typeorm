@@ -126,7 +126,7 @@ export const resultsTemplates: Record<string, any> = {
     cockroachdb: {
         control: [
             `CREATE SEQUENCE "post_id_seq"`,
-            `CREATE TABLE "post" ("id" INT DEFAULT nextval('"post_id_seq"') NOT NULL, "title" varchar NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now(), CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY ("id"))`,
+            `CREATE TABLE "post" ("id" INT4 DEFAULT nextval('"post_id_seq"') NOT NULL, "title" varchar NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now(), CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY ("id"))`,
             `CREATE TABLE "username" ("username" varchar NOT NULL, "email" varchar NOT NULL, "something" varchar NOT NULL, CONSTRAINT "PK_b39ad32e514b17e90c93988888a" PRIMARY KEY ("username"))`
         ],
         pretty: [
@@ -135,7 +135,7 @@ export const resultsTemplates: Record<string, any> = {
     `,
     `
             CREATE TABLE "post" (
-                "id" INT DEFAULT nextval('"post_id_seq"') NOT NULL,
+                "id" INT4 DEFAULT nextval('"post_id_seq"') NOT NULL,
                 "title" varchar NOT NULL,
                 "createdAt" timestamptz NOT NULL DEFAULT now(),
                 CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY ("id")
