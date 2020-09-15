@@ -104,6 +104,7 @@ describe("view entity > general", () => {
         photoAlbumCategory!.name.should.be.equal("BMW E39");
         photoAlbumCategory!.albumName.should.be.equal("BMW photos");
         photoAlbumCategory!.categoryName.should.be.equal("Cars");
+        photoAlbumCategory!.photoAlbumId.should.be.equal(1);
 
     })));
 });

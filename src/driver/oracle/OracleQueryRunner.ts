@@ -1503,7 +1503,7 @@ export class OracleQueryRunner extends BaseQueryRunner implements QueryRunner {
             `REFERENCES "${foreignKey.referencedTableName}" (${referencedColumnNames})`;
         // Oracle does not support NO ACTION, but we set NO ACTION by default in EntityMetadata
         if (foreignKey.onDelete && foreignKey.onDelete !== "NO ACTION")
-        sql += ` ON DELETE ${foreignKey.onDelete}`;
+            sql += ` ON DELETE ${foreignKey.onDelete}`;
 
         return new Query(sql);
     }

@@ -3,6 +3,7 @@ import {MainModel} from "./MainModel";
 import {ValidationModel} from "./ValidationModel";
 import {PrimaryColumn} from "../../../../src/decorator/columns/PrimaryColumn";
 
+
 @Entity()
 export class DataModel {
 
@@ -18,14 +19,14 @@ export class DataModel {
 
     @PrimaryColumn()
     mainId: number;
-    
+
     @ManyToOne(type => MainModel)
     @JoinColumn({
         name: "mainId",
         referencedColumnName: "id"
     })
     main: MainModel;
-    
+
     @Column({
         type: "boolean",
         default: false

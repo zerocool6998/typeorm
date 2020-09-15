@@ -25,6 +25,7 @@ import {UpdateValuesMissingError} from "../error/UpdateValuesMissingError";
 import {EntityColumnNotFound} from "../error/EntityColumnNotFound";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
+import {BetterSqlite3Driver} from "../driver/better-sqlite3/BetterSqlite3Driver";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -108,6 +109,10 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             else if (this.connection.driver instanceof MysqlDriver) {
                 updateResult.raw = result;
                 updateResult.affected = result.affectedRows;
+            }
+            else if (this.connection.driver instanceof BetterSqlite3Driver) { // only works for better-sqlite3
+                updateResult.raw = result;
+                updateResult.affected = result.changes;
             }
             else {
                 updateResult.raw = result;
@@ -473,6 +478,8 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                             } else {
                               expression = `ST_GeomFromGeoJSON(${this.connection.driver.createParameter(paramName, parametersCount)})::${column.type}`;
                             }
+                        } else if (this.connection.driver instanceof SqlServerDriver && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
+                            expression = column.type + "::STGeomFromText(" + this.connection.driver.createParameter(paramName, parametersCount) + ", " + (column.srid || "0") + ")";
                         } else {
                             expression = this.connection.driver.createParameter(paramName, parametersCount);
                         }

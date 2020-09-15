@@ -88,8 +88,8 @@ export class Broadcaster {
                         connection: this.queryRunner.connection,
                         queryRunner: this.queryRunner,
                         manager: this.queryRunner.manager,
-                        metadata: metadata,
                         entity: entity,
+                        metadata: metadata,
                         databaseEntity: databaseEntity,
                         updatedColumns: updatedColumns || [],
                         updatedRelations: updatedRelations || []
@@ -129,8 +129,8 @@ export class Broadcaster {
                         connection: this.queryRunner.connection,
                         queryRunner: this.queryRunner,
                         manager: this.queryRunner.manager,
-                        metadata: metadata,
                         entity: entity,
+                        metadata: metadata,
                         databaseEntity: databaseEntity,
                         entityId: metadata.getEntityIdMixedMap(databaseEntity)
                     });
@@ -209,8 +209,8 @@ export class Broadcaster {
                         connection: this.queryRunner.connection,
                         queryRunner: this.queryRunner,
                         manager: this.queryRunner.manager,
-                        metadata: metadata,
                         entity: entity,
+                        metadata: metadata,
                         databaseEntity: databaseEntity,
                         updatedColumns: updatedColumns || [],
                         updatedRelations: updatedRelations || []
@@ -251,8 +251,8 @@ export class Broadcaster {
                         connection: this.queryRunner.connection,
                         queryRunner: this.queryRunner,
                         manager: this.queryRunner.manager,
-                        metadata: metadata,
                         entity: entity,
+                        metadata: metadata,
                         databaseEntity: databaseEntity,
                         entityId: metadata.getEntityIdMixedMap(databaseEntity)
                     });

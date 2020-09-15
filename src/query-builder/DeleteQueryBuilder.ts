@@ -2,6 +2,7 @@ import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
 import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {QueryBuilder} from "./QueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
+import {EntityTarget} from "../common/EntityTarget";
 import {Connection} from "../connection/Connection";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
@@ -13,8 +14,9 @@ import {ReturningStatementNotSupportedError} from "../error/ReturningStatementNo
 import {SqljsDriver} from "../driver/sqljs/SqljsDriver";
 import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {BroadcasterResult} from "../subscriber/BroadcasterResult";
-import {EntitySchema, EntityTarget} from "../index";
+import {EntitySchema} from "../index";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
+import {BetterSqlite3Driver} from "../driver/better-sqlite3/BetterSqlite3Driver";
 import {ObserverExecutor} from "../observer/ObserverExecutor";
 
 /**
@@ -82,6 +84,10 @@ export class DeleteQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
             } else if (driver instanceof OracleDriver) {
                 deleteResult.affected = result;
+
+            } else if (driver instanceof BetterSqlite3Driver) { // only works for better-sqlite3
+                deleteResult.raw = result;
+                deleteResult.affected = result.changes;
 
             } else {
                 deleteResult.raw = result;
