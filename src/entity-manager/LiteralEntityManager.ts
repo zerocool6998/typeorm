@@ -42,7 +42,7 @@ import {createLiteralRepository} from "../repository/LiteralRepository";
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,
  * whatever entity type are you passing.
  */
-export function createLiteralEntityManager<Entity>({ connection, queryRunner }: {
+export function createLiteralEntityManager({ connection, queryRunner }: {
     connection: Connection,
     queryRunner?: QueryRunner,
 }): EntityManager {
