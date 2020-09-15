@@ -534,10 +534,13 @@ export function createLiteralEntityManager<Entity>({ connection, queryRunner }: 
             return qb.getOne();
         },
 
-        async findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOptions<Entity> | any, maybeOptions?: FindOptions<Entity>): Promise<Entity> {
-            return this.findOne(entityClass as any, idOrOptionsOrConditions as any, maybeOptions).then((value: any) => {
+        async findOneOrFail<Entity>(
+            entityClass: EntityTarget<Entity>,
+            ...args: (string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOptions<Entity> | any)[]
+        ): Promise<Entity> {
+            return this.findOne(entityClass as any, ...args).then((value: any) => {
                 if (value === undefined) {
-                    return Promise.reject(new EntityNotFoundError(entityClass, idOrOptionsOrConditions));
+                    return Promise.reject(new EntityNotFoundError(entityClass, args.length > 0 ? args[0]: undefined));
                 }
                 return Promise.resolve(value);
             });
