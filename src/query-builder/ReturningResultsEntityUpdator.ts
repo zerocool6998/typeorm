@@ -117,10 +117,14 @@ export class ReturningResultsEntityUpdator {
         // for postgres and mssql we use returning/output statement to get values of inserted default and generated values
         // for other drivers we have to re-select this data from the database
         if (this.queryRunner.connection.driver.isReturningSqlSupported() === false && insertionColumns.length > 0) {
-            const entityIds = entities.map((entity) => {
+            let entityIds: any[] = entities.map((entity) => {
                 const entityId = metadata.getEntityIdMap(entity)!;
                 return entityId;
             });
+
+            // TODO: This is to make the behavior match current behavior of the `next` branch
+            // TODO: It's technically not correct but is put in place during the merge to keep behavior the same
+            entityIds = entityIds.filter(e => typeof e !== "undefined");
 
             // to select just inserted entities we need a criteria to select by.
             // for newly inserted entities in drivers which do not support returning statement

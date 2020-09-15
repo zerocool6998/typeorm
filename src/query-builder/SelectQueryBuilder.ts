@@ -780,7 +780,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     where(where: Brackets|string|((qb: this) => string)|FindOptionsWhere<Entity>, parameters?: ObjectLiteral): this {
         this.expressionMap.wheres = []; // don't move this block below since computeWhereParameter can add where expressions
 
-        if (where && typeof where === "object" && !(where instanceof Brackets)) {
+        if (where && typeof where === "object" && !(where instanceof Brackets) && !Array.isArray(where)) {
             this.findOptions.where = where;
 
         } else {
