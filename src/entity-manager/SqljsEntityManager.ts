@@ -1,4 +1,4 @@
-import { EntityManager } from "./EntityManager";
+import {EntityManager} from "./EntityManager";
 
 /**
  * A special EntityManager that includes import/export and load/save function

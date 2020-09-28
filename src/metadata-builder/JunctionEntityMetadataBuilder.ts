@@ -6,7 +6,7 @@ import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {IndexMetadata} from "../metadata/IndexMetadata";
 import {JoinTableMetadataArgs} from "../metadata-args/JoinTableMetadataArgs";
 import {RelationMetadata} from "../metadata/RelationMetadata";
-import { AuroraDataApiDriver } from "../driver/aurora-data-api/AuroraDataApiDriver";
+import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 
 /**
  * Creates EntityMetadata for junction tables.
@@ -113,6 +113,7 @@ export class JunctionEntityMetadataBuilder {
                         && (inverseReferencedColumn.generationStrategy === "uuid" || inverseReferencedColumn.type === "uuid")
                             ? "36"
                             : inverseReferencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604
+                        width: inverseReferencedColumn.width, // fix https://github.com/typeorm/typeorm/issues/6442
                         type: inverseReferencedColumn.type,
                         precision: inverseReferencedColumn.precision,
                         scale: inverseReferencedColumn.scale,

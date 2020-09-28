@@ -1,4 +1,5 @@
-import {EntitySchema, EntityTarget} from "../index";
+import {EntityTarget} from "../common/EntityTarget";
+import {EntitySchema} from "../index";
 
 /**
  */
@@ -13,7 +14,7 @@ export class EntityMetadataNotFoundError extends Error {
             targetName = target.options.name || "";
         } else if (typeof target === "function") {
             targetName = target.name;
-        } else if (typeof target === "object") {
+        } else if (typeof target === "object" && "name" in target) {
             targetName = target.name;
         } else {
             targetName = target;

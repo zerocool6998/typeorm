@@ -131,8 +131,8 @@ export function createLiteralRepository<Entity>({ manager, target, queryRunner }
             return this.manager.findOne(this.getMetadata().target as any, ...args);
         },
 
-        findOneOrFail(optionsOrConditions?: string | number | Date | ObjectID | FindOptions<Entity> | FindOptionsWhere<Entity>, maybeOptions?: FindOptions<Entity>): Promise<Entity> {
-            return this.manager.findOneOrFail(this.getMetadata().target as any, optionsOrConditions as any, maybeOptions);
+        findOneOrFail(...args: (string | number | Date | ObjectID | FindOptions<Entity> | FindOptionsWhere<Entity> | undefined)[]): Promise<Entity> {
+            return this.manager.findOneOrFail(this.getMetadata().target as any, ...args);
         },
 
         observe<Entity>(optionsOrConditions?: FindOptions<Entity> | FindOptionsWhere<Entity>): Observable<Entity[]> {
