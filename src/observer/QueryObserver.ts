@@ -9,8 +9,7 @@ import {
     UpdateEvent,
     EntityTarget
 } from "../index";
-import { Observable, ZenObservable } from "zen-observable-ts";
-import SubscriptionObserver = ZenObservable.SubscriptionObserver;
+import Observable from "zen-observable";
 
 // todo: we probably need operation-level subscribers
 // todo: right now if we save 1000 entities within a single save call its going to call this code 1000 times
@@ -38,7 +37,7 @@ export class QueryObserver {
     public lastEmitEntities: ObjectLiteral[] = [];
     public lastEmitEntity: ObjectLiteral|undefined;
     public lastEmitCount: number;
-    public subscriptionObserver: SubscriptionObserver<any>;
+    public subscriptionObserver: ZenObservable.SubscriptionObserver<any>;
 
     // -------------------------------------------------------------------------
     // Constructor

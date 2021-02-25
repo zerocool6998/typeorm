@@ -12,7 +12,7 @@ import {DeleteResult} from "../query-builder/result/DeleteResult";
 import {ObjectID} from "../driver/mongodb/typings";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
-import { Observable } from "zen-observable-ts";
+import * as Observable from "zen-observable";
 
 /**
  * Base abstract entity for all entities, used in ActiveRecord patterns.
