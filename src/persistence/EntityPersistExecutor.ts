@@ -14,6 +14,7 @@ import {ManyToManySubjectBuilder} from "./subject-builder/ManyToManySubjectBuild
 import {SubjectDatabaseEntityLoader} from "./SubjectDatabaseEntityLoader";
 import {CascadesSubjectBuilder} from "./subject-builder/CascadesSubjectBuilder";
 import {OrmUtils} from "../util/OrmUtils";
+import {PromiseUtils} from "../util/PromiseUtils";
 
 /**
  * Persists a single entity or multiple entities - saves or removes them.
@@ -50,7 +51,7 @@ export class EntityPersistExecutor {
 
             // if query runner is already defined in this class, it means this entity manager was already created for a single connection
             // if its not defined we create a new query runner - single connection where we'll execute all our operations
-            const queryRunner = this.queryRunner || this.connection.createQueryRunner();
+            const queryRunner = this.queryRunner || this.connection.createQueryRunner("master");
 
             // save data in the query runner - this is useful functionality to share data from outside of the world
             // with third classes - like subscribers and listener methods
@@ -145,9 +146,7 @@ export class EntityPersistExecutor {
 
                     // execute all persistence operations for all entities we have
                     // console.time("executing subject executors...");
-                    for (const executor of executorsWithExecutableOperations) {
-                        await executor.execute();
-                    }
+                    await PromiseUtils.runInSequence(executorsWithExecutableOperations, executor => executor.execute());
                     // console.timeEnd("executing subject executors...");
 
                     // commit transaction if it was started by us

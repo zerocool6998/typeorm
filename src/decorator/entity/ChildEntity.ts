@@ -5,7 +5,7 @@ import {DiscriminatorValueMetadataArgs} from "../../metadata-args/DiscriminatorV
 /**
  * Special type of the table used in the single-table inherited tables.
  */
-export function ChildEntity(discriminatorValue?: any): ClassDecorator {
+export function ChildEntity(discriminatorValue?: any) {
     return function (target: Function) {
 
         // register a table metadata

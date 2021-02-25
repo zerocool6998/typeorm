@@ -12,6 +12,7 @@ import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/Abstract
 import {OracleDriver} from "../../../src/driver/oracle/OracleDriver";
 import {Photo} from "./entity/Photo";
 import {Book2, Book} from "./entity/Book";
+import {SqliteDriver} from "../../../src/driver/sqlite/SqliteDriver";
 
 describe("query runner > create table", () => {
 
@@ -331,7 +332,7 @@ describe("query runner > create table", () => {
 
     it("should correctly create table with different `withoutRowid` definitions", () => Promise.all(connections.map(async connection => {
 
-        if (connection.driver instanceof AbstractSqliteDriver) {
+        if (connection.driver instanceof SqliteDriver) {
             const queryRunner = connection.createQueryRunner();
 
             // the table 'book' must contain a 'rowid' column
@@ -357,7 +358,7 @@ describe("query runner > create table", () => {
             try {
                 await connection.manager.query("SELECT rowid FROM book2");
             } catch (e) {
-                expect(e.message).contains("no such column: rowid");
+                expect(e.message).equal("SQLITE_ERROR: no such column: rowid");
             }
 
             await queryRunner.dropTable("book2");

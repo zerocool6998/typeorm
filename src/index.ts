@@ -14,6 +14,7 @@ import {PlatformTools} from "./platform/PlatformTools";
 import {TreeRepository} from "./repository/TreeRepository";
 import {MongoRepository} from "./repository/MongoRepository";
 import {ConnectionOptionsReader} from "./connection/ConnectionOptionsReader";
+import {PromiseUtils} from "./util/PromiseUtils";
 import {MongoEntityManager} from "./entity-manager/MongoEntityManager";
 import {SqljsEntityManager} from "./entity-manager/SqljsEntityManager";
 import {SelectQueryBuilder} from "./query-builder/SelectQueryBuilder";
@@ -24,8 +25,8 @@ import {EntityTarget} from "./common/EntityTarget";
 // -------------------------------------------------------------------------
 
 export * from "./container";
-export * from "./common/EntityTarget";
 export * from "./common/ObjectType";
+export * from "./common/EntityTarget";
 export * from "./common/ObjectLiteral";
 export * from "./common/DeepPartial";
 export * from "./error/QueryFailedError";
@@ -116,7 +117,6 @@ export * from "./schema-builder/table/TableUnique";
 export * from "./schema-builder/table/Table";
 export * from "./driver/mongodb/typings";
 export * from "./driver/types/DatabaseType";
-export * from "./driver/types/ReplicationMode";
 export * from "./driver/sqlserver/MssqlParameter";
 export * from "./typed-entity-schema";
 
@@ -139,6 +139,7 @@ export {DeleteResult} from "./query-builder/result/DeleteResult";
 export {QueryPartialEntity} from "./query-builder/QueryPartialEntity";
 export {QueryDeepPartialEntity} from "./query-builder/QueryPartialEntity";
 export {QueryRunner} from "./query-runner/QueryRunner";
+export {EntityManager} from "./entity-manager/EntityManager";
 export {MongoEntityManager} from "./entity-manager/MongoEntityManager";
 export {Migration} from "./migration/Migration";
 export {MigrationExecutor} from "./migration/MigrationExecutor";
@@ -152,15 +153,16 @@ export {TreeRepository} from "./repository/TreeRepository";
 export {MongoRepository} from "./repository/MongoRepository";
 export * from "./find-options/FindOptions";
 export {InsertEvent} from "./subscriber/event/InsertEvent";
-export {LoadEvent} from "./subscriber/event/LoadEvent";
 export {UpdateEvent} from "./subscriber/event/UpdateEvent";
 export {RemoveEvent} from "./subscriber/event/RemoveEvent";
 export {EntitySubscriberInterface} from "./subscriber/EntitySubscriberInterface";
+export {BaseEntity} from "./repository/BaseEntity";
 export {EntitySchema} from "./entity-schema/EntitySchema";
 export {EntitySchemaColumnOptions} from "./entity-schema/EntitySchemaColumnOptions";
 export {EntitySchemaIndexOptions} from "./entity-schema/EntitySchemaIndexOptions";
 export {EntitySchemaRelationOptions} from "./entity-schema/EntitySchemaRelationOptions";
 export {ColumnType} from "./driver/types/ColumnTypes";
+export {PromiseUtils} from "./util/PromiseUtils";
 
 // -------------------------------------------------------------------------
 // Deprecated
@@ -243,7 +245,7 @@ export async function createConnections(options?: ConnectionOptions[]): Promise<
     if (!options)
         options = await new ConnectionOptionsReader().all();
     const connections = options.map(options => getConnectionManager().create(options));
-    return Promise.all(connections.map(connection => connection.connect()));
+    return PromiseUtils.runInSequence(connections, connection => connection.connect());
 }
 
 /**

@@ -5,23 +5,23 @@ import {TableMetadataArgs} from "../../metadata-args/TableMetadataArgs";
  * This decorator is used to mark classes that will be an entity (table or document depend on database type).
  * Database schema will be created for all classes decorated with it, and Repository can be retrieved and used for it.
  */
-export function Entity(options?: EntityOptions): ClassDecorator;
+export function Entity(options?: EntityOptions): Function;
 
 /**
  * This decorator is used to mark classes that will be an entity (table or document depend on database type).
  * Database schema will be created for all classes decorated with it, and Repository can be retrieved and used for it.
  */
-export function Entity(name?: string, options?: EntityOptions): ClassDecorator;
+export function Entity(name?: string, options?: EntityOptions): Function;
 
 /**
  * This decorator is used to mark classes that will be an entity (table or document depend on database type).
  * Database schema will be created for all classes decorated with it, and Repository can be retrieved and used for it.
  */
-export function Entity(nameOrOptions?: string|EntityOptions, maybeOptions?: EntityOptions): ClassDecorator {
+export function Entity(nameOrOptions?: string|EntityOptions, maybeOptions?: EntityOptions): Function {
     const options = (typeof nameOrOptions === "object" ? nameOrOptions as EntityOptions : maybeOptions) || {};
     const name = typeof nameOrOptions === "string" ? nameOrOptions : options.name;
 
-    return function (target) {
+    return function (target: Function) {
         getMetadataArgsStorage().tables.push({
             target: target,
             name: name,

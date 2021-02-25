@@ -18,12 +18,11 @@ import {TableIndexOptions} from "../../schema-builder/options/TableIndexOptions"
 import {TableUnique} from "../../schema-builder/table/TableUnique";
 import {BaseQueryRunner} from "../../query-runner/BaseQueryRunner";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import {ColumnType} from "../../index";
+import {ColumnType, PromiseUtils} from "../../index";
 import {TableCheck} from "../../schema-builder/table/TableCheck";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
 import {VersionUtils} from "../../util/VersionUtils";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Runs queries on a single mysql database connection.
@@ -52,7 +51,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(driver: MysqlDriver, mode: ReplicationMode) {
+    constructor(driver: MysqlDriver, mode: "master"|"slave" = "master") {
         super();
         this.driver = driver;
         this.connection = driver.connection;
@@ -520,9 +519,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
      * Creates a new columns from the column in the table.
      */
     async addColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.addColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.addColumn(tableOrName, column));
     }
 
     /**
@@ -737,9 +734,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
      * Changes a column in the table.
      */
     async changeColumns(tableOrName: Table|string, changedColumns: { newColumn: TableColumn, oldColumn: TableColumn }[]): Promise<void> {
-        for (const {oldColumn, newColumn} of changedColumns) {
-            await this.changeColumn(tableOrName, oldColumn, newColumn);
-        }
+        await PromiseUtils.runInSequence(changedColumns, changedColumn => this.changeColumn(tableOrName, changedColumn.oldColumn, changedColumn.newColumn));
     }
 
     /**
@@ -831,9 +826,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
      * Drops the columns in the table.
      */
     async dropColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.dropColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.dropColumn(tableOrName, column));
     }
 
     /**
@@ -1226,7 +1219,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
             return `(\`s\`.\`TABLE_SCHEMA\` = '${database}' AND \`s\`.\`TABLE_NAME\` = '${name}')`;
         }).join(" OR ");
         const indicesSql = `SELECT \`s\`.* FROM \`INFORMATION_SCHEMA\`.\`STATISTICS\` \`s\` ` +
-            `LEFT JOIN \`INFORMATION_SCHEMA\`.\`REFERENTIAL_CONSTRAINTS\` \`rc\` ON \`s\`.\`INDEX_NAME\` = \`rc\`.\`CONSTRAINT_NAME\` AND \`s\`.\`TABLE_SCHEMA\` = \`rc\`.\`CONSTRAINT_SCHEMA\`` +
+            `LEFT JOIN \`INFORMATION_SCHEMA\`.\`REFERENTIAL_CONSTRAINTS\` \`rc\` ON \`s\`.\`INDEX_NAME\` = \`rc\`.\`CONSTRAINT_NAME\` ` +
             `WHERE (${indicesCondition}) AND \`s\`.\`INDEX_NAME\` != 'PRIMARY' AND \`rc\`.\`CONSTRAINT_NAME\` IS NULL`;
 
         const foreignKeysCondition = tableNames.map(tableName => {
@@ -1304,13 +1297,6 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
                     tableColumn.name = dbColumn["COLUMN_NAME"];
                     tableColumn.type = dbColumn["DATA_TYPE"].toLowerCase();
 
-                    tableColumn.zerofill = dbColumn["COLUMN_TYPE"].indexOf("zerofill") !== -1;
-                    tableColumn.unsigned = tableColumn.zerofill ? true : dbColumn["COLUMN_TYPE"].indexOf("unsigned") !== -1;
-                    if (this.driver.withWidthColumnTypes.indexOf(tableColumn.type as ColumnType) !== -1) {
-                        const width = dbColumn["COLUMN_TYPE"].substring(dbColumn["COLUMN_TYPE"].indexOf("(") + 1, dbColumn["COLUMN_TYPE"].indexOf(")"));
-                        tableColumn.width = width && !this.isDefaultColumnWidth(table, tableColumn, parseInt(width)) ? parseInt(width) : undefined;
-                    }
-
                     if (dbColumn["COLUMN_DEFAULT"] === null
                         || dbColumn["COLUMN_DEFAULT"] === undefined
                         || (isMariaDb && dbColumn["COLUMN_DEFAULT"] === "NULL")) {
@@ -1329,9 +1315,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
                     }
 
                     if (dbColumn["EXTRA"].indexOf("on update") !== -1) {
-                        // New versions of MariaDB return expressions in lowercase.  We need to set it in
-                        // uppercase so the comparison in MysqlDriver#compareExtraValues does not fail.
-                        tableColumn.onUpdate = dbColumn["EXTRA"].substring(dbColumn["EXTRA"].indexOf("on update") + 10).toUpperCase();
+                        tableColumn.onUpdate = dbColumn["EXTRA"].substring(dbColumn["EXTRA"].indexOf("on update") + 10);
                     }
 
                     if (dbColumn["GENERATION_EXPRESSION"]) {
@@ -1344,6 +1328,13 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
                     tableColumn.isPrimary = dbPrimaryKeys.some(dbPrimaryKey => {
                         return this.driver.buildTableName(dbPrimaryKey["TABLE_NAME"], undefined, dbPrimaryKey["TABLE_SCHEMA"]) === tableFullName && dbPrimaryKey["COLUMN_NAME"] === tableColumn.name;
                     });
+                    tableColumn.zerofill = dbColumn["COLUMN_TYPE"].indexOf("zerofill") !== -1;
+                    tableColumn.unsigned = tableColumn.zerofill ? true : dbColumn["COLUMN_TYPE"].indexOf("unsigned") !== -1;
+                    if (this.driver.withWidthColumnTypes.indexOf(tableColumn.type as ColumnType) !== -1) {
+                        const width = dbColumn["COLUMN_TYPE"].substring(dbColumn["COLUMN_TYPE"].indexOf("(") + 1, dbColumn["COLUMN_TYPE"].indexOf(")"));
+                        tableColumn.width = width && !this.isDefaultColumnWidth(table, tableColumn, parseInt(width)) ? parseInt(width) : undefined;
+                    }
+
                     tableColumn.isGenerated = dbColumn["EXTRA"].indexOf("auto_increment") !== -1;
                     if (tableColumn.isGenerated)
                         tableColumn.generationStrategy = "increment";
@@ -1690,7 +1681,7 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
         if (column.isGenerated && column.generationStrategy === "increment") // don't use skipPrimary here since updates can update already exist primary without auto inc.
             c += " AUTO_INCREMENT";
         if (column.comment)
-            c += ` COMMENT '${column.comment.replace("'", "''")}'`;
+            c += ` COMMENT '${column.comment}'`;
         if (column.default !== undefined && column.default !== null)
             c += ` DEFAULT ${column.default}`;
         if (column.onUpdate)
@@ -1702,37 +1693,6 @@ export class MysqlQueryRunner extends BaseQueryRunner implements QueryRunner {
     protected async getVersion(): Promise<string> {
         const result = await this.query(`SELECT VERSION() AS \`version\``);
         return result[0]["version"];
-    }
-
-    /**
-     * Checks if column display width is by default.
-     */
-    protected isDefaultColumnWidth(table: Table, column: TableColumn, width: number): boolean {
-        // if table have metadata, we check if length is specified in column metadata
-        if (this.connection.hasMetadata(table.name)) {
-            const metadata = this.connection.getMetadata(table.name);
-            const columnMetadata = metadata.findColumnWithDatabaseName(column.name);
-            if (columnMetadata && columnMetadata.width)
-                return false;
-        }
-
-        const defaultWidthForType = this.connection.driver.dataTypeDefaults
-            && this.connection.driver.dataTypeDefaults[column.type]
-            && this.connection.driver.dataTypeDefaults[column.type].width;
-
-        if (defaultWidthForType) {
-            // In MariaDB & MySQL 5.7, the default widths of certain numeric types are 1 less than
-            // the usual defaults when the column is unsigned.
-            const typesWithReducedUnsignedDefault = ["int", "tinyint", "smallint", "mediumint"];
-            const needsAdjustment = typesWithReducedUnsignedDefault.indexOf(column.type) !== -1;
-            if (column.unsigned && needsAdjustment) {
-                return (defaultWidthForType - 1) === width;
-            } else {
-                return defaultWidthForType === width;
-            }
-        }
-
-        return false;
     }
 
 }

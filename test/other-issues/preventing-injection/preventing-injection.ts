@@ -3,7 +3,6 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../src";
 import {Post} from "./entity/Post";
 import {expect} from "chai";
-import {EntityColumnNotFound} from "../../../src/error/EntityColumnNotFound";
 
 describe("other issues > preventing-injection", () => {
 
@@ -29,7 +28,7 @@ describe("other issues > preventing-injection", () => {
         }).should.be.rejected;
     })));
 
-    it("should throw error for non-exist columns in where expression via FindOptions", () => Promise.all(connections.map(async function(connection) {
+    it("should not allow using non-exist columns in where expression", () => Promise.all(connections.map(async function(connection) {
         const post = new Post();
         post.title = "hello";
         await connection.manager.save(post);
@@ -41,18 +40,12 @@ describe("other issues > preventing-injection", () => {
         });
         postWithOnlyIdSelected.should.be.eql([{ id: 1, title: "hello" }]);
 
-        let error: Error | undefined;
-        try {
-            await connection.manager.find(Post, {
-                where: {
-                    id: 2,
-                    ["(WHERE LIMIT 1)" as any]: "hello"
-                }
-            });
-        } catch (err) {
-            error = err;
-        }
-        expect(error).to.be.an.instanceof(EntityColumnNotFound);
+        await connection.manager.find(Post, {
+            where: {
+                id: 2,
+                ["(WHERE LIMIT 1)" as any]: "hello"
+            }
+        }).should.be.rejected;
     })));
 
     it("should not allow selection of non-exist columns via FindOptions", () => Promise.all(connections.map(async function(connection) {

@@ -27,7 +27,6 @@ import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {OrderByCondition} from "../find-options/OrderByCondition";
 import {QueryExpressionMap} from "./QueryExpressionMap";
-import {EntityTarget} from "../common/EntityTarget";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {WhereExpression} from "./WhereExpression";
 import {Brackets} from "./Brackets";
@@ -52,8 +51,7 @@ import {ObjectUtils} from "../util/ObjectUtils";
 import {DriverUtils} from "../driver/DriverUtils";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
-import {Connection} from "..";
-import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
+import {Connection, EntityTarget} from "..";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -781,7 +779,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     where(where: Brackets|string|((qb: this) => string)|FindOptionsWhere<Entity>, parameters?: ObjectLiteral): this {
         this.expressionMap.wheres = []; // don't move this block below since computeWhereParameter can add where expressions
 
-        if (where && typeof where === "object" && !(where instanceof Brackets) && !Array.isArray(where)) {
+        if (where && typeof where === "object" && !(where instanceof Brackets)) {
             this.findOptions.where = where;
 
         } else {
@@ -1051,12 +1049,12 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     /**
      * Sets locking mode.
      */
-    setLock(lockMode: "pessimistic_read"|"pessimistic_write"|"dirty_read"|"pessimistic_partial_write"|"pessimistic_write_or_fail"|"for_no_key_update"): this;
+    setLock(lockMode: "pessimistic_read"|"pessimistic_write"|"dirty_read"): this;
 
     /**
      * Sets locking mode.
      */
-    setLock(lockMode: "optimistic"|"pessimistic_read"|"pessimistic_write"|"dirty_read"|"pessimistic_partial_write"|"pessimistic_write_or_fail"|"for_no_key_update", lockVersion?: number|Date): this {
+    setLock(lockMode: "optimistic"|"pessimistic_read"|"pessimistic_write"|"dirty_read", lockVersion?: number|Date): this {
         this.expressionMap.lockMode = lockMode;
         this.expressionMap.lockVersion = lockVersion;
         return this;
@@ -1778,26 +1776,6 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 } else {
                     throw new LockNotSupportedOnGivenDriverError();
                 }
-            case "pessimistic_partial_write":
-                if (driver instanceof PostgresDriver) {
-                    return " FOR UPDATE SKIP LOCKED";
-
-                } else {
-                    throw new LockNotSupportedOnGivenDriverError();
-                }
-            case "pessimistic_write_or_fail":
-                if (driver instanceof PostgresDriver) {
-                    return " FOR UPDATE NOWAIT";
-                } else {
-                    throw new LockNotSupportedOnGivenDriverError();
-                }
-
-            case "for_no_key_update":
-                if (driver instanceof PostgresDriver) {
-                    return " FOR NO KEY UPDATE";
-                } else {
-                    throw new LockNotSupportedOnGivenDriverError();
-                }
             default:
                 return "";
         }
@@ -2028,16 +2006,6 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     return `${distinctAlias}.${propertyName}`;
                 }).join(" || ") + ")) as \"cnt\"";
 
-            } else if (this.connection.driver instanceof CockroachDriver) {
-                countSql = `COUNT(DISTINCT(CONCAT(` + metadata.primaryColumns.map((primaryColumn, index) => {
-                    const propertyName = this.escape(primaryColumn.databaseName);
-                    return `${distinctAlias}.${propertyName}::text`;
-                }).join(", ") + "))) as \"cnt\"";
-            } else if (this.connection.driver instanceof OracleDriver) {
-                countSql = `COUNT(DISTINCT(` + metadata.primaryColumns.map((primaryColumn, index) => {
-                    const propertyName = this.escape(primaryColumn.databaseName);
-                    return `${distinctAlias}.${propertyName}`;
-                }).join(" || ") + ")) as \"cnt\"";
             } else {
                 countSql = `COUNT(DISTINCT(CONCAT(` + metadata.primaryColumns.map((primaryColumn, index) => {
                     const propertyName = this.escape(primaryColumn.databaseName);
@@ -2061,6 +2029,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             .take(undefined)
             .select(countSql)
             .setOption("disable-global-order")
+            // .setFindOptions({ where: this.findOptions.where })
             .loadRawResults(queryRunner);
 
         if (!results || !results[0] || !results[0]["cnt"])
@@ -2077,7 +2046,10 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         if (!this.expressionMap.mainAlias)
             throw new Error(`Alias is not set. Use "from" method to set an alias.`);
 
-        if ((this.expressionMap.lockMode === "pessimistic_read" || this.expressionMap.lockMode === "pessimistic_write" || this.expressionMap.lockMode === "pessimistic_partial_write" || this.expressionMap.lockMode === "pessimistic_write_or_fail" || this.expressionMap.lockMode === "for_no_key_update") && !queryRunner.isTransactionActive)
+        const cloneQb1 = this.clone();
+        const cloneQb2 = this.clone();
+
+        if ((this.expressionMap.lockMode === "pessimistic_read" || this.expressionMap.lockMode === "pessimistic_write") && !queryRunner.isTransactionActive)
             throw new PessimisticLockTransactionRequiredError();
 
         if (this.expressionMap.lockMode === "optimistic") {
@@ -2112,20 +2084,22 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 const columnAlias = this.escape(DriverUtils.buildColumnAlias(this.connection.driver, mainAliasName, primaryColumn.databaseName));
                 if (!orderBys[columnAlias]) // make sure we aren't overriding user-defined order in inverse direction
                     orderBys[columnAlias] = "ASC";
-
-                const alias = DriverUtils.buildColumnAlias(
-                    this.connection.driver,
-                    "ids_" + mainAliasName,
-                    primaryColumn.databaseName
-                );
-
-                return `${distinctAlias}.${columnAlias} as "${alias}"`;
+                return `${distinctAlias}.${columnAlias} as "ids_${DriverUtils.buildColumnAlias(this.connection.driver, mainAliasName, primaryColumn.databaseName)}"`;
             });
+
+            const clonnedQb = cloneQb1
+                // .setFindOptions({
+                //     select: this.findOptions.select,
+                //     relations: this.findOptions.relations,
+                //     options: this.findOptions.options,
+                //     where: this.findOptions.where
+                // })
+                .orderBy();
 
             rawResults = await new SelectQueryBuilder(this.connection, queryRunner)
                 .select(`DISTINCT ${querySelects.join(", ")}`)
                 .addSelect(selects)
-                .from(`(${this.clone().orderBy().getQuery()})`, "distinctAlias")
+                .from(`(${clonnedQb.getQuery()})`, "distinctAlias")
                 .offset(this.expressionMap.skip)
                 .limit(this.expressionMap.take)
                 .orderBy(orderBys)
@@ -2146,13 +2120,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                         }).join(" AND ");
                     }).join(" OR ");
                 } else {
-                    const alias = DriverUtils.buildColumnAlias(
-                        this.connection.driver,
-                        "ids_" + mainAliasName,
-                        metadata.primaryColumns[0].databaseName
-                    );
-
-                    const ids = rawResults.map(result => result[alias]);
+                    const ids = rawResults.map(result => result["ids_" + DriverUtils.buildColumnAlias(this.connection.driver, mainAliasName, metadata.primaryColumns[0].databaseName)]);
                     const areAllNumbers = ids.every((id: any) => typeof id === "number");
                     if (areAllNumbers) {
                         // fixes #190. if all numbers then its safe to perform query without parameter
@@ -2162,7 +2130,8 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                         condition = mainAliasName + "." + metadata.primaryColumns[0].propertyPath + " IN (:...orm_distinct_ids)";
                     }
                 }
-                rawResults = await this.clone()
+                rawResults = await cloneQb2
+                    // .setFindOptions(this.findOptions)
                     .mergeExpressionMap({ extraAppendedAndWhereCondition: condition })
                     .setParameters(parameters)
                     .loadRawResults(queryRunner);

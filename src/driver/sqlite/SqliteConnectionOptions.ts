@@ -31,7 +31,7 @@ export interface SqliteConnectionOptions extends BaseConnectionOptions {
      * Enabling WAL can improve your app performance and face less SQLITE_BUSY issues.
      * Time in milliseconds.
      */
-    readonly busyErrorRetry?: number;
+    readonly busyErrorRetry?: number; // todo: implement this option for all SQLite family drivers
 
     /**
      * Enables WAL mode. By default its disabled.

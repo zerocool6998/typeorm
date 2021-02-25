@@ -30,10 +30,10 @@ export interface TableIndexOptions {
 
     /**
      * The FULLTEXT modifier indexes the entire column and does not allow prefixing.
-     * Supported only in MySQL & SAP HANA.
+     * Works only in MySQL.
      */
     isFulltext?: boolean;
-
+    
     /**
      * Fulltext parser.
      * Works only in MySQL.

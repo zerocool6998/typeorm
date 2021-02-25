@@ -16,7 +16,6 @@ import {AuroraDataApiConnectionCredentialsOptions} from "./AuroraDataApiConnecti
 import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {OrmUtils} from "../../util/OrmUtils";
 import {ApplyValueTransformers} from "../../util/ApplyValueTransformers";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with MySQL DBMS.
@@ -307,8 +306,6 @@ export class AuroraDataApiDriver implements Driver {
             this.options.resourceArn,
             this.options.database,
             (query: string, parameters?: any[]) => this.connection.logger.logQuery(query, parameters),
-            this.options.serviceConfigOptions,
-            this.options.formatOptions,
         );
 
         // validate options to make sure everything is set
@@ -356,7 +353,7 @@ export class AuroraDataApiDriver implements Driver {
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode) {
+    createQueryRunner(mode: "master"|"slave" = "master") {
         return new AuroraDataApiQueryRunner(this);
     }
 
@@ -749,13 +746,6 @@ export class AuroraDataApiDriver implements Driver {
      */
     isUUIDGenerationSupported(): boolean {
         return false;
-    }
-
-    /**
-     * Returns true if driver supports fulltext indices.
-     */
-    isFullTextColumnTypeSupported(): boolean {
-        return true;
     }
 
     /**

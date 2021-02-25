@@ -3,7 +3,8 @@ import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import {Connection} from "../connection/Connection";
 import * as process from "process";
 import * as yargs from "yargs";
-import chalk from "chalk";
+
+const chalk = require("chalk");
 
 /**
  * Runs migration command.

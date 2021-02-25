@@ -2,8 +2,6 @@
     "version": "2.1.1",
     "compilerOptions": {
         "outDir": "build/compiled",
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
         "target": "ES2017",
         "module": "commonjs",
         "moduleResolution": "node",
@@ -19,7 +17,6 @@
         "pretty": true,
         "strictNullChecks": true,
         "noUnusedLocals": true,
-        "downlevelIteration": true
     },
     "exclude": [
         "tmp",

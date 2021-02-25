@@ -11,8 +11,8 @@ export class PostCategory {
     @ViewColumn()
     id: number;
 
-    @ViewColumn({ name: "name" })
-    postName: string;
+    @ViewColumn()
+    name: string;
 
     @ViewColumn()
     categoryName: string;

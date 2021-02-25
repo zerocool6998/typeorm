@@ -2,7 +2,8 @@ import {createConnection} from "../index";
 import {Connection} from "../connection/Connection";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import * as yargs from "yargs";
-import chalk from "chalk";
+
+const chalk = require("chalk");
 
 /**
  * Synchronizes database schema with entities.

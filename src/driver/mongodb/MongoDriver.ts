@@ -16,7 +16,6 @@ import {ConnectionOptions} from "../../connection/ConnectionOptions";
 import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {ObjectUtils} from "../../util/ObjectUtils";
 import {ApplyValueTransformers} from "../../util/ApplyValueTransformers";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with MongoDB.
@@ -263,7 +262,7 @@ export class MongoDriver implements Driver {
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode) {
+    createQueryRunner(mode: "master"|"slave" = "master") {
         return this.queryRunner!;
     }
 
@@ -387,13 +386,6 @@ export class MongoDriver implements Driver {
      * Returns true if driver supports uuid values generation on its own.
      */
     isUUIDGenerationSupported(): boolean {
-        return false;
-    }
-
-    /**
-     * Returns true if driver supports fulltext indices.
-     */
-    isFullTextColumnTypeSupported(): boolean {
         return false;
     }
 

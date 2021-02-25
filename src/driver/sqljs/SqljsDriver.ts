@@ -9,7 +9,6 @@ import {PlatformTools} from "../../platform/PlatformTools";
 import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {OrmUtils} from "../../util/OrmUtils";
 import {ObjectLiteral} from "../../common/ObjectLiteral";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 // This is needed to satisfy the typescript compiler.
 interface Window {
@@ -70,13 +69,13 @@ export class SqljsDriver extends AbstractSqliteDriver {
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode): QueryRunner {
+    createQueryRunner(mode: "master" | "slave" = "master"): QueryRunner {
         if (!this.queryRunner)
             this.queryRunner = new SqljsQueryRunner(this);
 
         return this.queryRunner;
     }
-
+    
     /**
      * Loads a database from a given file (Node.js), local storage key (browser) or array.
      * This will delete the current database!
@@ -100,7 +99,7 @@ export class SqljsDriver extends AbstractSqliteDriver {
                     // File will be written on first write operation.
                     return this.createDatabaseConnectionWithImport();
                 }
-            }
+            } 
             else {
                 // browser
                 // fileNameOrLocalStorageOrData should be a local storage / indexedDB key
@@ -114,7 +113,7 @@ export class SqljsDriver extends AbstractSqliteDriver {
                 } else {
                     localStorageContent = PlatformTools.getGlobalVariable().localStorage.getItem(fileNameOrLocalStorageOrData);
                 }
-
+                
                 if (localStorageContent != null) {
                     // localStorage value exists.
                     return this.createDatabaseConnectionWithImport(JSON.parse(localStorageContent));
@@ -144,7 +143,7 @@ export class SqljsDriver extends AbstractSqliteDriver {
         if (!location && !this.options.location) {
             throw new Error(`No location is set, specify a location parameter or add the location option to your configuration`);
         }
-
+        
         let path = "";
         if (location) {
             path = location;
@@ -155,7 +154,7 @@ export class SqljsDriver extends AbstractSqliteDriver {
 
         if (PlatformTools.type === "node") {
             try {
-                const content = Buffer.from(this.databaseConnection.export());
+                const content = new Buffer(this.databaseConnection.export());
                 await PlatformTools.writeFile(path, content);
             }
             catch (e) {
@@ -194,7 +193,7 @@ export class SqljsDriver extends AbstractSqliteDriver {
             }
         }
     }
-
+    
     /**
      * Returns the current database as Uint8Array.
      */

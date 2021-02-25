@@ -2,7 +2,6 @@ import {Driver} from "../driver/Driver";
 import {QueryObserver} from "../observer/QueryObserver";
 import {Repository} from "../repository/Repository";
 import {EntitySubscriberInterface} from "../subscriber/EntitySubscriberInterface";
-import {EntityTarget} from "../common/EntityTarget";
 import {ObjectType} from "../common/ObjectType";
 import {EntityManager} from "../entity-manager/EntityManager";
 import {DefaultNamingStrategy} from "../naming-strategy/DefaultNamingStrategy";
@@ -33,16 +32,15 @@ import {QueryResultCache} from "../cache/QueryResultCache";
 import {SqljsEntityManager} from "../entity-manager/SqljsEntityManager";
 import {RelationLoader} from "../query-builder/RelationLoader";
 import {RelationIdLoader} from "../query-builder/RelationIdLoader";
-import {EntitySchema} from "../";
+import {EntitySchema, PromiseUtils} from "../";
 import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import {DriverUtils} from "../driver/DriverUtils";
-import {ReplicationMode} from "../driver/types/ReplicationMode";
 import {EntityFactoryInterface} from "../entity-factory/EntityFactoryInterface";
 import {DefaultEntityFactory} from "../entity-factory/DefaultEntityFactory";
+import {EntityTarget} from "../common/EntityTarget";
 
 /**
  * Connection is a single database ORM connection to a specific database.
@@ -288,7 +286,7 @@ export class Connection {
      */
     // TODO rename
     async dropDatabase(): Promise<void> {
-        const queryRunner = this.createQueryRunner();
+        const queryRunner = this.createQueryRunner("master");
         try {
             if (this.driver instanceof SqlServerDriver || this.driver instanceof MysqlDriver || this.driver instanceof AuroraDataApiDriver) {
                 const databases: string[] = this.driver.database ? [this.driver.database] : [];
@@ -296,10 +294,7 @@ export class Connection {
                     if (metadata.database && databases.indexOf(metadata.database) === -1)
                         databases.push(metadata.database);
                 });
-
-                for (const database of databases) {
-                    await queryRunner.clearDatabase(database);
-                }
+                await PromiseUtils.runInSequence(databases, database => queryRunner.clearDatabase(database));
             } else {
                 await queryRunner.clearDatabase();
             }
@@ -429,7 +424,7 @@ export class Connection {
         if (queryRunner && queryRunner.isReleased)
             throw new QueryRunnerProviderAlreadyReleasedError();
 
-        const usedQueryRunner = queryRunner || this.createQueryRunner();
+        const usedQueryRunner = queryRunner || this.createQueryRunner("master");
 
         try {
             return await usedQueryRunner.query(query, parameters);  // await is needed here because we are using finally
@@ -458,7 +453,7 @@ export class Connection {
             throw new Error(`Query Builder is not supported by MongoDB.`);
 
         if (alias) {
-            const metadata = this.getMetadata(entityOrRunner as EntityTarget<Entity>);
+            const metadata = this.getMetadata(entityOrRunner as Function|EntitySchema<Entity>|string);
             return new SelectQueryBuilder(this, queryRunner)
                 .select(alias)
                 .from(metadata.target, alias);
@@ -478,7 +473,7 @@ export class Connection {
      * If you perform writes you must use master database,
      * if you perform reads you can use slave databases.
      */
-    createQueryRunner(mode: ReplicationMode = "master"): QueryRunner {
+    createQueryRunner(mode: "master"|"slave" = "master"): QueryRunner {
         const queryRunner = this.driver.createQueryRunner(mode);
         const manager = this.createEntityManager(queryRunner);
         Object.assign(queryRunner, { manager: manager });
@@ -488,7 +483,7 @@ export class Connection {
     /**
      * Gets entity metadata of the junction table (many-to-many table).
      */
-    getManyToManyMetadata(entityTarget: EntityTarget<any>, relationPropertyPath: string) {
+    getManyToManyMetadata(entityTarget: Function|string, relationPropertyPath: string) {
         const relationMetadata = this.getMetadata(entityTarget).findRelationWithPropertyPath(relationPropertyPath);
         if (!relationMetadata)
             throw new Error(`Relation "${relationPropertyPath}" was not found in ${entityTarget} entity.`);
@@ -575,17 +570,17 @@ export class Connection {
 
     // This database name property is nested for replication configs.
     protected getDatabaseName(): string {
-        const options = this.options;
-        switch (options.type) {
-            case "mysql" :
-            case "mariadb" :
-            case "postgres":
-            case "cockroachdb":
-            case "mssql":
-            case "oracle":
-                return DriverUtils.buildDriverOptions(options.replication ? options.replication.master : options).database;
-            default:
-                return DriverUtils.buildDriverOptions(options).database;
+    const options = this.options;
+    switch (options.type) {
+        case "mysql" :
+        case "mariadb" :
+        case "postgres":
+        case "cockroachdb":
+        case "mssql":
+        case "oracle":
+            return (options.replication ? options.replication.master.database : options.database) as string;
+        default:
+            return options.database as string;
     }
 }
 

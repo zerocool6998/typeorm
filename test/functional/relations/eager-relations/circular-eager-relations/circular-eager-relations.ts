@@ -1,6 +1,6 @@
+import { expect } from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../../src/connection/Connection";
-import {expect} from "chai";
+import { Connection } from "../../../../../src/connection/Connection";
 
 describe("relations > eager relations > circular eager relations", () => {
 

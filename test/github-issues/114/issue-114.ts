@@ -7,7 +7,7 @@ describe.skip("github issues > #114 Can not be parsed correctly the URL of pg.",
 
     let connection: Connection;
     before(() => {
-        connection = new Connection({ // Dummy Connection, won't be established
+        connection = new Connection({
             type: "postgres",
             url: "postgres://test:test@localhost:5432/test",
         });

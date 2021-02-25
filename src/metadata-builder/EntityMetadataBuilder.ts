@@ -403,8 +403,6 @@ export class EntityMetadataBuilder {
             }
         }
 
-        const { namingStrategy } = this.connection;
-
         // check if tree is used then we need to add extra columns for specific tree types
         if (entityMetadata.treeType === "materialized-path") {
             entityMetadata.ownColumns.push(new ColumnMetadata({
@@ -416,7 +414,7 @@ export class EntityMetadataBuilder {
                     mode: "virtual",
                     propertyName: "mpath",
                     options: /*tree.column || */ {
-                        name: namingStrategy.materializedPathColumnName,
+                        name: "mpath",
                         type: "varchar",
                         nullable: true,
                         default: ""
@@ -425,7 +423,6 @@ export class EntityMetadataBuilder {
             }));
 
         } else if (entityMetadata.treeType === "nested-set") {
-            const { left, right } = namingStrategy.nestedSetColumnNames;
             entityMetadata.ownColumns.push(new ColumnMetadata({
                 connection: this.connection,
                 entityMetadata: entityMetadata,
@@ -433,9 +430,9 @@ export class EntityMetadataBuilder {
                 args: {
                     target: entityMetadata.target,
                     mode: "virtual",
-                    propertyName: left,
+                    propertyName: "nsleft",
                     options: /*tree.column || */ {
-                        name: left,
+                        name: "nsleft",
                         type: "integer",
                         nullable: false,
                         default: 1
@@ -449,9 +446,9 @@ export class EntityMetadataBuilder {
                 args: {
                     target: entityMetadata.target,
                     mode: "virtual",
-                    propertyName: right,
+                    propertyName: "nsright",
                     options: /*tree.column || */ {
-                        name: right,
+                        name: "nsright",
                         type: "integer",
                         nullable: false,
                         default: 2

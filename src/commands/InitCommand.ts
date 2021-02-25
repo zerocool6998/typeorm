@@ -2,7 +2,8 @@ import {CommandUtils} from "./CommandUtils";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import * as path from "path";
 import * as yargs from "yargs";
-import chalk from "chalk";
+
+const chalk = require("chalk");
 
 /**
  * Generates a new project with TypeORM.
@@ -110,12 +111,6 @@ export class InitCommand implements yargs.CommandModule {
             case "sqlite":
                 Object.assign(options, {
                     type: "sqlite",
-                    "database": "database.sqlite",
-                });
-                break;
-            case "better-sqlite3":
-                Object.assign(options, {
-                    type: "better-sqlite3",
                     "database": "database.sqlite",
                 });
                 break;
@@ -463,7 +458,6 @@ services:
 
 `;
             case "sqlite":
-            case "better-sqlite3":
                 return `version: '3'
 services:
 `;
@@ -552,9 +546,6 @@ Steps to run this project:
                 break;
             case "sqlite":
                 packageJson.dependencies["sqlite3"] = "^4.0.3";
-                break;
-            case "better-sqlite3":
-                packageJson.dependencies["better-sqlite3"] = "^7.0.0";
                 break;
             case "oracle":
                 packageJson.dependencies["oracledb"] = "^1.13.1";

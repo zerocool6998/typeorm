@@ -1,12 +1,6 @@
 **Issue type:**
 
-<!--
-     Have a question?
-     Check the "Support" Documentation on the best places to ask questions!
-     ---
-     https://github.com/typeorm/typeorm/blob/master/docs/support.md
--->
-
+[ ] question
 [ ] bug report
 [ ] feature request
 [ ] documentation issue

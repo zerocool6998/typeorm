@@ -6,25 +6,25 @@ import {JoinTableMultipleColumnsOptions} from "../options/JoinTableMultipleColum
  * JoinTable decorator is used in many-to-many relationship to specify owner side of relationship.
  * Its also used to set a custom junction table's name, column names and referenced columns.
  */
-export function JoinTable(): PropertyDecorator;
+export function JoinTable(): Function;
 
 /**
  * JoinTable decorator is used in many-to-many relationship to specify owner side of relationship.
  * Its also used to set a custom junction table's name, column names and referenced columns.
  */
-export function JoinTable(options: JoinTableOptions): PropertyDecorator;
+export function JoinTable(options: JoinTableOptions): Function;
 
 /**
  * JoinTable decorator is used in many-to-many relationship to specify owner side of relationship.
  * Its also used to set a custom junction table's name, column names and referenced columns.
  */
-export function JoinTable(options: JoinTableMultipleColumnsOptions): PropertyDecorator;
+export function JoinTable(options: JoinTableMultipleColumnsOptions): Function;
 
 /**
  * JoinTable decorator is used in many-to-many relationship to specify owner side of relationship.
  * Its also used to set a custom junction table's name, column names and referenced columns.
  */
-export function JoinTable(options?: JoinTableOptions|JoinTableMultipleColumnsOptions): PropertyDecorator {
+export function JoinTable(options?: JoinTableOptions|JoinTableMultipleColumnsOptions): Function {
     return function (object: Object, propertyName: string) {
         options = options || {} as JoinTableOptions|JoinTableMultipleColumnsOptions;
         getMetadataArgsStorage().joinTables.push({

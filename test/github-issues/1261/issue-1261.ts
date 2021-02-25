@@ -1,7 +1,9 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
+import {BaseEntity} from "../../../src/repository/BaseEntity";
 import {Bar} from "./entity/Bar";
+import {PromiseUtils} from "../../../src";
 
 describe("github issues > #1261 onDelete property on foreign key is not modified on sync", () => {
 
@@ -11,8 +13,10 @@ describe("github issues > #1261 onDelete property on foreign key is not modified
     }));
     after(() => closeTestingConnections(connections));
 
-    it("should modify onDelete property on foreign key on sync", () => Promise.all(connections.map(async connection => {
+    it("should modify onDelete property on foreign key on sync", () => PromiseUtils.runInSequence(connections, async connection => {
+
         await connection.synchronize();
+        BaseEntity.useConnection(connection);
 
         const queryRunner = connection.createQueryRunner();
         let table = await queryRunner.getTable("bar");
@@ -27,6 +31,6 @@ describe("github issues > #1261 onDelete property on foreign key is not modified
 
         await queryRunner.release();
 
-    })));
+    }));
 
 });

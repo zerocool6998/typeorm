@@ -8,7 +8,7 @@ import { SqljsEntityManager } from "./SqljsEntityManager";
  * A special EntityManager that includes import/export and load/save function
  * that are unique to Sql.js.
  */
-export function createLiteralSqljsEntityManager({ connection, queryRunner }: {
+export function createLiteralSqljsEntityManager<Entity>({ connection, queryRunner }: {
     connection: Connection,
     queryRunner?: QueryRunner,
 }): SqljsEntityManager {

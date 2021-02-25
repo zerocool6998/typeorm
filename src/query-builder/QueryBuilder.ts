@@ -8,7 +8,7 @@ import {DeleteQueryBuilder} from "./DeleteQueryBuilder";
 import {SoftDeleteQueryBuilder} from "./SoftDeleteQueryBuilder";
 import {InsertQueryBuilder} from "./InsertQueryBuilder";
 import {RelationQueryBuilder} from "./RelationQueryBuilder";
-import {EntityTarget} from "../common/EntityTarget";
+import {ObjectType} from "../common/ObjectType";
 import {Alias} from "./Alias";
 import {Brackets} from "./Brackets";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
@@ -17,10 +17,9 @@ import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {SqljsDriver} from "../driver/sqljs/SqljsDriver";
 import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {OracleDriver} from "../driver/oracle/OracleDriver";
-import {EntitySchema} from "../";
+import {EntitySchema, EntityTarget} from "../";
 import {FindOperator} from "../find-options/FindOperator";
 import {In} from "../find-options/operator/In";
-import {EntityColumnNotFound} from "../error/EntityColumnNotFound";
 
 // todo: completely cover query builder with tests
 // todo: entityOrProperty can be target name. implement proper behaviour if it is.
@@ -187,7 +186,17 @@ export abstract class QueryBuilder<Entity> {
     /**
      * Creates UPDATE query for the given entity and applies given update values.
      */
-    update<Entity>(entity: EntityTarget<Entity>, updateSet?: QueryDeepPartialEntity<Entity>): UpdateQueryBuilder<Entity>;
+    update<T>(entity: ObjectType<T>, updateSet?: QueryDeepPartialEntity<T>): UpdateQueryBuilder<T>;
+
+    /**
+     * Creates UPDATE query for the given entity and applies given update values.
+     */
+    update<T>(entity: EntitySchema<T>, updateSet?: QueryDeepPartialEntity<T>): UpdateQueryBuilder<T>;
+
+    /**
+     * Creates UPDATE query for the given entity and applies given update values.
+     */
+    update(entity: EntityTarget<Entity>, updateSet?: QueryDeepPartialEntity<Entity>): UpdateQueryBuilder<Entity>;
 
     /**
      * Creates UPDATE query for the given table name and applies given update values.
@@ -197,7 +206,7 @@ export abstract class QueryBuilder<Entity> {
     /**
      * Creates UPDATE query and applies given update values.
      */
-    update(entityOrTableNameUpdateSet?: EntityTarget<any>|ObjectLiteral, maybeUpdateSet?: ObjectLiteral): UpdateQueryBuilder<any> {
+    update(entityOrTableNameUpdateSet?: string|Function|EntitySchema<any>|ObjectLiteral, maybeUpdateSet?: ObjectLiteral): UpdateQueryBuilder<any> {
         const updateSet = maybeUpdateSet ? maybeUpdateSet : entityOrTableNameUpdateSet as ObjectLiteral|undefined;
         entityOrTableNameUpdateSet = entityOrTableNameUpdateSet instanceof EntitySchema ? entityOrTableNameUpdateSet.options.name : entityOrTableNameUpdateSet;
 
@@ -261,7 +270,7 @@ export abstract class QueryBuilder<Entity> {
     /**
      * Sets entity's relation with which this query builder gonna work.
      */
-    relation<T>(entityTarget: EntityTarget<T>, propertyPath: string): RelationQueryBuilder<T>;
+    relation<T>(entityTarget: ObjectType<T>|string, propertyPath: string): RelationQueryBuilder<T>;
 
     /**
      * Sets entity's relation with which this query builder gonna work.
@@ -293,7 +302,7 @@ export abstract class QueryBuilder<Entity> {
      *
      * todo: move this method to manager? or create a shortcut?
      */
-    hasRelation<T>(target: EntityTarget<T>, relation: string): boolean;
+    hasRelation<T>(target: ObjectType<T>|string, relation: string): boolean;
 
     /**
      * Checks if given relations exist in the entity.
@@ -301,7 +310,7 @@ export abstract class QueryBuilder<Entity> {
      *
      * todo: move this method to manager? or create a shortcut?
      */
-    hasRelation<T>(target: EntityTarget<T>, relation: string[]): boolean;
+    hasRelation<T>(target: ObjectType<T>|string, relation: string[]): boolean;
 
     /**
      * Checks if given relation or relations exist in the entity.
@@ -309,7 +318,7 @@ export abstract class QueryBuilder<Entity> {
      *
      * todo: move this method to manager? or create a shortcut?
      */
-    hasRelation<T>(target: EntityTarget<T>, relation: string|string[]): boolean {
+    hasRelation<T>(target: ObjectType<T>|string, relation: string|string[]): boolean {
         const entityMetadata = this.connection.getMetadata(target);
         const relations = Array.isArray(relation) ? relation : [relation];
         return relations.every(relation => {
@@ -546,25 +555,21 @@ export abstract class QueryBuilder<Entity> {
             });
 
         } else {
-            if (typeof entityTarget === "string") {
-                const isSubquery = entityTarget.substr(0, 1) === "(" && entityTarget.substr(-1) === ")";
+            let subQuery: string = "";
+            if (entityTarget instanceof Function) {
+                const subQueryBuilder: SelectQueryBuilder<any> = (entityTarget as any)(((this as any) as SelectQueryBuilder<any>).subQuery());
+                this.setParameters(subQueryBuilder.getParameters());
+                subQuery = subQueryBuilder.getQuery();
 
-                return this.expressionMap.createAlias({
-                    type: "from",
-                    name: aliasName,
-                    tablePath: !isSubquery ? entityTarget as string : undefined,
-                    subQuery: isSubquery ? entityTarget : undefined,
-                });
+            } else if (typeof entityTarget === "string") {
+                subQuery = entityTarget;
             }
-
-            const subQueryBuilder: SelectQueryBuilder<any> = (entityTarget as any)(((this as any) as SelectQueryBuilder<any>).subQuery());
-            this.setParameters(subQueryBuilder.getParameters());
-            const subquery = subQueryBuilder.getQuery();
-
+            const isSubQuery = entityTarget instanceof Function || (typeof entityTarget === "string" && entityTarget.substr(0, 1) === "(" && entityTarget.substr(-1) === ")");
             return this.expressionMap.createAlias({
                 type: "from",
                 name: aliasName,
-                subQuery: subquery
+                tablePath: isSubQuery === false ? entityTarget as string : undefined,
+                subQuery: isSubQuery === true ? subQuery : undefined,
             });
         }
     }
@@ -601,10 +606,7 @@ export abstract class QueryBuilder<Entity> {
      * Creates "WHERE" expression.
      */
     protected createWhereExpression() {
-        const conditionsArray = [];
-
-        const whereExpression = this.createWhereExpressionString();
-        whereExpression.trim() && conditionsArray.push(this.createWhereExpressionString());
+        let conditions = this.createWhereExpressionString();
 
         if (this.expressionMap.mainAlias!.hasMetadata) {
             const metadata = this.expressionMap.mainAlias!.metadata;
@@ -615,7 +617,7 @@ export abstract class QueryBuilder<Entity> {
                     : metadata.deleteDateColumn.propertyName;
 
                 const condition = `${this.replacePropertyNames(column)} IS NULL`;
-                conditionsArray.push(condition);
+                conditions = `${ conditions.length ? "(" + conditions + ") AND" : "" } ${condition}`;
             }
 
             if (metadata.discriminatorColumn && metadata.parentEntityMetadata) {
@@ -624,22 +626,17 @@ export abstract class QueryBuilder<Entity> {
                     : metadata.discriminatorColumn.databaseName;
 
                 const condition = `${this.replacePropertyNames(column)} IN (:...discriminatorColumnValues)`;
-                conditionsArray.push(condition);
+                return ` WHERE ${ conditions.length ? "(" + conditions + ") AND" : "" } ${condition}`;
             }
         }
 
-        if (this.expressionMap.extraAppendedAndWhereCondition) {
-            const condition = this.replacePropertyNames(this.expressionMap.extraAppendedAndWhereCondition);
-            conditionsArray.push(condition);
-        }
+        if (!conditions.length) // TODO copy in to discriminator condition
+            return this.expressionMap.extraAppendedAndWhereCondition ? " WHERE " + this.replacePropertyNames(this.expressionMap.extraAppendedAndWhereCondition) : "";
 
-        if (!conditionsArray.length) {
-            return " ";
-        } else if (conditionsArray.length === 1) {
-            return ` WHERE ${conditionsArray[0]}`;
-        } else {
-            return ` WHERE ( ${conditionsArray.join(" ) AND ( ")} )`;
-        }
+        if (this.expressionMap.extraAppendedAndWhereCondition)
+            return " WHERE (" + conditions + ") AND " + this.replacePropertyNames(this.expressionMap.extraAppendedAndWhereCondition);
+
+        return " WHERE " + conditions;
     }
 
     /**
@@ -812,11 +809,6 @@ export abstract class QueryBuilder<Entity> {
 
                     return propertyPaths.map((propertyPath, propertyIndex) => {
                         const columns = this.expressionMap.mainAlias!.metadata.findColumnsWithPropertyPath(propertyPath);
-
-                        if (!columns.length) {
-                            throw new EntityColumnNotFound(propertyPath);
-                        }
-
                         return columns.map((column, columnIndex) => {
 
                             const aliasPath = this.expressionMap.aliasNamePrefixingEnabled ? `${this.alias}.${propertyPath}` : column.propertyPath;
@@ -890,7 +882,7 @@ export abstract class QueryBuilder<Entity> {
      * Creates a query builder used to execute sql queries inside this query builder.
      */
     protected obtainQueryRunner() {
-        return this.queryRunner || this.connection.createQueryRunner();
+        return this.queryRunner || this.connection.createQueryRunner("master");
     }
 
 }

@@ -326,7 +326,8 @@ describe("repository > basic methods", () => {
     });
 
     describe("save", function () {
-        it("should update existing entity using transformers", () => Promise.all(connections.filter(c => c.name === "sqlite" || c.name === "better-sqlite3").map(async connection => {
+        it("should update existing entity using transformers", async () => {
+            const connection = connections.find((c: Connection) => c.name === "sqlite");
             if (!connection || (connection.options as any).skip === true) {
                 return;
             }
@@ -355,7 +356,7 @@ describe("repository > basic methods", () => {
             saved.title.should.be.equal("New title");
             saved.dateAdded.should.be.instanceof(Date);
             saved.dateAdded.getTime().should.be.equal(date.getTime());
-        })));
+        });
     });
 
     describe("preload also should also implement merge functionality", function() {

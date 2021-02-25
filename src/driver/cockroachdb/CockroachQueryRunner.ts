@@ -18,11 +18,11 @@ import {TableIndexOptions} from "../../schema-builder/options/TableIndexOptions"
 import {TableUnique} from "../../schema-builder/table/TableUnique";
 import {BaseQueryRunner} from "../../query-runner/BaseQueryRunner";
 import {OrmUtils} from "../../util/OrmUtils";
+import {PromiseUtils} from "../../";
 import {TableCheck} from "../../schema-builder/table/TableCheck";
 import {ColumnType} from "../../index";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Runs queries on a single postgres database connection.
@@ -66,7 +66,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(driver: CockroachDriver, mode: ReplicationMode) {
+    constructor(driver: CockroachDriver, mode: "master"|"slave" = "master") {
         super();
         this.driver = driver;
         this.connection = driver.connection;
@@ -159,9 +159,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
         } catch (e) {
             if (e.code === "40001") {
                 await this.query("ROLLBACK TO SAVEPOINT cockroach_restart");
-                for (const q of this.queries) {
-                    await this.query(q.query, q.parameters);
-                }
+                await PromiseUtils.runInSequence(this.queries, q => this.query(q.query, q.parameters));
                 await this.commitTransaction();
             }
         }
@@ -596,9 +594,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new columns from the column in the table.
      */
     async addColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.addColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.addColumn(tableOrName, column));
     }
 
     /**
@@ -848,9 +844,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Changes a column in the table.
      */
     async changeColumns(tableOrName: Table|string, changedColumns: { newColumn: TableColumn, oldColumn: TableColumn }[]): Promise<void> {
-        for (const {oldColumn, newColumn} of changedColumns) {
-            await this.changeColumn(tableOrName, oldColumn, newColumn);
-        }
+        await PromiseUtils.runInSequence(changedColumns, changedColumn => this.changeColumn(tableOrName, changedColumn.oldColumn, changedColumn.newColumn));
     }
 
     /**
@@ -929,9 +923,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops the columns in the table.
      */
     async dropColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.dropColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.dropColumn(tableOrName, column));
     }
 
     /**
@@ -1022,9 +1014,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates new unique constraints.
      */
     async createUniqueConstraints(tableOrName: Table|string, uniqueConstraints: TableUnique[]): Promise<void> {
-        for (const uniqueConstraint of uniqueConstraints) {
-            await this.createUniqueConstraint(tableOrName, uniqueConstraint);
-        }
+        await PromiseUtils.runInSequence(uniqueConstraints, uniqueConstraint => this.createUniqueConstraint(tableOrName, uniqueConstraint));
     }
 
     /**
@@ -1048,9 +1038,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops unique constraints.
      */
     async dropUniqueConstraints(tableOrName: Table|string, uniqueConstraints: TableUnique[]): Promise<void> {
-        for (const uniqueConstraint of uniqueConstraints) {
-            await this.dropUniqueConstraint(tableOrName, uniqueConstraint);
-        }
+        await PromiseUtils.runInSequence(uniqueConstraints, uniqueConstraint => this.dropUniqueConstraint(tableOrName, uniqueConstraint));
     }
 
     /**
@@ -1148,9 +1136,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new foreign keys.
      */
     async createForeignKeys(tableOrName: Table|string, foreignKeys: TableForeignKey[]): Promise<void> {
-        for (const foreignKey of foreignKeys) {
-            await this.createForeignKey(tableOrName, foreignKey);
-        }
+        await PromiseUtils.runInSequence(foreignKeys, foreignKey => this.createForeignKey(tableOrName, foreignKey));
     }
 
     /**
@@ -1172,9 +1158,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops a foreign keys from the table.
      */
     async dropForeignKeys(tableOrName: Table|string, foreignKeys: TableForeignKey[]): Promise<void> {
-        for (const foreignKey of foreignKeys) {
-            await this.dropForeignKey(tableOrName, foreignKey);
-        }
+        await PromiseUtils.runInSequence(foreignKeys, foreignKey => this.dropForeignKey(tableOrName, foreignKey));
     }
 
     /**
@@ -1212,9 +1196,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new indices
      */
     async createIndices(tableOrName: Table|string, indices: TableIndex[]): Promise<void> {
-        for (const index of indices) {
-            await this.createIndex(tableOrName, index);
-        }
+        await PromiseUtils.runInSequence(indices, index => this.createIndex(tableOrName, index));
     }
 
     /**
@@ -1236,9 +1218,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops an indices from the table.
      */
     async dropIndices(tableOrName: Table|string, indices: TableIndex[]): Promise<void> {
-        for (const index of indices) {
-            await this.dropIndex(tableOrName, index);
-        }
+        await PromiseUtils.runInSequence(indices, index => this.dropIndex(tableOrName, index));
     }
 
     /**

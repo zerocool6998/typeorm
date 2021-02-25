@@ -10,6 +10,7 @@ import {TableIndex} from "../../schema-builder/table/TableIndex";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
 import {View} from "../../schema-builder/view/View";
 import {Query} from "../Query";
+import {SqliteConnectionOptions} from "../sqlite/SqliteConnectionOptions";
 import {AbstractSqliteDriver} from "./AbstractSqliteDriver";
 import {ReadStream} from "../../platform/PlatformTools";
 import {TableIndexOptions} from "../../schema-builder/options/TableIndexOptions";
@@ -68,8 +69,19 @@ export abstract class AbstractSqliteQueryRunner extends BaseQueryRunner implemen
      * Starts transaction.
      */
     async startTransaction(isolationLevel?: IsolationLevel): Promise<void> {
-        if (this.isTransactionActive)
-            throw new TransactionAlreadyStartedError();
+        if (this.isTransactionActive) {
+            const options = this.driver.options as SqliteConnectionOptions;
+            if (options.busyErrorRetry && typeof options.busyErrorRetry === "number") {
+                return new Promise<void>((ok, fail) => {
+                    setTimeout(
+                        () => this.startTransaction(isolationLevel).then(ok).catch(fail),
+                        options.busyErrorRetry as number
+                    );
+                });
+            } else {
+                throw new TransactionAlreadyStartedError();
+            }
+        }
 
         this.isTransactionActive = true;
 
@@ -83,6 +95,10 @@ export abstract class AbstractSqliteQueryRunner extends BaseQueryRunner implemen
             } else {
                 await this.query("PRAGMA read_uncommitted = false");
             }
+        }
+
+        if ((this.connection.options as SqliteConnectionOptions).enableWAL === true) {
+            await this.query("PRAGMA journal_mode = WAL");
         }
 
         await this.query("BEGIN TRANSACTION");
@@ -826,30 +842,16 @@ export abstract class AbstractSqliteQueryRunner extends BaseQueryRunner implemen
                     }
                 }
 
-                // parse datatype and attempt to retrieve length, precision and scale
+                // parse datatype and attempt to retrieve length
                 let pos = tableColumn.type.indexOf("(");
                 if (pos !== -1) {
-                    const fullType = tableColumn.type;
-                    let dataType = fullType.substr(0, pos);
+                    let dataType = tableColumn.type.substr(0, pos);
                     if (!!this.driver.withLengthColumnTypes.find(col => col === dataType)) {
-                        let len = parseInt(fullType.substring(pos + 1, fullType.length - 1));
+                        let len = parseInt(tableColumn.type.substring(pos + 1, tableColumn.type.length - 1));
                         if (len) {
                             tableColumn.length = len.toString();
                             tableColumn.type = dataType; // remove the length part from the datatype
                         }
-                    }
-                    if (!!this.driver.withPrecisionColumnTypes.find(col => col === dataType)) {
-                        const re = new RegExp(`^${dataType}\\((\\d+),?\\s?(\\d+)?\\)`);
-                        const matches = fullType.match(re);
-                        if (matches && matches[1]) {
-                            tableColumn.precision = +matches[1];
-                        }
-                        if (!!this.driver.withScaleColumnTypes.find(col => col === dataType)) {
-                            if (matches && matches[2]) {
-                                tableColumn.scale = +matches[2];
-                            }
-                        }
-                        tableColumn.type = dataType; // remove the precision/scale part from the datatype
                     }
                 }
 

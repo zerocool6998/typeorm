@@ -88,33 +88,30 @@ export function normalizeFindOptions<T>(options: FindOptions<T>): FindOptions<T>
 
     const recursivelyWhere = <T extends any>(where: T): T => {
 
-        if (Array.isArray(where)) {
-            return where.map((where: any) => recursivelyWhere(where)) as T;
-        }
+        if ((where as any) instanceof Array)
+            return where.map((where: any) => recursivelyWhere(where));
 
-        return Object.keys(where as { [key: string ]: any }).reduce((newWhere, key) => {
-            const value = (where as { [key: string]: any })[key];
-
-            if (value instanceof Object && !(value instanceof FindOperator)) {
-                newWhere[key] = recursively$FindOption(value);
+        return Object.keys(where).reduce((newWhere, key) => {
+            if (where[key] instanceof Object && !(where[key] instanceof FindOperator)) {
+                newWhere[key] = recursively$FindOption(where[key]);
 
                 // in the case if $find operator was not found we'll have a false as a value
                 // we need to recursive where because it can be another where options
                 if (newWhere[key] === false)
-                    newWhere[key] = recursivelyWhere(value);
+                    newWhere[key] = recursivelyWhere(where[key]);
 
             } else {
-                newWhere[key] = value;
+                newWhere[key] = where[key];
             }
             return newWhere;
-        }, {} as { [key: string]: any }) as T;
+        }, {} as T);
     };
 
     // todo: broken after merge
     // if (options.lock) {
     //     if (options.lock.mode === "optimistic") {
     //         qb.setLock(options.lock.mode, options.lock.version as any);
-    //     } else if (options.lock.mode === "pessimistic_read" || options.lock.mode === "pessimistic_write" || options.lock.mode === "dirty_read" || options.lock.mode === "pessimistic_partial_write" || options.lock.mode === "pessimistic_write_or_fail") {
+    //     } else if (options.lock.mode === "pessimistic_read" || options.lock.mode === "pessimistic_write") {
     //         qb.setLock(options.lock.mode);
     //     }
     // }

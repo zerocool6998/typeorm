@@ -1,7 +1,6 @@
 import {AuroraDataApiQueryRunner} from "./AuroraDataApiQueryRunner";
 import {Connection} from "../../connection/Connection";
 import {ConnectionOptions, QueryRunner} from "../..";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with MySQL DBMS.
@@ -14,7 +13,7 @@ export class AuroraDataApiConnection extends Connection {
         this.queryRunnter = queryRunner;
     }
 
-    public createQueryRunner(mode: ReplicationMode): QueryRunner {
+    public createQueryRunner(mode: "master" | "slave" = "master"): QueryRunner {
         return this.queryRunnter;
     }
 
