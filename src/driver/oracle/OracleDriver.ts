@@ -18,7 +18,6 @@ import {DriverUtils} from "../DriverUtils";
 import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {OrmUtils} from "../../util/OrmUtils";
 import {ApplyValueTransformers} from "../../util/ApplyValueTransformers";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with Oracle RDBMS.
@@ -288,7 +287,7 @@ export class OracleDriver implements Driver {
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode) {
+    createQueryRunner(mode: "master"|"slave" = "master") {
         return new OracleQueryRunner(this, mode);
     }
 
@@ -626,17 +625,10 @@ export class OracleDriver implements Driver {
     }
 
     /**
-     * Returns true if driver supports fulltext indices.
-     */
-    isFullTextColumnTypeSupported(): boolean {
-        return false;
-    }
-
-    /**
      * Creates an escaped parameter.
      */
     createParameter(parameterName: string, index: number): string {
-        return ":" + (index + 1);
+        return ":" + parameterName;
     }
 
     /**

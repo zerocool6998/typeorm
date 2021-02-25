@@ -7,7 +7,7 @@ describe("github issues > #1981 Boolean values not casted properly when used in 
     let connections: Connection[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
-        enabledDrivers: ["sqlite", "better-sqlite3"],
+        enabledDrivers: ["sqlite"],
     }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

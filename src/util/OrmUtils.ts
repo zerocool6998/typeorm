@@ -74,7 +74,7 @@ export class OrmUtils {
         if (this.isObject(target) && this.isObject(source)) {
             for (const key in source) {
                 const value = source[key];
-                if (key === "__proto__" || value instanceof Promise)
+                if (value instanceof Promise)
                     continue;
 
                 if (this.isObject(value)
@@ -100,7 +100,7 @@ export class OrmUtils {
      *
      * @see http://stackoverflow.com/a/1144249
      */
-    static deepCompare(...args: any[]): boolean {
+    static deepCompare(...args: any[]) {
         let i: any, l: any, leftChain: any, rightChain: any;
 
         if (arguments.length < 1) {
@@ -119,26 +119,6 @@ export class OrmUtils {
         }
 
         return true;
-    }
-
-    /**
-     * Check if two entity-id-maps are the same
-     */
-    static compareIds(firstId: ObjectLiteral|undefined, secondId: ObjectLiteral|undefined): boolean {
-        if (firstId === undefined || firstId === null || secondId === undefined || secondId === null)
-            return false;
-
-        // Optimized version for the common case
-        if (
-            ((typeof firstId.id === "string" && typeof secondId.id === "string") ||
-            (typeof firstId.id === "number" && typeof secondId.id === "number")) &&
-            Object.keys(firstId).length === 1 &&
-            Object.keys(secondId).length === 1
-        ) {
-            return firstId.id === secondId.id;
-        }
-
-        return OrmUtils.deepCompare(firstId, secondId);
     }
 
     /**

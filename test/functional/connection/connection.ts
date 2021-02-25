@@ -14,6 +14,7 @@ import {NoConnectionForRepositoryError} from "../../../src/error/NoConnectionFor
 import {CannotGetEntityManagerNotConnectedError} from "../../../src/error/CannotGetEntityManagerNotConnectedError";
 import {ConnectionOptions} from "../../../src/connection/ConnectionOptions";
 import {PostgresConnectionOptions} from "../../../src/driver/postgres/PostgresConnectionOptions";
+import {PromiseUtils} from "../../../src/util/PromiseUtils";
 
 describe("Connection", () => {
     // const resourceDir = __dirname + "/../../../../../test/functional/connection/";
@@ -257,7 +258,7 @@ describe("Connection", () => {
         after(() => closeTestingConnections(connections));
 
         it("should not interfere with each other", async () => {
-            await Promise.all(connections.map(c => c.synchronize()));
+            await PromiseUtils.runInSequence(connections, c => c.synchronize());
             await closeTestingConnections(connections);
             const connections1 = await createTestingConnections({
                 name: "test",

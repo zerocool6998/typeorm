@@ -17,7 +17,7 @@ import {TableIndexOptions} from "../../schema-builder/options/TableIndexOptions"
 import {TableUnique} from "../../schema-builder/table/TableUnique";
 import {BaseQueryRunner} from "../../query-runner/BaseQueryRunner";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import {ColumnType} from "../../index";
+import {ColumnType, PromiseUtils} from "../../index";
 import {TableCheck} from "../../schema-builder/table/TableCheck";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
@@ -470,9 +470,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Creates a new columns from the column in the table.
      */
     async addColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.addColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.addColumn(tableOrName, column));
     }
 
     /**
@@ -685,9 +683,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Changes a column in the table.
      */
     async changeColumns(tableOrName: Table|string, changedColumns: { newColumn: TableColumn, oldColumn: TableColumn }[]): Promise<void> {
-        for (const {oldColumn, newColumn} of changedColumns) {
-            await this.changeColumn(tableOrName, oldColumn, newColumn)
-        }
+        await PromiseUtils.runInSequence(changedColumns, changedColumn => this.changeColumn(tableOrName, changedColumn.oldColumn, changedColumn.newColumn));
     }
 
     /**
@@ -779,9 +775,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Drops the columns in the table.
      */
     async dropColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.dropColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.dropColumn(tableOrName, column));
     }
 
     /**
@@ -1628,28 +1622,6 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
             c += ` ON UPDATE ${column.onUpdate}`;
 
         return c;
-    }
-
-    /**
-     * Checks if column display width is by default.
-     */
-    protected isDefaultColumnWidth(table: Table, column: TableColumn, width: number): boolean {
-        // if table have metadata, we check if length is specified in column metadata
-        if (this.connection.hasMetadata(table.name)) {
-            const metadata = this.connection.getMetadata(table.name);
-            const columnMetadata = metadata.findColumnWithDatabaseName(column.name);
-            if (columnMetadata && columnMetadata.width)
-                return false;
-        }
-
-        const defaultWidthForType = this.connection.driver.dataTypeDefaults
-            && this.connection.driver.dataTypeDefaults[column.type]
-            && this.connection.driver.dataTypeDefaults[column.type].width;
-
-        if (defaultWidthForType) {
-            return defaultWidthForType === width;
-        }
-        return false;
     }
 
 }

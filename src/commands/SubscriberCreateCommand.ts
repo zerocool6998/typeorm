@@ -1,7 +1,8 @@
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import {CommandUtils} from "./CommandUtils";
 import * as yargs from "yargs";
-import chalk from "chalk";
+
+const chalk = require("chalk");
 
 /**
  * Generates a new subscriber.

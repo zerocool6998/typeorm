@@ -9,7 +9,7 @@ import {
     UpdateEvent,
     EntityTarget
 } from "../index";
-import Observable from "zen-observable";
+import * as Observable from "zen-observable";
 
 // todo: we probably need operation-level subscribers
 // todo: right now if we save 1000 entities within a single save call its going to call this code 1000 times

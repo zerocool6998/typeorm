@@ -6,8 +6,8 @@ import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {camelCase} from "../util/StringUtils";
 import * as yargs from "yargs";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import chalk from "chalk";
-import { format } from "@sqltools/formatter/lib/sqlFormatter";
+
+const chalk = require("chalk");
 
 /**
  * Generates a new migration file with sql needs to be executed to update schema.
@@ -33,12 +33,6 @@ export class MigrationGenerateCommand implements yargs.CommandModule {
             .option("d", {
                 alias: "dir",
                 describe: "Directory where migration should be created."
-            })
-            .option("p", {
-                alias: "pretty",
-                type: "boolean",
-                default: false,
-                describe: "Pretty-print generated SQL",
             })
             .option("f", {
                 alias: "config",
@@ -83,33 +77,23 @@ export class MigrationGenerateCommand implements yargs.CommandModule {
             });
             connection = await createConnection(connectionOptions);
             const sqlInMemory = await connection.driver.createSchemaBuilder().log();
-
-            if (args.pretty) {
-                sqlInMemory.upQueries.forEach(upQuery => {
-                    upQuery.query = MigrationGenerateCommand.prettifyQuery(upQuery.query);
-                });
-                sqlInMemory.downQueries.forEach(downQuery => {
-                    downQuery.query = MigrationGenerateCommand.prettifyQuery(downQuery.query);
-                });
-            }
-
             const upSqls: string[] = [], downSqls: string[] = [];
 
             // mysql is exceptional here because it uses ` character in to escape names in queries, that's why for mysql
             // we are using simple quoted string instead of template string syntax
             if (connection.driver instanceof MysqlDriver || connection.driver instanceof AuroraDataApiDriver) {
                 sqlInMemory.upQueries.forEach(upQuery => {
-                    upSqls.push("        await queryRunner.query(\"" + upQuery.query.replace(new RegExp(`"`, "g"), `\\"`) + "\"" + MigrationGenerateCommand.queryParams(upQuery.parameters) + ");");
+                    upSqls.push("        await queryRunner.query(\"" + upQuery.query.replace(new RegExp(`"`, "g"), `\\"`) + "\", " + JSON.stringify(upQuery.parameters) + ");");
                 });
                 sqlInMemory.downQueries.forEach(downQuery => {
-                    downSqls.push("        await queryRunner.query(\"" + downQuery.query.replace(new RegExp(`"`, "g"), `\\"`) + "\"" + MigrationGenerateCommand.queryParams(downQuery.parameters) + ");");
+                    downSqls.push("        await queryRunner.query(\"" + downQuery.query.replace(new RegExp(`"`, "g"), `\\"`) + "\", " + JSON.stringify(downQuery.parameters) + ");");
                 });
             } else {
                 sqlInMemory.upQueries.forEach(upQuery => {
-                    upSqls.push("        await queryRunner.query(`" + upQuery.query.replace(new RegExp("`", "g"), "\\`") + "`" + MigrationGenerateCommand.queryParams(upQuery.parameters) + ");");
+                    upSqls.push("        await queryRunner.query(`" + upQuery.query.replace(new RegExp("`", "g"), "\\`") + "`, " + JSON.stringify(upQuery.parameters) + ");");
                 });
                 sqlInMemory.downQueries.forEach(downQuery => {
-                    downSqls.push("        await queryRunner.query(`" + downQuery.query.replace(new RegExp("`", "g"), "\\`") + "`" + MigrationGenerateCommand.queryParams(downQuery.parameters) + ");");
+                    downSqls.push("        await queryRunner.query(`" + downQuery.query.replace(new RegExp("`", "g"), "\\`") + "`, " + JSON.stringify(downQuery.parameters) + ");");
                 });
             }
 
@@ -142,17 +126,6 @@ export class MigrationGenerateCommand implements yargs.CommandModule {
     // -------------------------------------------------------------------------
 
     /**
-     * Formats query parameters for migration queries if parameters actually exist
-     */
-    protected static queryParams(parameters: any[] | undefined): string {
-      if (!parameters || !parameters.length) {
-        return "";
-      }
-
-      return `, ${JSON.stringify(parameters)}`;
-    }
-
-    /**
      * Gets contents of the migration file.
      */
     protected static getTemplate(name: string, timestamp: number, upSqls: string[], downSqls: string[]): string {
@@ -177,11 +150,4 @@ ${downSqls.join(`
 `;
     }
 
-    /**
-     *
-     */
-    protected static prettifyQuery(query: string) {
-        const formattedQuery = format(query, { indent: "    " });
-        return "\n" + formattedQuery.replace(/^/gm, "            ") + "\n        ";
-    }
 }

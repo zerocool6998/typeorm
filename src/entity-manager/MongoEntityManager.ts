@@ -1,5 +1,5 @@
-import { EntityManager } from "./EntityManager";
-import { EntityTarget } from "../common/EntityTarget";
+import { ObjectLiteral } from "../common/ObjectLiteral";
+import { MongoQueryRunner } from "../driver/mongodb/MongoQueryRunner";
 import {
     AggregationCursor,
     BulkWriteOpResultObject,
@@ -34,13 +34,12 @@ import {
     UpdateWriteOpResult
 } from "../driver/mongodb/typings";
 import { FindOptions, FindOptionsWhere } from "../find-options/FindOptions";
-import { FindExtraOptions } from "../index";
-import { ObjectLiteral } from "../common/ObjectLiteral";
-import { MongoQueryRunner } from "../driver/mongodb/MongoQueryRunner";
+import { EntityTarget, FindExtraOptions } from "../index";
 import { QueryDeepPartialEntity } from "../query-builder/QueryPartialEntity";
+import { DeleteResult } from "../query-builder/result/DeleteResult";
 import { InsertResult } from "../query-builder/result/InsertResult";
 import { UpdateResult } from "../query-builder/result/UpdateResult";
-import { DeleteResult } from "../query-builder/result/DeleteResult";
+import { EntityManager } from "./EntityManager";
 
 /**
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,

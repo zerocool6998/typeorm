@@ -202,17 +202,13 @@ export class EntitySchemaTransformer {
                             };
                             metadataArgsStorage.joinColumns.push(joinColumn);
                         } else {
-                            const joinColumnsOptions = Array.isArray(relationSchema.joinColumn) ? relationSchema.joinColumn : [relationSchema.joinColumn];
-
-                            for (const joinColumnOption of joinColumnsOptions) {
-                                const joinColumn: JoinColumnMetadataArgs = {
-                                    target: options.target || optionsName,
-                                    propertyName: relationName,
-                                    name: joinColumnOption.name,
-                                    referencedColumnName: joinColumnOption.referencedColumnName
-                                };
-                                metadataArgsStorage.joinColumns.push(joinColumn);
-                            }
+                            const joinColumn: JoinColumnMetadataArgs = {
+                                target: options.target || optionsName,
+                                propertyName: relationName,
+                                name: relationSchema.joinColumn.name,
+                                referencedColumnName: relationSchema.joinColumn.referencedColumnName
+                            };
+                            metadataArgsStorage.joinColumns.push(joinColumn);
                         }
                     }
 

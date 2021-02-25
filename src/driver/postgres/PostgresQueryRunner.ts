@@ -1,3 +1,4 @@
+import {PromiseUtils} from "../../";
 import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {QueryFailedError} from "../../error/QueryFailedError";
 import {QueryRunnerAlreadyReleasedError} from "../../error/QueryRunnerAlreadyReleasedError";
@@ -22,7 +23,6 @@ import {OrmUtils} from "../../util/OrmUtils";
 import {Query} from "../Query";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {PostgresDriver} from "./PostgresDriver";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Runs queries on a single postgres database connection.
@@ -56,7 +56,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(driver: PostgresDriver, mode: ReplicationMode) {
+    constructor(driver: PostgresDriver, mode: "master"|"slave" = "master") {
         super();
         this.driver = driver;
         this.connection = driver.connection;
@@ -80,17 +80,10 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
             return this.databaseConnectionPromise;
 
         if (this.mode === "slave" && this.driver.isReplicated)  {
-            this.databaseConnectionPromise = this.driver.obtainSlaveConnection().then(([connection, release]: any[]) => {
+            this.databaseConnectionPromise = this.driver.obtainSlaveConnection().then(([ connection, release]: any[]) => {
                 this.driver.connectedQueryRunners.push(this);
                 this.databaseConnection = connection;
-
-                const onErrorCallback = () => this.release();
-                this.releaseCallback = () => {
-                    this.databaseConnection.removeListener("error", onErrorCallback);
-                    release();
-                };
-                this.databaseConnection.on("error", onErrorCallback);
-
+                this.releaseCallback = release;
                 return this.databaseConnection;
             });
 
@@ -98,14 +91,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
             this.databaseConnectionPromise = this.driver.obtainMasterConnection().then(([connection, release]: any[]) => {
                 this.driver.connectedQueryRunners.push(this);
                 this.databaseConnection = connection;
-
-                const onErrorCallback = () => this.release();
-                this.releaseCallback = () => {
-                    this.databaseConnection.removeListener("error", onErrorCallback);
-                    release();
-                };
-                this.databaseConnection.on("error", onErrorCallback);
-
+                this.releaseCallback = release;
                 return this.databaseConnection;
             });
         }
@@ -118,10 +104,6 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * You cannot use query runner methods once its released.
      */
     release(): Promise<void> {
-        if (this.isReleased) {
-            return Promise.resolve();
-        }
-
         this.isReleased = true;
         if (this.releaseCallback)
             this.releaseCallback();
@@ -184,6 +166,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
                 const queryStartTime = +new Date();
 
                 databaseConnection.query(query, parameters, (err: any, result: any) => {
+
                     // log slow queries if maxQueryExecution time is set
                     const maxQueryExecutionTime = this.driver.connection.options.maxQueryExecutionTime;
                     const queryEndTime = +new Date();
@@ -574,9 +557,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Creates a new columns from the column in the table.
      */
     async addColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.addColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.addColumn(tableOrName, column));
     }
 
     /**
@@ -894,9 +875,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Changes a column in the table.
      */
     async changeColumns(tableOrName: Table|string, changedColumns: { newColumn: TableColumn, oldColumn: TableColumn }[]): Promise<void> {
-        for (const {oldColumn, newColumn} of changedColumns) {
-            await this.changeColumn(tableOrName, oldColumn, newColumn);
-        }
+        await PromiseUtils.runInSequence(changedColumns, changedColumn => this.changeColumn(tableOrName, changedColumn.oldColumn, changedColumn.newColumn));
     }
 
     /**
@@ -980,9 +959,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Drops the columns in the table.
      */
     async dropColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        for (const column of columns) {
-            await this.dropColumn(tableOrName, column);
-        }
+        await PromiseUtils.runInSequence(columns, column => this.dropColumn(tableOrName, column));
     }
 
     /**
@@ -1071,9 +1048,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Creates new unique constraints.
      */
     async createUniqueConstraints(tableOrName: Table|string, uniqueConstraints: TableUnique[]): Promise<void> {
-        for (const uniqueConstraint of uniqueConstraints) {
-            await this.createUniqueConstraint(tableOrName, uniqueConstraint);
-        }
+        await PromiseUtils.runInSequence(uniqueConstraints, uniqueConstraint => this.createUniqueConstraint(tableOrName, uniqueConstraint));
     }
 
     /**
@@ -1095,9 +1070,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Drops unique constraints.
      */
     async dropUniqueConstraints(tableOrName: Table|string, uniqueConstraints: TableUnique[]): Promise<void> {
-        for (const uniqueConstraint of uniqueConstraints) {
-            await this.dropUniqueConstraint(tableOrName, uniqueConstraint);
-        }
+        await PromiseUtils.runInSequence(uniqueConstraints, uniqueConstraint => this.dropUniqueConstraint(tableOrName, uniqueConstraint));
     }
 
     /**
@@ -1214,9 +1187,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Creates a new foreign keys.
      */
     async createForeignKeys(tableOrName: Table|string, foreignKeys: TableForeignKey[]): Promise<void> {
-        for (const foreignKey of foreignKeys) {
-            await this.createForeignKey(tableOrName, foreignKey);
-        }
+        await PromiseUtils.runInSequence(foreignKeys, foreignKey => this.createForeignKey(tableOrName, foreignKey));
     }
 
     /**
@@ -1238,9 +1209,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Drops a foreign keys from the table.
      */
     async dropForeignKeys(tableOrName: Table|string, foreignKeys: TableForeignKey[]): Promise<void> {
-        for (const foreignKey of foreignKeys) {
-            await this.dropForeignKey(tableOrName, foreignKey);
-        }
+        await PromiseUtils.runInSequence(foreignKeys, foreignKey => this.dropForeignKey(tableOrName, foreignKey));
     }
 
     /**
@@ -1263,9 +1232,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Creates a new indices
      */
     async createIndices(tableOrName: Table|string, indices: TableIndex[]): Promise<void> {
-        for (const index of indices) {
-            await this.createIndex(tableOrName, index);
-        }
+        await PromiseUtils.runInSequence(indices, index => this.createIndex(tableOrName, index));
     }
 
     /**
@@ -1287,9 +1254,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
      * Drops an indices from the table.
      */
     async dropIndices(tableOrName: Table|string, indices: TableIndex[]): Promise<void> {
-        for (const index of indices) {
-            await this.dropIndex(tableOrName, index);
-        }
+        await PromiseUtils.runInSequence(indices, index => this.dropIndex(tableOrName, index));
     }
 
     /**
@@ -1460,6 +1425,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
             this.query(indicesSql),
             this.query(foreignKeysSql),
         ]);
+
         // if tables were not found in the db, no need to proceed
         if (!dbTables.length)
             return [];
@@ -1468,10 +1434,9 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
         return Promise.all(dbTables.map(async dbTable => {
             const table = new Table();
 
-            const getSchemaFromKey = (dbObject: any, key: string) => dbObject[key] === currentSchema && !this.driver.options.schema ? undefined : dbObject[key];
             // We do not need to join schema name, when database is by default.
             // In this case we need local variable `tableFullName` for below comparision.
-            const schema = getSchemaFromKey(dbTable, "table_schema");
+            const schema = dbTable["table_schema"] === currentSchema && !this.driver.options.schema ? undefined : dbTable["table_schema"];
             table.name = this.driver.buildTableName(dbTable["table_name"], schema);
             const tableFullName = this.driver.buildTableName(dbTable["table_name"], dbTable["table_schema"]);
 
@@ -1537,7 +1502,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
                           "type"
                         FROM "geometry_columns"
                       ) AS _
-                      WHERE (${tablesCondition}) AND "column_name" = '${tableColumn.name}' AND "table_name" = '${dbTable["table_name"]}'`;
+                      WHERE (${tablesCondition}) AND "column_name" = '${tableColumn.name}' AND "table_name" = '${table.name}'`;
 
                         const results: ObjectLiteral[] = await this.query(geometryColumnSql);
                         tableColumn.spatialFeatureType = results[0].type;
@@ -1554,7 +1519,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
                           "type"
                         FROM "geography_columns"
                       ) AS _
-                      WHERE (${tablesCondition}) AND "column_name" = '${tableColumn.name}' AND "table_name" = '${dbTable["table_name"]}'`;
+                      WHERE (${tablesCondition}) AND "column_name" = '${tableColumn.name}' AND "table_name" = '${table.name}'`;
 
                         const results: ObjectLiteral[] = await this.query(geographyColumnSql);
                         tableColumn.spatialFeatureType = results[0].type;
@@ -1648,7 +1613,7 @@ export class PostgresQueryRunner extends BaseQueryRunner implements QueryRunner 
                 const foreignKeys = dbForeignKeys.filter(dbFk => dbFk["constraint_name"] === dbForeignKey["constraint_name"]);
 
                 // if referenced table located in currently used schema, we don't need to concat schema name to table name.
-                const schema = getSchemaFromKey(dbForeignKey, "referenced_table_schema");
+                const schema = dbForeignKey["referenced_table_schema"] === currentSchema ? undefined : dbForeignKey["referenced_table_schema"];
                 const referencedTableName = this.driver.buildTableName(dbForeignKey["referenced_table_name"], schema);
 
                 return new TableForeignKey({

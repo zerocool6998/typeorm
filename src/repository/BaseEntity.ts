@@ -1,15 +1,15 @@
 import {Repository} from "./Repository";
 import {FindOptions, FindOptionsWhere, getConnection} from "../index";
 import {DeepPartial} from "../common/DeepPartial";
-import {SaveOptions} from "./SaveOptions";
-import {RemoveOptions} from "./RemoveOptions";
-import {Connection} from "../connection/Connection";
 import {ObjectType} from "../common/ObjectType";
-import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
+import {Connection} from "../connection/Connection";
+import {ObjectID} from "../driver/mongodb/typings";
+import {DeleteResult} from "../query-builder/result/DeleteResult";
 import {InsertResult} from "../query-builder/result/InsertResult";
 import {UpdateResult} from "../query-builder/result/UpdateResult";
-import {DeleteResult} from "../query-builder/result/DeleteResult";
-import {ObjectID} from "../driver/mongodb/typings";
+import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
+import {RemoveOptions} from "./RemoveOptions";
+import {SaveOptions} from "./SaveOptions";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import * as Observable from "zen-observable";
@@ -54,20 +54,6 @@ export class BaseEntity {
      */
     remove(options?: RemoveOptions): Promise<this> {
         return (this.constructor as any).getRepository().remove(this, options);
-    }
-
-    /**
-     * Records the delete date of current entity.
-     */
-    softRemove(options?: SaveOptions): Promise<this> {
-        return (this.constructor as any).getRepository().softRemove(this, options);
-    }
-
-    /**
-     * Recovers a given entity in the database.
-     */
-    recover(options?: SaveOptions): Promise<this> {
-        return (this.constructor as any).getRepository().recover(this, options);
     }
 
     /**
@@ -162,7 +148,7 @@ export class BaseEntity {
     }
 
     /**
-     * Creates a new entity from the given plain javascript object. If entity already exist in the database, then
+     * Creates a new entity from the given plan javascript object. If entity already exist in the database, then
      * it loads it (and everything related to it), replaces all values with the new ones from the given object
      * and returns this new entity. This new entity is actually a loaded from the db entity with all properties
      * replaced from the new object.
@@ -208,23 +194,6 @@ export class BaseEntity {
      */
     static remove<T extends BaseEntity>(this: ObjectType<T>, entityOrEntities: T|T[], options?: RemoveOptions): Promise<T|T[]> {
         return (this as any).getRepository().remove(entityOrEntities as any, options);
-    }
-
-    /**
-     * Records the delete date of all given entities.
-     */
-    static softRemove<T extends BaseEntity>(this: ObjectType<T>, entities: T[], options?: SaveOptions): Promise<T[]>;
-
-    /**
-     * Records the delete date of a given entity.
-     */
-    static softRemove<T extends BaseEntity>(this: ObjectType<T>, entity: T, options?: SaveOptions): Promise<T>;
-
-    /**
-     * Records the delete date of one or many given entities.
-     */
-    static softRemove<T extends BaseEntity>(this: ObjectType<T>, entityOrEntities: T|T[], options?: SaveOptions): Promise<T|T[]> {
-        return (this as any).getRepository().softRemove(entityOrEntities as any, options);
     }
 
     /**

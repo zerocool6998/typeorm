@@ -5,12 +5,10 @@ import {QueryRunner} from "../../query-runner/QueryRunner";
 import {Connection} from "../../connection/Connection";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
-import {PlatformTools} from "../../platform/PlatformTools";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 export class ReactNativeDriver extends AbstractSqliteDriver {
     options: ReactNativeConnectionOptions;
-
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -30,7 +28,7 @@ export class ReactNativeDriver extends AbstractSqliteDriver {
         // load sqlite package
         this.loadDependencies();
     }
-
+    
 
     // -------------------------------------------------------------------------
     // Public Methods
@@ -45,17 +43,17 @@ export class ReactNativeDriver extends AbstractSqliteDriver {
             this.databaseConnection.close(ok, fail);
         });
     }
-
+    
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode): QueryRunner {
+    createQueryRunner(mode: "master"|"slave" = "master"): QueryRunner {
         if (!this.queryRunner)
             this.queryRunner = new ReactNativeQueryRunner(this);
 
         return this.queryRunner;
     }
-
+    
     // -------------------------------------------------------------------------
     // Protected Methods
     // -------------------------------------------------------------------------
@@ -91,7 +89,7 @@ export class ReactNativeDriver extends AbstractSqliteDriver {
      */
     protected loadDependencies(): void {
         try {
-            this.sqlite = PlatformTools.load("react-native-sqlite-storage");
+            this.sqlite = require("react-native-sqlite-storage");
 
         } catch (e) {
             throw new DriverPackageNotInstalledError("React-Native", "react-native-sqlite-storage");

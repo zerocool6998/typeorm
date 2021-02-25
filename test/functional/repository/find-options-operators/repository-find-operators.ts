@@ -5,7 +5,6 @@ import {
     Between,
     Connection,
     Equal,
-    Switch,
     If,
     ILike,
     In,
@@ -15,11 +14,13 @@ import {
     Like,
     MoreThan,
     MoreThanOrEqual,
-    Not
+    Not,
+    PromiseUtils,
+    Raw,
+    Switch
 } from "../../../../src";
 import {Post} from "./entity/Post";
 import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
-import {Raw} from "../../../../src/find-options/operator/Raw";
 import {PersonAR} from "./entity/PersonAR";
 import {expect} from "chai";
 
@@ -543,7 +544,7 @@ describe("repository > find options > operators", () => {
     it("not(ilike)", () => Promise.all(connections.map(async connection => {
         if (!(connection.driver instanceof PostgresDriver))
             return;
-
+        
         // insert some fake data
         const post1 = new Post();
         post1.title = "about #1";
@@ -1156,20 +1157,18 @@ describe("repository > find options > operators", () => {
 
     })));
 
-    it("should work with ActiveRecord model", async () => {
-        // These must run sequentially as we have the global context of the `PersonAR` ActiveRecord class
-        for (const connection of connections) {
-            PersonAR.useConnection(connection);
+    it("should work with ActiveRecord model", () => PromiseUtils.runInSequence(connections, async connection => {
+        PersonAR.useConnection(connection);
 
-            const person = new PersonAR();
-            person.name = "Timber";
-            await connection.manager.save(person);
+        const person = new PersonAR();
+        person.name = "Timber";
+        await connection.manager.save(person);
 
-            const loadedPeople = await PersonAR.find({
-                name: In(["Timber"])
-            });
-            expect(loadedPeople[0].name).to.be.equal("Timber");
-        }
-    });
+        const loadedPeople = await PersonAR.find({
+            name: In(["Timber"])
+        });
+        expect(loadedPeople[0].name).to.be.equal("Timber");
+
+    }));
 
 });

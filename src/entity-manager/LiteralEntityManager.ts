@@ -42,7 +42,7 @@ import {createLiteralRepository} from "../repository/LiteralRepository";
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,
  * whatever entity type are you passing.
  */
-export function createLiteralEntityManager({ connection, queryRunner }: {
+export function createLiteralEntityManager<Entity>({ connection, queryRunner }: {
     connection: Connection,
     queryRunner?: QueryRunner,
 }): EntityManager {
@@ -90,7 +90,7 @@ export function createLiteralEntityManager({ connection, queryRunner }: {
 
             // if query runner is already defined in this class, it means this entity manager was already created for a single connection
             // if its not defined we create a new query runner - single connection where we'll execute all our operations
-            const queryRunner = this.queryRunner || this.connection.createQueryRunner();
+            const queryRunner = this.queryRunner || this.connection.createQueryRunner("master");
 
             try {
                 if (isolation) {
@@ -534,13 +534,10 @@ export function createLiteralEntityManager({ connection, queryRunner }: {
             return qb.getOne();
         },
 
-        async findOneOrFail<Entity>(
-            entityClass: EntityTarget<Entity>,
-            ...args: (string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOptions<Entity> | any)[]
-        ): Promise<Entity> {
-            return this.findOne(entityClass as any, ...args).then((value: any) => {
+        async findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOptions<Entity> | any, maybeOptions?: FindOptions<Entity>): Promise<Entity> {
+            return this.findOne(entityClass as any, idOrOptionsOrConditions as any, maybeOptions).then((value: any) => {
                 if (value === undefined) {
-                    return Promise.reject(new EntityNotFoundError(entityClass, args.length > 0 ? args[0]: undefined));
+                    return Promise.reject(new EntityNotFoundError(entityClass, idOrOptionsOrConditions));
                 }
                 return Promise.resolve(value);
             });
@@ -568,7 +565,7 @@ export function createLiteralEntityManager({ connection, queryRunner }: {
 
         async clear<Entity>(entityClass: EntityTarget<Entity>): Promise<void> {
             const metadata = this.connection.getMetadata(entityClass);
-            const queryRunner = this.queryRunner || this.connection.createQueryRunner();
+            const queryRunner = this.queryRunner || this.connection.createQueryRunner("master");
             try {
                 return await queryRunner.clearTable(metadata.tablePath); // await is needed here because we are using finally
 

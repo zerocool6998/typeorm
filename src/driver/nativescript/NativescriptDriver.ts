@@ -6,7 +6,6 @@ import {Connection} from "../../connection/Connection";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
 import {ColumnType} from "../types/ColumnTypes";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with sqlite DBMS within Nativescript.
@@ -67,7 +66,7 @@ export class NativescriptDriver extends AbstractSqliteDriver {
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode): QueryRunner {
+    createQueryRunner(mode: "master"|"slave" = "master"): QueryRunner {
         if (!this.queryRunner) {
             this.queryRunner = new NativescriptQueryRunner(this);
         }

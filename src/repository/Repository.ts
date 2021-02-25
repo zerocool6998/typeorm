@@ -1,17 +1,17 @@
-import {EntityMetadata} from "../metadata/EntityMetadata";
-import {ObjectLiteral} from "../common/ObjectLiteral";
-import {FindOptions, FindOptionsWhere} from "../find-options/FindOptions";
 import {DeepPartial} from "../common/DeepPartial";
-import {SaveOptions} from "./SaveOptions";
-import {RemoveOptions} from "./RemoveOptions";
+import {ObjectLiteral} from "../common/ObjectLiteral";
+import {ObjectID} from "../driver/mongodb/typings";
 import {EntityManager} from "../entity-manager/EntityManager";
-import {QueryRunner} from "../query-runner/QueryRunner";
-import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
+import {FindOptions, FindOptionsWhere} from "../find-options/FindOptions";
+import {EntityMetadata} from "../metadata/EntityMetadata";
 import {DeleteResult} from "../query-builder/result/DeleteResult";
 import {UpdateResult} from "../query-builder/result/UpdateResult";
 import {InsertResult} from "../query-builder/result/InsertResult";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
-import {ObjectID} from "../driver/mongodb/typings";
+import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
+import {QueryRunner} from "../query-runner/QueryRunner";
+import {RemoveOptions} from "./RemoveOptions";
+import {SaveOptions} from "./SaveOptions";
 import * as Observable from "zen-observable";
 
 /**
@@ -101,7 +101,7 @@ export type Repository<Entity extends ObjectLiteral> = {
     merge(mergeIntoEntity: Entity, ...entityLikes: DeepPartial<Entity>[]): Entity
 
     /**
-     * Creates a new entity from the given plain javascript object. If entity already exist in the database, then
+     * Creates a new entity from the given plan javascript object. If entity already exist in the database, then
      * it loads it (and everything related to it), replaces all values with the new ones from the given object
      * and returns this new entity. This new entity is actually a loaded from the db entity with all properties
      * replaced from the new object.

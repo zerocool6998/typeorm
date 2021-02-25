@@ -1,5 +1,4 @@
-import {LoggerOptions, FileLoggerOptions} from "./LoggerOptions";
-import appRootPath from "app-root-path";
+import {LoggerOptions} from "./LoggerOptions";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {Logger} from "./Logger";
 import {PlatformTools} from "../platform/PlatformTools";
@@ -14,10 +13,7 @@ export class FileLogger implements Logger {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(
-        private options?: LoggerOptions,
-        private fileLoggerOptions?: FileLoggerOptions,
-    ) {
+    constructor(private options?: LoggerOptions) {
     }
 
     // -------------------------------------------------------------------------
@@ -101,13 +97,9 @@ export class FileLogger implements Logger {
      */
     protected write(strings: string|string[]) {
         strings = Array.isArray(strings) ? strings : [strings];
-        const basePath = appRootPath.path + "/";
-        let logPath = "ormlogs.log";
-        if (this.fileLoggerOptions && this.fileLoggerOptions.logPath) {
-            logPath = PlatformTools.pathNormalize(this.fileLoggerOptions.logPath);
-        }
+        const basePath = PlatformTools.load("app-root-path").path;
         strings = (strings as string[]).map(str => "[" + new Date().toISOString() + "]" + str);
-        PlatformTools.appendFileSync(basePath + logPath, strings.join("\r\n") + "\r\n"); // todo: use async or implement promises?
+        PlatformTools.appendFileSync(basePath + "/ormlogs.log", strings.join("\r\n") + "\r\n"); // todo: use async or implement promises?
     }
 
     /**

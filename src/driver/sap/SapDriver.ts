@@ -11,7 +11,6 @@ import {DataTypeDefaults} from "../types/DataTypeDefaults";
 import {MappedColumnTypes} from "../types/MappedColumnTypes";
 import {SapConnectionOptions} from "./SapConnectionOptions";
 import {SapQueryRunner} from "./SapQueryRunner";
-import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with SAP Hana DBMS.
@@ -221,7 +220,7 @@ export class SapDriver implements Driver {
 
         if (this.options.database) dbParams.databaseName = this.options.database;
         if (this.options.encrypt) dbParams.encrypt = this.options.encrypt;
-        if (this.options.sslValidateCertificate) dbParams.validateCertificate = this.options.sslValidateCertificate;
+        if (this.options.validateCertificate) dbParams.validateCertificate = this.options.validateCertificate;
         if (this.options.key) dbParams.key = this.options.key;
         if (this.options.cert) dbParams.cert = this.options.cert;
         if (this.options.ca) dbParams.ca = this.options.ca;
@@ -229,7 +228,7 @@ export class SapDriver implements Driver {
         // pool options
         const options: any = {
             min: this.options.pool && this.options.pool.min ? this.options.pool.min : 1,
-            max: this.options.pool && this.options.pool.max ? this.options.pool.max : 10,
+            max: this.options.pool && this.options.pool.max ? this.options.pool.max : 1,
         };
 
         if (this.options.pool && this.options.pool.checkInterval) options.checkInterval = this.options.pool.checkInterval;
@@ -274,7 +273,7 @@ export class SapDriver implements Driver {
     /**
      * Creates a query runner used to execute database queries.
      */
-    createQueryRunner(mode: ReplicationMode) {
+    createQueryRunner(mode: "master"|"slave" = "master") {
         return new SapQueryRunner(this, mode);
     }
 
@@ -284,10 +283,6 @@ export class SapDriver implements Driver {
      */
     escapeQueryWithParameters(sql: string, parameters: ObjectLiteral, nativeParameters: ObjectLiteral): [string, any[]] {
         const builtParameters: any[] = Object.keys(nativeParameters).map(key => {
-
-            if (nativeParameters[key] instanceof Date)
-                return DateUtils.mixedDateToDatetimeString(nativeParameters[key], true);
-
             return nativeParameters[key];
         });
 
@@ -314,9 +309,6 @@ export class SapDriver implements Driver {
 
             } else if (value instanceof Function) {
                 return value();
-
-            } else if (value instanceof Date) {
-                return DateUtils.mixedDateToDatetimeString(value, true);
 
             } else {
                 builtParameters.push(value);
@@ -581,15 +573,15 @@ export class SapDriver implements Driver {
 
             // console.log("table:", columnMetadata.entityMetadata.tableName);
             // console.log("name:", tableColumn.name, columnMetadata.databaseName);
-            // console.log("type:", tableColumn.type, _this.normalizeType(columnMetadata));
-            // console.log("length:", tableColumn.length, _this.getColumnLength(columnMetadata));
+            // console.log("type:", tableColumn.type, this.normalizeType(columnMetadata));
+            // console.log("length:", tableColumn.length, columnMetadata.length);
             // console.log("width:", tableColumn.width, columnMetadata.width);
             // console.log("precision:", tableColumn.precision, columnMetadata.precision);
             // console.log("scale:", tableColumn.scale, columnMetadata.scale);
             // console.log("default:", tableColumn.default, columnMetadata.default);
             // console.log("isPrimary:", tableColumn.isPrimary, columnMetadata.isPrimary);
             // console.log("isNullable:", tableColumn.isNullable, columnMetadata.isNullable);
-            // console.log("isUnique:", tableColumn.isUnique, _this.normalizeIsUnique(columnMetadata));
+            // console.log("isUnique:", tableColumn.isUnique, this.normalizeIsUnique(columnMetadata));
             // console.log("isGenerated:", tableColumn.isGenerated, columnMetadata.isGenerated);
             // console.log((columnMetadata.generationStrategy !== "uuid" && tableColumn.isGenerated !== columnMetadata.isGenerated));
             // console.log("==========================================");
@@ -597,9 +589,9 @@ export class SapDriver implements Driver {
             const normalizeDefault = this.normalizeDefault(columnMetadata);
             const hanaNullComapatibleDefault = normalizeDefault == null ? undefined : normalizeDefault;
 
-            return tableColumn.name !== columnMetadata.databaseName
+            return  tableColumn.name !== columnMetadata.databaseName
                 || tableColumn.type !== this.normalizeType(columnMetadata)
-                || columnMetadata.length && tableColumn.length !== this.getColumnLength(columnMetadata)
+                || tableColumn.length !== columnMetadata.length
                 || tableColumn.precision !== columnMetadata.precision
                 || tableColumn.scale !== columnMetadata.scale
                 // || tableColumn.comment !== columnMetadata.comment || // todo
@@ -607,7 +599,7 @@ export class SapDriver implements Driver {
                 || tableColumn.isPrimary !== columnMetadata.isPrimary
                 || tableColumn.isNullable !== columnMetadata.isNullable
                 || tableColumn.isUnique !== this.normalizeIsUnique(columnMetadata)
-                || (columnMetadata.generationStrategy !== "uuid" && tableColumn.isGenerated !== columnMetadata.isGenerated);
+                || tableColumn.isGenerated !== columnMetadata.isGenerated;
         });
     }
 
@@ -623,13 +615,6 @@ export class SapDriver implements Driver {
      */
     isUUIDGenerationSupported(): boolean {
         return false;
-    }
-
-    /**
-     * Returns true if driver supports fulltext indices.
-     */
-    isFullTextColumnTypeSupported(): boolean {
-        return true;
     }
 
     /**

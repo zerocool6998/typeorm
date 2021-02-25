@@ -8,7 +8,6 @@ import {DataTypeDefaults} from "./types/DataTypeDefaults";
 import {BaseConnectionOptions} from "../connection/BaseConnectionOptions";
 import {TableColumn} from "../schema-builder/table/TableColumn";
 import {EntityMetadata} from "../metadata/EntityMetadata";
-import {ReplicationMode} from "./types/ReplicationMode";
 
 /**
  * Driver organizes TypeORM communication with specific database management system.
@@ -103,7 +102,7 @@ export interface Driver {
     /**
      * Creates a query runner used for common queries.
      */
-    createQueryRunner(mode: ReplicationMode): QueryRunner;
+    createQueryRunner(mode: "master"|"slave"): QueryRunner;
 
     /**
      * Replaces parameters in the given sql with special escaping character
@@ -176,7 +175,7 @@ export interface Driver {
     /**
      * Creates generated map of values generated or returned by database after INSERT query.
      */
-    createGeneratedMap(metadata: EntityMetadata, insertResult: any, entityIndex?: number, entityNum?: number): ObjectLiteral|undefined;
+    createGeneratedMap(metadata: EntityMetadata, insertResult: any): ObjectLiteral|undefined;
 
     /**
      * Differentiate columns of this table and columns from the given column metadatas columns
@@ -193,11 +192,6 @@ export interface Driver {
      * Returns true if driver supports uuid values generation on its own.
      */
     isUUIDGenerationSupported(): boolean;
-
-    /**
-     * Returns true if driver supports fulltext indices.
-     */
-    isFullTextColumnTypeSupported(): boolean;
 
     /**
      * Creates an escaped parameter.

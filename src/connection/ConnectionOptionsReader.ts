@@ -1,4 +1,3 @@
-import appRootPath from "app-root-path";
 import {ConnectionOptions} from "./ConnectionOptions";
 import {PlatformTools} from "../platform/PlatformTools";
 import {ConnectionOptionsEnvReader} from "./options-reader/ConnectionOptionsEnvReader";
@@ -39,7 +38,7 @@ export class ConnectionOptionsReader {
     async all(): Promise<ConnectionOptions[]> {
         const options = await this.load();
         if (!options)
-            throw new Error(`No connection options were found in any orm configuration files.`);
+            throw new Error(`No connection options were found in any of configurations file.`);
 
         return options;
     }
@@ -81,7 +80,7 @@ export class ConnectionOptionsReader {
     protected async load(): Promise<ConnectionOptions[]|undefined> {
         let connectionOptions: ConnectionOptions|ConnectionOptions[]|undefined = undefined;
 
-        const fileFormats = ["env", "js", "cjs", "ts", "json", "yml", "yaml", "xml"];
+        const fileFormats = ["env", "js", "ts", "json", "yml", "yaml", "xml"];
 
         // Detect if baseFilePath contains file extension
         const possibleExtension = this.baseFilePath.substr(this.baseFilePath.lastIndexOf("."));
@@ -94,9 +93,11 @@ export class ConnectionOptionsReader {
 
         // if .env file found then load all its variables into process.env using dotenv package
         if (foundFileFormat === "env") {
-            PlatformTools.dotenv(this.baseFilePath);
+            const dotenv = PlatformTools.load("dotenv");
+            dotenv.config({ path: this.baseFilePath });
         } else if (PlatformTools.fileExist(".env")) {
-            PlatformTools.dotenv(".env");
+            const dotenv = PlatformTools.load("dotenv");
+            dotenv.config({ path: ".env" });
         }
 
         // Determine config file name
@@ -106,14 +107,14 @@ export class ConnectionOptionsReader {
         if (PlatformTools.getEnvVariable("TYPEORM_CONNECTION") || PlatformTools.getEnvVariable("TYPEORM_URL")) {
             connectionOptions = new ConnectionOptionsEnvReader().read();
 
-        } else if (foundFileFormat === "js" || foundFileFormat === "cjs") {
-            connectionOptions = await require(configFile);
+        } else if (foundFileFormat === "js") {
+            connectionOptions = await PlatformTools.load(configFile);
 
         } else if (foundFileFormat === "ts") {
-            connectionOptions = await require(configFile);
+            connectionOptions = await PlatformTools.load(configFile);
 
         } else if (foundFileFormat === "json") {
-            connectionOptions = require(configFile);
+            connectionOptions = PlatformTools.load(configFile);
 
         } else if (foundFileFormat === "yml") {
             connectionOptions = new ConnectionOptionsYmlReader().read(configFile);
@@ -170,7 +171,7 @@ export class ConnectionOptionsReader {
             }
 
             // make database path file in sqlite relative to package.json
-            if (options.type === "sqlite" || options.type === "better-sqlite3") {
+            if (options.type === "sqlite") {
                 if (typeof options.database === "string" &&
                     options.database.substr(0, 1) !== "/" &&  // unix absolute
                     options.database.substr(1, 2) !== ":\\" && // windows absolute
@@ -199,7 +200,7 @@ export class ConnectionOptionsReader {
         if (this.options && this.options.root)
             return this.options.root;
 
-        return appRootPath.path;
+        return PlatformTools.load("app-root-path").path;
     }
 
     /**

@@ -6,27 +6,27 @@ import {GeneratedMetadataArgs} from "../../metadata-args/GeneratedMetadataArgs";
 /**
  * Column decorator is used to mark a specific class property as a table column.
  */
-export function PrimaryGeneratedColumn(): PropertyDecorator;
+export function PrimaryGeneratedColumn(): Function;
 
 /**
  * Column decorator is used to mark a specific class property as a table column.
  */
-export function PrimaryGeneratedColumn(options: PrimaryGeneratedColumnNumericOptions): PropertyDecorator;
+export function PrimaryGeneratedColumn(options: PrimaryGeneratedColumnNumericOptions): Function;
 
 /**
  * Column decorator is used to mark a specific class property as a table column.
  */
-export function PrimaryGeneratedColumn(strategy: "increment", options?: PrimaryGeneratedColumnNumericOptions): PropertyDecorator;
+export function PrimaryGeneratedColumn(strategy: "increment", options?: PrimaryGeneratedColumnNumericOptions): Function;
 
 /**
  * Column decorator is used to mark a specific class property as a table column.
  */
-export function PrimaryGeneratedColumn(strategy: "uuid", options?: PrimaryGeneratedColumnUUIDOptions): PropertyDecorator;
+export function PrimaryGeneratedColumn(strategy: "uuid", options?: PrimaryGeneratedColumnUUIDOptions): Function;
 
 /**
  * Column decorator is used to mark a specific class property as a table column.
  */
-export function PrimaryGeneratedColumn(strategy: "rowid", options?: PrimaryGeneratedColumnUUIDOptions): PropertyDecorator;
+export function PrimaryGeneratedColumn(strategy: "rowid", options?: PrimaryGeneratedColumnUUIDOptions): Function;
 
 /**
  * Column decorator is used to mark a specific class property as a table column.
@@ -34,7 +34,7 @@ export function PrimaryGeneratedColumn(strategy: "rowid", options?: PrimaryGener
  * This column creates an integer PRIMARY COLUMN with generated set to true.
  */
 export function PrimaryGeneratedColumn(strategyOrOptions?: "increment"|"uuid"|"rowid"|PrimaryGeneratedColumnNumericOptions|PrimaryGeneratedColumnUUIDOptions,
-                                       maybeOptions?: PrimaryGeneratedColumnNumericOptions|PrimaryGeneratedColumnUUIDOptions): PropertyDecorator {
+                                       maybeOptions?: PrimaryGeneratedColumnNumericOptions|PrimaryGeneratedColumnUUIDOptions): Function {
 
     // normalize parameters
     const options: ColumnOptions = {};

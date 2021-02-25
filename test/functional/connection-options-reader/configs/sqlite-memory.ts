@@ -6,8 +6,4 @@ module.exports = [{
   type: "sqlite",
   name: "memory",
   database: ":memory:",
-}, {
-  type: "better-sqlite3",
-  name: "memory2",
-  database: ":memory:",
 }];
