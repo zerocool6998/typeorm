@@ -1,9 +1,9 @@
-import { expect } from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../../src/connection/Connection";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../utils/test-utils";
-import { Category } from "./entity/Category";
-import { Post } from "./entity/Post";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
+import {Connection} from "../../../../src/connection/Connection";
+import {Post} from "./entity/Post";
+import {Category} from "./entity/Category";
+import {expect} from "chai";
 
 describe("persistence > order of persistence execution operations", () => {
 

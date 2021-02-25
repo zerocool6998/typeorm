@@ -28,7 +28,7 @@ export class DriverUtils {
             if (buildOptions && buildOptions.useSid) {
                 urlDriverOptions.sid = parsedUrl.database;
             }
-            return Object.assign({}, options, urlDriverOptions);
+            return Object.assign({}, urlDriverOptions, options);
         }
         return Object.assign({}, options);
     }
@@ -68,7 +68,11 @@ export class DriverUtils {
         const preBase = url.substr(firstSlashes + 2);
         const secondSlash = preBase.indexOf("/");
         const base = (secondSlash !== -1) ? preBase.substr(0, secondSlash) : preBase;
-        const afterBase = (secondSlash !== -1) ? preBase.substr(secondSlash + 1) : undefined;
+        let afterBase = (secondSlash !== -1) ? preBase.substr(secondSlash + 1) : undefined;
+        // remove mongodb query params
+        if (afterBase && afterBase.indexOf("?") !== -1) {
+            afterBase = afterBase.substr(0, afterBase.indexOf("?"));
+        }
 
         const lastAtSign = base.lastIndexOf("@");
         const usernameAndPassword = base.substr(0, lastAtSign);

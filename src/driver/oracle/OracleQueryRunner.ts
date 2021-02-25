@@ -18,9 +18,10 @@ import {Broadcaster} from "../../subscriber/Broadcaster";
 import {BaseQueryRunner} from "../../query-runner/BaseQueryRunner";
 import {OrmUtils} from "../../util/OrmUtils";
 import {TableCheck} from "../../schema-builder/table/TableCheck";
-import {ColumnType, PromiseUtils} from "../../index";
+import {ColumnType} from "../../index";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
+import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Runs queries on a single oracle database connection.
@@ -49,7 +50,7 @@ export class OracleQueryRunner extends BaseQueryRunner implements QueryRunner {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(driver: OracleDriver, mode: "master"|"slave" = "master") {
+    constructor(driver: OracleDriver, mode: ReplicationMode) {
         super();
         this.driver = driver;
         this.connection = driver.connection;
@@ -507,7 +508,9 @@ export class OracleQueryRunner extends BaseQueryRunner implements QueryRunner {
      * Creates a new columns from the column in the table.
      */
     async addColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        await PromiseUtils.runInSequence(columns, column => this.addColumn(tableOrName, column));
+        for (const column of columns) {
+            await this.addColumn(tableOrName, column);
+        }
     }
 
     /**
@@ -734,7 +737,9 @@ export class OracleQueryRunner extends BaseQueryRunner implements QueryRunner {
      * Changes a column in the table.
      */
     async changeColumns(tableOrName: Table|string, changedColumns: { newColumn: TableColumn, oldColumn: TableColumn }[]): Promise<void> {
-        await PromiseUtils.runInSequence(changedColumns, changedColumn => this.changeColumn(tableOrName, changedColumn.oldColumn, changedColumn.newColumn));
+        for (const {oldColumn, newColumn} of changedColumns) {
+            await this.changeColumn(tableOrName, oldColumn, newColumn);
+        }
     }
 
     /**
@@ -806,7 +811,9 @@ export class OracleQueryRunner extends BaseQueryRunner implements QueryRunner {
      * Drops the columns in the table.
      */
     async dropColumns(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        await PromiseUtils.runInSequence(columns, column => this.dropColumn(tableOrName, column));
+        for (const column of columns) {
+            await this.dropColumn(tableOrName, column);
+        }
     }
 
     /**
@@ -1503,7 +1510,7 @@ export class OracleQueryRunner extends BaseQueryRunner implements QueryRunner {
             `REFERENCES "${foreignKey.referencedTableName}" (${referencedColumnNames})`;
         // Oracle does not support NO ACTION, but we set NO ACTION by default in EntityMetadata
         if (foreignKey.onDelete && foreignKey.onDelete !== "NO ACTION")
-        sql += ` ON DELETE ${foreignKey.onDelete}`;
+            sql += ` ON DELETE ${foreignKey.onDelete}`;
 
         return new Query(sql);
     }

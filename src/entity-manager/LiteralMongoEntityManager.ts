@@ -57,7 +57,7 @@ import { createLiteralEntityManager } from "./LiteralEntityManager";
  *
  * This implementation is used for MongoDB driver which has some specifics in its EntityManager.
  */
-export function createLiteralMongoEntityManager<Entity>({ connection }: {
+export function createLiteralMongoEntityManager({ connection }: {
     connection: Connection,
 }): MongoEntityManager {
 

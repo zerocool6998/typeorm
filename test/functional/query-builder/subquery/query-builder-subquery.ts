@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src";
+import {Connection} from "../../../../src/connection/Connection";
 import {User} from "./entity/User";
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";

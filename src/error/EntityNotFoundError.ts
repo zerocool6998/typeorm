@@ -1,4 +1,5 @@
-import {EntitySchema, EntityTarget} from "../index";
+import {EntityTarget} from "../common/EntityTarget";
+import {EntitySchema} from "../index";
 
 /**
  * Thrown when no result could be found in methods which are not allowed to return undefined or an empty set.
@@ -14,7 +15,7 @@ export class EntityNotFoundError extends Error {
             targetName = (entityClass as EntitySchema).options.name || "";
         } else if (typeof entityClass === "function") {
             targetName = entityClass.name;
-        } else if (typeof entityClass === "object") {
+        } else if (typeof entityClass === "object" && "name" in entityClass) {
             targetName = entityClass.name;
         } else {
             targetName = entityClass;

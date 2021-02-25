@@ -1,23 +1,22 @@
+import {Connection} from "../connection/Connection";
+import {EntityTarget} from "../common/EntityTarget";
+import {ObjectType} from "../common/ObjectType";
+import {DeepPartial} from "../common/DeepPartial";
+import {RemoveOptions} from "../repository/RemoveOptions";
+import {SaveOptions} from "../repository/SaveOptions";
+import {MongoRepository} from "../repository/MongoRepository";
+import {TreeRepository} from "../repository/TreeRepository";
+import {Repository} from "../repository/Repository";
+import {QueryRunner} from "../query-runner/QueryRunner";
+import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
+import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
+import {ObjectID} from "../driver/mongodb/typings";
+import {InsertResult} from "../query-builder/result/InsertResult";
+import {UpdateResult} from "../query-builder/result/UpdateResult";
+import {DeleteResult} from "../query-builder/result/DeleteResult";
+import {IsolationLevel} from "../driver/types/IsolationLevel";
+import {FindExtraOptions, FindOptions, FindOptionsWhere} from "../find-options/FindOptions";
 import * as Observable from "zen-observable";
-import { DeepPartial } from "../common/DeepPartial";
-import { EntityTarget } from "../common/EntityTarget";
-import { ObjectType } from "../common/ObjectType";
-import { Connection } from "../connection/Connection";
-import { ObjectID } from "../driver/mongodb/typings";
-import { IsolationLevel } from "../driver/types/IsolationLevel";
-import { FindExtraOptions, FindOptions, FindOptionsWhere } from "../find-options/FindOptions";
-import { QueryDeepPartialEntity } from "../query-builder/QueryPartialEntity";
-import { DeleteResult } from "../query-builder/result/DeleteResult";
-import { InsertResult } from "../query-builder/result/InsertResult";
-import { UpdateResult } from "../query-builder/result/UpdateResult";
-import { SelectQueryBuilder } from "../query-builder/SelectQueryBuilder";
-import { QueryRunner } from "../query-runner/QueryRunner";
-import { MongoRepository } from "../repository/MongoRepository";
-import { RemoveOptions } from "../repository/RemoveOptions";
-import { Repository } from "../repository/Repository";
-import { SaveOptions } from "../repository/SaveOptions";
-import { TreeRepository } from "../repository/TreeRepository";
-import { EntitySchema } from "..";
 
 /**
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,
@@ -90,7 +89,7 @@ export type EntityManager = {
     /**
      * Gets entity mixed id.
      */
-    getId(target: Function|string, entity: any): any;
+    getId(target: EntityTarget<any>, entity: any): any;
 
     /**
      * Creates a new entity instance and copies all entity properties from this object into a new entity.
@@ -110,7 +109,7 @@ export type EntityManager = {
     merge<Entity>(entityClass: EntityTarget<Entity>, mergeIntoEntity: Entity, ...entityLikes: DeepPartial<Entity>[]): Entity;
 
     /**
-     * Creates a new entity from the given plan javascript object. If entity already exist in the database, then
+     * Creates a new entity from the given plain javascript object. If entity already exist in the database, then
      * it loads it (and everything related to it), replaces all values with the new ones from the given object
      * and returns this new entity. This new entity is actually a loaded from the db entity with all properties
      * replaced from the new object.
@@ -174,22 +173,12 @@ export type EntityManager = {
     /**
      * Records the delete date of all given entities.
      */
-    softRemove<Entity, T extends DeepPartial<Entity>>(targetOrEntity: ObjectType<Entity>|EntitySchema<Entity>, entities: T[], options?: SaveOptions): Promise<T[]>;
+    softRemove<Entity, T extends DeepPartial<Entity>>(targetOrEntity: EntityTarget<Entity>, entities: T[], options?: SaveOptions): Promise<T[]>;
 
     /**
      * Records the delete date of a given entity.
      */
-    softRemove<Entity, T extends DeepPartial<Entity>>(targetOrEntity: ObjectType<Entity>|EntitySchema<Entity>, entity: T, options?: SaveOptions): Promise<T>;
-
-    /**
-     * Records the delete date of all given entities.
-     */
-    softRemove<T>(targetOrEntity: string, entities: T[], options?: SaveOptions): Promise<T[]>;
-
-    /**
-     * Records the delete date of a given entity.
-     */
-    softRemove<T>(targetOrEntity: string, entity: T, options?: SaveOptions): Promise<T>;
+    softRemove<Entity, T extends DeepPartial<Entity>>(targetOrEntity: EntityTarget<Entity>, entity: T, options?: SaveOptions): Promise<T>;
 
     /**
      * Recovers all given entities.
@@ -204,22 +193,12 @@ export type EntityManager = {
     /**
      * Recovers all given entities.
      */
-    recover<Entity, T extends DeepPartial<Entity>>(targetOrEntity: ObjectType<Entity>|EntitySchema<Entity>, entities: T[], options?: SaveOptions): Promise<T[]>;
+    recover<Entity, T extends DeepPartial<Entity>>(targetOrEntity: EntityTarget<Entity>, entities: T[], options?: SaveOptions): Promise<T[]>;
 
     /**
      * Recovers a given entity.
      */
-    recover<Entity, T extends DeepPartial<Entity>>(targetOrEntity: ObjectType<Entity>|EntitySchema<Entity>, entity: T, options?: SaveOptions): Promise<T>;
-
-    /**
-     * Recovers all given entities.
-     */
-    recover<T>(targetOrEntity: string, entities: T[], options?: SaveOptions): Promise<T[]>;
-
-    /**
-     * Recovers a given entity.
-     */
-    recover<T>(targetOrEntity: string, entity: T, options?: SaveOptions): Promise<T>;
+    recover<Entity, T extends DeepPartial<Entity>>(targetOrEntity: EntityTarget<Entity>, entity: T, options?: SaveOptions): Promise<T>;
 
     /**
      * Inserts a given entity into the database.
@@ -255,7 +234,7 @@ export type EntityManager = {
      * Does not check if entity exist in the database.
      * Condition(s) cannot be empty.
      */
-    softDelete<Entity>(targetOrEntity: ObjectType<Entity> | EntitySchema<Entity> | string, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | any): Promise<UpdateResult>;
+    softDelete<Entity>(targetOrEntity: EntityTarget<Entity>, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | any): Promise<UpdateResult>;
 
     /**
      * Restores entities by a given condition(s).
@@ -264,7 +243,7 @@ export type EntityManager = {
      * Does not check if entity exist in the database.
      * Condition(s) cannot be empty.
      */
-    restore<Entity>(targetOrEntity: ObjectType<Entity> | EntitySchema<Entity> | string, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | any): Promise<UpdateResult>;
+    restore<Entity>(targetOrEntity: EntityTarget<Entity>, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | any): Promise<UpdateResult>;
 
     /**
      * Counts entities that match given find options or conditions.

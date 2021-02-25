@@ -1,8 +1,7 @@
 /**
  * List of types that FindOperator can be.
  */
-export type FindOperatorType =
-    | "not"
+export type FindOperatorType = "not"
     | "lessThan"
     | "lessThanOrEqual"
     | "moreThan"
@@ -14,6 +13,6 @@ export type FindOperatorType =
     | "isNull"
     | "like"
     | "ilike"
-    | "raw"
     | "if"
-    | "switch";
+    | "switch"
+    | "raw";

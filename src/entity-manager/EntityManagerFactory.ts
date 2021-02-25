@@ -1,11 +1,11 @@
-import { Connection } from "../connection/Connection";
-import { MongoDriver } from "../driver/mongodb/MongoDriver";
-import { SqljsDriver } from "../driver/sqljs/SqljsDriver";
-import { QueryRunner } from "../query-runner/QueryRunner";
-import { EntityManager } from "./EntityManager";
-import { createLiteralEntityManager } from "./LiteralEntityManager";
-import { createLiteralMongoEntityManager } from "./LiteralMongoEntityManager";
-import { createLiteralSqljsEntityManager } from "./LiteralSqljsEntityManager";
+import {Connection} from "../connection/Connection";
+import {EntityManager} from "./EntityManager";
+import {MongoDriver} from "../driver/mongodb/MongoDriver";
+import {SqljsDriver} from "../driver/sqljs/SqljsDriver";
+import {QueryRunner} from "../query-runner/QueryRunner";
+import {createLiteralEntityManager} from "./LiteralEntityManager";
+import {createLiteralMongoEntityManager} from "./LiteralMongoEntityManager";
+import {createLiteralSqljsEntityManager} from "./LiteralSqljsEntityManager";
 
 /**
  * Helps to create entity managers.

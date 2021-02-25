@@ -1,6 +1,6 @@
-import { expect } from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../../src/connection/Connection";
+import {Connection} from "../../../../src/connection/Connection";
+import {expect} from "chai";
 
 describe("entity-metadata-validator", () => {
 
