@@ -56,6 +56,8 @@ export class ForeignKeyMetadata {
 
     /**
      * Gets foreign key name.
+     * If unique constraint name was given by a user then it stores givenName.
+     * If unique constraint name was not given then its generated.
      */
     name: string;
 
@@ -68,6 +70,11 @@ export class ForeignKeyMetadata {
      * Gets array of referenced column names.
      */
     referencedColumnNames: string[] = [];
+
+    /**
+     * User specified unique constraint name.
+     */
+    givenName?: string;
 
     // ---------------------------------------------------------------------
     // Constructor
@@ -82,6 +89,7 @@ export class ForeignKeyMetadata {
         onDelete?: OnDeleteType,
         onUpdate?: OnUpdateType,
         deferrable?: DeferrableType,
+        name?: string,
     }) {
         this.entityMetadata = options.entityMetadata;
         this.referencedEntityMetadata = options.referencedEntityMetadata;
@@ -90,6 +98,7 @@ export class ForeignKeyMetadata {
         this.onDelete = options.onDelete || "NO ACTION";
         this.onUpdate = options.onUpdate || "NO ACTION";
         this.deferrable = options.deferrable;
+        this.givenName = options.name;
         if (options.namingStrategy)
             this.build(options.namingStrategy);
     }
@@ -106,7 +115,7 @@ export class ForeignKeyMetadata {
         this.columnNames = this.columns.map(column => column.databaseName);
         this.referencedColumnNames = this.referencedColumns.map(column => column.databaseName);
         this.referencedTablePath = this.referencedEntityMetadata.tablePath;
-        this.name = namingStrategy.foreignKeyName(this.entityMetadata.tableName, this.columnNames, this.referencedEntityMetadata.tableName, this.referencedColumnNames);
+        this.name = this.givenName ? this.givenName : namingStrategy.foreignKeyName(this.entityMetadata.tableName, this.columnNames, this.referencedEntityMetadata.tableName, this.referencedColumnNames);
     }
 
 }

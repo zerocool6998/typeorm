@@ -13,4 +13,9 @@ export interface JoinColumnOptions {
      */
     referencedColumnName?: string; // TODO rename to referencedColumn
 
+    /**
+     * Name of the foreign key constraint.
+     */
+    constraintName?: string;
+
 }

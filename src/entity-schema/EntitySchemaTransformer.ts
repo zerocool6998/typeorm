@@ -160,7 +160,8 @@ export class EntitySchemaTransformer {
                                     target: options.target || options.name,
                                     propertyName: relationName,
                                     name: joinColumnOption.name,
-                                    referencedColumnName: joinColumnOption.referencedColumnName
+                                    referencedColumnName: joinColumnOption.referencedColumnName,
+                                    constraintName: joinColumnOption.constraintName,
                                 };
                                 metadataArgsStorage.joinColumns.push(joinColumn);
                             }

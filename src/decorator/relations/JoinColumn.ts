@@ -36,7 +36,8 @@ export function JoinColumn(optionsOrOptionsArray?: JoinColumnOptions|JoinColumnO
                 target: object.constructor,
                 propertyName: propertyName,
                 name: options.name,
-                referencedColumnName: options.referencedColumnName
+                referencedColumnName: options.referencedColumnName,
+                constraintName: options.constraintName,
             } as JoinColumnMetadataArgs);
         });
     };

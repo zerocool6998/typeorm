@@ -272,6 +272,11 @@ export class ColumnMetadata {
     referencedColumn: ColumnMetadata|undefined;
 
     /**
+     * If this column is foreign key then this specifies the name for it.
+     */
+    constraintName?: string;
+
+    /**
      * Specifies a value transformer that is to be used to (un)marshal
      * this column when reading or writing to the database.
      */
@@ -320,6 +325,7 @@ export class ColumnMetadata {
         entityMetadata: EntityMetadata,
         embeddedMetadata?: EmbeddedMetadata,
         referencedColumn?: ColumnMetadata,
+        constraintName?: string,
         args: ColumnMetadataArgs,
         closureType?: "ancestor"|"descendant",
         nestedSetLeft?: boolean,
@@ -329,6 +335,7 @@ export class ColumnMetadata {
         this.entityMetadata = options.entityMetadata;
         this.embeddedMetadata = options.embeddedMetadata!;
         this.referencedColumn = options.referencedColumn;
+        this.constraintName = options.constraintName;
         if (options.args.target)
             this.target = options.args.target;
         if (options.args.propertyName)

@@ -66,6 +66,7 @@ export class RelationJoinColumnBuilder {
             return { foreignKey: undefined, columns, uniqueConstraint: undefined }; // this case is possible for one-to-one non owning side and relations with createForeignKeyConstraints = false
 
         const foreignKey = new ForeignKeyMetadata({
+            name: joinColumns[0]?.constraintName,
             entityMetadata: relation.entityMetadata,
             referencedEntityMetadata: relation.inverseEntityMetadata,
             namingStrategy: this.connection.namingStrategy,
