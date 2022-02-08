@@ -308,12 +308,12 @@ export class Repository<Entity extends ObjectLiteral> {
     /**
      * Finds entities that match given conditions.
      */
-    find(conditions?: FindConditions<Entity>): Promise<Entity[]>;
+    find(conditions?: FindConditions<Entity> | FindConditions<Entity>[]): Promise<Entity[]>;
 
     /**
      * Finds entities that match given find options or conditions.
      */
-    find(optionsOrConditions?: FindManyOptions<Entity>|FindConditions<Entity>): Promise<Entity[]> {
+    find(optionsOrConditions?: FindManyOptions<Entity>|FindConditions<Entity> | FindConditions<Entity>[]): Promise<Entity[]> {
         return this.manager.find(this.metadata.target as any, optionsOrConditions as any);
     }
 

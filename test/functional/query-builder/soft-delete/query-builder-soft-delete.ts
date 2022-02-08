@@ -83,7 +83,7 @@ describe("query builder > soft-delete", () => {
                 }
             })
             .execute();
-        
+
         const loadedPhoto1 = await connection.getRepository(Photo).findOne({ url: "1.jpg" });
         expect(loadedPhoto1).to.be.undefined;
 
@@ -240,7 +240,7 @@ describe("query builder > soft-delete", () => {
     it("should find with soft deleted relations", () => Promise.all(connections.map(async connection => {
         const photoRepository = connection.getRepository(Photo);
         const userRepository = connection.getRepository(User);
-          
+
         const photo1 = new Photo();
         photo1.url = "image-1.jpg";
 

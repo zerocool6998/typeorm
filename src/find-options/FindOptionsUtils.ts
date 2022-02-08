@@ -4,7 +4,6 @@ import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {FindRelationsNotFoundError} from "../error/FindRelationsNotFoundError";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {DriverUtils} from "../driver/DriverUtils";
-import { TypeORMError } from "../error";
 import { FindTreeOptions } from "./FindTreeOptions";
 
 /**
@@ -24,20 +23,23 @@ export class FindOptionsUtils {
         return possibleOptions &&
             (
                 Array.isArray(possibleOptions.select) ||
-                possibleOptions.where instanceof Object ||
-                typeof possibleOptions.where === "string" ||
                 Array.isArray(possibleOptions.relations) ||
-                possibleOptions.join instanceof Object ||
-                possibleOptions.order instanceof Object ||
-                possibleOptions.cache instanceof Object ||
+                typeof possibleOptions.select === "object" ||
+                typeof possibleOptions.relations === "object" ||
+                typeof possibleOptions.where === "object" ||
+                // typeof possibleOptions.where === "string" ||
+                typeof possibleOptions.join === "object" ||
+                typeof possibleOptions.order === "object" ||
+                typeof possibleOptions.cache === "object" ||
                 typeof possibleOptions.cache === "boolean" ||
                 typeof possibleOptions.cache === "number" ||
                 typeof possibleOptions.comment === "string" ||
-                possibleOptions.lock instanceof Object ||
-                possibleOptions.loadRelationIds instanceof Object ||
+                typeof possibleOptions.lock === "object" ||
+                typeof possibleOptions.loadRelationIds === "object" ||
                 typeof possibleOptions.loadRelationIds === "boolean" ||
                 typeof possibleOptions.loadEagerRelations === "boolean" ||
                 typeof possibleOptions.withDeleted === "boolean" ||
+                typeof possibleOptions.relationLoadStrategy === "string" ||
                 typeof possibleOptions.transaction === "boolean"
             );
     }
@@ -68,7 +70,7 @@ export class FindOptionsUtils {
 
     /**
      * Applies give find many options to the given query builder.
-     */
+
     static applyFindManyOptionsOrConditionsToQueryBuilder<T>(qb: SelectQueryBuilder<T>, options: FindManyOptions<T>|Partial<T>|undefined): SelectQueryBuilder<T> {
         if (this.isFindManyOptions(options))
             return this.applyOptionsToQueryBuilder(qb, options);
@@ -77,11 +79,11 @@ export class FindOptionsUtils {
             return qb.where(options);
 
         return qb;
-    }
+    }*/
 
     /**
      * Applies give find options to the given query builder.
-     */
+
     static applyOptionsToQueryBuilder<T>(qb: SelectQueryBuilder<T>, options: FindOneOptions<T>|FindManyOptions<T>|undefined): SelectQueryBuilder<T> {
 
         // if options are not set then simply return query builder. This is made for simplicity of usage.
@@ -226,7 +228,7 @@ export class FindOptionsUtils {
             });
 
         return qb;
-    }
+    }*/
 
     static applyOptionsToTreeQueryBuilder<T>(qb: SelectQueryBuilder<T>, options?: FindTreeOptions): SelectQueryBuilder<T> {
         if (options?.relations) {

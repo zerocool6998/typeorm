@@ -41,9 +41,7 @@ import { ObjectLiteral } from "../common/ObjectLiteral";
 import { MongoQueryRunner } from "../driver/mongodb/MongoQueryRunner";
 import { MongoDriver } from "../driver/mongodb/MongoDriver";
 import { DocumentToEntityTransformer } from "../query-builder/transformer/DocumentToEntityTransformer";
-import { FindManyOptions } from "../find-options/FindManyOptions";
 import { FindOptionsUtils } from "../find-options/FindOptionsUtils";
-import { FindOneOptions } from "../find-options/FindOneOptions";
 import { PlatformTools } from "../platform/PlatformTools";
 import { DeepPartial } from "../common/DeepPartial";
 import { QueryDeepPartialEntity } from "../query-builder/QueryPartialEntity";
@@ -52,6 +50,9 @@ import { UpdateResult } from "../query-builder/result/UpdateResult";
 import { DeleteResult } from "../query-builder/result/DeleteResult";
 import { EntityMetadata } from "../metadata/EntityMetadata";
 import { FindConditions } from "../find-options/FindConditions";
+import {FindOptionsSelect, FindOptionsSelectByString} from "../find-options/FindOptionsSelect";
+import {MongoFindManyOptions} from "../find-options/mongodb/MongoFindManyOptions";
+import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
 
 /**
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,
@@ -80,7 +81,7 @@ export class MongoEntityManager extends EntityManager {
     /**
      * Finds entities that match given find options or conditions.
      */
-    async find<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: FindManyOptions<Entity> | Partial<Entity>): Promise<Entity[]> {
+    async find<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity> | any[]): Promise<Entity[]> {
         const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions);
         const cursor = await this.createEntityCursor(entityClassOrName, query);
         if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
@@ -101,7 +102,7 @@ export class MongoEntityManager extends EntityManager {
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    async findAndCount<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: FindManyOptions<Entity> | Partial<Entity>): Promise<[Entity[], number]> {
+    async findAndCount<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity>): Promise<[Entity[], number]> {
         const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions);
         const cursor = await this.createEntityCursor(entityClassOrName, query);
         if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
@@ -126,7 +127,7 @@ export class MongoEntityManager extends EntityManager {
      * Finds entities by ids.
      * Optionally find options can be applied.
      */
-    async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[], optionsOrConditions?: FindManyOptions<Entity> | Partial<Entity>): Promise<Entity[]> {
+    async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[], optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity>): Promise<Entity[]> {
         const metadata = this.connection.getMetadata(entityClassOrName);
         const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions) || {};
         const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
@@ -168,8 +169,8 @@ export class MongoEntityManager extends EntityManager {
      * Finds first entity that matches given conditions and/or find options.
      */
     async findOne<Entity>(entityClassOrName: EntityTarget<Entity>,
-                          optionsOrConditions?: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOneOptions<Entity> | DeepPartial<Entity>,
-                          maybeOptions?: FindOneOptions<Entity>): Promise<Entity | undefined> {
+                          optionsOrConditions?: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | MongoFindOneOptions<Entity> | DeepPartial<Entity>,
+                          maybeOptions?: MongoFindOneOptions<Entity>): Promise<Entity | undefined> {
         const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
         const id = (optionsOrConditions instanceof objectIdInstance) || typeof optionsOrConditions === "string" ? optionsOrConditions : undefined;
         const findOneOptionsOrConditions = (id ? maybeOptions : optionsOrConditions) as any;
@@ -586,7 +587,7 @@ export class MongoEntityManager extends EntityManager {
     /**
      * Converts FindManyOptions to mongodb query.
      */
-    protected convertFindManyOptionsOrConditionsToMongodbQuery<Entity>(optionsOrConditions: FindManyOptions<Entity> | Partial<Entity> | undefined): ObjectLiteral | undefined {
+    protected convertFindManyOptionsOrConditionsToMongodbQuery<Entity>(optionsOrConditions: MongoFindManyOptions<Entity> | Partial<Entity> | any[] | undefined): ObjectLiteral | undefined {
         if (!optionsOrConditions)
             return undefined;
 
@@ -603,7 +604,7 @@ export class MongoEntityManager extends EntityManager {
     /**
      * Converts FindOneOptions to mongodb query.
      */
-    protected convertFindOneOptionsOrConditionsToMongodbQuery<Entity>(optionsOrConditions: FindOneOptions<Entity> | Partial<Entity> | undefined): ObjectLiteral | undefined {
+    protected convertFindOneOptionsOrConditionsToMongodbQuery<Entity>(optionsOrConditions: MongoFindOneOptions<Entity> | Partial<Entity> | undefined): ObjectLiteral | undefined {
         if (!optionsOrConditions)
             return undefined;
 
@@ -639,11 +640,16 @@ export class MongoEntityManager extends EntityManager {
     /**
      * Converts FindOptions into mongodb select by criteria.
      */
-    protected convertFindOptionsSelectToProjectCriteria(selects: (keyof any)[]) {
-        return selects.reduce((projectCriteria, key) => {
-            projectCriteria[key] = 1;
-            return projectCriteria;
-        }, {} as any);
+    protected convertFindOptionsSelectToProjectCriteria(selects: FindOptionsSelect<any> | FindOptionsSelectByString<any>) {
+        if (Array.isArray(selects)) {
+            return selects.reduce((projectCriteria, key) => {
+                projectCriteria[key] = 1;
+                return projectCriteria;
+            }, {} as any);
+        } else {
+            // todo: implement
+            return {}
+        }
     }
 
     /**

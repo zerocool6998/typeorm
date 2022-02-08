@@ -29,7 +29,7 @@ export * from "./ReturningStatementNotSupportedError";
 export * from "./UsingJoinTableIsNotAllowedError";
 export * from "./MissingJoinColumnError";
 export * from "./MissingPrimaryColumnError";
-export * from "./EntityColumnNotFound";
+export * from "./EntityPropertyNotFoundError";
 export * from "./MissingDriverError";
 export * from "./DriverPackageNotInstalledError";
 export * from "./CannotGetEntityManagerNotConnectedError";

@@ -1,4 +1,4 @@
-import {EntityColumnNotFound, QueryRunner, SelectQueryBuilder} from "..";
+import {QueryRunner, SelectQueryBuilder} from "..";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {Connection} from "../connection/Connection";
 import {CannotCreateEntityIdMapError} from "../error/CannotCreateEntityIdMapError";
@@ -21,6 +21,7 @@ import {TableType} from "./types/TableTypes";
 import {TreeType} from "./types/TreeTypes";
 import {UniqueMetadata} from "./UniqueMetadata";
 import {ClosureTreeOptions} from "./types/ClosureTreeOptions";
+import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
 
 /**
  * Contains all entity metadata.
@@ -675,6 +676,14 @@ export class EntityMetadata {
     }
 
     /**
+     * Finds column with a given property path.
+     * Does not search in relation unlike findColumnWithPropertyPath.
+     */
+    findColumnWithPropertyPathStrict(propertyPath: string): ColumnMetadata|undefined {
+        return this.columns.find(column => column.propertyPath === propertyPath);
+    }
+
+    /**
      * Finds columns with a given property path.
      * Property path can match a relation, and relations can contain multiple columns.
      */
@@ -727,7 +736,7 @@ export class EntityMetadata {
         return propertyPaths.map(propertyPath => {
             const column = this.findColumnWithPropertyPath(propertyPath);
             if (column == null) {
-                throw new EntityColumnNotFound(propertyPath);
+                throw new EntityPropertyNotFoundError(propertyPath, this);
             }
             return column;
         });

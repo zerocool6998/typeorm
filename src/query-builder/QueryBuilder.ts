@@ -21,10 +21,10 @@ import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {FindOperator} from "../find-options/FindOperator";
 import {In} from "../find-options/operator/In";
-import {EntityColumnNotFound} from "../error/EntityColumnNotFound";
-import { TypeORMError } from "../error";
-import { WhereClause, WhereClauseCondition } from "./WhereClause";
+import {TypeORMError} from "../error";
+import {WhereClause, WhereClauseCondition} from "./WhereClause";
 import {NotBrackets} from "./NotBrackets";
+import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
 
 // todo: completely cover query builder with tests
 // todo: entityOrProperty can be target name. implement proper behaviour if it is.
@@ -974,7 +974,7 @@ export abstract class QueryBuilder<Entity> {
         const columns = alias.metadata.findColumnsWithPropertyPath(aliasPropertyPath);
 
         if (!columns.length) {
-            throw new EntityColumnNotFound(propertyPath);
+            throw new EntityPropertyNotFoundError(propertyPath, alias.metadata);
         }
 
         return [ alias, root, columns ];

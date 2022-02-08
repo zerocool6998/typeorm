@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "../../../utils/test-setup"
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {Post} from "./entity/Post";
@@ -46,18 +47,20 @@ describe("relations > relation with primary key", () => {
                     }
                 },
                 order: {
-                    category: "ASC"
+                    categoryId: "ASC"
                 }
             });
 
             posts.should.be.eql([{
                 title: "Hello Post #1",
+                categoryId: 1,
                 category: {
                     id: 1,
                     name: "Category saved by cascades #1"
                 }
             }, {
                 title: "Hello Post #2",
+                categoryId: 2,
                 category: {
                     id: 2,
                     name: "Category saved by cascades #2"

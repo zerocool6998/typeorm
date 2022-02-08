@@ -3,7 +3,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../src";
 import {Post} from "./entity/Post";
 import {expect} from "chai";
-import {EntityColumnNotFound} from "../../../src/error/EntityColumnNotFound";
+import {EntityPropertyNotFoundError} from "../../../src/error/EntityPropertyNotFoundError";
 
 describe("other issues > preventing-injection", () => {
 
@@ -47,12 +47,12 @@ describe("other issues > preventing-injection", () => {
                 where: {
                     id: 2,
                     ["(WHERE LIMIT 1)"]: "hello"
-                }
+                } as any
             });
         } catch (err) {
             error = err;
         }
-        expect(error).to.be.an.instanceof(EntityColumnNotFound);
+        expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
     })));
 
     it("should not allow selection of non-exist columns via FindOptions", () => Promise.all(connections.map(async function(connection) {

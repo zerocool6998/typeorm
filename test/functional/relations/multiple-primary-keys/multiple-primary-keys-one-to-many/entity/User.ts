@@ -9,7 +9,7 @@ export class User extends BaseEntity {
 	@Column()
 	name: string;
 
-	@OneToMany("Setting","asset",{ cascade:true })
+	@OneToMany("Setting","asset",{ cascade: true })
 	settings: Setting[];
 
 	constructor(id: number, name: string) {

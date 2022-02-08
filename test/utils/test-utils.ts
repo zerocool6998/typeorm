@@ -143,6 +143,9 @@ export interface TestingOptions {
      * Factory to create a logger for each test connection.
      */
     createLogger?: () => "advanced-console"|"simple-console"|"file"|"debug"|Logger;
+
+
+    relationLoadStrategy?: "join" | "query"
 }
 
 /**
@@ -241,6 +244,8 @@ export function setupTestingConnections(options?: TestingOptions): ConnectionOpt
                 newOptions.namingStrategy = options.namingStrategy;
             if (options && options.metadataTableName)
                 newOptions.metadataTableName = options.metadataTableName;
+            if (options && options.relationLoadStrategy)
+                newOptions.relationLoadStrategy = options.relationLoadStrategy;
             return newOptions;
         });
 }

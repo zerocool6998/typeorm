@@ -39,6 +39,7 @@ import {IsolationLevel} from "../driver/types/IsolationLevel";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {ReplicationMode} from "../driver/types/ReplicationMode";
 import { TypeORMError } from "../error/TypeORMError";
+import {RelationIdLoader} from "../query-builder/RelationIdLoader";
 
 /**
  * Connection is a single database ORM connection to a specific database.
@@ -116,6 +117,8 @@ export class Connection {
      */
     readonly relationLoader: RelationLoader;
 
+    readonly relationIdLoader: RelationIdLoader;
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -130,6 +133,7 @@ export class Connection {
         this.metadataTableName = options.metadataTableName || "typeorm_metadata";
         this.queryResultCache = options.cache ? new QueryResultCacheFactory(this).create() : undefined;
         this.relationLoader = new RelationLoader(this);
+        this.relationIdLoader = new RelationIdLoader(this);
         this.isConnected = false;
     }
 

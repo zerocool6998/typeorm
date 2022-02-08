@@ -23,6 +23,11 @@ export class QueryExpressionMap {
     // -------------------------------------------------------------------------
 
     /**
+     * Strategy to load relations.
+     */
+    relationLoadStrategy: "join" | "query" = "join"
+
+    /**
      * Indicates if QueryBuilder used to select entities and not a raw results.
      */
     queryEntity: boolean = false;
@@ -306,6 +311,9 @@ export class QueryExpressionMap {
     // -------------------------------------------------------------------------
 
     constructor(protected connection: Connection) {
+        if (connection.options.relationLoadStrategy) {
+            this.relationLoadStrategy = connection.options.relationLoadStrategy
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -423,6 +431,7 @@ export class QueryExpressionMap {
         map.selectDistinct = this.selectDistinct;
         map.selectDistinctOn = this.selectDistinctOn;
         this.aliases.forEach(alias => map.aliases.push(new Alias(alias)));
+        map.relationLoadStrategy = this.relationLoadStrategy;
         map.mainAlias = this.mainAlias;
         map.valuesSet = this.valuesSet;
         map.returning = this.returning;

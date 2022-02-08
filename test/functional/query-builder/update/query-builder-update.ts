@@ -7,8 +7,8 @@ import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
 import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 import {LimitOnUpdateNotSupportedError} from "../../../../src/error/LimitOnUpdateNotSupportedError";
 import {Photo} from "./entity/Photo";
-import {EntityColumnNotFound} from "../../../../src/error/EntityColumnNotFound";
 import {UpdateValuesMissingError} from "../../../../src/error/UpdateValuesMissingError";
+import {EntityPropertyNotFoundError} from "../../../../src/error/EntityPropertyNotFoundError";
 
 describe("query builder > update", () => {
 
@@ -245,7 +245,7 @@ describe("query builder > update", () => {
         } catch (err) {
             error = err;
         }
-        expect(error).to.be.an.instanceof(EntityColumnNotFound);
+        expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
 
     })));
 
@@ -266,7 +266,7 @@ describe("query builder > update", () => {
         } catch (err) {
             error = err;
         }
-        expect(error).to.be.an.instanceof(EntityColumnNotFound);
+        expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
 
     })));
 

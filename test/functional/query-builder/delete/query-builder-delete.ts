@@ -4,7 +4,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../../src/connection/Connection";
 import {User} from "./entity/User";
 import {Photo} from "./entity/Photo";
-import {EntityColumnNotFound} from "../../../../src/error/EntityColumnNotFound";
+import {EntityPropertyNotFoundError} from "../../../../src/error/EntityPropertyNotFoundError";
 
 describe("query builder > delete", () => {
 
@@ -131,7 +131,7 @@ describe("query builder > delete", () => {
         } catch (err) {
             error = err;
         }
-        expect(error).to.be.an.instanceof(EntityColumnNotFound);
+        expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
 
     })));
 });

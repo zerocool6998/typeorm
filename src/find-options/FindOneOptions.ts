@@ -1,7 +1,8 @@
-import {EntityFieldsNames} from "../common/EntityFieldsNames";
 import {JoinOptions} from "./JoinOptions";
-import {ObjectLiteral} from "../common/ObjectLiteral";
 import {FindConditions} from "./FindConditions";
+import {FindOptionsSelect, FindOptionsSelectByString} from "./FindOptionsSelect";
+import {FindOptionsRelation, FindOptionsRelationByString} from "./FindOptionsRelation";
+import {FindOptionsOrder} from "./FindOptionsOrder";
 
 /**
  * Defines a special criteria to find specific entity.
@@ -18,27 +19,42 @@ export interface FindOneOptions<Entity = any> {
     /**
      * Specifies what columns should be retrieved.
      */
-    select?: (keyof Entity)[];
+    select?:
+        | FindOptionsSelect<Entity>
+        | FindOptionsSelectByString<Entity>;
 
     /**
      * Simple condition that should be applied to match entities.
      */
-    where?: FindConditions<Entity>[]|FindConditions<Entity>|ObjectLiteral|string;
+    where?: FindConditions<Entity>[]|FindConditions<Entity>;
 
     /**
      * Indicates what relations of entity should be loaded (simplified left join form).
      */
-    relations?: string[];
+    relations?:
+        | FindOptionsRelation<Entity>
+        | FindOptionsRelationByString;
+
+    /**
+     * Specifies how relations must be loaded - using "joins" or as separate queries.
+     * If you are loading too much data with nested joins it's better to load relations
+     * using separate queries.
+     *
+     * Default strategy is "join", but default can be customized in connection options.
+     */
+    relationLoadStrategy?: "join" | "query"
 
     /**
      * Specifies what relations should be loaded.
+     *
+     * @deprecated
      */
     join?: JoinOptions;
 
     /**
      * Order, in which entities should be ordered.
      */
-    order?: { [P in EntityFieldsNames<Entity>]?: "ASC"|"DESC"|1|-1 };
+    order?: FindOptionsOrder<Entity>;
 
     /**
      * Enables or disables query result caching.
@@ -65,7 +81,7 @@ export interface FindOneOptions<Entity = any> {
 
     /**
      * Indicates if eager relations should be loaded or not.
-     * By default they are loaded when find methods are used.
+     * By default, they are loaded when find methods are used.
      */
     loadEagerRelations?: boolean;
 

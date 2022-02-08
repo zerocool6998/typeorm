@@ -182,6 +182,59 @@ export class OrmUtils {
     }
 
     /**
+     * Gets deeper value of object.
+     */
+    static deepValue(obj: ObjectLiteral, path: string) {
+        const segments = path.split(".");
+        for (let i = 0, len = segments.length; i < len; i++) {
+            obj = obj[segments[i]];
+        }
+        return obj;
+    }
+
+
+    static replaceEmptyObjectsToBooleans(obj: any) {
+        for (let key in obj) {
+            if (typeof obj[key] === "object") {
+                if (Object.keys(obj[key]).length === 0) {
+                    obj[key] = true
+                } else {
+                    this.replaceEmptyObjectsToBooleans(obj[key])
+                }
+            }
+        }
+    }
+
+    static propertyPathsToTruthyObject(paths: string[]) {
+        let obj: any = {}
+        for (let path of paths) {
+            const props = path.split(".")
+            if (!props.length) continue
+
+            if (!obj[props[0]] || obj[props[0]] === true) {
+                obj[props[0]] = {}
+            }
+            let recursiveChild = obj[props[0]]
+            for (let [key, prop] of props.entries()) {
+                if (key === 0) continue
+
+                if (recursiveChild[prop]) {
+                    recursiveChild = recursiveChild[prop]
+
+                } else if (key === props.length - 1) {
+                    recursiveChild[prop] = {}
+                    recursiveChild = null
+                } else {
+                    recursiveChild[prop] = {}
+                    recursiveChild = recursiveChild[prop]
+                }
+            }
+        }
+        this.replaceEmptyObjectsToBooleans(obj)
+        return obj
+    }
+
+    /**
      * Check if two entity-id-maps are the same
      */
     static compareIds(firstId: ObjectLiteral|undefined, secondId: ObjectLiteral|undefined): boolean {

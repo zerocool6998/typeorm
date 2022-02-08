@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { expect } from "chai";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import {expect} from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
 import {User} from "../../functional/query-builder/update/entity/User";
-import {EntityColumnNotFound} from "../../../src/error/EntityColumnNotFound";
+import {EntityPropertyNotFoundError} from "../../../src/error/EntityPropertyNotFoundError";
 
 describe("github issues > #3416 Unknown fields are stripped from WHERE clause", () => {
 
@@ -14,7 +14,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));
 
-    describe("should throw EntityColumnNotFound when supplying unknown property in where criteria", () => {
+    describe("should throw FindCriteriaNotFoundError when supplying unknown property in where criteria", () => {
         it("find", () => Promise.all(connections.map(async connection => {
             let error: Error | undefined;
             try {
@@ -23,7 +23,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
             } catch (err) {
                 error = err;
             }
-            expect(error).to.be.an.instanceof(EntityColumnNotFound);
+            expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
         })));
         it("update", () => Promise.all(connections.map(async connection => {
             let error: Error | undefined;
@@ -32,7 +32,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
             } catch (err) {
                 error = err;
             }
-            expect(error).to.be.an.instanceof(EntityColumnNotFound);
+            expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
         })));
         it("delete", () => Promise.all(connections.map(async connection => {
             let error: Error | undefined;
@@ -41,7 +41,7 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
             } catch (err) {
                 error = err;
             }
-            expect(error).to.be.an.instanceof(EntityColumnNotFound);
+            expect(error).to.be.an.instanceof(EntityPropertyNotFoundError);
         })));
     });
 });

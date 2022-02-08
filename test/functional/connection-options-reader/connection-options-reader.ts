@@ -1,4 +1,4 @@
-import {promises as fs} from "fs";
+import {promises as fs, existsSync} from "fs";
 import {expect} from "chai";
 import {ConnectionOptions} from "../../../src/connection/ConnectionOptions";
 import {ConnectionOptionsReader} from "../../../src/connection/ConnectionOptionsReader";
@@ -11,7 +11,9 @@ async function createDotenvFiles() {
 }
 
 async function createYamlFiles() {
-  await fs.mkdir(path.join(__dirname, "configs/yaml"));
+  if (!existsSync(path.join(__dirname, "configs/yaml"))) {
+    await fs.mkdir(path.join(__dirname, "configs/yaml"));
+  }
   await fs.writeFile(path.join(__dirname, "configs/yaml/test-yaml.yaml"), "- type: \"sqlite\"\n  name: \"file\"\n  database: \"test-yaml\"");
 }
 

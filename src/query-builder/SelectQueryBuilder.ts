@@ -12,7 +12,9 @@ import {RelationCountAttribute} from "./relation-count/RelationCountAttribute";
 import {RelationIdLoader} from "./relation-id/RelationIdLoader";
 import {RelationIdMetadataToAttributeTransformer} from "./relation-id/RelationIdMetadataToAttributeTransformer";
 import {RelationCountLoader} from "./relation-count/RelationCountLoader";
-import {RelationCountMetadataToAttributeTransformer} from "./relation-count/RelationCountMetadataToAttributeTransformer";
+import {
+    RelationCountMetadataToAttributeTransformer
+} from "./relation-count/RelationCountMetadataToAttributeTransformer";
 import {QueryBuilder} from "./QueryBuilder";
 import {ReadStream} from "../platform/PlatformTools";
 import {LockNotSupportedOnGivenDriverError} from "../error/LockNotSupportedOnGivenDriverError";
@@ -37,12 +39,31 @@ import {DriverUtils} from "../driver/DriverUtils";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
 import {EntityNotFoundError} from "../error/EntityNotFoundError";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
+import {FindManyOptions} from "../find-options/FindManyOptions";
+import {FindOptionsSelect} from "../find-options/FindOptionsSelect";
+import {RelationMetadata} from "../metadata/RelationMetadata";
+import {FindOptionsOrder} from "../find-options/FindOptionsOrder";
+import {FindConditions} from "../find-options/FindConditions";
+import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
+import {FindOptionsRelation} from "../find-options/FindOptionsRelation";
+import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
+import {FindOperator} from "../find-options/FindOperator";
+import {OrmUtils} from "../util/OrmUtils";
+import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
+import {EqualOperator} from "../find-options/EqualOperator";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements WhereExpressionBuilder {
+
+    protected findOptions: FindManyOptions = {};
+    protected selects: string[] = [];
+    protected joins: { type: "inner"|"left", alias: string, parentAlias: string, relationMetadata: RelationMetadata, select: boolean, selection: FindOptionsSelect<any> | undefined }[] = [];
+    protected conditions: string = "";
+    protected orderBys: { alias: string, direction: "ASC"|"DESC", nulls?: "NULLS FIRST"|"NULLS LAST" }[] = [];
+    protected relationMetadatas: RelationMetadata[] = [];
 
     // -------------------------------------------------------------------------
     // Public Implemented Methods
@@ -70,6 +91,12 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     // -------------------------------------------------------------------------
     // Public Methods
     // -------------------------------------------------------------------------
+
+    setFindOptions(findOptions: FindManyOptions<Entity>) {
+        this.findOptions = findOptions;
+        this.applyFindOptions();
+        return this;
+    }
 
     /**
      * Creates a subquery - query that can be used inside other queries.
@@ -1814,8 +1841,8 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         const nonSelectedPrimaryColumns = this.expressionMap.queryEntity ? metadata.primaryColumns.filter(primaryColumn => columns.indexOf(primaryColumn) === -1) : [];
         const allColumns = [...columns, ...nonSelectedPrimaryColumns];
 
-        return allColumns.map(column => {
-            const selection = this.expressionMap.selects.find(select => select.selection === aliasName + "." + column.propertyPath);
+        const finalSelects: SelectQuery[] = []
+        allColumns.forEach(column => {
             let selectionPath = this.escape(aliasName) + "." + this.escape(column.databaseName);
             if (this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
                 if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) {
@@ -1834,13 +1861,27 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 if (this.connection.driver instanceof SqlServerDriver)
                     selectionPath = `${selectionPath}.ToString()`;
             }
-            return {
-                selection: selectionPath,
-                aliasName: selection && selection.aliasName ? selection.aliasName : DriverUtils.buildAlias(this.connection.driver, aliasName, column.databaseName),
-                // todo: need to keep in mind that custom selection.aliasName breaks hydrator. fix it later!
-                virtual: selection ? selection.virtual === true : (hasMainAlias ? false : true),
-            };
+
+            const selections = this.expressionMap.selects.filter(select => select.selection === aliasName + "." + column.propertyPath);
+            if (selections.length) {
+                selections.forEach(selection => {
+                    finalSelects.push({
+                        selection: selectionPath,
+                        aliasName: selection.aliasName ? selection.aliasName : DriverUtils.buildAlias(this.connection.driver, aliasName, column.databaseName),
+                        // todo: need to keep in mind that custom selection.aliasName breaks hydrator. fix it later!
+                        virtual: selection.virtual,
+                    });
+                })
+            } else {
+                finalSelects.push({
+                    selection: selectionPath,
+                    aliasName: DriverUtils.buildAlias(this.connection.driver, aliasName, column.databaseName),
+                    // todo: need to keep in mind that custom selection.aliasName breaks hydrator. fix it later!
+                    virtual: hasMainAlias,
+                });
+            }
         });
+        return finalSelects
     }
 
     protected findEntityColumnSelects(aliasName: string, metadata: EntityMetadata): SelectQuery[] {
@@ -1937,6 +1978,235 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             return 0;
 
         return parseInt(results[0]["cnt"]);
+    }
+
+    protected applyFindOptions() {
+
+        // todo: convert relations: string[] to object map to simplify code
+        // todo: same with selects
+
+        if (this.expressionMap.mainAlias!.metadata) {
+
+            if (this.findOptions.relationLoadStrategy) {
+                this.expressionMap.relationLoadStrategy = this.findOptions.relationLoadStrategy
+            }
+
+            if (this.findOptions.comment) {
+                this.comment(this.findOptions.comment);
+            }
+
+            if (this.findOptions.withDeleted) {
+                this.withDeleted();
+            }
+
+            if (this.findOptions.select) {
+                const select = Array.isArray(this.findOptions.select)
+                    ? OrmUtils.propertyPathsToTruthyObject(this.findOptions.select as string[])
+                    : this.findOptions.select;
+
+                this.buildSelect(
+                    select,
+                    this.expressionMap.mainAlias!.metadata,
+                    this.expressionMap.mainAlias!.name
+                );
+            }
+
+            if (this.selects.length) {
+                this.select(this.selects);
+            }
+
+            this.selects = []
+            if (this.findOptions.relations) {
+                const relations = Array.isArray(this.findOptions.relations)
+                    ? OrmUtils.propertyPathsToTruthyObject(this.findOptions.relations)
+                    : this.findOptions.relations;
+
+                this.buildRelations(
+                    relations,
+                    typeof this.findOptions.select === "object" ? this.findOptions.select as FindOptionsSelect<any> : undefined,
+                    this.expressionMap.mainAlias!.metadata,
+                    this.expressionMap.mainAlias!.name
+                );
+                if (this.expressionMap.relationLoadStrategy === "join") {
+                    this.buildEagerRelations(
+                        relations,
+                        typeof this.findOptions.select === "object" ? this.findOptions.select as FindOptionsSelect<any> : undefined,
+                        this.expressionMap.mainAlias!.metadata,
+                        this.expressionMap.mainAlias!.name
+                    );
+                }
+            }
+            if (this.selects.length) {
+                this.addSelect(this.selects);
+            }
+
+            if (this.findOptions.where) {
+                this.conditions = this.buildWhere(
+                    this.findOptions.where,
+                    this.expressionMap.mainAlias!.metadata,
+                    this.expressionMap.mainAlias!.name
+                );
+
+                if (this.conditions.length)
+                    this.andWhere(this.conditions.substr(0, 1) !== "(" ? "(" + this.conditions + ")" : this.conditions); // temporary and where and braces
+            }
+
+            if (this.findOptions.order) {
+                this.buildOrder(
+                    this.findOptions.order,
+                    this.expressionMap.mainAlias!.metadata,
+                    this.expressionMap.mainAlias!.name
+                );
+            }
+
+            // apply joins
+            if (this.joins.length) {
+                this.joins.forEach(join => {
+                    if (join.select && !join.selection) {
+                        // if (join.selection) {
+                        //
+                        // } else {
+                            if (join.type === "inner") {
+                                this.innerJoinAndSelect(`${join.parentAlias}.${join.relationMetadata.propertyPath}`, join.alias);
+                            } else {
+                                this.leftJoinAndSelect(`${join.parentAlias}.${join.relationMetadata.propertyPath}`, join.alias);
+                            }
+                        // }
+                    } else {
+                        if (join.type === "inner") {
+                            this.innerJoin(`${join.parentAlias}.${join.relationMetadata.propertyPath}`, join.alias);
+                        } else {
+                            this.leftJoin(`${join.parentAlias}.${join.relationMetadata.propertyPath}`, join.alias);
+                        }
+                    }
+
+                    // if (join.select) {
+                    //     if (this.findOptions.loadEagerRelations !== false) {
+                    //         FindOptionsUtils.joinEagerRelations(
+                    //             this,
+                    //             join.alias,
+                    //             join.relationMetadata.inverseEntityMetadata
+                    //         );
+                    //     }
+                    // }
+                });
+            }
+
+            // if (this.conditions.length) {
+            //     this.where(this.conditions.join(" AND "));
+            // }
+
+            // apply offset
+            if (this.findOptions.skip !== undefined) {
+                // if (this.findOptions.options && this.findOptions.options.pagination === false) {
+                //     this.offset(this.findOptions.skip);
+                // } else {
+                this.skip(this.findOptions.skip);
+                // }
+            }
+
+            // apply limit
+            if (this.findOptions.take !== undefined) {
+                // if (this.findOptions.options && this.findOptions.options.pagination === false) {
+                //     this.limit(this.findOptions.take);
+                // } else {
+                this.take(this.findOptions.take);
+                // }
+            }
+
+            // apply caching options
+            if (typeof this.findOptions.cache === "number") {
+                this.cache(this.findOptions.cache);
+
+            } else if (typeof this.findOptions.cache === "boolean") {
+                this.cache(this.findOptions.cache);
+
+            } else if (typeof this.findOptions.cache === "object") {
+                this.cache(this.findOptions.cache.id, this.findOptions.cache.milliseconds);
+            }
+
+            if (this.findOptions.join) {
+                if (this.findOptions.join.leftJoin)
+                    Object.keys(this.findOptions.join.leftJoin).forEach(key => {
+                        this.leftJoin(this.findOptions.join!.leftJoin![key], key);
+                    });
+
+                if (this.findOptions.join.innerJoin)
+                    Object.keys(this.findOptions.join.innerJoin).forEach(key => {
+                        this.innerJoin(this.findOptions.join!.innerJoin![key], key);
+                    });
+
+                if (this.findOptions.join.leftJoinAndSelect)
+                    Object.keys(this.findOptions.join.leftJoinAndSelect).forEach(key => {
+                        this.leftJoinAndSelect(this.findOptions.join!.leftJoinAndSelect![key], key);
+                    });
+
+                if (this.findOptions.join.innerJoinAndSelect)
+                    Object.keys(this.findOptions.join.innerJoinAndSelect).forEach(key => {
+                        this.innerJoinAndSelect(this.findOptions.join!.innerJoinAndSelect![key], key);
+                    });
+            }
+
+            if (this.findOptions.lock) {
+                if (this.findOptions.lock.mode === "optimistic") {
+                    this.setLock(this.findOptions.lock.mode, this.findOptions.lock.version);
+                } else if (
+                    this.findOptions.lock.mode === "pessimistic_read" ||
+                    this.findOptions.lock.mode === "pessimistic_write" ||
+                    this.findOptions.lock.mode === "dirty_read" ||
+                    this.findOptions.lock.mode === "pessimistic_partial_write" ||
+                    this.findOptions.lock.mode === "pessimistic_write_or_fail" ||
+                    this.findOptions.lock.mode === "for_no_key_update"
+                ) {
+                    const tableNames = this.findOptions.lock.tables ? this.findOptions.lock.tables.map((table) => {
+                        const tableAlias = this.expressionMap.aliases.find((alias) => {
+                            return alias.metadata.tableNameWithoutPrefix === table;
+                        });
+                        if (!tableAlias) {
+                            throw new TypeORMError(`"${table}" is not part of this query`);
+                        }
+                        return this.escape(tableAlias.name);
+                    }) : undefined;
+                    this.setLock(this.findOptions.lock.mode, undefined, tableNames);
+                }
+            }
+
+            if (this.findOptions.loadRelationIds === true) {
+                this.loadAllRelationIds();
+
+            } else if (this.findOptions.loadRelationIds instanceof Object) {
+                this.loadAllRelationIds(this.findOptions.loadRelationIds as any);
+            }
+
+            if (this.findOptions.loadEagerRelations !== false) {
+                FindOptionsUtils.joinEagerRelations(
+                    this,
+                    this.expressionMap.mainAlias!.name,
+                    this.expressionMap.mainAlias!.metadata
+                );
+            }
+
+            if (this.findOptions.transaction === true) {
+                this.expressionMap.useTransaction = true;
+            }
+
+            // if (this.orderBys.length) {
+            //     this.orderBys.forEach(orderBy => {
+            //         this.addOrderBy(orderBy.alias, orderBy.direction, orderBy.nulls);
+            //     });
+            // }
+
+            // todo
+            // if (this.options.options && this.options.options.eagerRelations) {
+            //     this.queryBuilder
+            // }
+
+            // todo
+            // if (this.findOptions.options && this.findOptions.listeners === false) {
+            //     this.callListeners(false);
+            // }
+        }
+
     }
 
     /**
@@ -2054,6 +2324,42 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             if (this.expressionMap.callListeners === true && this.expressionMap.mainAlias.hasMetadata) {
                 await queryRunner.broadcaster.broadcast("Load", this.expressionMap.mainAlias.metadata, entities);
             }
+        }
+
+        if (this.expressionMap.relationLoadStrategy === "query") {
+            await Promise.all(this.relationMetadatas.map(async relation => {
+
+                const relationTarget = relation.inverseEntityMetadata.target;
+                const relationAlias = relation.inverseEntityMetadata.targetName;
+
+                const select = Array.isArray(this.findOptions.select)
+                    ? OrmUtils.propertyPathsToTruthyObject(this.findOptions.select as string[])
+                    : this.findOptions.select;
+                const relations = Array.isArray(this.findOptions.relations)
+                    ? OrmUtils.propertyPathsToTruthyObject(this.findOptions.relations)
+                    : this.findOptions.relations;
+
+                const queryBuilder = this.createQueryBuilder()
+                    .select(relationAlias)
+                    .from(relationTarget, relationAlias)
+                    .setFindOptions({
+                        select: select ? OrmUtils.deepValue(select, relation.propertyPath) : undefined,
+                        order: this.findOptions.order ? OrmUtils.deepValue(this.findOptions.order, relation.propertyPath) : undefined,
+                        relations: relations ? OrmUtils.deepValue(relations, relation.propertyPath) : undefined,
+                        withDeleted: this.findOptions.withDeleted,
+                        relationLoadStrategy: this.findOptions.relationLoadStrategy,
+                    });
+                if (entities.length > 0) {
+                    const relatedEntityGroups: any[] = await this.connection.relationIdLoader.loadManyToManyRelationIdsAndGroup(relation, entities, undefined, queryBuilder);
+                    entities.forEach(entity => {
+                        const relatedEntityGroup = relatedEntityGroups.find(group => group.entity === entity);
+                        if (relatedEntityGroup) {
+                            const value = relatedEntityGroup.related === undefined ? null : relatedEntityGroup.related;
+                            relation.setEntityValue(entity, value);
+                        }
+                    });
+                }
+            }));
         }
 
         return {
@@ -2176,6 +2482,379 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
      */
     protected obtainQueryRunner() {
         return this.queryRunner || this.connection.createQueryRunner("slave");
+    }
+
+    protected buildSelect(select: FindOptionsSelect<any>, metadata: EntityMetadata, alias: string, embedPrefix?: string) {
+        for (let key in select) {
+            if (select[key] === undefined)
+                continue;
+
+            const propertyPath = embedPrefix ? embedPrefix + "." + key : key;
+            const column = metadata.findColumnWithPropertyPathStrict(propertyPath);
+            const embed = metadata.findEmbeddedWithPropertyPath(propertyPath);
+            const relation = metadata.findRelationWithPropertyPath(propertyPath);
+
+            if (!embed && !column && !relation)
+                throw new EntityPropertyNotFoundError(propertyPath, metadata);
+
+            if (column) {
+                this.selects.push(alias + "." + propertyPath);
+                // this.addSelect(alias + "." + propertyPath);
+
+            } else if (embed) {
+                this.buildSelect(select[key] as FindOptionsOrder<any>, metadata, alias, key);
+
+                // } else if (relation) {
+                //     const joinAlias = alias + "_" + relation.propertyName;
+                //     const existJoin = this.joins.find(join => join.alias === joinAlias);
+                //     if (!existJoin) {
+                //         this.joins.push({
+                //             type: "left",
+                //             select: false,
+                //             alias: joinAlias,
+                //             parentAlias: alias,
+                //             relationMetadata: relation
+                //         });
+                //     }
+                //     this.buildOrder(select[key] as FindOptionsOrder<any>, relation.inverseEntityMetadata, joinAlias);
+            }
+        }
+    }
+
+    protected buildRelations(
+        relations: FindOptionsRelation<any>,
+        selection: FindOptionsSelect<any> | undefined,
+        metadata: EntityMetadata,
+        alias: string,
+        embedPrefix?: string
+    ) {
+        if (!relations)
+            return;
+
+        Object.keys(relations).forEach(relationName => {
+            const relationValue = (relations as any)[relationName];
+            const propertyPath = embedPrefix ? embedPrefix + "." + relationName : relationName;
+            const embed = metadata.findEmbeddedWithPropertyPath(propertyPath);
+            const relation = metadata.findRelationWithPropertyPath(propertyPath);
+            if (!embed && !relation)
+                throw new EntityPropertyNotFoundError(propertyPath, metadata);
+
+            if (embed) {
+                this.buildRelations(
+                    relationValue,
+                    typeof selection === "object" ? OrmUtils.deepValue(selection, embed.propertyPath) : undefined,
+                    metadata,
+                    alias,
+                    propertyPath
+                );
+            } else if (relation) {
+                const joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                if (relationValue === true || typeof relationValue === "object") {
+                    if (this.expressionMap.relationLoadStrategy === "query") {
+                        this.relationMetadatas.push(relation);
+                    } else { // join
+                        this.joins.push({
+                            type: "left",
+                            select: true,
+                            selection: selection && typeof selection[relationName] === "object" ? selection[relationName] as FindOptionsSelect<any> : undefined,
+                            alias: joinAlias,
+                            parentAlias: alias,
+                            relationMetadata: relation
+                        });
+
+                        if (selection && typeof selection[relationName] === "object") {
+                            this.buildSelect(
+                                selection[relationName] as FindOptionsSelect<any>,
+                                relation.inverseEntityMetadata,
+                                joinAlias
+                            )
+                        }
+                    }
+                }
+
+                if (typeof relationValue === "object" && this.expressionMap.relationLoadStrategy === "join") {
+                    this.buildRelations(
+                        relationValue,
+                        typeof selection === "object" ? OrmUtils.deepValue(selection, relation.propertyPath) : undefined,
+                        relation.inverseEntityMetadata,
+                        joinAlias,
+                        undefined
+                    );
+                }
+            }
+        });
+    }
+
+    protected buildEagerRelations(
+        relations: FindOptionsRelation<any>,
+        selection: FindOptionsSelect<any> | undefined,
+        metadata: EntityMetadata,
+        alias: string,
+        embedPrefix?: string
+    ) {
+        if (!relations)
+            return;
+
+        Object.keys(relations).forEach(relationName => {
+            const relationValue = (relations as any)[relationName];
+            const propertyPath = embedPrefix ? embedPrefix + "." + relationName : relationName;
+            const embed = metadata.findEmbeddedWithPropertyPath(propertyPath);
+            const relation = metadata.findRelationWithPropertyPath(propertyPath);
+            if (!embed && !relation)
+                throw new EntityPropertyNotFoundError(propertyPath, metadata);
+
+            if (embed) {
+                this.buildEagerRelations(
+                    relationValue,
+                    typeof selection === "object" ? OrmUtils.deepValue(selection, embed.propertyPath) : undefined,
+                    metadata,
+                    alias,
+                    propertyPath
+                );
+            } else if (relation) {
+                const joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                if (relationValue === true || typeof relationValue === "object") {
+                    relation.inverseEntityMetadata.eagerRelations.forEach(eagerRelation => {
+                        const eagerRelationJoinAlias = joinAlias + "_" + eagerRelation.propertyPath.replace("\.", "_");
+
+                        const existJoin = this.joins.find(join => join.alias === eagerRelationJoinAlias);
+                        if (!existJoin) {
+                            this.joins.push({
+                                type: "left",
+                                select: true,
+                                alias: eagerRelationJoinAlias,
+                                parentAlias: joinAlias,
+                                selection: undefined,
+                                relationMetadata: eagerRelation
+                            });
+                        }
+                    })
+
+                    if (selection && typeof selection[relationName] === "object") {
+                        this.buildSelect(
+                            selection[relationName] as FindOptionsSelect<any>,
+                            relation.inverseEntityMetadata,
+                            joinAlias
+                        )
+                    }
+                }
+
+                if (typeof relationValue === "object") {
+                    this.buildEagerRelations(
+                        relationValue,
+                        typeof selection === "object" ? OrmUtils.deepValue(selection, relation.propertyPath) : undefined,
+                        relation.inverseEntityMetadata,
+                        joinAlias,
+                        undefined
+                    );
+                }
+            }
+        });
+    }
+
+    protected buildOrder(order: FindOptionsOrder<any>, metadata: EntityMetadata, alias: string, embedPrefix?: string) {
+        for (let key in order) {
+            if (order[key] === undefined)
+                continue;
+
+            const propertyPath = embedPrefix ? embedPrefix + "." + key : key;
+            const column = metadata.findColumnWithPropertyPathStrict(propertyPath);
+            const embed = metadata.findEmbeddedWithPropertyPath(propertyPath);
+            const relation = metadata.findRelationWithPropertyPath(propertyPath);
+
+            if (!embed && !column && !relation)
+                throw new EntityPropertyNotFoundError(propertyPath, metadata);
+
+            if (column) {
+                let direction = order[key] instanceof Object ? (order[key] as any).direction : order[key];
+                direction = direction === "DESC" || direction === "desc" || direction === -1 ? "DESC" : "ASC";
+                let nulls = order[key] instanceof Object ? (order[key] as any).nulls : undefined;
+                nulls = nulls === "first" ? "NULLS FIRST" : nulls === "last" ? "NULLS LAST" : undefined;
+
+                this.addOrderBy(`${alias}.${propertyPath}`, direction, nulls)
+                // this.orderBys.push({ alias: alias + "." + propertyPath, direction, nulls });
+
+            } else if (embed) {
+                this.buildOrder(order[key] as FindOptionsOrder<any>, metadata, alias, propertyPath);
+
+            } else if (relation) {
+                const joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+
+                // todo: use expressionMap.joinAttributes, and create a new one using
+                //  const joinAttribute = new JoinAttribute(this.connection, this.expressionMap);
+
+                const existJoin = this.joins.find(join => join.alias === joinAlias);
+                if (!existJoin) {
+                    this.joins.push({
+                        type: "left",
+                        select: false,
+                        alias: joinAlias,
+                        parentAlias: alias,
+                        selection: undefined,
+                        relationMetadata: relation
+                    });
+                }
+                this.buildOrder(order[key] as FindOptionsOrder<any>, relation.inverseEntityMetadata, joinAlias);
+            }
+        }
+    }
+
+    protected buildWhere(where: FindConditions<any>, metadata: EntityMetadata, alias: string, embedPrefix?: string) {
+        let condition: string = "";
+        // let parameterIndex = Object.keys(this.expressionMap.nativeParameters).length;
+        if (where instanceof Array) {
+            condition = ("(" + where.map(whereItem => {
+                return this.buildWhere(whereItem, metadata, alias, embedPrefix);
+            }).filter(condition => !!condition).map(condition => "(" + condition + ")").join(" OR ") + ")");
+
+        } else {
+            let andConditions: string[] = [];
+            for (let key in where) {
+                if (where[key] === undefined)
+                    continue;
+
+                const propertyPath = embedPrefix ? embedPrefix + "." + key : key;
+                const column = metadata.findColumnWithPropertyPathStrict(propertyPath);
+                const embed = metadata.findEmbeddedWithPropertyPath(propertyPath);
+                const relation = metadata.findRelationWithPropertyPath(propertyPath);
+
+                if (!embed && !column && !relation)
+                    throw new EntityPropertyNotFoundError(propertyPath, metadata);
+
+                if (column) {
+
+                    const aliasPath = `${alias}.${propertyPath}`;
+                    // const parameterName = alias + "_" + propertyPath.split(".").join("_") + "_" + parameterIndex;
+
+                    // todo: we need to handle other operators as well?
+                    let parameterValue = where[key]
+                    if (where[key] instanceof EqualOperator) {
+                        parameterValue = where[key].value
+                    }
+                    if (column.transformer) {
+                        parameterValue = ApplyValueTransformers.transformTo(column.transformer, parameterValue)
+                    }
+
+                    // if (parameterValue === null) {
+                    //     andConditions.push(`${aliasPath} IS NULL`);
+                    //
+                    // } else if (parameterValue instanceof FindOperator) {
+                    //     // let parameters: any[] = [];
+                    //     // if (parameterValue.useParameter) {
+                    //     //     const realParameterValues: any[] = parameterValue.multipleParameters ? parameterValue.value : [parameterValue.value];
+                    //     //     realParameterValues.forEach((realParameterValue, realParameterValueIndex) => {
+                    //     //
+                    //     //         // don't create parameters for number to prevent max number of variables issues as much as possible
+                    //     //         if (typeof realParameterValue === "number") {
+                    //     //             parameters.push(realParameterValue);
+                    //     //
+                    //     //         } else {
+                    //     //             this.expressionMap.nativeParameters[parameterName + realParameterValueIndex] = realParameterValue;
+                    //     //             parameterIndex++;
+                    //     //             parameters.push(this.connection.driver.createParameter(parameterName + realParameterValueIndex, parameterIndex - 1));
+                    //     //         }
+                    //     //     });
+                    //     // }
+                    //     andConditions.push(
+                    //         this.createWhereConditionExpression(this.getWherePredicateCondition(aliasPath, parameterValue))
+                    //         // parameterValue.toSql(this.connection, aliasPath, parameters));
+                    //     )
+                    //
+                    // } else {
+                    //     this.expressionMap.nativeParameters[parameterName] = parameterValue;
+                    //     parameterIndex++;
+                    //     const parameter = this.connection.driver.createParameter(parameterName, parameterIndex - 1);
+                    //     andConditions.push(`${aliasPath} = ${parameter}`);
+                    // }
+
+                    andConditions.push(
+                        this.createWhereConditionExpression(this.getWherePredicateCondition(aliasPath, parameterValue))
+                        // parameterValue.toSql(this.connection, aliasPath, parameters));
+                    )
+
+                    // this.conditions.push(`${alias}.${propertyPath} = :${paramName}`);
+                    // this.expressionMap.parameters[paramName] = where[key]; // todo: handle functions and other edge cases
+
+                } else if (embed) {
+                    const condition = this.buildWhere(where[key], metadata, alias, propertyPath);
+                    if (condition)
+                        andConditions.push(condition);
+
+                } else if (relation) {
+
+                    // if all properties of where are undefined we don't need to join anything
+                    // this can happen when user defines map with conditional queries inside
+                    if (where[key] instanceof Object) {
+                        const allAllUndefined = Object.keys(where[key]).every(k => where[key][k] === undefined);
+                        if (allAllUndefined) {
+                            continue;
+                        }
+                    }
+
+                    if (where[key] instanceof FindOperator) {
+                        if (where[key].type === "moreThan" || where[key].type === "lessThan") {
+                            const sqlOperator = where[key].type === "moreThan" ? ">" : "<";
+                            // basically relation count functionality
+                            const qb: QueryBuilder<any> = this.subQuery();
+                            if (relation.isManyToManyOwner) {
+                                qb.select("COUNT(*)")
+                                    .from(relation.joinTableName, relation.joinTableName)
+                                    .where(relation.joinColumns.map(column => {
+                                        return `${relation.joinTableName}.${column.propertyName} = ${alias}.${column.referencedColumn!.propertyName}`;
+                                    }).join(" AND "));
+
+                            } else if (relation.isManyToManyNotOwner) {
+                                qb.select("COUNT(*)")
+                                    .from(relation.inverseRelation!.joinTableName, relation.inverseRelation!.joinTableName)
+                                    .where(relation.inverseRelation!.inverseJoinColumns.map(column => {
+                                        return `${relation.inverseRelation!.joinTableName}.${column.propertyName} = ${alias}.${column.referencedColumn!.propertyName}`;
+                                    }).join(" AND "));
+
+                            } else if (relation.isOneToMany) {
+                                qb.select("COUNT(*)")
+                                    .from(relation.inverseEntityMetadata.target, relation.inverseEntityMetadata.tableName)
+                                    .where(relation.inverseRelation!.joinColumns.map(column => {
+                                        return `${relation.inverseEntityMetadata.tableName}.${column.propertyName} = ${alias}.${column.referencedColumn!.propertyName}`;
+                                    }).join(" AND "));
+
+                            } else {
+                                throw new Error(`This relation isn't supported by given find operator`);
+                            }
+                            // this
+                            //     .addSelect(qb.getSql(), relation.propertyAliasName + "_cnt")
+                            //     .andWhere(this.escape(relation.propertyAliasName + "_cnt") + " " + sqlOperator + " " + parseInt(where[key].value));
+                            this.andWhere((qb.getSql()) + " " + sqlOperator + " " + parseInt(where[key].value));
+                        }
+
+                    } else {
+
+                        const joinAlias = alias + "_" + relation.propertyName;
+                        const existJoin = this.joins.find(join => join.alias === joinAlias);
+                        if (!existJoin) {
+                            this.joins.push({
+                                type: "inner",
+                                select: false,
+                                selection: undefined,
+                                alias: joinAlias,
+                                parentAlias: alias,
+                                relationMetadata: relation
+                            });
+                        } else {
+                            if (existJoin.type === "left")
+                                existJoin.type = "inner";
+                        }
+
+                        const condition = this.buildWhere(where[key], relation.inverseEntityMetadata, joinAlias);
+                        if (condition) {
+                            andConditions.push(condition);
+                            // parameterIndex = Object.keys(this.expressionMap.nativeParameters).length;
+                        }
+                    }
+                }
+            }
+            condition = andConditions.join(" AND ");
+        }
+        return condition;
     }
 
 }

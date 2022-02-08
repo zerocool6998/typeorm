@@ -17,10 +17,10 @@ import {OrderByCondition} from "../find-options/OrderByCondition";
 import {LimitOnUpdateNotSupportedError} from "../error/LimitOnUpdateNotSupportedError";
 import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {UpdateValuesMissingError} from "../error/UpdateValuesMissingError";
-import {EntityColumnNotFound} from "../error/EntityColumnNotFound";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
+import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -391,7 +391,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 const columns = metadata.findColumnsWithPropertyPath(propertyPath);
 
                 if (columns.length <= 0) {
-                    throw new EntityColumnNotFound(propertyPath);
+                    throw new EntityPropertyNotFoundError(propertyPath, metadata);
                 }
 
                 columns.forEach(column => {

@@ -1,3 +1,300 @@
+## [0.3.0]() (2022-03-01)
+
+Changes in the version includes changes from the `next` branch and `typeorm@next` version.
+They were pending their migration from 2018. Finally, they are in the master branch and master version.
+
+### FEATURES
+
+Gives you users who have photos.
+
+* added new option on relation load strategy called `relationLoadStrategy`.
+Relation load strategy is used on entity load and their relations load when you query entities from the database.
+Used on `find*` methods and `QueryBuilder`. Value can be set to `join` or `query`.
+
+    * `join` loads relations using SQL's `JOIN`
+    * `query` executes separate SQL queries for each relation
+
+Default is `join`, but default can be set in `ConnectionOptions`:
+
+```ts
+createConnection({
+    /* ... */
+    relationLoadStrategy: "query"
+})
+```
+
+Also, it can be set per-query in `find*` methods:
+
+```ts
+userRepository.find({
+    relations: {
+        photos: true
+    }
+})
+```
+
+And QueryBuilder:
+
+```ts
+userRepository
+    .createQueryBuilder()
+    .setRelationLoadStrategy("query")
+```
+
+For queries returning big amount of data, we recommend to use `query` strategy,
+because it can be a more performant approach to query relations.
+
+* new `select` type signature in `FindOptions` (used in `find*` methods):
+
+```ts
+userRepository.find({
+    select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+    }
+})
+```
+
+Also, now it's possible to specify select columns of the loaded relations:
+
+```ts
+userRepository.find({
+    select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        photo: {
+            id: true,
+            filename: true,
+            album: {
+                id: true,
+                name: true,
+            }
+        }
+    }
+})
+```
+
+* new `relations` type signature in `FindOptions` (used in `find*` methods):
+
+```ts
+userRepository.find({
+    relations: {
+        contacts: true,
+        photos: true,
+    }
+})
+```
+
+To load nested relations use a following signature:
+
+```ts
+userRepository.find({
+    relations: {
+        contacts: true,
+        photos: {
+            album: true,
+        },
+    }
+})
+```
+
+* new `order` type signature in `FindOptions` (used in `find*` methods):
+
+```ts
+userRepository.find({
+    order: {
+        id: "ASC"
+    }
+})
+```
+
+Now supports nested order by-s:
+
+```ts
+userRepository.find({
+    order: {
+        photos: {
+            album: {
+                name: "ASC"
+            },
+        },
+    }
+})
+```
+
+* new `where` type signature in `FindOptions` (used in `find*` methods) now allows to build nested statements with conditional relations, for example:
+
+```ts
+userRepository.find({
+    where: {
+        photos: {
+            album: {
+                name: "profile"
+            }
+        }
+    }
+})
+```
+
+Gives you users who have photos in their "profile" album.
+
+* `FindOperator`-s can be applied for relations in `where` statement, for example:
+
+```ts
+userRepository.find({
+    where: {
+        photos: MoreThan(10),
+    }
+})
+```
+
+Gives you users with more than 10 photos.
+
+* `boolean` can be applied for relations in `where` statement, for example:
+
+```ts
+userRepository.find({
+    where: {
+        photos: true
+    }
+})
+```
+
+### DEPRECATIONS
+
+* `select` in `FindOptions` (used in `find*` methods) used as an array of property names is deprecated.
+Now you should use a new object-literal notation. Example:
+
+Deprecated way of loading entity relations:
+
+```ts
+userRepository.find({
+    select: ["id", "firstName", "lastName"]
+})
+```
+
+New way of loading entity relations:
+
+```ts
+userRepository.find({
+    select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+    }
+})
+```
+
+This change is due to type-safety improvement new `select` signature brings.
+
+* `relations` in `FindOptions` (used in `find*` methods) used as an array of relation names is deprecated.
+Now you should use a new object-literal notation. Example:
+
+Deprecated way of loading entity relations:
+
+```ts
+userRepository.find({
+    relations: ["contacts", "photos", "photos.album"]
+})
+```
+
+New way of loading entity relations:
+
+```ts
+userRepository.find({
+    relations: {
+        contacts: true,
+        photos: {
+            album: true
+        }
+    }
+})
+```
+
+This change is due to type-safety improvement new `relations` signature brings.
+
+* `join` in `FindOptions` (used in `find*` methods) is deprecated. Use `QueryBuilder` to build queries containing manual joins.
+
+* all deprecated signatures will be removed in `0.4.0`
+
+### BREAKING CHANGES
+
+* if you had entity properties of a non-primitive type (except Buffer) defined as columns,
+then you won't be able to use it in `find*`'s `where`. Example:
+
+Before for the `@Column(/*...*/) membership: MembershipKind` you could have a query like:
+
+```ts
+userRepository.find({
+    membership: new MembershipKind("premium")
+})
+```
+
+now, you need to wrap this value into `Equal` operator:
+
+```ts
+userRepository.find({
+    membership: Equal(new MembershipKind("premium"))
+})
+```
+
+This change is due to type-safety improvement new `where` signature brings.
+
+* `order` in `FindOptions` (used in `find*` methods) doesn't support ordering by relations anymore.
+Define relation columns, and order by them instead.
+
+* `where` in `FindOptions` (used in `find*` methods) previously supported `ObjectLiteral` and `string` types.
+Now both signatures were removed. ObjectLiteral was removed because it seriously breaks the type safety,
+and `string` doesn't make sense in the context of `FindOptions`. Use `QueryBuilder` instead.
+
+* `MongoRepository` and `MongoEntityManager` now use new types called `MongoFindManyOptions` and `MongoFindOneOptions`
+for their `find*` methods.
+
+* `primary relation` (e.g. `@ManyToOne(() => User, { primary: true }) user: User`) support is removed.
+You still have an ability to use foreign keys as your primary keys,
+however now you must explicitly define a column marked as primary.
+
+Example, before:
+
+```ts
+@ManyToOne(() => User, { primary: true })
+user: User
+```
+
+Now:
+
+```ts
+@PrimaryColumn()
+userId: number
+
+@ManyToOne(() => User)
+user: User
+```
+
+Primary column name must match the relation name + join column name on related entity.
+If related entity has multiple primary keys, and you want to point to multiple primary keys,
+you can define multiple primary columns the same way:
+
+```ts
+@PrimaryColumn()
+userFirstName: string
+
+@PrimaryColumn()
+userLastName: string
+
+@ManyToOne(() => User)
+user: User
+```
+
+This change was required to simplify ORM internals and introduce new features.
+
+### WHAT WAS NOT PORTED FROM NEXT BRANCH
+
+* `observers` - we will consider returning them back with new API in future versions
+* `alternative find operators` - using `$any`, `$in`, `$like` and other operators in `where` condition.
+
 ## [0.2.41](https://github.com/typeorm/typeorm/compare/0.2.40...0.2.41) (2021-11-18)
 
 ### Bug Fixes
