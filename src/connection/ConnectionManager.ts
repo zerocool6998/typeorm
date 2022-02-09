@@ -6,6 +6,8 @@ import {AlreadyHasActiveConnectionError} from "../error/AlreadyHasActiveConnecti
 /**
  * ConnectionManager is used to store and manage multiple orm connections.
  * It also provides useful factory methods to simplify connection creation.
+ *
+ * @deprecated
  */
 export class ConnectionManager {
     /**

@@ -36,6 +36,8 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
 
 /**
  * Reads connection options stored in ormconfig configuration file.
+ *
+ * @deprecated
  */
 export async function getConnectionOptions(connectionName: string = "default"): Promise<ConnectionOptions> {
     return new ConnectionOptionsReader().get(connectionName);
@@ -43,6 +45,8 @@ export async function getConnectionOptions(connectionName: string = "default"): 
 
 /**
  * Gets a ConnectionManager which creates connections.
+ *
+ * @deprecated
  */
 export function getConnectionManager(): ConnectionManager {
     return getFromContainer(ConnectionManager);
@@ -51,16 +55,22 @@ export function getConnectionManager(): ConnectionManager {
 /**
  * Creates a new connection and registers it in the manager.
  * Only one connection from ormconfig will be created (name "default" or connection without name).
+ *
+ * @deprecated
  */
 export async function createConnection(): Promise<Connection>;
 
 /**
  * Creates a new connection from the ormconfig file with a given name.
+ *
+ * @deprecated
  */
 export async function createConnection(name: string): Promise<Connection>;
 
 /**
  * Creates a new connection and registers it in the manager.
+ *
+ * @deprecated
  */
 export async function createConnection(options: ConnectionOptions): Promise<Connection>;
 
@@ -70,6 +80,8 @@ export async function createConnection(options: ConnectionOptions): Promise<Conn
  * If connection options were not specified, then it will try to create connection automatically,
  * based on content of ormconfig (json/js/yml/xml/env) file or environment variables.
  * Only one connection from ormconfig will be created (name "default" or connection without name).
+ *
+ * @deprecated
  */
 export async function createConnection(optionsOrName?: any): Promise<Connection> {
     const connectionName = typeof optionsOrName === "string" ? optionsOrName : "default";
@@ -83,6 +95,8 @@ export async function createConnection(optionsOrName?: any): Promise<Connection>
  * If connection options were not specified, then it will try to create connection automatically,
  * based on content of ormconfig (json/js/yml/xml/env) file or environment variables.
  * All connections from the ormconfig will be created.
+ *
+ * @deprecated
  */
 export async function createConnections(options?: ConnectionOptions[]): Promise<Connection[]> {
     if (!options)
@@ -98,6 +112,8 @@ export async function createConnections(options?: ConnectionOptions[]): Promise<
 /**
  * Gets connection from the connection manager.
  * If connection name wasn't specified, then "default" connection will be retrieved.
+ *
+ * @deprecated
  */
 export function getConnection(connectionName: string = "default"): Connection {
     return getConnectionManager().get(connectionName);
@@ -106,6 +122,8 @@ export function getConnection(connectionName: string = "default"): Connection {
 /**
  * Gets entity manager from the connection.
  * If connection name wasn't specified, then "default" connection will be retrieved.
+ *
+ * @deprecated
  */
 export function getManager(connectionName: string = "default"): EntityManager {
     return getConnectionManager().get(connectionName).manager;
@@ -114,6 +132,8 @@ export function getManager(connectionName: string = "default"): EntityManager {
 /**
  * Gets MongoDB entity manager from the connection.
  * If connection name wasn't specified, then "default" connection will be retrieved.
+ *
+ * @deprecated
  */
 export function getMongoManager(connectionName: string = "default"): MongoEntityManager {
     return getConnectionManager().get(connectionName).manager as MongoEntityManager;
@@ -123,6 +143,8 @@ export function getMongoManager(connectionName: string = "default"): MongoEntity
  * Gets Sqljs entity manager from connection name.
  * "default" connection is used, when no name is specified.
  * Only works when Sqljs driver is used.
+ *
+ * @deprecated
  */
 export function getSqljsManager(connectionName: string = "default"): SqljsEntityManager {
     return getConnectionManager().get(connectionName).manager as SqljsEntityManager;
@@ -130,6 +152,8 @@ export function getSqljsManager(connectionName: string = "default"): SqljsEntity
 
 /**
  * Gets repository for the given entity class.
+ *
+ * @deprecated
  */
 export function getRepository<Entity>(entityClass: EntityTarget<Entity>, connectionName: string = "default"): Repository<Entity> {
     return getConnectionManager().get(connectionName).getRepository<Entity>(entityClass);
@@ -137,6 +161,8 @@ export function getRepository<Entity>(entityClass: EntityTarget<Entity>, connect
 
 /**
  * Gets tree repository for the given entity class.
+ *
+ * @deprecated
  */
 export function getTreeRepository<Entity>(entityClass: EntityTarget<Entity>, connectionName: string = "default"): TreeRepository<Entity> {
     return getConnectionManager().get(connectionName).getTreeRepository<Entity>(entityClass);
@@ -144,6 +170,8 @@ export function getTreeRepository<Entity>(entityClass: EntityTarget<Entity>, con
 
 /**
  * Gets tree repository for the given entity class.
+ *
+ * @deprecated
  */
 export function getCustomRepository<T>(customRepository: ObjectType<T>, connectionName: string = "default"): T {
     return getConnectionManager().get(connectionName).getCustomRepository(customRepository);
@@ -151,6 +179,8 @@ export function getCustomRepository<T>(customRepository: ObjectType<T>, connecti
 
 /**
  * Gets mongodb repository for the given entity class or name.
+ *
+ * @deprecated
  */
 export function getMongoRepository<Entity>(entityClass: EntityTarget<Entity>, connectionName: string = "default"): MongoRepository<Entity> {
     return getConnectionManager().get(connectionName).getMongoRepository<Entity>(entityClass);
@@ -158,6 +188,8 @@ export function getMongoRepository<Entity>(entityClass: EntityTarget<Entity>, co
 
 /**
  * Creates a new query builder.
+ *
+ * @deprecated
  */
 export function createQueryBuilder<Entity>(entityClass?: EntityTarget<Entity>, alias?: string, connectionName: string = "default"): SelectQueryBuilder<Entity> {
     if (entityClass) {

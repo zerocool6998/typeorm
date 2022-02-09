@@ -5,6 +5,7 @@ import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {QueryRunner} from "../../query-runner/QueryRunner";
 import {DriverUtils} from "../../driver/DriverUtils";
 import { TypeORMError } from "../../error/TypeORMError";
+import {OrmUtils} from "../../util/OrmUtils";
 
 export class RelationIdLoader {
 
@@ -22,7 +23,6 @@ export class RelationIdLoader {
     // -------------------------------------------------------------------------
 
     async load(rawEntities: any[]): Promise<RelationIdLoadResult[]> {
-
         const promises = this.relationIdAttributes.map(async relationIdAttr => {
 
             if (relationIdAttr.relation.isManyToOne || relationIdAttr.relation.isOneToOneOwner) {
@@ -114,12 +114,13 @@ export class RelationIdLoader {
                 // SELECT category.id, category.postId FROM category category ON category.postId = :postId
                 const qb = this.connection.createQueryBuilder(this.queryRunner);
 
-                joinColumns.forEach(joinColumn => {
-                    qb.addSelect(tableAlias + "." + joinColumn.propertyPath, joinColumn.databaseName);
-                });
+                const columns = OrmUtils.uniq([
+                    ...joinColumns,
+                    ...relation.inverseRelation!.entityMetadata.primaryColumns
+                ], column => column.propertyPath)
 
-                relation.inverseRelation!.entityMetadata.primaryColumns.forEach(primaryColumn => {
-                    qb.addSelect(tableAlias + "." + primaryColumn.propertyPath, primaryColumn.databaseName);
+                columns.forEach(joinColumn => {
+                    qb.addSelect(tableAlias + "." + joinColumn.propertyPath, joinColumn.databaseName);
                 });
 
                 qb.from(table, tableAlias)

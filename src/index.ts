@@ -118,6 +118,8 @@ export * from "./driver/types/DatabaseType";
 export * from "./driver/types/ReplicationMode";
 export * from "./driver/sqlserver/MssqlParameter";
 
+export * from "./data-source";
+
 export {ConnectionOptionsReader} from "./connection/ConnectionOptionsReader";
 export {Connection} from "./connection/Connection";
 export {ConnectionManager} from "./connection/ConnectionManager";

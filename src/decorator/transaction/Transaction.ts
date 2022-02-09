@@ -18,6 +18,8 @@ import { TreeRepository } from "../../repository/TreeRepository";
  *
  * If you want to use repositories instead of bare entity manager,
  * then use @TransactionRepository() decorator.
+ *
+ * @deprecated
  */
 export function Transaction(connectionName?: string): MethodDecorator;
 export function Transaction(options?: TransactionOptions): MethodDecorator;

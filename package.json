@@ -9,6 +9,9 @@
     "name": "Umed Khudoiberdiev",
     "email": "pleerock.me@gmail.com"
   },
+  "engines": {
+    "node": ">= 12.9.0"
+  },
   "exports": {
     ".": {
       "import": "./index.mjs",

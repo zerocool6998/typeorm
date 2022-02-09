@@ -23,7 +23,6 @@ export class Uuid {
 class UuidTransformer implements ValueTransformer {
 
     to(value: Uuid): string {
-        console.log("value", value)
         return value.getValue();
     }
 

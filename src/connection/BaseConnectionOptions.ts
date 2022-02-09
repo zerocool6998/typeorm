@@ -132,6 +132,14 @@ export interface BaseConnectionOptions {
     readonly relationLoadStrategy?: "join" | "query"
 
     /**
+     * Optionally applied "typename" to the model.
+     * If set, then each hydrated model will have this property with the target model / entity name inside.
+     *
+     * (works like a discriminator property).
+     */
+    readonly typename?: string;
+
+    /**
      * Allows to setup cache options.
      */
     readonly cache?: boolean|{

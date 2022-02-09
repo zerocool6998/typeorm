@@ -55,8 +55,6 @@ describe("relations > multiple-primary-keys > one-to-many", () => {
             // relationLoadStrategy: "join"
         });
 
-        console.log("persistedSettings", user)
-
 		expect(user!).not.to.be.undefined;
 		expect(user!.settings).to.be.an("array");
 		expect(user!.settings!.length).to.equal(2);
@@ -99,15 +97,17 @@ describe("relations > multiple-primary-keys > one-to-many", () => {
 		await insertSimpleTestData(connection);
 		const userRepo = connection.getRepository(User);
 
-		await userRepo.save([{
-			id:1,
-			settings:[]
-		}]);
+		await userRepo.save({
+			id: 1,
+			settings: []
+		});
 
-		const user = await connection.getRepository(User).findOne({relations:["settings"]});
+		const user = await connection.getRepository(User).findOne({
+            relations: ["settings"]
+        });
 
 		// check that no relational items are found
-		expect(user!).not.to.be.undefined;
+		expect(user!).not.to.be.null;
 		expect(user!.settings).to.be.an("array");
 		expect(user!.settings!.length).to.equal(0);
 

@@ -2030,7 +2030,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     this.expressionMap.mainAlias!.metadata,
                     this.expressionMap.mainAlias!.name
                 );
-                if (this.expressionMap.relationLoadStrategy === "join") {
+                if (this.findOptions.loadEagerRelations !== false && this.expressionMap.relationLoadStrategy === "join") {
                     this.buildEagerRelations(
                         relations,
                         typeof this.findOptions.select === "object" ? this.findOptions.select as FindOptionsSelect<any> : undefined,
@@ -2040,6 +2040,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 }
             }
             if (this.selects.length) {
+                console.log("adding following selects: ", this.selects)
                 this.addSelect(this.selects);
             }
 
@@ -2567,6 +2568,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                         });
 
                         if (selection && typeof selection[relationName] === "object") {
+                            console.log("sub selection", relationName)
                             this.buildSelect(
                                 selection[relationName] as FindOptionsSelect<any>,
                                 relation.inverseEntityMetadata,
@@ -2635,15 +2637,15 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                                 relationMetadata: eagerRelation
                             });
                         }
-                    })
 
-                    if (selection && typeof selection[relationName] === "object") {
-                        this.buildSelect(
-                            selection[relationName] as FindOptionsSelect<any>,
-                            relation.inverseEntityMetadata,
-                            joinAlias
-                        )
-                    }
+                        if (selection && typeof selection[relationName] === "object") {
+                            this.buildSelect(
+                                selection[relationName] as FindOptionsSelect<any>,
+                                relation.inverseEntityMetadata,
+                                joinAlias
+                            )
+                        }
+                    })
                 }
 
                 if (typeof relationValue === "object") {

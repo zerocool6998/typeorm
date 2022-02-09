@@ -25,7 +25,6 @@ describe("github issues > #2216 - Ability to capture Postgres notifications in l
             connections = await createTestingConnections({
                 enabledDrivers: ["postgres"],
                 entities: [Foo],
-                logging: true,
                 createLogger: () => new SimpleConsoleLogger(),
             });
         });
@@ -73,7 +72,6 @@ describe("github issues > #2216 - Ability to capture Postgres notifications in l
             connections = await createTestingConnections({
                 enabledDrivers: ["postgres"],
                 entities: [Foo],
-                logging: true,
                 createLogger: () => new SimpleConsoleLogger(),
                 driverSpecific: { logNotifications: true },
             });

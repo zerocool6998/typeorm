@@ -3,6 +3,8 @@ import {TransactionEntityMetadataArgs} from "../../metadata-args/TransactionEnti
 
 /**
  * Injects transaction's entity manager into the method wrapped with @Transaction decorator.
+ *
+ * @deprecated
  */
 export function TransactionManager(): ParameterDecorator {
     return function (object: Object, methodName: string, index: number) {

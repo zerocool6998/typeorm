@@ -21,9 +21,6 @@ import {CustomRepositoryCannotInheritRepositoryError} from "../error/CustomRepos
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {MongoDriver} from "../driver/mongodb/MongoDriver";
-import {RepositoryNotFoundError} from "../error/RepositoryNotFoundError";
-import {RepositoryNotTreeError} from "../error/RepositoryNotTreeError";
-import {RepositoryFactory} from "../repository/RepositoryFactory";
 import {TreeRepositoryNotSupportedError} from "../error/TreeRepositoryNotSupportedError";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import {EntityPersistExecutor} from "../persistence/EntityPersistExecutor";
@@ -66,9 +63,14 @@ export class EntityManager {
     // -------------------------------------------------------------------------
 
     /**
-     * Once created and then reused by en repositories.
+     * Once created and then reused by repositories.
      */
     protected repositories: Repository<any>[] = [];
+
+    /**
+     * Once created and then reused by repositories.
+     */
+    protected treeRepositories: TreeRepository<any>[] = [];
 
     /**
      * Plain to object transformer used in create and merge operations.
@@ -993,20 +995,21 @@ export class EntityManager {
      */
     getRepository<Entity>(target: EntityTarget<Entity>): Repository<Entity> {
 
-        // throw exception if there is no repository with this target registered
-        if (!this.connection.hasMetadata(target))
-            throw new RepositoryNotFoundError(this.connection.name, target);
-
         // find already created repository instance and return it if found
-        const metadata = this.connection.getMetadata(target);
-        const repository = this.repositories.find(repository => repository.metadata === metadata);
+        const repository = this.repositories.find(repository => repository.target === target);
         if (repository)
             return repository;
 
         // if repository was not found then create it, store its instance and return it
-        const newRepository = new RepositoryFactory().create(this, metadata, this.queryRunner);
-        this.repositories.push(newRepository);
-        return newRepository;
+        if (this.connection.driver instanceof MongoDriver) {
+            const newRepository = new MongoRepository(target, this, this.queryRunner);
+            this.repositories.push(newRepository as any);
+            return newRepository
+        } else {
+            const newRepository = new Repository<any>(target, this, this.queryRunner);
+            this.repositories.push(newRepository);
+            return newRepository
+        }
     }
 
     /**
@@ -1021,12 +1024,15 @@ export class EntityManager {
         if (this.connection.driver.treeSupport === false)
             throw new TreeRepositoryNotSupportedError(this.connection.driver);
 
-        // check if repository is real tree repository
-        const repository = this.getRepository(target);
-        if (!(repository instanceof TreeRepository))
-            throw new RepositoryNotTreeError(target);
+        // find already created repository instance and return it if found
+        const repository = this.treeRepositories.find(repository => repository.target === target);
+        if (repository)
+            return repository;
 
-        return repository;
+        // check if repository is real tree repository
+        const newRepository = new TreeRepository(target, this, this.queryRunner);
+        this.treeRepositories.push(newRepository);
+        return newRepository;
     }
 
     /**
@@ -1038,6 +1044,8 @@ export class EntityManager {
 
     /**
      * Gets custom entity repository marked with @EntityRepository decorator.
+     *
+     * @deprecated use Repository.extend to create custom repositories
      */
     getCustomRepository<T>(customRepository: ObjectType<T>): T {
         const entityRepositoryMetadataArgs = getMetadataArgsStorage().entityRepositories.find(repository => {
@@ -1054,8 +1062,7 @@ export class EntityManager {
         if (entityRepositoryInstance instanceof AbstractRepository) {
             if (!(entityRepositoryInstance as any)["manager"])
                 (entityRepositoryInstance as any)["manager"] = this;
-        }
-        if (entityRepositoryInstance instanceof Repository) {
+        } else {
             if (!entityMetadata)
                 throw new CustomRepositoryCannotInheritRepositoryError(customRepository);
 

@@ -45,6 +45,8 @@ import {RelationIdLoader} from "../query-builder/RelationIdLoader";
  * Connection is a single database ORM connection to a specific database.
  * Its not required to be a database connection, depend on database type it can create connection pool.
  * You can have multiple connections to multiple databases in your application.
+ *
+ * @deprecated
  */
 export class Connection {
 
@@ -70,7 +72,7 @@ export class Connection {
     /**
      * Database driver used by this connection.
      */
-    readonly driver: Driver;
+    driver: Driver;
 
     /**
      * EntityManager of this connection.
@@ -80,7 +82,7 @@ export class Connection {
     /**
      * Naming strategy used in the connection.
      */
-    readonly namingStrategy: NamingStrategyInterface;
+    namingStrategy: NamingStrategyInterface;
 
     /**
      * Name for the metadata table
@@ -90,7 +92,7 @@ export class Connection {
     /**
      * Logger used to log orm events.
      */
-    readonly logger: Logger;
+    logger: Logger;
 
     /**
      * Migration instances that are registered for this connection.
@@ -110,7 +112,7 @@ export class Connection {
     /**
      * Used to work with query result cache.
      */
-    readonly queryResultCache?: QueryResultCache;
+    queryResultCache?: QueryResultCache;
 
     /**
      * Used to load relations and work with lazy relations.
@@ -169,6 +171,20 @@ export class Connection {
     // -------------------------------------------------------------------------
     // Public Methods
     // -------------------------------------------------------------------------
+    /**
+     * Updates current connection options with provided options.
+     */
+    setOptions(options: Partial<ConnectionOptions>) {
+        Object.assign(this.options, options);
+
+        this.logger = new LoggerFactory().create(this.options.logger, this.options.logging);
+        this.driver = new DriverFactory().create(this);
+        this.namingStrategy = options.namingStrategy || new DefaultNamingStrategy();
+        this.queryResultCache = options.cache ? new QueryResultCacheFactory(this).create() : undefined;
+
+        // build all metadatas to make sure options are valid
+        // await this.buildMetadatas();
+    }
 
     /**
      * Performs connection to the database.
@@ -370,6 +386,8 @@ export class Connection {
 
     /**
      * Gets custom entity repository marked with @EntityRepository decorator.
+     *
+     * @deprecated use Repository.extend function to create a custom repository
      */
     getCustomRepository<T>(customRepository: ObjectType<T>): T {
         return this.manager.getCustomRepository(customRepository);

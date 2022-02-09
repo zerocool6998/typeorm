@@ -4,6 +4,8 @@ import {CannotReflectMethodParameterTypeError} from "../../error/CannotReflectMe
 
 /**
  * Injects transaction's repository into the method wrapped with @Transaction decorator.
+ *
+ * @deprecated
  */
 export function TransactionRepository(entityType?: Function): ParameterDecorator {
     return (object: Object, methodName: string, index: number) => {

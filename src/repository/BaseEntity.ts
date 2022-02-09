@@ -16,6 +16,7 @@ import {ObjectID} from "../driver/mongodb/typings";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import {UpsertOptions} from "./UpsertOptions";
+import {EntityTarget} from "../common/EntityTarget";
 
 /**
  * Base abstract entity for all entities, used in ActiveRecord patterns.
@@ -107,7 +108,7 @@ export class BaseEntity {
      * If this repository manages entity from schema,
      * then it returns a name of that schema instead.
      */
-    static get target(): Function|string {
+    static get target(): EntityTarget<any> {
         return this.getRepository().target;
     }
 

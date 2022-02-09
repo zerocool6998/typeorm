@@ -16,11 +16,12 @@ import {AuroraDataApiPostgresConnectionOptions} from "../driver/aurora-data-api-
 import {BetterSqlite3ConnectionOptions} from "../driver/better-sqlite3/BetterSqlite3ConnectionOptions";
 import {CapacitorConnectionOptions} from "../driver/capacitor/CapacitorConnectionOptions";
 
-
 /**
  * ConnectionOptions is an interface with settings and options for specific connection.
  * Options contain database and other connection-related settings.
  * Consumer must provide connection options for each of your connections.
+ *
+ * @deprecated use DataSourceOptions instead
  */
 export type ConnectionOptions =
     MysqlConnectionOptions|

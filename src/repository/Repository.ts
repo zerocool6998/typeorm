@@ -1,4 +1,3 @@
-import {EntityMetadata} from "../metadata/EntityMetadata";
 import {FindManyOptions} from "../find-options/FindManyOptions";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {FindOneOptions} from "../find-options/FindOneOptions";
@@ -15,6 +14,7 @@ import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import {ObjectID} from "../driver/mongodb/typings";
 import {FindConditions} from "../find-options/FindConditions";
 import {UpsertOptions} from "./UpsertOptions";
+import {EntityTarget} from "../common/EntityTarget";
 
 /**
  * Repository is supposed to work with your entity objects. Find entities, insert, update, delete, etc.
@@ -26,19 +26,46 @@ export class Repository<Entity extends ObjectLiteral> {
     // -------------------------------------------------------------------------
 
     /**
+     * Entity target that is managed by this repository.
+     * If this repository manages entity from schema,
+     * then it returns a name of that schema instead.
+     */
+    readonly target: EntityTarget<Entity>;
+
+    /**
      * Entity Manager used by this repository.
      */
     readonly manager: EntityManager;
 
     /**
-     * Entity metadata of the entity current repository manages.
-     */
-    readonly metadata: EntityMetadata;
-
-    /**
      * Query runner provider used for this repository.
      */
     readonly queryRunner?: QueryRunner;
+
+    // -------------------------------------------------------------------------
+    // Accessors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Entity metadata of the entity current repository manages.
+     */
+    get metadata() {
+        return this.manager.connection.getMetadata(this.target);
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+
+    constructor(
+        target: EntityTarget<Entity>,
+        manager: EntityManager,
+        queryRunner?: QueryRunner
+    ) {
+        this.target = target
+        this.manager = manager
+        this.queryRunner = queryRunner
+    }
 
     // -------------------------------------------------------------------------
     // Public Methods
@@ -49,15 +76,6 @@ export class Repository<Entity extends ObjectLiteral> {
      */
     createQueryBuilder(alias?: string, queryRunner?: QueryRunner): SelectQueryBuilder<Entity> {
         return this.manager.createQueryBuilder<Entity>(this.metadata.target as any, alias || this.metadata.targetName, queryRunner || this.queryRunner);
-    }
-
-    /**
-     * Returns object that is managed by this repository.
-     * If this repository manages entity from schema,
-     * then it returns a name of that schema instead.
-     */
-    get target(): Function|string {
-        return this.metadata.target;
     }
 
     /**
@@ -436,4 +454,22 @@ export class Repository<Entity extends ObjectLiteral> {
         return this.manager.decrement(this.metadata.target, conditions, propertyPath, value);
     }
 
+    /**
+     * Extends repository with provided functions.
+     */
+    extend<CustomRepository>(custom: CustomRepository & ThisType<Repository<Entity> & CustomRepository>): Repository<Entity> & CustomRepository {
+        // return {
+        //     ...this,
+        //     ...custom
+        // };
+        const thisRepo: any = this.constructor
+        const { target, manager, queryRunner } = this
+        const cls = new class extends thisRepo {
+            constructor() {
+                super(target, manager, queryRunner);
+            }
+        }
+        Object.assign(cls, custom)
+        return cls as any;
+    }
 }

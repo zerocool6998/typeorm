@@ -16,13 +16,14 @@ describe("entity subscriber > query data", () => {
         enabledDrivers: [ "sqlite" ]
     }));
     beforeEach(() => {
-        for (const connection of connections) {
-            (connection.subscribers[0] as MockSubscriber).calledData.length = 0;
-        }
+        if (!connections.length) return
+        (connections[0].subscribers[0] as MockSubscriber).calledData.length = 0;
     })
     after(() => closeTestingConnections(connections));
 
-    it("passes query data to subscriber", () => Promise.all(connections.map(async connection => {
+    it("passes query data to subscriber", async () => {
+        if (!connections.length) return
+        const connection = connections[0]
         const subscriber = connection.subscribers[0] as MockSubscriber;
 
         const example = new Example();
@@ -36,9 +37,11 @@ describe("entity subscriber > query data", () => {
         expect(subscriber.calledData).to.be.eql([
             { Hello: "World" },
         ]);
-    })));
+    });
 
-    it("cleans up the data after the save completes", () => Promise.all(connections.map(async connection => {
+    it("cleans up the data after the save completes", async () => {
+        if (!connections.length) return
+        const connection = connections[0]
         const subscriber = connection.subscribers[0] as MockSubscriber;
 
         const example = new Example();
@@ -57,5 +60,5 @@ describe("entity subscriber > query data", () => {
             { Hello: "World" },
             {},
         ]);
-    })));
+    });
 });

@@ -527,24 +527,28 @@ export class EntityMetadata {
     /**
      * Creates a new entity.
      */
-    create(queryRunner?: QueryRunner, options?: { fromDeserializer?: boolean }): any {
+    create(queryRunner?: QueryRunner, options?: { fromDeserializer?: boolean, pojo?: boolean }): any {
+        const pojo = options && options.pojo === true ? true : false
         // if target is set to a function (e.g. class) that can be created then create it
         let ret: any;
-        if (this.target instanceof Function) {
+        if (this.target instanceof Function && !pojo) {
             if (!options?.fromDeserializer || this.isAlwaysUsingConstructor) {
                 ret = new (<any> this.target)();
             } else {
                 ret = Object.create(this.target.prototype);
             }
-
-            this.lazyRelations.forEach(relation => this.connection.relationLoader.enableLazyLoad(relation, ret, queryRunner));
-            return ret;
+        } else {
+            // otherwise simply return a new empty object
+            ret = {};
         }
 
-        // otherwise simply return a new empty object
-        const newObject = {};
-        this.lazyRelations.forEach(relation => this.connection.relationLoader.enableLazyLoad(relation, newObject, queryRunner));
-        return newObject;
+        // add "typename" property
+        if (this.connection.options.typename) {
+            ret[this.connection.options.typename] = this.targetName;
+        }
+
+        this.lazyRelations.forEach(relation => this.connection.relationLoader.enableLazyLoad(relation, ret, queryRunner));
+        return ret;
     }
 
     /**

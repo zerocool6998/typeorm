@@ -12,7 +12,6 @@ describe("github issues > #8346 MySQL: Regression when using take, orderBy, and 
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: true,
         dropSchema: true,
-        logging: true
     }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));
