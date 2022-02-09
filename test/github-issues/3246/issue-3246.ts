@@ -39,6 +39,6 @@ describe("github issues > #3246 Saving an entity with a 1:1 cascading insert doe
 
         const result = await myOrderRepository.createOrder(order);
 
-        expect(result.id).not.to.be.undefined;
+        expect(result.id).not.to.be.null;
     })));
  });

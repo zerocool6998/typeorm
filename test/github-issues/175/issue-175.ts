@@ -35,7 +35,7 @@ describe("github issues > #175 ManyToMany relation doesn't put an empty array wh
             .where("post.title = :title", { title: "post with categories" })
             .getOne();
 
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql({
             id: 1,
             title: "post with categories",
@@ -48,7 +48,7 @@ describe("github issues > #175 ManyToMany relation doesn't put an empty array wh
             }]
         });
     })));
-    
+
     it("should return post with categories even if post with empty categories was saved", () => Promise.all(connections.map(async connection => {
 
         const category1 = new Category();
@@ -73,14 +73,14 @@ describe("github issues > #175 ManyToMany relation doesn't put an empty array wh
             .where("post.title = :title", { title: "post without categories" })
             .getOne();
 
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql({
             id: 1,
             title: "post without categories",
             categories: []
         });
     })));
-    
+
     it("should return post with categories even if post was saved without categories set", () => Promise.all(connections.map(async connection => {
 
         const category1 = new Category();
@@ -101,7 +101,7 @@ describe("github issues > #175 ManyToMany relation doesn't put an empty array wh
             .where("post.title = :title", { title: "just post" })
             .getOne();
 
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql({
             id: 1,
             title: "just post",

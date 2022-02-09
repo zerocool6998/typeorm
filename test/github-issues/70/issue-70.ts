@@ -35,14 +35,14 @@ describe("github issues > #70 cascade deleting works incorrect", () => {
             .createQueryBuilder(Post, "post")
             .innerJoinAndSelect("post.categories", "category")
             .orderBy("post.id, category.id")
-            .getOne()!;
+            .getOne();
 
         const loadedCategories = await connection.manager
             .createQueryBuilder(Category, "category")
             .orderBy("category.id")
             .getMany();
 
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         loadedPost!.should.deep.include({
             id: 1,
             title: "Hello Post #1"

@@ -353,7 +353,7 @@ describe("query builder > select", () => {
                 .where("post.id = :id", { id: 1 })
                 .getOne();
 
-            expect(entity).not.to.be.undefined;
+            expect(entity).not.to.be.null;
             expect(entity!.id).to.equal(1);
             expect(entity!.title).to.equal("Hello");
         })));
@@ -365,7 +365,7 @@ describe("query builder > select", () => {
                 .where("post.id = :id", { id: 2 })
                 .getOne();
 
-            expect(entity).to.be.undefined;
+            expect(entity).to.be.null;
         })));
 
         it("should return a single entity for getOneOrFail when found", () => Promise.all(connections.map(async connection => {

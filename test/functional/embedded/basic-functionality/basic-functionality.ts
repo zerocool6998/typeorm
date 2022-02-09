@@ -56,7 +56,7 @@ describe("embedded > basic functionality", () => {
 
         // now check it
         const loadedPost3 = (await postRepository.findOne(post.id))!;
-        expect(loadedPost3).to.be.undefined;
+        expect(loadedPost3).to.be.null;
     })));
 
 });

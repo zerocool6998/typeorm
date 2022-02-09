@@ -30,7 +30,7 @@ describe("github issues > #341 OneToOne relation with referencedColumnName does 
             .leftJoinAndSelect("post.category", "category")
             .getOne();
 
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         expect(loadedPost!.category).not.to.be.undefined;
 
     })));

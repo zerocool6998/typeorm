@@ -22,7 +22,7 @@ describe("github issue > #1397 Spaces at the end of values are removed when inse
         post.title.should.be.equal(" About My Post   ");
 
         const loadedPost = await connection.manager.findOne(Post, { id: 1 });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.title.should.be.equal(" About My Post   ");
     })));
 

@@ -43,12 +43,6 @@ export interface EntitySchemaRelationOptions {
     persistence?: boolean;
 
     /**
-     * Indicates if this relation will be a primary key.
-     * Can be used only for many-to-one and owner one-to-one relations.
-     */
-    primary?: boolean;
-
-    /**
      * Join table options of this column. If set to true then it simply means that it has a join table.
      */
     joinTable?: boolean|JoinTableOptions|JoinTableMultipleColumnsOptions;

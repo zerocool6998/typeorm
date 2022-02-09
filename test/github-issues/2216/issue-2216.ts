@@ -120,7 +120,7 @@ describe("github issues > #2216 - Ability to capture Postgres notifications in l
             manager = connection.manager;
             await manager.save(Object.assign(new Foo(), { lowercaseval: "foo", lowercaseval2: "bar"}));
             const loadedFoo = await manager.findOne(Foo);
-            expect(loadedFoo).not.to.be.undefined;
+            expect(loadedFoo).not.to.be.null;
             expect(loadedFoo).to.contain({
                 lowercaseval: "foo",
                 lowercaseval2: "bar",

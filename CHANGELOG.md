@@ -221,6 +221,14 @@ This change is due to type-safety improvement new `relations` signature brings.
 
 ### BREAKING CHANGES
 
+* now migrations are running before schema synchronization if you have both pending migrations and schema synchronization pending
+  (it works if you have both `migrationsRun` and `synchronize` enabled in connection options).
+
+* `findOne` and `QueryBuilder.getOne()` now return `null` instead of `undefined` in the case if it didn't find anything in the database.
+Logically it makes more sense to return `null`.
+
+* `where` in `FindOptions` (e.g. `find({ where: { ... })`) is more sensitive to input criteria now.
+
 * if you had entity properties of a non-primitive type (except Buffer) defined as columns,
 then you won't be able to use it in `find*`'s `where`. Example:
 

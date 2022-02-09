@@ -44,7 +44,7 @@ describe("persistence > one-to-one", function() {
                 relations: ["access_token"]
             });
 
-            expect(loadedUser).not.to.be.undefined;
+            expect(loadedUser).not.to.be.null;
             expect(loadedUser!.access_token).not.to.be.undefined;
         })));
 

@@ -53,7 +53,7 @@ describe("persistence > delete orphans", () => {
 
         it("should retain a Post on the Category", async () => {
             const category = await categoryRepository.findOne(categoryId);
-            expect(category).not.to.be.undefined;
+            expect(category).not.to.be.null;
             expect(category!.posts).to.have.lengthOf(1);
             expect(category!.posts[0].id).to.equal(1);
         });

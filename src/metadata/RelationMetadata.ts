@@ -304,7 +304,7 @@ export class RelationMetadata {
         this.isCascadeRemove = args.options.cascade === true || (Array.isArray(args.options.cascade) && args.options.cascade.indexOf("remove") !== -1);
         this.isCascadeSoftRemove = args.options.cascade === true || (Array.isArray(args.options.cascade) && args.options.cascade.indexOf("soft-remove") !== -1);
         this.isCascadeRecover = args.options.cascade === true || (Array.isArray(args.options.cascade) && args.options.cascade.indexOf("recover") !== -1);
-        this.isPrimary = args.options.primary || false;
+        // this.isPrimary = args.options.primary || false;
         this.isNullable = args.options.nullable === false || this.isPrimary ? false : true;
         this.onDelete = args.options.onDelete;
         this.onUpdate = args.options.onUpdate;

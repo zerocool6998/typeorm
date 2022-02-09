@@ -22,7 +22,7 @@ describe("github issues > #2809 afterUpdate subscriber entity argument is undefi
         await repo.save(insertPost);
 
         const createdPost = await repo.findOne();
-        expect(createdPost).not.to.be.undefined;
+        expect(createdPost).not.to.be.null;
 
         const { id } = createdPost!
 

@@ -34,7 +34,7 @@ describe("sqljs driver > autosave", () => {
         await connection.createQueryBuilder().insert().into(Post).values(posts).execute();
         await connection.createQueryBuilder().update(Post).set({title: "Many posts"}).execute();
         await connection.createQueryBuilder().delete().from(Post).where("title = ?", {title: "third post"}).execute();
-        
+
         const repository = connection.getRepository(Post);
         let post = new Post();
         post.title = "A post";
@@ -42,7 +42,7 @@ describe("sqljs driver > autosave", () => {
 
         let savedPost = await repository.findOne({title: "A post"});
 
-        expect(savedPost).not.to.be.undefined;
+        expect(savedPost).not.to.be.null;
 
         if (savedPost) {
             savedPost.title = "A updated post";
@@ -81,7 +81,7 @@ describe("sqljs driver > autosave off", () => {
 
         let savedPost = await repository.findOne({title: "A post"});
 
-        expect(savedPost).not.to.be.undefined;
+        expect(savedPost).not.to.be.null;
 
         if (savedPost) {
             savedPost.title = "A updated post";

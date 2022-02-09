@@ -31,7 +31,7 @@ describe("other issues > ekifox reported issue with increment", () => {
             .where("user.id = :id", { id: 1 })
             .getOne();
 
-        expect(loadedUser).not.to.be.undefined;
+        expect(loadedUser).not.to.be.null;
         loadedUser!.id.should.be.equal(1);
         loadedUser!.friendsInvitesCount.should.be.equal(1);
 

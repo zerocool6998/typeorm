@@ -32,11 +32,11 @@ describe("transaction > method wrapped into transaction decorator", () => {
 
         // controller should have saved both post and category successfully
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "successfully saved post" } });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql(post);
 
         const loadedCategory = await connection.manager.findOne(Category, { where: { name: "successfully saved category" } });
-        expect(loadedCategory).not.to.be.undefined;
+        expect(loadedCategory).not.to.be.null;
         loadedCategory!.should.be.eql(category);
 
     })));
@@ -58,10 +58,10 @@ describe("transaction > method wrapped into transaction decorator", () => {
         expect(throwError).not.to.be.undefined;
 
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "successfully saved post" }});
-        expect(loadedPost).to.be.undefined;
+        expect(loadedPost).to.be.null;
 
         const loadedCategory = await connection.manager.findOne(Category, { where: { name: "successfully saved category" }});
-        expect(loadedCategory).to.be.undefined;
+        expect(loadedCategory).to.be.null;
 
     })));
 
@@ -82,10 +82,10 @@ describe("transaction > method wrapped into transaction decorator", () => {
         expect(throwError).not.to.be.undefined;
 
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "successfully saved post" }});
-        expect(loadedPost).to.be.undefined;
+        expect(loadedPost).to.be.null;
 
         const loadedCategory = await connection.manager.findOne(Category, { where: { name: "successfully saved category" }});
-        expect(loadedCategory).to.be.undefined;
+        expect(loadedCategory).to.be.null;
 
     })));
 
@@ -108,11 +108,11 @@ describe("transaction > method wrapped into transaction decorator", () => {
 
         // controller should have saved both post and category successfully
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "successfully saved post" }});
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql(post);
 
         const loadedCategory = await connection.manager.findOne(Category, { where: { name: "successfully saved category" }});
-        expect(loadedCategory).to.be.undefined;
+        expect(loadedCategory).to.be.null;
 
     })));
 
@@ -125,18 +125,18 @@ describe("transaction > method wrapped into transaction decorator", () => {
 
         // call controller method
         const savedCategory = await controller.saveWithRepository.apply(controller, [post, category]);
-        
+
         // controller should successfully call custom repository method and return the found entity
         expect(savedCategory).not.to.be.undefined;
         savedCategory!.should.be.eql(category);
 
         // controller should have saved both post and category successfully
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "successfully saved post" } });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql(post);
 
         const loadedCategory = await connection.manager.findOne(Category, { where: { name: "successfully saved category" } });
-        expect(loadedCategory).not.to.be.undefined;
+        expect(loadedCategory).not.to.be.null;
         loadedCategory!.should.be.eql(category);
     })));
 
@@ -153,11 +153,11 @@ describe("transaction > method wrapped into transaction decorator", () => {
 
         // controller should have saved both post and category successfully
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "successfully saved post" } });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         loadedPost!.should.be.eql(post);
 
         const loadedCategory = await connection.manager.findOne(Category, { where: { name: "successfully saved category" } });
-        expect(loadedCategory).not.to.be.undefined;
+        expect(loadedCategory).not.to.be.null;
         loadedCategory!.should.be.eql(category);
 
     })));

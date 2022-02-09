@@ -22,7 +22,7 @@ describe("indices > fulltext index", () => {
 
         const queryRunner = connection.createQueryRunner();
         const table = await queryRunner.getTable("post");
-        
+
         table!.indices.length.should.be.equal(2);
         expect(table!.indices[0].isFulltext).to.be.true;
         expect(table!.indices[1].isFulltext).to.be.true;
@@ -50,10 +50,10 @@ describe("indices > fulltext index", () => {
             .createQueryBuilder("post")
             .where("MATCH(post.default) AGAINST (:token)", { token: "te" })
             .getOne();
-        expect(loadedPost2).to.be.undefined;
+        expect(loadedPost2).to.be.null;
     })));
 
-    
+
     it("with ngram parser", () => Promise.all(connections.map(async connection => {
 
         const postRepository = connection.getRepository(Post);
@@ -69,7 +69,7 @@ describe("indices > fulltext index", () => {
             .where("MATCH(post.ngram) AGAINST (:token)", { token: "text" })
             .getOne();
         expect(loadedPost1).to.be.exist;
-        
+
         const loadedPost2 = await postRepository
             .createQueryBuilder("post")
             .where("MATCH(post.ngram) AGAINST (:token)", { token: "te" })

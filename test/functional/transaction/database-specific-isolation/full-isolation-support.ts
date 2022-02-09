@@ -39,14 +39,14 @@ describe("transaction > transaction with full isolation support", () => {
       });
 
       const post = await connection.manager.findOne(Post, { where: { title: "Post #1" }});
-      expect(post).not.to.be.undefined;
+      expect(post).not.to.be.null;
       post!.should.be.eql({
           id: postId,
           title: "Post #1"
       });
 
       const category = await connection.manager.findOne(Category, { where: { name: "Category #1" }});
-      expect(category).not.to.be.undefined;
+      expect(category).not.to.be.null;
       category!.should.be.eql({
           id: categoryId,
           name: "Category #1"
@@ -74,14 +74,14 @@ describe("transaction > transaction with full isolation support", () => {
       });
 
       const post = await connection.manager.findOne(Post, { where: { title: "Post #1" }});
-      expect(post).not.to.be.undefined;
+      expect(post).not.to.be.null;
       post!.should.be.eql({
           id: postId,
           title: "Post #1"
       });
 
       const category = await connection.manager.findOne(Category, { where: { name: "Category #1" }});
-      expect(category).not.to.be.undefined;
+      expect(category).not.to.be.null;
       category!.should.be.eql({
           id: categoryId,
           name: "Category #1"
@@ -109,14 +109,14 @@ describe("transaction > transaction with full isolation support", () => {
       });
 
       const post = await connection.manager.findOne(Post, { where: { title: "Post #1" }});
-      expect(post).not.to.be.undefined;
+      expect(post).not.to.be.null;
       post!.should.be.eql({
           id: postId,
           title: "Post #1"
       });
 
       const category = await connection.manager.findOne(Category, { where: { name: "Category #1" }});
-      expect(category).not.to.be.undefined;
+      expect(category).not.to.be.null;
       category!.should.be.eql({
           id: categoryId,
           name: "Category #1"
@@ -144,14 +144,14 @@ describe("transaction > transaction with full isolation support", () => {
       });
 
       const post = await connection.manager.findOne(Post, { where: { title: "Post #1" }});
-      expect(post).not.to.be.undefined;
+      expect(post).not.to.be.null;
       post!.should.be.eql({
           id: postId,
           title: "Post #1"
       });
 
       const category = await connection.manager.findOne(Category, { where: { name: "Category #1" }});
-      expect(category).not.to.be.undefined;
+      expect(category).not.to.be.null;
       category!.should.be.eql({
           id: categoryId,
           name: "Category #1"

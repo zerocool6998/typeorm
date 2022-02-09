@@ -41,7 +41,7 @@ describe("persistence > one-to-many", function() {
         await postRepository.save(newPost);
 
         const loadedPost = await postRepository.findOne(newPost.id, { relations: ["categories"] });
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         expect(loadedPost!.categories![0]).not.to.be.undefined;
 
@@ -61,7 +61,7 @@ describe("persistence > one-to-many", function() {
         await postRepository.save(newPost);
 
         const loadedPost = await postRepository.findOne(newPost.id, { relations: ["categories"] });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         expect(loadedPost!.categories![0]).not.to.be.undefined;
     })));
@@ -96,7 +96,7 @@ describe("persistence > one-to-many", function() {
                 }
             }
         });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         expect(loadedPost!.categories![0]).not.to.be.undefined;
         expect(loadedPost!.categories![1]).to.be.undefined;
@@ -132,7 +132,7 @@ describe("persistence > one-to-many", function() {
                 }
             }
         });
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         expect(loadedPost!.categories).to.be.eql([]);
     })));
 
@@ -166,7 +166,7 @@ describe("persistence > one-to-many", function() {
                 }
             }
         }))!;
-        expect(loadedPost).not.to.be.undefined;
+        expect(loadedPost).not.to.be.null;
         expect(loadedPost.categories).to.be.eql([]);
     })));
 

@@ -137,7 +137,7 @@ describe("one-to-one", function() {
                 .setParameter("id", savedPost.id)
                 .getOne();
 
-            expect(post).not.to.be.undefined;
+            expect(post).not.to.be.null;
             post!.should.eql(expectedPost);
         });
 

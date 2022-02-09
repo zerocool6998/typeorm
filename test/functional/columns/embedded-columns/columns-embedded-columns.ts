@@ -70,8 +70,8 @@ describe("columns > embedded columns", () => {
 
         const removedPost = await postRepository.findOne({ title: "Post" });
         const removedUpdatedPost = await postRepository.findOne({ title: "Updated post" });
-        expect(removedPost).to.be.undefined;
-        expect(removedUpdatedPost).to.be.undefined;
+        expect(removedPost).to.be.null;
+        expect(removedUpdatedPost).to.be.null;
     })));
 
     it("should properly generate column names", () => Promise.all(connections.map(async connection => {

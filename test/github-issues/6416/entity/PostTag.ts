@@ -5,6 +5,7 @@ import Post from "./Post";
 let id = 0;
 
 export default class PostTag {
+    postId: number;
     tagId: number;
 
     tagOtherId: string;
@@ -38,7 +39,6 @@ export const PostTagSchema = new EntitySchema<PostTag>({
     },
     relations: {
         post: {
-            primary: true,
             nullable: false,
             target: () => Post,
             type: "many-to-one",

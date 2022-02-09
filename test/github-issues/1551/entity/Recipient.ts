@@ -1,4 +1,4 @@
-import {CreateDateColumn, Entity, ManyToOne} from "../../../../src/index";
+import {CreateDateColumn, Entity, ManyToOne, PrimaryColumn} from "../../../../src/index";
 import {Message} from "./Message";
 import {User} from "./User";
 
@@ -26,10 +26,16 @@ export class Recipient {
     }
   }
 
-  @ManyToOne(type => User, user => user.recipients, { primary: true })
+  @PrimaryColumn()
+  userId: number
+
+  @PrimaryColumn()
+  messageId: number
+
+  @ManyToOne(type => User, user => user.recipients)
   user: User;
 
-  @ManyToOne(type => Message, message => message.recipients, { primary: true })
+  @ManyToOne(type => Message, message => message.recipients)
   message: Message;
 
   @CreateDateColumn()

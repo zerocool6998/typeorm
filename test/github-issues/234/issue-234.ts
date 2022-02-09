@@ -56,11 +56,11 @@ describe("github issues > #234 and #223 lazy loading does not work correctly fro
             .getMany();
 
         const loadedCategory1 = await loadedPosts[0].category;
-        expect(loadedCategory1!).not.to.be.undefined;
+        expect(loadedCategory1!).not.to.be.null;
         loadedCategory1!.name.should.equal("category #1");
 
         const loadedCategory2 = await loadedPosts[1].category;
-        expect(loadedCategory2!).not.to.be.undefined;
+        expect(loadedCategory2!).not.to.be.null;
         loadedCategory2!.name.should.equal("category #2");
 
         const loadedPosts1 = await loadedCategory1.posts;

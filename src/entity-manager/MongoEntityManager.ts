@@ -170,7 +170,7 @@ export class MongoEntityManager extends EntityManager {
      */
     async findOne<Entity>(entityClassOrName: EntityTarget<Entity>,
                           optionsOrConditions?: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | MongoFindOneOptions<Entity> | DeepPartial<Entity>,
-                          maybeOptions?: MongoFindOneOptions<Entity>): Promise<Entity | undefined> {
+                          maybeOptions?: MongoFindOneOptions<Entity>): Promise<Entity | null> {
         const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
         const id = (optionsOrConditions instanceof objectIdInstance) || typeof optionsOrConditions === "string" ? optionsOrConditions : undefined;
         const findOneOptionsOrConditions = (id ? maybeOptions : optionsOrConditions) as any;
@@ -188,7 +188,7 @@ export class MongoEntityManager extends EntityManager {
 
         // const result = await cursor.limit(1).next();
         const result = await cursor.limit(1).toArray();
-        return result.length > 0 ? result[0] : undefined;
+        return result.length > 0 ? result[0] : null;
     }
 
     /**

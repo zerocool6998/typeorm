@@ -43,7 +43,7 @@ describe("sqljs driver > save", () => {
         const repository = connection.getRepository(Post);
         const post = await repository.findOne({title: "The second title"});
 
-        expect(post).not.to.be.undefined;
+        expect(post).not.to.be.null;
         if (post) {
             expect(post.title).to.be.equal("The second title");
         }

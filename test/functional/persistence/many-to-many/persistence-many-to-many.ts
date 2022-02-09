@@ -20,7 +20,7 @@ describe("persistence > many-to-many", function() {
     // -------------------------------------------------------------------------
     // Specifications
     // -------------------------------------------------------------------------
-    
+
     it("add exist element to exist object with empty many-to-many relation and save it and it should contain a new category", () => Promise.all(connections.map(async connection => {
 
         const postRepository = connection.getRepository(Post);
@@ -55,7 +55,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser!).not.to.be.undefined;
+        expect(loadedUser!).not.to.be.null;
         expect(loadedUser!.post).not.to.be.undefined;
         expect(loadedUser!.post.categories).not.to.be.undefined;
 
@@ -100,7 +100,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser1!).not.to.be.undefined;
+        expect(loadedUser1!).not.to.be.null;
         expect(loadedUser1!.post).not.to.be.undefined;
         expect(loadedUser1!.post.categories).not.to.be.undefined;
         expect(loadedUser1!.post.categories!.length).to.be.equal(2);
@@ -118,7 +118,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser2!).not.to.be.undefined;
+        expect(loadedUser2!).not.to.be.null;
         expect(loadedUser2!.post).not.to.be.undefined;
         expect(loadedUser2!.post.categories).not.to.be.undefined;
         expect(loadedUser2!.post.categories!.length).to.be.equal(1);
@@ -164,7 +164,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser1!).not.to.be.undefined;
+        expect(loadedUser1!).not.to.be.null;
         expect(loadedUser1!.post).not.to.be.undefined;
         expect(loadedUser1!.post.categories).not.to.be.undefined;
         expect(loadedUser1!.post.categories!.length).to.be.equal(2);
@@ -182,7 +182,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser2!).not.to.be.undefined;
+        expect(loadedUser2!).not.to.be.null;
         expect(loadedUser2!.post).not.to.be.undefined;
         expect(loadedUser2!.post.categories!.length).to.be.equal(0);
 
@@ -227,7 +227,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser1!).not.to.be.undefined;
+        expect(loadedUser1!).not.to.be.null;
         expect(loadedUser1!.post).not.to.be.undefined;
         expect(loadedUser1!.post.categories).not.to.be.undefined;
         expect(loadedUser1!.post.categories!.length).to.be.equal(2);
@@ -245,7 +245,7 @@ describe("persistence > many-to-many", function() {
             }
         });
 
-        expect(loadedUser2!).not.to.be.undefined;
+        expect(loadedUser2!).not.to.be.null;
         expect(loadedUser2!.post).not.to.be.undefined;
         expect(loadedUser2!.post.categories!.length).to.be.equal(0);
     })));

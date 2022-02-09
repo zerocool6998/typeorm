@@ -45,12 +45,12 @@ describe("github issues > #47 wrong sql syntax when loading lazy relation", () =
             .getMany();
 
         const loadedCategory1 = await loadedPost[0].category;
-        expect(loadedCategory1!).not.to.be.undefined;
+        expect(loadedCategory1!).not.to.be.null;
         loadedCategory1!.id.should.equal(1);
         loadedCategory1!.name.should.equal("category #1");
 
         const loadedCategory2 = await loadedPost[1].category;
-        expect(loadedCategory2!).not.to.be.undefined;
+        expect(loadedCategory2!).not.to.be.null;
         loadedCategory2!.id.should.equal(2);
         loadedCategory2!.name.should.equal("category #2");
 

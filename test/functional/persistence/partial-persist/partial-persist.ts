@@ -57,7 +57,7 @@ describe("persistence > partial persist", () => {
             }
         });
 
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         loadedPost!.title.should.be.equal("All about animals");
         loadedPost!.description.should.be.equal("Description of the post about animals");

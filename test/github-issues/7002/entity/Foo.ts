@@ -16,7 +16,10 @@ export class Foo {
     @Column()
     text: string;
 
-    @OneToOne(() => Bar, b => b.foo, { primary: true })
+    @PrimaryColumn()
+    barId: number
+
+    @OneToOne(() => Bar, b => b.foo)
     @JoinColumn({ name: "id", referencedColumnName: "id" })
     bar: Bar;
 

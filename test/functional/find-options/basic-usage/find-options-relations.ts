@@ -147,6 +147,9 @@ describe("find options > relations", () => {
                     photos: {
                         id: "asc"
                     }
+                },
+                tags: {
+                    id: "asc",
                 }
             }
         }).getMany();

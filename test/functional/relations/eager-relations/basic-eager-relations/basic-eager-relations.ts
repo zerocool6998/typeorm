@@ -87,6 +87,8 @@ describe("relations > eager relations > basic", () => {
                 }
             },
             editors: [{
+                userId: 1,
+                postId: 1,
                 user: {
                     id: 1,
                     firstName: "Timber",

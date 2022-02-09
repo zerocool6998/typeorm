@@ -1,15 +1,21 @@
 import {DeliverySlot} from "./DeliverySlot";
 import {User} from "./User";
 import {OrderItem} from "./OrderItem";
-import {Column, Entity, ManyToOne, OneToMany} from "../../../../src";
+import {Column, Entity, ManyToOne, OneToMany, PrimaryColumn} from "../../../../src";
 
 @Entity()
 export class Order {
 
-    @ManyToOne(type => DeliverySlot, { primary: true })
+    @PrimaryColumn()
+    deliverySlotId: number
+
+    @PrimaryColumn()
+    userId: number
+
+    @ManyToOne(type => DeliverySlot)
     deliverySlot: DeliverySlot;
 
-    @ManyToOne(type => User, user => user.recurringOrders, { primary: true })
+    @ManyToOne(type => User, user => user.recurringOrders)
     user: User;
 
     @Column()

@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "../../utils/test-setup";
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
@@ -60,7 +61,7 @@ describe("github issues > #3118 shorten alias names (for RDBMS with a limit) whe
                 // `CaWiVeLoNa__poWiVeLoNa__auWiVeLoNa__grWiVeLoNa_name`
             "postsWithVeryLongName.authorWithVeryLongName.groupWithVeryLongName"
         ] });
-        expect(loadedCategory).not.to.be.undefined;
+        expect(loadedCategory).not.to.be.null;
         expect(loadedCategory!.postsWithVeryLongName).not.to.be.undefined;
         expect(loadedCategory!.postsWithVeryLongName).not.to.be.empty;
         expect(loadedCategory!.postsWithVeryLongName[0].authorWithVeryLongName).not.to.be.undefined;
@@ -74,7 +75,7 @@ describe("github issues > #3118 shorten alias names (for RDBMS with a limit) whe
         ] });
         expect(loadedCategories).to.be.an("array").that.is.not.empty;
         for (const loadedCategory of loadedCategories) {
-            expect(loadedCategory).not.to.be.undefined;
+            expect(loadedCategory).not.to.be.null;
             expect(loadedCategory!.postsWithVeryLongName).not.to.be.undefined;
             expect(loadedCategory!.postsWithVeryLongName).not.to.be.empty;
             expect(loadedCategory!.postsWithVeryLongName[0].authorWithVeryLongName).not.to.be.undefined;

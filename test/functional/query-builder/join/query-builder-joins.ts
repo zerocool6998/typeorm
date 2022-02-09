@@ -298,7 +298,7 @@ describe("query builder > joins", () => {
                 .where("post.id = :id", { id: post.id })
                 .getOne();
 
-            expect(loadedPost!).to.be.undefined;
+            expect(loadedPost!).to.be.null;
 
         })));
 
@@ -815,7 +815,7 @@ describe("query builder > joins", () => {
                 .setParameters({ userId: 1 })
                 .getOne();
 
-            expect(loadedPost1!).to.be.undefined;
+            expect(loadedPost1!).to.be.null;
 
             const loadedPost2 = await connection.manager
                 .createQueryBuilder(Post, "post")
@@ -824,7 +824,7 @@ describe("query builder > joins", () => {
                 .setParameters({ categoryId: 1 })
                 .getOne();
 
-            expect(loadedPost2!).to.be.undefined;
+            expect(loadedPost2!).to.be.null;
 
         })));
     });

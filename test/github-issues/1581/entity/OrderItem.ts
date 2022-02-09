@@ -1,14 +1,20 @@
-import {Column, Entity, ManyToOne} from "../../../../src";
+import {Column, Entity, ManyToOne, PrimaryColumn} from "../../../../src";
 import {Order} from "./Order";
 import {Product} from "./Product";
 
 @Entity()
 export class OrderItem {
 
-    @ManyToOne(type => Order, recurringOrder => recurringOrder.items, { primary: true })
+    @PrimaryColumn()
+    orderId: number
+
+    @PrimaryColumn()
+    productId: number
+
+    @ManyToOne(type => Order, recurringOrder => recurringOrder.items)
     order: Order;
 
-    @ManyToOne(type => Product, { primary: true })
+    @ManyToOne(type => Product)
     product: Product;
 
     @Column()

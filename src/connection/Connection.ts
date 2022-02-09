@@ -202,12 +202,12 @@ export class Connection {
                 await this.dropDatabase();
 
             // if option is set - automatically synchronize a schema
-            if (this.options.synchronize)
-                await this.synchronize();
-
-            // if option is set - automatically synchronize a schema
             if (this.options.migrationsRun)
                 await this.runMigrations({ transaction: this.options.migrationsTransactionMode });
+
+            // if option is set - automatically synchronize a schema
+            if (this.options.synchronize)
+                await this.synchronize();
 
         } catch (error) {
 

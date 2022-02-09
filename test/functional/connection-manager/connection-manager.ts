@@ -204,7 +204,7 @@ describe("ConnectionManager", () => {
             // recreate connection and find previously saved post
             connection = await connectionManager.create(options).connect();
             const loadedPost = await connection.manager.findOne(Post, 1);
-            expect(loadedPost).to.be.undefined;
+            expect(loadedPost).to.be.null;
             await connection.close();
          });
 

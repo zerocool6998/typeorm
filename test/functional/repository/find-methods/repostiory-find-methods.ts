@@ -106,7 +106,7 @@ describe("repository > find methods", () => {
             });
             count.should.be.equal(5);
         })));
-        
+
     });
 
     describe("find and findAndCount", function() {
@@ -439,7 +439,7 @@ describe("repository > find methods", () => {
                     secondName: "Dorian"
                 }
             });
-            expect(loadedUser).to.be.undefined;
+            expect(loadedUser).to.be.null;
         })));
 
     });

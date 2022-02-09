@@ -37,7 +37,7 @@ describe("github issues > #2779 Could we add support for the MySQL/MariaDB SET d
     post.roles.should.be.deep.equal(targetValue);
 
     const loadedPost = await connection.manager.findOne(Post);
-    expect(loadedPost).not.to.be.undefined;
+    expect(loadedPost).not.to.be.null;
     loadedPost!.roles.should.be.deep.equal(targetValue);
   })));
 

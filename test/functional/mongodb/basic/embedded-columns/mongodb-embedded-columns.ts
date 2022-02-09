@@ -72,8 +72,8 @@ describe("mongodb > embedded columns", () => {
 
         const removedPost = await postRepository.findOne({ title: "Post" });
         const removedUpdatedPost = await postRepository.findOne({ title: "Updated post" });
-        expect(removedPost).to.be.undefined;
-        expect(removedUpdatedPost).to.be.undefined;
+        expect(removedPost).to.be.null;
+        expect(removedUpdatedPost).to.be.null;
 
     })));
 
@@ -130,7 +130,7 @@ describe("mongodb > embedded columns", () => {
 
     })));
 
-    
+
     it("should transform entity with nested embedded columns correctly", () => Promise.all(connections.map(async connection => {
         const postRepository = connection.getMongoRepository(Post);
 

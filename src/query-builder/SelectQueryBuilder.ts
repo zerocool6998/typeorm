@@ -1126,7 +1126,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     /**
      * Gets single entity returned by execution of generated query builder sql.
      */
-    async getOne(): Promise<Entity|undefined> {
+    async getOne(): Promise<Entity|null> {
         const results = await this.getRawAndEntities();
         const result = results.entities[0] as any;
 
@@ -1145,6 +1145,9 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             }
         }
 
+        if (result === undefined) {
+            return null
+        }
         return result;
     }
 
@@ -2548,7 +2551,8 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     propertyPath
                 );
             } else if (relation) {
-                const joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
                 if (relationValue === true || typeof relationValue === "object") {
                     if (this.expressionMap.relationLoadStrategy === "query") {
                         this.relationMetadatas.push(relation);
@@ -2612,10 +2616,13 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     propertyPath
                 );
             } else if (relation) {
-                const joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
+
                 if (relationValue === true || typeof relationValue === "object") {
                     relation.inverseEntityMetadata.eagerRelations.forEach(eagerRelation => {
-                        const eagerRelationJoinAlias = joinAlias + "_" + eagerRelation.propertyPath.replace("\.", "_");
+                        let eagerRelationJoinAlias = joinAlias + "_" + eagerRelation.propertyPath.replace("\.", "_");
+                        eagerRelationJoinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, joinAlias, eagerRelationJoinAlias);
 
                         const existJoin = this.joins.find(join => join.alias === eagerRelationJoinAlias);
                         if (!existJoin) {
@@ -2678,7 +2685,8 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 this.buildOrder(order[key] as FindOptionsOrder<any>, metadata, alias, propertyPath);
 
             } else if (relation) {
-                const joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
+                joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
 
                 // todo: use expressionMap.joinAttributes, and create a new one using
                 //  const joinAttribute = new JoinAttribute(this.connection, this.expressionMap);
@@ -2828,7 +2836,10 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
                     } else {
 
-                        const joinAlias = alias + "_" + relation.propertyName;
+                        // const joinAlias = alias + "_" + relation.propertyName;
+                        let joinAlias = alias + "_" + relation.propertyPath.replace("\.", "_");
+                        joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
+
                         const existJoin = this.joins.find(join => join.alias === joinAlias);
                         if (!existJoin) {
                             this.joins.push({

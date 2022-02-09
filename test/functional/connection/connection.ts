@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "../../utils/test-setup";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
 import {Guest as GuestV1} from "./entity/v1/Guest";
@@ -196,7 +197,7 @@ describe("Connection", () => {
             expect(loadedPost).to.be.eql(post);
             await connection.synchronize(true);
             const againLoadedPost = await postRepository.findOne(post.id);
-            expect(againLoadedPost).to.be.undefined;
+            expect(againLoadedPost).to.be.null;
         })));
 
     });

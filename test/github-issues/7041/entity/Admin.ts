@@ -3,14 +3,18 @@ import {
     Column,
     Entity,
     JoinColumn,
-    OneToOne,
+    OneToOne, PrimaryColumn,
 } from "../../../../src";
 import { User } from "./User";
 import { Organization } from "./Organization";
 
 @Entity()
 export class Admin extends BaseEntity {
-    @OneToOne(() => User, (user) => user.admin, { primary: true })
+
+    @PrimaryColumn()
+    userId: string
+
+    @OneToOne(() => User, (user) => user.admin)
     @JoinColumn()
     user: User;
 

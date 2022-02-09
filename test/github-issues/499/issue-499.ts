@@ -21,7 +21,7 @@ describe("github issues > #499 postgres DATE hydrated as DATETIME object", () =>
         await connection.manager.save(post);
 
         const loadedPost = await connection.manager.findOne(Post, { where: { title: "Hello Post #1" } });
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         loadedPost!.date.should.be.equal("2017-01-25");
     })));
 

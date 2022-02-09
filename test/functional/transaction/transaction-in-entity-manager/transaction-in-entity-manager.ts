@@ -35,14 +35,14 @@ describe("transaction > transaction with entity manager", () => {
         });
 
         const post = await connection.manager.findOne(Post, { where: { title: "Post #1" }});
-        expect(post).not.to.be.undefined;
+        expect(post).not.to.be.null;
         post!.should.be.eql({
             id: postId,
             title: "Post #1"
         });
 
         const category = await connection.manager.findOne(Category, { where: { name: "Category #1" }});
-        expect(category).not.to.be.undefined;
+        expect(category).not.to.be.null;
         category!.should.be.eql({
             id: categoryId,
             name: "Category #1"
@@ -69,14 +69,14 @@ describe("transaction > transaction with entity manager", () => {
                 categoryId = category.id;
 
                 const loadedPost = await entityManager.findOne(Post, { where: { title: "Post #1" }});
-                expect(loadedPost).not.to.be.undefined;
+                expect(loadedPost).not.to.be.null;
                 loadedPost!.should.be.eql({
                     id: postId,
                     title: "Post #1"
                 });
 
                 const loadedCategory = await entityManager.findOne(Category, { where: { name: "Category #1" }});
-                expect(loadedCategory).not.to.be.undefined;
+                expect(loadedCategory).not.to.be.null;
                 loadedCategory!.should.be.eql({
                     id: categoryId,
                     name: "Category #1"
@@ -92,10 +92,10 @@ describe("transaction > transaction with entity manager", () => {
         }
 
         const post = await connection.manager.findOne(Post, { where: { title: "Post #1" }});
-        expect(post).to.be.undefined;
+        expect(post).to.be.null;
 
         const category = await connection.manager.findOne(Category, { where: { name: "Category #1" }});
-        expect(category).to.be.undefined;
+        expect(category).to.be.null;
 
     })));
 

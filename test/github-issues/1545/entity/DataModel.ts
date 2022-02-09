@@ -1,27 +1,30 @@
-import {Column, Entity, JoinColumn, ManyToOne} from "../../../../src/index";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from "../../../../src/index";
 import {MainModel} from "./MainModel";
 import {ValidationModel} from "./ValidationModel";
 
 @Entity()
 export class DataModel {
 
-    @ManyToOne(type => ValidationModel, {eager: true, primary: true})
+    @PrimaryColumn()
+    validation: number
+
+    @PrimaryColumn()
+    mainId: number
+
+    @ManyToOne(type => ValidationModel, validation => validation.dataModel, { eager: true })
     @JoinColumn({
         name: "validation",
         referencedColumnName: "validation"
     })
     validations: ValidationModel;
 
-    
-    @ManyToOne(type => MainModel, {
-        primary: true
-    })
+    @ManyToOne(type => MainModel, main => main.dataModel)
     @JoinColumn({
         name: "mainId",
         referencedColumnName: "id"
     })
     main: MainModel;
-    
+
     @Column({
         type: "boolean",
         default: false

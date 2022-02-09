@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Parent} from "./entity/Parent";
@@ -23,7 +24,7 @@ describe("github issues > #1055 ind with relations not working, correct syntax c
         await manager.save(parent);
 
         const loadedParent = await manager.findOne(Parent, 1);
-        expect(loadedParent).not.to.be.undefined;
+        expect(loadedParent).not.to.be.null;
 
         if (!loadedParent) return;
 
@@ -33,8 +34,17 @@ describe("github issues > #1055 ind with relations not working, correct syntax c
         });
         await manager.save(child);
 
-        const foundChild = await manager.findOne(Child, { parent: loadedParent });
-        expect(foundChild).not.to.be.undefined;
+        console.log("loadedParent", loadedParent)
+
+        const foundChild = await manager.findOne(Child, {
+            where: {
+                parent: {
+                    id: loadedParent.id,
+                    name: loadedParent.name,
+                }
+            }
+        });
+        expect(foundChild).not.to.be.null;
     })));
 
     it("should not have type errors with the primary key type", () => Promise.all(connections.map(async connection => {
@@ -45,7 +55,7 @@ describe("github issues > #1055 ind with relations not working, correct syntax c
         await manager.save(parent);
 
         const loadedParent = await manager.findOne(Parent, 1);
-        expect(loadedParent).not.to.be.undefined;
+        expect(loadedParent).not.to.be.null;
 
         if (!loadedParent) return;
 
@@ -54,7 +64,11 @@ describe("github issues > #1055 ind with relations not working, correct syntax c
         child.parent = Promise.resolve(loadedParent);
         await manager.save(child);
 
-        const foundChild = await manager.findOne(Child, { parent: loadedParent.id });
-        expect(foundChild).not.to.be.undefined;
+        const foundChild = await manager.findOne(Child, {
+            parent: {
+                id: loadedParent.id
+            }
+        });
+        expect(foundChild).not.to.be.null;
     })));
 });

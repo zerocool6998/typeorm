@@ -58,9 +58,9 @@ describe("persistence > basic functionality", function() {
         await connection.manager.findOne(User, 1).should.eventually.eql({ id: 1, name: "Hello User" });
 
         await connection.manager.remove([post, category, user]);
-        await connection.manager.findOne(Post, 1).should.eventually.be.undefined;
-        await connection.manager.findOne(Category, 1).should.eventually.be.undefined;
-        await connection.manager.findOne(User, 1).should.eventually.be.undefined;
+        await connection.manager.findOne(Post, 1).should.eventually.be.null;
+        await connection.manager.findOne(Category, 1).should.eventually.be.null;
+        await connection.manager.findOne(User, 1).should.eventually.be.null;
     })));
 
 });

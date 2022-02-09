@@ -41,7 +41,7 @@ describe("deferrable fk constraints should be check at the end of transaction (#
             where: { id: 1 }
         });
 
-        expect(user).not.to.be.undefined;
+        expect(user).not.to.be.null;
 
         user!.should.be.eql({
             id: 1,
@@ -81,7 +81,7 @@ describe("deferrable fk constraints should be check at the end of transaction (#
             where: { id: 2 }
         });
 
-        expect(office).not.to.be.undefined;
+        expect(office).not.to.be.null;
 
         office!.should.be.eql({
             id: 2,

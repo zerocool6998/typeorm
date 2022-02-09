@@ -22,7 +22,7 @@ describe("github issues > #4947 beforeUpdate subscriber entity argument is undef
         const createdPost = await repo.findOne();
 
         // test that the newly inserted post was touched by beforeInsert PostSubscriber event
-        expect(createdPost).not.to.be.undefined;
+        expect(createdPost).not.to.be.null;
         expect(createdPost!.title).to.equal("set in subscriber when created");
 
         // change the entity
@@ -31,7 +31,7 @@ describe("github issues > #4947 beforeUpdate subscriber entity argument is undef
         const updatedPost = await repo.findOne();
 
         // test that the updated post was touched by beforeUpdate PostSubscriber event
-        expect(updatedPost).not.to.be.undefined;
+        expect(updatedPost).not.to.be.null;
         expect(updatedPost!.title).to.equal("set in subscriber when updated");
     })));
 });

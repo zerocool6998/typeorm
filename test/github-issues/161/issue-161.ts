@@ -36,7 +36,7 @@ describe("github issues > #161 joinAndSelect can't find entity from inverse side
             }
         });
 
-        expect(loadedTicketWithRequest).not.to.be.undefined;
+        expect(loadedTicketWithRequest).not.to.be.null;
         loadedTicketWithRequest!.should.be.eql({
             id: 1,
             name: "ticket #1",
@@ -99,7 +99,7 @@ describe("github issues > #161 joinAndSelect can't find entity from inverse side
             }
         });
 
-        expect(loadedRequest).not.to.be.undefined;
+        expect(loadedRequest).not.to.be.null;
         loadedRequest!.should.be.eql({
             id: 2,
             owner: "somebody",

@@ -25,7 +25,7 @@ describe("sqljs driver > load", () => {
         const repository = connection.getRepository(Post);
         const post = await repository.findOne({title: "A post"});
 
-        expect(post).not.to.be.undefined;
+        expect(post).not.to.be.null;
         if (post) {
             expect(post.title).to.be.equal("A post");
         }

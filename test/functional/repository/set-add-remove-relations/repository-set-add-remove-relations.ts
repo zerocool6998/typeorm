@@ -56,7 +56,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.manyCategories).not.to.be.undefined;
         expect(loadedPost!.manyCategories![0]).not.to.be.undefined;
         expect(loadedPost!.manyCategories![1]).not.to.be.undefined;
@@ -94,7 +94,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         );
 
-        expect(loadedCategory).not.to.be.undefined;
+        expect(loadedCategory).not.to.be.null;
         expect(loadedCategory!.manyPosts).not.to.be.undefined;
         expect(loadedCategory!.manyPosts![0]).not.to.be.undefined;
         expect(loadedCategory!.manyPosts![1]).not.to.be.undefined;
@@ -137,7 +137,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.manyCategories).not.to.be.undefined;
         loadedPost!.manyCategories.length.should.be.equal(1);
         loadedPost!.manyCategories![0].name.should.be.equal("Kids");
@@ -181,7 +181,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedCategory!).not.to.be.undefined;
+        expect(loadedCategory!).not.to.be.null;
         expect(loadedCategory!.manyPosts).not.to.be.undefined;
         loadedCategory!.manyPosts.length.should.be.equal(1);
         loadedCategory!.manyPosts[0].title.should.be.equal("post #2");
@@ -214,7 +214,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         expect(loadedPost!.categories![0]).not.to.be.undefined;
 
@@ -246,7 +246,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedCategory!).not.to.be.undefined;
+        expect(loadedCategory!).not.to.be.null;
         expect(loadedCategory!.post).not.to.be.undefined;
     })));
 
@@ -277,7 +277,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedPost!).not.to.be.undefined;
+        expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.categories).to.be.eql([]);
     })));
 
@@ -308,7 +308,7 @@ describe.skip("repository > set/add/remove relation methods", function() {
             }
         });
 
-        expect(loadedCategory).not.to.be.undefined;
+        expect(loadedCategory).not.to.be.null;
         expect(loadedCategory!.post).to.be.undefined;
 
     })));
