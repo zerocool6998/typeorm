@@ -18,7 +18,7 @@ describe.skip("github issues > #838 Time zones for timestamp columns are incorre
                 "postgres"
             ]
         });
-        postgresConnection = connections.find(connection => connection.driver instanceof PostgresDriver)!;
+        postgresConnection = connections.find(connection => connection.driver.options.type === "postgres")!;
     });
 
     beforeEach(() => reloadTestingDatabases(connections));

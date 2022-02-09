@@ -17,7 +17,7 @@ describe("table-inheritance > single-table > numeric types", () => {
     after(() => closeTestingConnections(connections));
 
     it("should allow numeric types for the discriminator, including 0", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             return;
         }
 

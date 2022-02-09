@@ -37,7 +37,7 @@ describe("schema builder > create table", () => {
         const nameColumn = postTable!.findColumnByName("name");
         postTable!.should.exist;
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             postTable!.indices.length.should.be.equal(2);
         } else {
             postTable!.uniques.length.should.be.equal(2);
@@ -55,7 +55,7 @@ describe("schema builder > create table", () => {
         studentTable!.should.exist;
         studentTable!.foreignKeys.length.should.be.equal(2);
         // CockroachDB also stores indices for relation columns
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             studentTable!.indices.length.should.be.equal(3);
         } else {
             studentTable!.indices.length.should.be.equal(1);

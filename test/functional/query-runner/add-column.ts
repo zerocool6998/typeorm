@@ -33,11 +33,11 @@ describe("query runner > add column", () => {
         });
 
         // CockroachDB does not support altering primary key constraint
-        if (!(connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "cockroachdb"))
             column1.isPrimary = true;
 
         // MySql and Sqlite does not supports autoincrement composite primary keys.
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof AbstractSqliteDriver) && !(connection.driver instanceof CockroachDriver)) {
+        if (!(connection.driver.options.type === "mysql") && !(connection.driver instanceof AbstractSqliteDriver) && !(connection.driver.options.type === "cockroachdb")) {
             column1.isGenerated = true;
             column1.generationStrategy = "increment";
         }
@@ -75,11 +75,11 @@ describe("query runner > add column", () => {
         column1!.isNullable.should.be.false;
 
         // CockroachDB does not support altering primary key constraint
-        if (!(connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "cockroachdb"))
             column1!.isPrimary.should.be.true;
 
         // MySql and Sqlite does not supports autoincrement composite primary keys.
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof AbstractSqliteDriver) && !(connection.driver instanceof CockroachDriver)) {
+        if (!(connection.driver.options.type === "mysql") && !(connection.driver instanceof AbstractSqliteDriver) && !(connection.driver.options.type === "cockroachdb")) {
             column1!.isGenerated.should.be.true;
             column1!.generationStrategy!.should.be.equal("increment");
         }
@@ -89,11 +89,11 @@ describe("query runner > add column", () => {
         column2.length.should.be.equal("100");
         column2!.default!.should.be.equal("'this is description'");
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof PostgresDriver) {
-            const isMySQL = connection.driver instanceof MysqlDriver && connection.options.type === "mysql";
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "postgres") {
+            const isMySQL = connection.driver.options.type === "mysql" && connection.options.type === "mysql";
             let postgresSupported = false;
 
-            if (connection.driver instanceof PostgresDriver) {
+            if (connection.driver.options.type === "postgres") {
                 postgresSupported = connection.driver.isGeneratedColumnsSupported;
             }
 
@@ -105,7 +105,7 @@ describe("query runner > add column", () => {
                 column3!.generatedType!.should.be.equals("STORED");
                 column3!.asExpression!.should.be.a("string");
 
-                if (connection.driver instanceof MysqlDriver) {
+                if (connection.driver.options.type === "mysql") {
                     await queryRunner.addColumn(table!, column4);
                     table = await queryRunner.getTable("post");
                     column4 = table!.findColumnByName("textAndTag2")!;

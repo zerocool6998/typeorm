@@ -383,10 +383,10 @@ export class SoftDeleteQueryBuilder<Entity> extends QueryBuilder<Entity> impleme
         const returningExpression = this.createReturningExpression();
 
         // generate and return sql update query
-        if (returningExpression && (this.connection.driver instanceof PostgresDriver || this.connection.driver instanceof OracleDriver || this.connection.driver instanceof CockroachDriver)) {
+        if (returningExpression && (this.connection.driver.options.type === "postgres" || this.connection.driver.options.type === "oracle" || this.connection.driver.options.type === "cockroachdb")) {
             return `UPDATE ${this.getTableName(this.getMainTableName())} SET ${updateColumnAndValues.join(", ")}${whereExpression} RETURNING ${returningExpression}`;
 
-        } else if (returningExpression && this.connection.driver instanceof SqlServerDriver) {
+        } else if (returningExpression && this.connection.driver.options.type === "mssql") {
             return `UPDATE ${this.getTableName(this.getMainTableName())} SET ${updateColumnAndValues.join(", ")} OUTPUT ${returningExpression}${whereExpression}`;
 
         } else {
@@ -420,7 +420,7 @@ export class SoftDeleteQueryBuilder<Entity> extends QueryBuilder<Entity> impleme
         let limit: number|undefined = this.expressionMap.limit;
 
         if (limit) {
-            if (this.connection.driver instanceof MysqlDriver) {
+            if (this.connection.driver.options.type === "mysql") {
                 return " LIMIT " + limit;
             } else {
                 throw new LimitOnUpdateNotSupportedError();

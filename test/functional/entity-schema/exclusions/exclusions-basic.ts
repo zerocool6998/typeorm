@@ -15,7 +15,7 @@ describe("entity-schema > exclusions", () => {
 
     it("should create an exclusion constraint", () => Promise.all(connections.map(async connection => {
         // Only PostgreSQL supports exclusion constraints.
-        if (!(connection.driver instanceof PostgresDriver))
+        if (!(connection.driver.options.type === "postgres"))
             return;
 
         const queryRunner = connection.createQueryRunner();

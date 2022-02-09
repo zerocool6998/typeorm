@@ -21,9 +21,9 @@ describe("github issues > #423 Cannot use Group as Table name && cannot autoSche
         await queryRunner.release();
 
         table!.should.exist;
-        
+
         // CockroachDB stores unique indices as UNIQUE constraints
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             table!.uniques.length.should.be.equal(1);
             table!.uniques[0].name!.should.be.equal("Groups name");
             table!.uniques[0].columnNames[0].should.be.equal("name");

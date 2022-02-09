@@ -122,7 +122,7 @@ export class EntityManager {
             throw new TypeORMError(`Transaction method requires callback in second paramter if isolation level is supplied.`);
         }
 
-        if (this.connection.driver instanceof MongoDriver)
+        if (this.connection.driver.options.type === "mongodb")
             throw new TypeORMError(`Transactions aren't supported by MongoDB.`);
 
         if (this.queryRunner && this.queryRunner.isReleased)
@@ -1001,7 +1001,7 @@ export class EntityManager {
             return repository;
 
         // if repository was not found then create it, store its instance and return it
-        if (this.connection.driver instanceof MongoDriver) {
+        if (this.connection.driver.options.type === "mongodb") {
             const newRepository = new MongoRepository(target, this, this.queryRunner);
             this.repositories.push(newRepository as any);
             return newRepository;

@@ -256,7 +256,7 @@ export class SubjectExecutor {
             const bulkInsertMaps: ObjectLiteral[] = [];
             const bulkInsertSubjects: Subject[] = [];
             const singleInsertSubjects: Subject[] = [];
-            if (this.queryRunner.connection.driver instanceof MongoDriver) {
+            if (this.queryRunner.connection.driver.options.type === "mongodb") {
                 subjects.forEach(subject => {
                     if (subject.metadata.createDateColumn && subject.entity) {
                         subject.entity[subject.metadata.createDateColumn.databaseName] = new Date();
@@ -271,7 +271,7 @@ export class SubjectExecutor {
                     bulkInsertSubjects.push(subject);
                     bulkInsertMaps.push(subject.entity!);
                 });
-            } else if (this.queryRunner.connection.driver instanceof OracleDriver) {
+            } else if (this.queryRunner.connection.driver.options.type === "oracle") {
                 subjects.forEach(subject => {
                     singleInsertSubjects.push(subject);
                 });
@@ -284,8 +284,8 @@ export class SubjectExecutor {
                     // - when oracle is used, since oracle's bulk insertion is very bad
                     if (subject.changeMaps.length === 0 ||
                         subject.metadata.treeType ||
-                        this.queryRunner.connection.driver instanceof OracleDriver ||
-                        this.queryRunner.connection.driver instanceof SapDriver) {
+                        this.queryRunner.connection.driver.options.type === "oracle" ||
+                        this.queryRunner.connection.driver.options.type === "sap") {
                         singleInsertSubjects.push(subject);
 
                     } else {

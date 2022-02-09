@@ -21,7 +21,7 @@ describe("schema builder > update primary keys", () => {
     it("should correctly update composite primary keys", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not support changing primary key constraint
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const metadata = connection.getMetadata(Category);
@@ -44,7 +44,7 @@ describe("schema builder > update primary keys", () => {
             return;
 
         // CockroachDB does not support changing primary key constraint
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const metadata = connection.getMetadata(Question);

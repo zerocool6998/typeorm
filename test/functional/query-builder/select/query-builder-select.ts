@@ -438,7 +438,7 @@ describe("query builder > select", () => {
 
     it("Support max execution time", () => Promise.all(connections.map(async connection => {
         // MAX_EXECUTION_TIME supports only in MySQL
-        if (!(connection.driver instanceof MysqlDriver)) return
+        if (!(connection.driver.options.type === "mysql")) return
 
         const sql = connection
             .createQueryBuilder(Post, "post")
@@ -450,7 +450,7 @@ describe("query builder > select", () => {
 
     it("Support using certain index", () => Promise.all(connections.map(async connection => {
         // `USE INDEX` is only supported in MySQL
-        if (!(connection.driver instanceof MysqlDriver)) {
+        if (!(connection.driver.options.type === "mysql")) {
             return;
         }
 

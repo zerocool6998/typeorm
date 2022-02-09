@@ -44,7 +44,7 @@ describe("schema builder > drop column", () => {
         expect(studentTable!.findColumnByName("faculty")).to.be.undefined;
 
         // CockroachDB creates indices for foreign keys
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             studentTable!.indices.length.should.be.equal(1);
         } else {
             studentTable!.indices.length.should.be.equal(0);

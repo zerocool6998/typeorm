@@ -1468,7 +1468,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             allSelects.push({ selection: "*" });
 
         let lock: string = "";
-        if (this.connection.driver instanceof SqlServerDriver) {
+        if (this.connection.driver.options.type === "mssql") {
             switch (this.expressionMap.lockMode) {
                 case "pessimistic_read":
                     lock = " WITH (HOLDLOCK, ROWLOCK)";
@@ -1485,7 +1485,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         // Use certain index
         let useIndex: string = "";
         if (this.expressionMap.useIndex) {
-            if (this.connection.driver instanceof MysqlDriver) {
+            if (this.connection.driver.options.type === "mysql") {
                 useIndex = ` USE INDEX (${this.expressionMap.useIndex})`;
             }
         }
@@ -1516,12 +1516,12 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         let select = "SELECT ";
 
         if (maxExecutionTime > 0) {
-            if (driver instanceof MysqlDriver) {
+            if (driver.options.type === "mysql") {
                 select += `/*+ MAX_EXECUTION_TIME(${ this.expressionMap.maxExecutionTime }) */ `;
             }
         }
 
-        if (driver instanceof PostgresDriver && selectDistinctOn.length > 0) {
+        if (driver.options.type === "postgres" && selectDistinctOn.length > 0) {
             const selectDistinctOnMap = selectDistinctOn.map(
               (on) => this.replacePropertyNames(on)
             ).join(", ");
@@ -1666,7 +1666,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             limit = this.expressionMap.take;
         }
 
-        if (this.connection.driver instanceof SqlServerDriver) {
+        if (this.connection.driver.options.type === "mssql") {
             // Due to a limitation in SQL Server's parser implementation it does not support using
             // OFFSET or FETCH NEXT without an ORDER BY clause being provided. In cases where the
             // user does not request one we insert a dummy ORDER BY that does nothing and should
@@ -1684,7 +1684,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             if (offset)
                 return prefix + " OFFSET " + offset + " ROWS";
 
-        } else if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver || this.connection.driver instanceof SapDriver) {
+        } else if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api" || this.connection.driver.options.type === "sap") {
 
             if (limit && offset)
                 return " LIMIT " + limit + " OFFSET " + offset;
@@ -1702,7 +1702,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             if (offset)
                 return " LIMIT -1 OFFSET " + offset;
 
-        } else if (this.connection.driver instanceof OracleDriver) {
+        } else if (this.connection.driver.options.type === "oracle") {
 
             if (limit && offset)
                 return " OFFSET " + offset + " ROWS FETCH NEXT " + limit + " ROWS ONLY";
@@ -1732,7 +1732,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         let lockTablesClause = "";
 
         if (this.expressionMap.lockTables) {
-            if (!(driver instanceof PostgresDriver || driver instanceof CockroachDriver)) {
+            if (!(driver.options.type === "postgres" || driver.options.type === "cockroachdb")) {
                 throw new TypeORMError("Lock tables not supported in selected driver");
             }
             if (this.expressionMap.lockTables.length < 1) {
@@ -1743,50 +1743,50 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
         switch (this.expressionMap.lockMode) {
             case "pessimistic_read":
-                if (driver instanceof MysqlDriver || driver instanceof AuroraDataApiDriver) {
+                if (driver.options.type === "mysql" || driver.options.type === "aurora-data-api") {
                     return " LOCK IN SHARE MODE";
 
-                } else if (driver instanceof PostgresDriver) {
+                } else if (driver.options.type === "postgres") {
                     return " FOR SHARE" + lockTablesClause;
 
-                } else if (driver instanceof OracleDriver) {
+                } else if (driver.options.type === "oracle") {
                     return " FOR UPDATE";
 
-                } else if (driver instanceof SqlServerDriver) {
+                } else if (driver.options.type === "mssql") {
                     return "";
 
                 } else {
                     throw new LockNotSupportedOnGivenDriverError();
                 }
             case "pessimistic_write":
-                if (driver instanceof MysqlDriver || driver instanceof AuroraDataApiDriver || driver instanceof OracleDriver) {
+                if (driver.options.type === "mysql" || driver.options.type === "aurora-data-api" || driver.options.type === "oracle") {
                     return " FOR UPDATE";
 
                 }
-                else if (driver instanceof PostgresDriver || driver instanceof CockroachDriver) {
+                else if (driver.options.type === "postgres" || driver.options.type === "cockroachdb") {
                     return " FOR UPDATE" + lockTablesClause;
 
-                } else if (driver instanceof SqlServerDriver) {
+                } else if (driver.options.type === "mssql") {
                     return "";
 
                 } else {
                     throw new LockNotSupportedOnGivenDriverError();
                 }
             case "pessimistic_partial_write":
-                if (driver instanceof PostgresDriver) {
+                if (driver.options.type === "postgres") {
                     return " FOR UPDATE" + lockTablesClause + " SKIP LOCKED";
 
-                } else if (driver instanceof MysqlDriver) {
+                } else if (driver.options.type === "mysql") {
                     return " FOR UPDATE SKIP LOCKED";
 
                 } else {
                     throw new LockNotSupportedOnGivenDriverError();
                 }
             case "pessimistic_write_or_fail":
-                if (driver instanceof PostgresDriver || driver instanceof CockroachDriver) {
+                if (driver.options.type === "postgres" || driver.options.type === "cockroachdb") {
                     return " FOR UPDATE" + lockTablesClause + " NOWAIT";
 
-                } else if (driver instanceof MysqlDriver) {
+                } else if (driver.options.type === "mysql") {
                     return " FOR UPDATE NOWAIT";
 
                 } else {
@@ -1794,7 +1794,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 }
 
             case "for_no_key_update":
-                if (driver instanceof PostgresDriver || driver instanceof CockroachDriver) {
+                if (driver.options.type === "postgres" || driver.options.type === "cockroachdb") {
                     return " FOR NO KEY UPDATE" + lockTablesClause;
                 } else {
                     throw new LockNotSupportedOnGivenDriverError();
@@ -1848,20 +1848,20 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         allColumns.forEach(column => {
             let selectionPath = this.escape(aliasName) + "." + this.escape(column.databaseName);
             if (this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
-                if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) {
+                if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api") {
                     const useLegacy = this.connection.driver.options.legacySpatialSupport;
                     const asText = useLegacy ? "AsText" : "ST_AsText";
                     selectionPath = `${asText}(${selectionPath})`;
                 }
 
-                if (this.connection.driver instanceof PostgresDriver)
+                if (this.connection.driver.options.type === "postgres")
                     // cast to JSON to trigger parsing in the driver
                     if (column.precision) {
                         selectionPath = `ST_AsGeoJSON(${selectionPath}, ${column.precision})::json`;
                     } else {
                         selectionPath = `ST_AsGeoJSON(${selectionPath})::json`;
                     }
-                if (this.connection.driver instanceof SqlServerDriver)
+                if (this.connection.driver.options.type === "mssql")
                     selectionPath = `${selectionPath}.ToString()`;
             }
 
@@ -1916,7 +1916,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
         // For everything else, we'll need to do some hackery to get the correct count values.
 
-        if (this.connection.driver instanceof CockroachDriver || this.connection.driver instanceof PostgresDriver) {
+        if (this.connection.driver.options.type === "cockroachdb" || this.connection.driver.options.type === "postgres") {
             // Postgres and CockroachDB can pass multiple parameters to the `DISTINCT` function
             // https://www.postgresql.org/docs/9.5/sql-select.html#SQL-DISTINCT
             return "COUNT(DISTINCT(" +
@@ -1924,7 +1924,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 "))";
         }
 
-        if (this.connection.driver instanceof MysqlDriver) {
+        if (this.connection.driver.options.type === "mysql") {
             // MySQL & MariaDB can pass multiple parameters to the `DISTINCT` language construct
             // https://mariadb.com/kb/en/count-distinct/
             return "COUNT(DISTINCT " +
@@ -1932,7 +1932,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 ")";
         }
 
-        if (this.connection.driver instanceof SqlServerDriver) {
+        if (this.connection.driver.options.type === "mssql") {
             // SQL Server has gotta be different from everyone else.  They don't support
             // distinct counting multiple columns & they don't have the same operator
             // characteristic for concatenating, so we gotta use the `CONCAT` function.

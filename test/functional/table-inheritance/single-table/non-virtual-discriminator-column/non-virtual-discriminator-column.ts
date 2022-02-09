@@ -32,7 +32,7 @@ describe("table-inheritance > single-table > non-virtual-discriminator-column", 
         employee.salary = 1000;
         await connection.getRepository(Employee).save(employee);
 
-        if (!(connection.driver instanceof OracleDriver)) {
+        if (!(connection.driver.options.type === "oracle")) {
             // In Oracle, empty string is a `null` so this isn't exactly possible there.
 
             const other = new Other();
@@ -59,7 +59,7 @@ describe("table-inheritance > single-table > non-virtual-discriminator-column", 
         persons[1].name.should.be.equal("Roger");
         (persons[1] as Employee).salary.should.be.equal(1000);
 
-        if (!(connection.driver instanceof OracleDriver)) {
+        if (!(connection.driver.options.type === "oracle")) {
             // In Oracle, empty string is a `null` so this isn't exactly possible there.
 
             persons[2].id.should.be.equal(3);

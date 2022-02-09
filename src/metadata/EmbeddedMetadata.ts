@@ -254,7 +254,7 @@ export class EmbeddedMetadata {
     }
 
     protected buildPrefix(connection: Connection): string {
-        if (connection.driver instanceof MongoDriver)
+        if (connection.driver.options.type === "mongodb")
             return this.propertyName;
 
         let prefixes: string[] = [];

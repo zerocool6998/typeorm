@@ -22,7 +22,7 @@ describe("entity-schema > uniques", () => {
         const table = await queryRunner.getTable("person");
         await queryRunner.release();
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             expect(table!.indices.length).to.be.equal(1);
             expect(table!.indices[0].name).to.be.equal("UNIQUE_TEST");
             expect(table!.indices[0].isUnique).to.be.true;

@@ -58,7 +58,7 @@ describe("query runner > create table", () => {
         nameColumn!.should.be.exist;
         nameColumn!.isUnique.should.be.true;
         table!.should.exist;
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof SapDriver))
+        if (!(connection.driver.options.type === "mysql") && !(connection.driver.options.type === "sap"))
             table!.uniques.length.should.be.equal(1);
 
         await queryRunner.executeMemoryDownSql();
@@ -80,7 +80,7 @@ describe("query runner > create table", () => {
         const versionColumn = table!.findColumnByName("version");
         const nameColumn = table!.findColumnByName("name");
         table!.should.exist;
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof SapDriver)) {
+        if (!(connection.driver.options.type === "mysql") && !(connection.driver.options.type === "sap")) {
             table!.uniques.length.should.be.equal(2);
             table!.checks.length.should.be.equal(1);
         }
@@ -154,7 +154,7 @@ describe("query runner > create table", () => {
             ]
         };
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             questionTableOptions.indices!.push({ columnNames: ["name", "text"] });
         } else {
             questionTableOptions.uniques = [{ columnNames: ["name", "text"] }];
@@ -199,14 +199,14 @@ describe("query runner > create table", () => {
             ]
         };
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             categoryTableOptions.indices = [{ columnNames: ["name", "alternativeName"]}];
         } else {
             categoryTableOptions.uniques = [{ columnNames: ["name", "alternativeName"]}];
         }
 
         // When we mark column as unique, MySql create index for that column and we don't need to create index separately.
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof OracleDriver) && !(connection.driver instanceof SapDriver))
+        if (!(connection.driver.options.type === "mysql") && !(connection.driver.options.type === "oracle") && !(connection.driver.options.type === "sap"))
             categoryTableOptions.indices = [{ columnNames: ["questionId"] }];
 
         await queryRunner.createTable(new Table(categoryTableOptions), true);
@@ -225,13 +225,13 @@ describe("query runner > create table", () => {
         questionIdColumn!.generationStrategy!.should.be.equal("increment");
         questionTable!.should.exist;
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             // MySql and SAP HANA does not have unique constraints.
             // all unique constraints is unique indexes.
             questionTable!.uniques.length.should.be.equal(0);
             questionTable!.indices.length.should.be.equal(2);
 
-        } else if (connection.driver instanceof CockroachDriver) {
+        } else if (connection.driver.options.type === "cockroachdb") {
             // CockroachDB stores unique indices as UNIQUE constraints
             questionTable!.uniques.length.should.be.equal(2);
             questionTable!.uniques[0].columnNames.length.should.be.equal(2);
@@ -259,11 +259,11 @@ describe("query runner > create table", () => {
         categoryTable!.should.exist;
         categoryTable!.foreignKeys.length.should.be.equal(1);
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             // MySql and SAP HANA does not have unique constraints. All unique constraints is unique indexes.
             categoryTable!.indices.length.should.be.equal(3);
 
-        } else if (connection.driver instanceof OracleDriver) {
+        } else if (connection.driver.options.type === "oracle") {
             // Oracle does not allow to put index on primary or unique columns.
             categoryTable!.indices.length.should.be.equal(0);
 
@@ -301,13 +301,13 @@ describe("query runner > create table", () => {
         nameColumn!.isUnique.should.be.true;
         descriptionColumn!.isUnique.should.be.true;
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "sap") {
             table!.uniques.length.should.be.equal(0);
             table!.indices.length.should.be.equal(4);
             tagColumn!.isUnique.should.be.true;
             textColumn!.isUnique.should.be.true;
 
-        } else if (connection.driver instanceof CockroachDriver) {
+        } else if (connection.driver.options.type === "cockroachdb") {
             // CockroachDB stores unique indices as UNIQUE constraints
             table!.uniques.length.should.be.equal(4);
             table!.indices.length.should.be.equal(0);

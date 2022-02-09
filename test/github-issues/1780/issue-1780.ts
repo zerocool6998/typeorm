@@ -27,7 +27,7 @@ describe("github issues > #1780 Support for insertion ignore on duplicate error"
     // https://doxygen.postgresql.org/nodeModifyTable_8c_source.html : Line 1356
      it("should save one row without duplicate error in MySQL/MariaDB", () => Promise.all(connections.map(async connection => {
       try {
-         if (connection.driver instanceof MysqlDriver) {
+         if (connection.driver.options.type === "mysql") {
              const UserRepository = connection.manager.getRepository(User);
              // ignore while insertion duplicated row
             await UserRepository
@@ -77,7 +77,7 @@ describe("github issues > #1780 Support for insertion ignore on duplicate error"
      })));
      it("should save one row without duplicate error in PostgreSQL", () => Promise.all(connections.map(async connection => {
          try {
-            if (connection.driver instanceof PostgresDriver) {
+            if (connection.driver.options.type === "postgres") {
 
                 const UserRepository = connection.manager.getRepository(User);
                  // ignore while insertion duplicated row

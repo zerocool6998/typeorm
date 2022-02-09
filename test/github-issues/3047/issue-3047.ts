@@ -30,7 +30,7 @@ describe("github issues > #3047 Mysqsl on duplicate key update use current value
 
     it("should overwrite using current value in MySQL/MariaDB", () => Promise.all(connections.map(async connection => {
       try {
-         if (connection.driver instanceof MysqlDriver) {
+         if (connection.driver.options.type === "mysql") {
             const UserRepository = connection.manager.getRepository(User);
 
             await UserRepository
@@ -60,7 +60,7 @@ describe("github issues > #3047 Mysqsl on duplicate key update use current value
 
     it("should overwrite using current value in PostgreSQL", () => Promise.all(connections.map(async connection => {
       try {
-        if (connection.driver instanceof PostgresDriver) {
+        if (connection.driver.options.type === "postgres") {
 
           const UserRepository = connection.manager.getRepository(User);
 

@@ -65,19 +65,19 @@ describe("entity subscriber > transaction flow", () => {
 
     it("transactionStart", async () => {
         for (let connection of connections) {
-            if (connection.driver instanceof SqlServerDriver) return;
+            if (connection.driver.options.type === "mssql") return;
 
             beforeTransactionStart.resetHistory();
             afterTransactionStart.resetHistory();
 
             let isolationLevel: any = undefined;
-            if (connection.driver instanceof SapDriver || connection.driver instanceof OracleDriver) {
+            if (connection.driver.options.type === "sap" || connection.driver.options.type === "oracle") {
                 isolationLevel = "READ COMMITTED";
             }
 
             const queryRunner = await connection.createQueryRunner();
 
-            if (connection.driver instanceof AuroraDataApiPostgresDriver || connection.driver instanceof AuroraDataApiDriver) {
+            if (connection.driver.options.type === "aurora-data-api-pg" || connection.driver.options.type === "aurora-data-api") {
                 const startTransactionFn = sinon.spy(queryRunner.startTransaction);
                 await queryRunner.startTransaction();
 
@@ -121,7 +121,7 @@ describe("entity subscriber > transaction flow", () => {
     it("transactionCommit", async () => {
 
         for (let connection of connections) {
-            if (connection.driver instanceof SqlServerDriver) return;
+            if (connection.driver.options.type === "mssql") return;
 
             beforeTransactionCommit.resetHistory();
             afterTransactionCommit.resetHistory();
@@ -129,7 +129,7 @@ describe("entity subscriber > transaction flow", () => {
             const queryRunner = await connection.createQueryRunner();
             await queryRunner.startTransaction();
 
-            if (connection.driver instanceof AuroraDataApiPostgresDriver || connection.driver instanceof AuroraDataApiDriver) {
+            if (connection.driver.options.type === "aurora-data-api-pg" || connection.driver.options.type === "aurora-data-api") {
                 const commitTransactionFn = sinon.spy(queryRunner.commitTransaction);
                 await queryRunner.commitTransaction();
 
@@ -167,7 +167,7 @@ describe("entity subscriber > transaction flow", () => {
     it("transactionRollback", async () => {
 
         for (let connection of connections) {
-            if (connection.driver instanceof SqlServerDriver) return;
+            if (connection.driver.options.type === "mssql") return;
 
             beforeTransactionRollback.resetHistory();
             afterTransactionRollback.resetHistory();
@@ -175,7 +175,7 @@ describe("entity subscriber > transaction flow", () => {
             const queryRunner = await connection.createQueryRunner();
             await queryRunner.startTransaction();
 
-            if (connection.driver instanceof AuroraDataApiPostgresDriver || connection.driver instanceof AuroraDataApiDriver) {
+            if (connection.driver.options.type === "aurora-data-api-pg" || connection.driver.options.type === "aurora-data-api") {
                 const rollbackTransactionFn = sinon.spy(queryRunner.rollbackTransaction);
                 await queryRunner.rollbackTransaction();
 

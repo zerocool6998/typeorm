@@ -18,7 +18,7 @@ describe("transaction > transaction with full isolation support", () => {
 
   it("should execute all operations in a single transaction with READ UNCOMMITTED isolation level", () => Promise.all(connections.map(async connection => {
       // SAP does not support READ UNCOMMITTED isolation level
-      if (connection.driver instanceof SapDriver)
+      if (connection.driver.options.type === "sap")
           return;
 
       let postId: number|undefined = undefined, categoryId: number|undefined = undefined;

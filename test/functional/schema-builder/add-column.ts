@@ -32,7 +32,7 @@ describe("schema builder > add column", () => {
                 options: {
                     type: "int",
                     name: "secondId",
-                    primary: !(connection.driver instanceof CockroachDriver), // CockroachDB does not allow changing pk
+                    primary: !(connection.driver.options.type === "cockroachdb"), // CockroachDB does not allow changing pk
                     nullable: false
                 }
             }
@@ -64,7 +64,7 @@ describe("schema builder > add column", () => {
         const column1 = table!.findColumnByName("secondId")!;
         column1.should.be.exist;
         column1.isNullable.should.be.false;
-        if (!(connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "cockroachdb"))
             column1.isPrimary.should.be.true;
 
         const column2 = table!.findColumnByName("description")!;

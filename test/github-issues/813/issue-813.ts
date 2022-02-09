@@ -15,7 +15,7 @@ describe("github issues > #813 order by must support functions", () => {
     after(() => closeTestingConnections(connections));
 
     it("should work perfectly", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof MysqlDriver))
+        if (!(connection.driver.options.type === "mysql"))
             return;
 
         const categories = [new Category(), new Category()];
@@ -36,7 +36,7 @@ describe("github issues > #813 order by must support functions", () => {
     })));
 
     it("should work perfectly with pagination as well", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof MysqlDriver))
+        if (!(connection.driver.options.type === "mysql"))
             return;
 
         const categories = [new Category(), new Category()];

@@ -58,7 +58,7 @@ describe("query builder > update", () => {
 
         await connection.createQueryBuilder()
             .update(User)
-            .set({ name: () => connection.driver instanceof SqlServerDriver ? "SUBSTRING('Dima Zotov', 1, 4)" : "SUBSTR('Dima Zotov', 1, 4)" })
+            .set({ name: () => connection.driver.options.type === "mssql" ? "SUBSTRING('Dima Zotov', 1, 4)" : "SUBSTR('Dima Zotov', 1, 4)" })
             .where("name = :name", {
                 name: "Alex Messer"
             })
@@ -169,7 +169,7 @@ describe("query builder > update", () => {
         const limitNum = 2;
         const nameToFind = "Dima Zotov";
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (connection.driver.options.type === "mysql") {
             await connection.createQueryBuilder()
             .update(User)
             .set({ name: nameToFind })

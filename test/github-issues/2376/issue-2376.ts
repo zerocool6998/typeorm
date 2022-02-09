@@ -23,7 +23,7 @@ describe("github issues > #2376 Naming single column unique constraint with deco
         let unique1 = table!.uniques.find(it => it.name === "unique-email");
         let unique2 = table!.uniques.find(it => it.name === "unique-email-nickname");
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (connection.driver.options.type === "mysql") {
             unique1 = table!.indices.find(it => it.name === "unique-email");
             unique2 = table!.indices.find(it => it.name === "unique-email-nickname");
         }

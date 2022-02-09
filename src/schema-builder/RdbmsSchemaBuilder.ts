@@ -68,7 +68,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
         // CockroachDB implements asynchronous schema sync operations which can not been executed in transaction.
         // E.g. if you try to DROP column and ADD it again in the same transaction, crdb throws error.
         const isUsingTransactions = (
-            !(this.connection.driver instanceof CockroachDriver) &&
+            !(this.connection.driver.options.type === "cockroachdb") &&
             this.connection.options.migrationsTransactionMode !== "none"
         );
 
@@ -112,7 +112,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
      * If the schema contains views, create the typeorm_metadata table if it doesn't exist yet
      */
     async createMetadataTableIfNecessary(queryRunner: QueryRunner): Promise<void> {
-        if (this.viewEntityToSyncMetadatas.length > 0 || (this.connection.driver instanceof PostgresDriver && this.connection.driver.isGeneratedColumnsSupported)) {
+        if (this.viewEntityToSyncMetadatas.length > 0 || (this.connection.driver.options.type === "postgres" && this.connection.driver.isGeneratedColumnsSupported)) {
             await this.createTypeormMetadataTable(queryRunner);
         }
     }
@@ -328,7 +328,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
 
     protected async dropOldChecks(): Promise<void> {
         // Mysql does not support check constraints
-        if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
+        if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api")
             return;
 
         for (const metadata of this.entityToSyncMetadatas) {
@@ -368,7 +368,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
 
     protected async dropOldExclusions(): Promise<void> {
         // Only PostgreSQL supports exclusion constraints
-        if (!(this.connection.driver instanceof PostgresDriver))
+        if (!(this.connection.driver.options.type === "postgres"))
             return;
 
         for (const metadata of this.entityToSyncMetadatas) {
@@ -610,7 +610,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
 
             // drop all composite uniques related to this column
             // Mysql does not support unique constraints.
-            if (!(this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)) {
+            if (!(this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api")) {
                 for (const changedColumn of changedColumns) {
                     await this.dropColumnCompositeUniques(this.getTablePath(metadata), changedColumn.databaseName);
                 }
@@ -659,7 +659,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
 
     protected async createNewChecks(): Promise<void> {
         // Mysql does not support check constraints
-        if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
+        if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api")
             return;
 
         for (const metadata of this.entityToSyncMetadatas) {
@@ -705,7 +705,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
      */
     protected async createNewExclusions(): Promise<void> {
         // Only PostgreSQL supports exclusion constraints
-        if (!(this.connection.driver instanceof PostgresDriver))
+        if (!(this.connection.driver.options.type === "postgres"))
             return;
 
         for (const metadata of this.entityToSyncMetadatas) {

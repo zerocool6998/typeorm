@@ -754,7 +754,7 @@ export abstract class QueryBuilder<Entity> {
         if (columns.length) {
             let columnsExpression = columns.map(column => {
                 const name = this.escape(column.databaseName);
-                if (driver instanceof SqlServerDriver) {
+                if (driver.options.type === "mssql") {
                     if (this.expressionMap.queryType === "insert" || this.expressionMap.queryType === "update" || this.expressionMap.queryType === "soft-delete" || this.expressionMap.queryType === "restore") {
                         return "INSERTED." + name;
                     } else {
@@ -765,13 +765,13 @@ export abstract class QueryBuilder<Entity> {
                 }
             }).join(", ");
 
-            if (driver instanceof OracleDriver) {
+            if (driver.options.type === "oracle") {
                 columnsExpression += " INTO " + columns.map(column => {
                     return this.createParameter({ type: driver.columnTypeToNativeParameter(column.type), dir: driver.oracle.BIND_OUT });
                 }).join(", ");
             }
 
-            if (driver instanceof SqlServerDriver) {
+            if (driver.options.type === "mssql") {
                 if (this.expressionMap.queryType === "insert" || this.expressionMap.queryType === "update") {
                     columnsExpression += " INTO @OutputTable";
                 }
@@ -854,7 +854,7 @@ export abstract class QueryBuilder<Entity> {
             case "equal":
                 return `${condition.parameters[0]} = ${condition.parameters[1]}`;
             case "ilike":
-                if (driver instanceof PostgresDriver || driver instanceof CockroachDriver) {
+                if (driver.options.type === "postgres" || driver.options.type === "cockroachdb") {
                     return `${condition.parameters[0]} ILIKE ${condition.parameters[1]}`;
                 }
 
