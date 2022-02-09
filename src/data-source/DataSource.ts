@@ -11,6 +11,6 @@ import {DataSourceOptions} from "./DataSourceOptions";
  */
 export class DataSource extends Connection {
     constructor(options: DataSourceOptions) {
-        super(options)
+        super(options);
     }
 }

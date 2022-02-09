@@ -14,4 +14,4 @@ export type FindOptionsRelation<Entity> = {
  *
  * @deprecated will be removed in the next version, use FindOptionsRelation type notation instead
  */
-export type FindOptionsRelationByString = string[]
+export type FindOptionsRelationByString = string[];

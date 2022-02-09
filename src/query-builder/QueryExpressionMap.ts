@@ -25,7 +25,7 @@ export class QueryExpressionMap {
     /**
      * Strategy to load relations.
      */
-    relationLoadStrategy: "join" | "query" = "join"
+    relationLoadStrategy: "join" | "query" = "join";
 
     /**
      * Indicates if QueryBuilder used to select entities and not a raw results.
@@ -312,7 +312,7 @@ export class QueryExpressionMap {
 
     constructor(protected connection: Connection) {
         if (connection.options.relationLoadStrategy) {
-            this.relationLoadStrategy = connection.options.relationLoadStrategy
+            this.relationLoadStrategy = connection.options.relationLoadStrategy;
         }
     }
 

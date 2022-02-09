@@ -62,9 +62,9 @@ export class Repository<Entity extends ObjectLiteral> {
         manager: EntityManager,
         queryRunner?: QueryRunner
     ) {
-        this.target = target
-        this.manager = manager
-        this.queryRunner = queryRunner
+        this.target = target;
+        this.manager = manager;
+        this.queryRunner = queryRunner;
     }
 
     // -------------------------------------------------------------------------
@@ -462,14 +462,14 @@ export class Repository<Entity extends ObjectLiteral> {
         //     ...this,
         //     ...custom
         // };
-        const thisRepo: any = this.constructor
-        const { target, manager, queryRunner } = this
+        const thisRepo: any = this.constructor;
+        const { target, manager, queryRunner } = this;
         const cls = new class extends thisRepo {
             constructor() {
                 super(target, manager, queryRunner);
             }
-        }
-        Object.assign(cls, custom)
+        };
+        Object.assign(cls, custom);
         return cls as any;
     }
 }

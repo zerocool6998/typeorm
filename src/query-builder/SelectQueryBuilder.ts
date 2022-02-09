@@ -1146,7 +1146,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         }
 
         if (result === undefined) {
-            return null
+            return null;
         }
         return result;
     }
@@ -1844,7 +1844,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         const nonSelectedPrimaryColumns = this.expressionMap.queryEntity ? metadata.primaryColumns.filter(primaryColumn => columns.indexOf(primaryColumn) === -1) : [];
         const allColumns = [...columns, ...nonSelectedPrimaryColumns];
 
-        const finalSelects: SelectQuery[] = []
+        const finalSelects: SelectQuery[] = [];
         allColumns.forEach(column => {
             let selectionPath = this.escape(aliasName) + "." + this.escape(column.databaseName);
             if (this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
@@ -1874,7 +1874,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                         // todo: need to keep in mind that custom selection.aliasName breaks hydrator. fix it later!
                         virtual: selection.virtual,
                     });
-                })
+                });
             } else {
                 finalSelects.push({
                     selection: selectionPath,
@@ -1884,7 +1884,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 });
             }
         });
-        return finalSelects
+        return finalSelects;
     }
 
     protected findEntityColumnSelects(aliasName: string, metadata: EntityMetadata): SelectQuery[] {
@@ -1991,7 +1991,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         if (this.expressionMap.mainAlias!.metadata) {
 
             if (this.findOptions.relationLoadStrategy) {
-                this.expressionMap.relationLoadStrategy = this.findOptions.relationLoadStrategy
+                this.expressionMap.relationLoadStrategy = this.findOptions.relationLoadStrategy;
             }
 
             if (this.findOptions.comment) {
@@ -2018,7 +2018,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 this.select(this.selects);
             }
 
-            this.selects = []
+            this.selects = [];
             if (this.findOptions.relations) {
                 const relations = Array.isArray(this.findOptions.relations)
                     ? OrmUtils.propertyPathsToTruthyObject(this.findOptions.relations)
@@ -2040,7 +2040,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 }
             }
             if (this.selects.length) {
-                console.log("adding following selects: ", this.selects)
+                console.log("adding following selects: ", this.selects);
                 this.addSelect(this.selects);
             }
 
@@ -2568,12 +2568,12 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                         });
 
                         if (selection && typeof selection[relationName] === "object") {
-                            console.log("sub selection", relationName)
+                            console.log("sub selection", relationName);
                             this.buildSelect(
                                 selection[relationName] as FindOptionsSelect<any>,
                                 relation.inverseEntityMetadata,
                                 joinAlias
-                            )
+                            );
                         }
                     }
                 }
@@ -2643,9 +2643,9 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                                 selection[relationName] as FindOptionsSelect<any>,
                                 relation.inverseEntityMetadata,
                                 joinAlias
-                            )
+                            );
                         }
-                    })
+                    });
                 }
 
                 if (typeof relationValue === "object") {
@@ -2680,7 +2680,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 let nulls = order[key] instanceof Object ? (order[key] as any).nulls : undefined;
                 nulls = nulls === "first" ? "NULLS FIRST" : nulls === "last" ? "NULLS LAST" : undefined;
 
-                this.addOrderBy(`${alias}.${propertyPath}`, direction, nulls)
+                this.addOrderBy(`${alias}.${propertyPath}`, direction, nulls);
                 // this.orderBys.push({ alias: alias + "." + propertyPath, direction, nulls });
 
             } else if (embed) {
@@ -2737,12 +2737,12 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     // const parameterName = alias + "_" + propertyPath.split(".").join("_") + "_" + parameterIndex;
 
                     // todo: we need to handle other operators as well?
-                    let parameterValue = where[key]
+                    let parameterValue = where[key];
                     if (where[key] instanceof EqualOperator) {
-                        parameterValue = where[key].value
+                        parameterValue = where[key].value;
                     }
                     if (column.transformer) {
-                        parameterValue = ApplyValueTransformers.transformTo(column.transformer, parameterValue)
+                        parameterValue = ApplyValueTransformers.transformTo(column.transformer, parameterValue);
                     }
 
                     // if (parameterValue === null) {
@@ -2780,7 +2780,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     andConditions.push(
                         this.createWhereConditionExpression(this.getWherePredicateCondition(aliasPath, parameterValue))
                         // parameterValue.toSql(this.connection, aliasPath, parameters));
-                    )
+                    );
 
                     // this.conditions.push(`${alias}.${propertyPath} = :${paramName}`);
                     // this.expressionMap.parameters[paramName] = where[key]; // todo: handle functions and other edge cases

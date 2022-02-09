@@ -648,7 +648,7 @@ export class MongoEntityManager extends EntityManager {
             }, {} as any);
         } else {
             // todo: implement
-            return {}
+            return {};
         }
     }
 

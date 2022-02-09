@@ -528,7 +528,7 @@ export class EntityMetadata {
      * Creates a new entity.
      */
     create(queryRunner?: QueryRunner, options?: { fromDeserializer?: boolean, pojo?: boolean }): any {
-        const pojo = options && options.pojo === true ? true : false
+        const pojo = options && options.pojo === true ? true : false;
         // if target is set to a function (e.g. class) that can be created then create it
         let ret: any;
         if (this.target instanceof Function && !pojo) {

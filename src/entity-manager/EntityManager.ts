@@ -866,7 +866,7 @@ export class EntityManager {
             findOptions = {
                 ...(findOptions || {}),
                 where: options
-            }
+            };
         }
 
         qb.setFindOptions(findOptions);
@@ -1004,11 +1004,11 @@ export class EntityManager {
         if (this.connection.driver instanceof MongoDriver) {
             const newRepository = new MongoRepository(target, this, this.queryRunner);
             this.repositories.push(newRepository as any);
-            return newRepository
+            return newRepository;
         } else {
             const newRepository = new Repository<any>(target, this, this.queryRunner);
             this.repositories.push(newRepository);
-            return newRepository
+            return newRepository;
         }
     }
 

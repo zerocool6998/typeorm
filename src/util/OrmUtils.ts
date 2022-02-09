@@ -197,41 +197,41 @@ export class OrmUtils {
         for (let key in obj) {
             if (typeof obj[key] === "object") {
                 if (Object.keys(obj[key]).length === 0) {
-                    obj[key] = true
+                    obj[key] = true;
                 } else {
-                    this.replaceEmptyObjectsToBooleans(obj[key])
+                    this.replaceEmptyObjectsToBooleans(obj[key]);
                 }
             }
         }
     }
 
     static propertyPathsToTruthyObject(paths: string[]) {
-        let obj: any = {}
+        let obj: any = {};
         for (let path of paths) {
-            const props = path.split(".")
-            if (!props.length) continue
+            const props = path.split(".");
+            if (!props.length) continue;
 
             if (!obj[props[0]] || obj[props[0]] === true) {
-                obj[props[0]] = {}
+                obj[props[0]] = {};
             }
-            let recursiveChild = obj[props[0]]
+            let recursiveChild = obj[props[0]];
             for (let [key, prop] of props.entries()) {
-                if (key === 0) continue
+                if (key === 0) continue;
 
                 if (recursiveChild[prop]) {
-                    recursiveChild = recursiveChild[prop]
+                    recursiveChild = recursiveChild[prop];
 
                 } else if (key === props.length - 1) {
-                    recursiveChild[prop] = {}
-                    recursiveChild = null
+                    recursiveChild[prop] = {};
+                    recursiveChild = null;
                 } else {
-                    recursiveChild[prop] = {}
-                    recursiveChild = recursiveChild[prop]
+                    recursiveChild[prop] = {};
+                    recursiveChild = recursiveChild[prop];
                 }
             }
         }
-        this.replaceEmptyObjectsToBooleans(obj)
-        return obj
+        this.replaceEmptyObjectsToBooleans(obj);
+        return obj;
     }
 
     /**
