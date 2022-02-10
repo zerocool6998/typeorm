@@ -300,8 +300,6 @@ export const MyDataSources = {
 
 * `AbstractRepository` is deprecated. Use new way of custom repositories creation.
 
-* `@TransactionRepository`, `@TransactionManager`, `@Transaction` decorators were deprecated.
-
 * all deprecated signatures will be removed in `0.4.0`
 
 ### BREAKING CHANGES
@@ -309,6 +307,8 @@ export const MyDataSources = {
 * minimal Node.JS version requirement now is `12.9.0`
 
 * `Repository` now has a constructor (breaks classes extending Repository with custom constructor)
+
+* `@TransactionRepository`, `@TransactionManager`, `@Transaction` decorators were completely removed.
 
 * now migrations are running before schema synchronization if you have both pending migrations and schema synchronization pending
   (it works if you have both `migrationsRun` and `synchronize` enabled in connection options).
