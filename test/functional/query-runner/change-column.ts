@@ -4,7 +4,6 @@ import {Connection} from "../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
 import {TableColumn} from "../../../src";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 
 describe("query runner > change column", () => {
 
@@ -139,7 +138,7 @@ describe("query runner > change column", () => {
     it("should correctly change generated as expression", () => Promise.all(connections.map(async connection => {
 
         // Only works on postgres
-        if (!(connection.driver instanceof PostgresDriver)) return;
+        if (!(connection.driver.options.type === "postgres")) return;
 
         const queryRunner = connection.createQueryRunner();
 

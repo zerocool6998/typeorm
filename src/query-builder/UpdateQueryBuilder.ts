@@ -14,9 +14,6 @@ import {UpdateValuesMissingError} from "../error/UpdateValuesMissingError";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
 import {TypeORMError} from "../error";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -93,7 +90,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 ));
             }
 
-            if (returningColumns.length > 0 && this.connection.driver instanceof SqlServerDriver) {
+            if (returningColumns.length > 0 && this.connection.driver.options.type === "mssql") {
                 declareSql = this.connection.driver.buildTableVariableDeclaration("@OutputTable", returningColumns);
                 selectOutputSql = `SELECT * FROM @OutputTable`;
             }
@@ -408,14 +405,14 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     } else if (this.connection.driver.options.type === "sap" && value === null) {
                         updateColumnAndValues.push(this.escape(column.databaseName) + " = NULL");
                     } else {
-                        if (this.connection.driver instanceof SqlServerDriver) {
+                        if (this.connection.driver.options.type === "mssql") {
                             value = this.connection.driver.parametrizeValue(column, value);
                         }
 
                         const paramName = this.createParameter(value);
 
                         let expression = null;
-                        if ((this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
+                        if ((this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api") && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
                             const useLegacy = this.connection.driver.options.legacySpatialSupport;
                             const geomFromText = useLegacy ? "GeomFromText" : "ST_GeomFromText";
                             if (column.srid != null) {

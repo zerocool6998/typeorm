@@ -45,8 +45,6 @@ import {FindOperator} from "../find-options/FindOperator";
 import {OrmUtils} from "../util/OrmUtils";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
 import {EqualOperator} from "../find-options/EqualOperator";
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -1843,7 +1841,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         allColumns.forEach(column => {
             let selectionPath = this.escape(aliasName) + "." + this.escape(column.databaseName);
             if (this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
-                if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) {
+                if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api") {
                     const useLegacy = this.connection.driver.options.legacySpatialSupport;
                     const asText = useLegacy ? "AsText" : "ST_AsText";
                     selectionPath = `${asText}(${selectionPath})`;

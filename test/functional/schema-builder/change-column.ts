@@ -5,9 +5,6 @@ import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/Abstract
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {PostVersion} from "./entity/PostVersion";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
-import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
 
 describe("schema builder > change column", () => {
 
@@ -183,7 +180,7 @@ describe("schema builder > change column", () => {
         idColumn.generationStrategy = "uuid";
 
         // depending on driver, we must change column and referenced column types
-        if (connection.driver instanceof PostgresDriver || connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "postgres" || connection.driver.options.type === "cockroachdb") {
             idColumn.type = "uuid";
         } else if (connection.driver.options.type === "mssql") {
             idColumn.type = "uniqueidentifier";
@@ -196,7 +193,7 @@ describe("schema builder > change column", () => {
         const postTable = await queryRunner.getTable("post");
         await queryRunner.release();
 
-        if (connection.driver instanceof PostgresDriver || connection.driver instanceof CockroachDriver || connection.driver instanceof SqlServerDriver) {
+        if (connection.driver.options.type === "postgres" || connection.driver.options.type === "mssql" || connection.driver.options.type === "cockroachdb") {
             postTable!.findColumnByName("id")!.isGenerated.should.be.true;
             postTable!.findColumnByName("id")!.generationStrategy!.should.be.equal("uuid");
 
@@ -227,7 +224,7 @@ describe("schema builder > change column", () => {
         idColumn.generationStrategy = "uuid";
 
         // depending on driver, we must change column and referenced column types
-        if (connection.driver instanceof PostgresDriver || connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "postgres" || connection.driver.options.type === "cockroachdb") {
             idColumn.type = "uuid";
             teacherColumn.type = "uuid";
         } else if (connection.driver.options.type === "mssql") {

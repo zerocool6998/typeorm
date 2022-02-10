@@ -3,8 +3,6 @@ import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src";
 import {Post} from "./entity/Post";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
 
 describe("transaction > transaction with load many", () => {
 
@@ -21,10 +19,10 @@ describe("transaction > transaction with load many", () => {
 
         const driver = connection.driver;
 
-        if (driver instanceof MysqlDriver) {
+        if (driver.options.type === "mysql") {
             const pool = driver.pool;
             pool.on("acquire", () => acquireCount++);
-        } else if (driver instanceof PostgresDriver) {
+        } else if (driver.options.type === "postgres") {
             const pool = driver.master;
             pool.on("acquire", () => acquireCount++);
         }

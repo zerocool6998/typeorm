@@ -15,7 +15,6 @@ import {TableCheck} from "./table/TableCheck";
 import {TableExclusion} from "./table/TableExclusion";
 import {View} from "./view/View";
 import {ViewUtils} from "./util/ViewUtils";
-import {PostgresDriver} from "../driver/postgres/PostgresDriver";
 
 /**
  * Creates complete tables schemas in the database based on the entity metadatas.
@@ -109,7 +108,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
      * If the schema contains views, create the typeorm_metadata table if it doesn't exist yet
      */
     async createMetadataTableIfNecessary(queryRunner: QueryRunner): Promise<void> {
-        if (this.viewEntityToSyncMetadatas.length > 0 || (this.connection.driver instanceof PostgresDriver && this.connection.driver.isGeneratedColumnsSupported)) {
+        if (this.viewEntityToSyncMetadatas.length > 0 || (this.connection.driver.options.type === "postgres" && this.connection.driver.isGeneratedColumnsSupported)) {
             await this.createTypeormMetadataTable(queryRunner);
         }
     }

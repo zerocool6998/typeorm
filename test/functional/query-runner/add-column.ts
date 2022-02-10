@@ -4,7 +4,6 @@ import {Connection} from "../../../src/connection/Connection";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
 import {TableColumn} from "../../../src/schema-builder/table/TableColumn";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 
 describe("query runner > add column", () => {
 
@@ -91,7 +90,7 @@ describe("query runner > add column", () => {
             const isMySQL = connection.driver.options.type === "mysql" && connection.options.type === "mysql";
             let postgresSupported = false;
 
-            if (connection.driver instanceof PostgresDriver) {
+            if (connection.driver.options.type === "postgres") {
                 postgresSupported = connection.driver.isGeneratedColumnsSupported;
             }
 
