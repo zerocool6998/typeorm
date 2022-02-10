@@ -21,6 +21,7 @@ import {TypeORMError} from "../error";
 import {WhereClause, WhereClauseCondition} from "./WhereClause";
 import {NotBrackets} from "./NotBrackets";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
+import {OracleDriver} from "../driver/oracle/OracleDriver";
 
 // todo: completely cover query builder with tests
 // todo: entityOrProperty can be target name. implement proper behaviour if it is.
@@ -761,7 +762,7 @@ export abstract class QueryBuilder<Entity> {
                 }
             }).join(", ");
 
-            if (driver.options.type === "oracle") {
+            if (driver instanceof OracleDriver) {
                 columnsExpression += " INTO " + columns.map(column => {
                     return this.createParameter({ type: driver.columnTypeToNativeParameter(column.type), dir: driver.oracle.BIND_OUT });
                 }).join(", ");

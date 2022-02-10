@@ -12,6 +12,9 @@ import {AbstractSqliteDriver} from "../driver/sqlite-abstract/AbstractSqliteDriv
 import {BroadcasterResult} from "../subscriber/BroadcasterResult";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "../error";
+import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
+import {MysqlDriver} from "../driver/mysql/MysqlDriver";
+import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -100,7 +103,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
                 ));
             }
 
-            if (returningColumns.length > 0 && this.connection.driver.options.type === "mssql") {
+            if (returningColumns.length > 0 && this.connection.driver instanceof SqlServerDriver) {
                 declareSql = this.connection.driver.buildTableVariableDeclaration("@OutputTable", returningColumns);
                 selectOutputSql = `SELECT * FROM @OutputTable`;
             }
@@ -555,7 +558,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
 
                     // just any other regular value
                     } else {
-                        if (this.connection.driver.options.type === "mssql")
+                        if (this.connection.driver instanceof SqlServerDriver)
                             value = this.connection.driver.parametrizeValue(column, value);
 
                         // we need to store array values in a special class to make sure parameter replacement will work correctly
@@ -565,7 +568,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
 
                         const paramName = this.createParameter(value);
 
-                        if ((this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api") && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
+                        if ((this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
                             const useLegacy = this.connection.driver.options.legacySpatialSupport;
                             const geomFromText = useLegacy ? "GeomFromText" : "ST_GeomFromText";
                             if (column.srid != null) {
