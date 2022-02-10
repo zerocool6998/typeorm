@@ -161,3 +161,4 @@ export {EntitySchemaColumnOptions} from "./entity-schema/EntitySchemaColumnOptio
 export {EntitySchemaIndexOptions} from "./entity-schema/EntitySchemaIndexOptions";
 export {EntitySchemaRelationOptions} from "./entity-schema/EntitySchemaRelationOptions";
 export {ColumnType} from "./driver/types/ColumnTypes";
+export {EntitySchemaOptions} from "./entity-schema/EntitySchemaOptions";

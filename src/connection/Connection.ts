@@ -174,7 +174,7 @@ export class Connection {
     /**
      * Updates current connection options with provided options.
      */
-    setOptions(options: Partial<ConnectionOptions>) {
+    setOptions(options: Partial<ConnectionOptions>): this {
         Object.assign(this.options, options);
 
         this.logger = new LoggerFactory().create(this.options.logger, this.options.logging);
@@ -184,6 +184,7 @@ export class Connection {
 
         // build all metadatas to make sure options are valid
         // await this.buildMetadatas();
+        return this;
     }
 
     /**

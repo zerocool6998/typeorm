@@ -308,6 +308,8 @@ export const MyDataSources = {
 
 * minimal Node.JS version requirement now is `12.9.0`
 
+* `Repository` now has a constructor (breaks classes extending Repository with custom constructor)
+
 * now migrations are running before schema synchronization if you have both pending migrations and schema synchronization pending
   (it works if you have both `migrationsRun` and `synchronize` enabled in connection options).
 
