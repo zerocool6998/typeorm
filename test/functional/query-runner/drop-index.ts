@@ -22,7 +22,7 @@ describe("query runner > drop index", () => {
 
         let table = await queryRunner.getTable("student");
         // CockroachDB also stores indices for relation columns
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             table!.indices.length.should.be.equal(3);
         } else {
             table!.indices.length.should.be.equal(1);
@@ -32,7 +32,7 @@ describe("query runner > drop index", () => {
 
         table = await queryRunner.getTable("student");
         // CockroachDB also stores indices for relation columns
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             table!.indices.length.should.be.equal(2);
         } else {
             table!.indices.length.should.be.equal(0);
@@ -42,7 +42,7 @@ describe("query runner > drop index", () => {
 
         table = await queryRunner.getTable("student");
         // CockroachDB also stores indices for relation columns
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             table!.indices.length.should.be.equal(3);
         } else {
             table!.indices.length.should.be.equal(1);

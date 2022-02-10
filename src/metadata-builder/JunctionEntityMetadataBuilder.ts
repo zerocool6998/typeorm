@@ -73,7 +73,7 @@ export class JunctionEntityMetadataBuilder {
                     options: {
                         name: columnName,
                         length: !referencedColumn.length
-                        && (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api")
+                        && (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
                         && (referencedColumn.generationStrategy === "uuid" || referencedColumn.type === "uuid")
                             ? "36"
                             : referencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604
@@ -113,7 +113,7 @@ export class JunctionEntityMetadataBuilder {
                     propertyName: columnName,
                     options: {
                         length: !inverseReferencedColumn.length
-                        && (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api")
+                        && (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
                         && (inverseReferencedColumn.generationStrategy === "uuid" || inverseReferencedColumn.type === "uuid")
                             ? "36"
                             : inverseReferencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604
@@ -152,7 +152,7 @@ export class JunctionEntityMetadataBuilder {
                 columns: junctionColumns,
                 referencedColumns: referencedColumns,
                 onDelete: relation.onDelete || "CASCADE",
-                onUpdate: this.connection.driver.options.type === "oracle" ? "NO ACTION" : relation.onUpdate || "CASCADE",
+                onUpdate: this.connection.driver instanceof OracleDriver ? "NO ACTION" : relation.onUpdate || "CASCADE",
             }),
             new ForeignKeyMetadata({
                 entityMetadata: entityMetadata,
@@ -160,7 +160,7 @@ export class JunctionEntityMetadataBuilder {
                 columns: inverseJunctionColumns,
                 referencedColumns: inverseReferencedColumns,
                 onDelete: relation.inverseRelation ? relation.inverseRelation.onDelete : "CASCADE",
-                onUpdate: this.connection.driver.options.type === "oracle"
+                onUpdate: this.connection.driver instanceof OracleDriver
                     ? "NO ACTION"
                     : relation.inverseRelation
                         ? relation.inverseRelation.onUpdate

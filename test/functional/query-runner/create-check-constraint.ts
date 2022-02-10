@@ -21,7 +21,7 @@ describe("query runner > create check constraint", () => {
     it("should correctly create check constraint and revert creation", () => Promise.all(connections.map(async connection => {
 
         // Mysql does not support check constraints.
-        if (connection.driver.options.type === "mysql")
+        if (connection.driver instanceof MysqlDriver)
             return;
 
         const queryRunner = connection.createQueryRunner();

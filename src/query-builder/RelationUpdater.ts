@@ -119,7 +119,7 @@ export class RelationUpdater {
 
             if (!bulkInserted.length) return;
 
-            if (this.queryBuilder.connection.driver.options.type === "oracle" || this.queryBuilder.connection.driver.options.type === "sap") {
+            if (this.queryBuilder.connection.driver instanceof OracleDriver || this.queryBuilder.connection.driver instanceof SapDriver) {
                 await Promise.all(bulkInserted.map(value => {
                     return this.queryBuilder
                         .createQueryBuilder()

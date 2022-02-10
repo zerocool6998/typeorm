@@ -127,11 +127,11 @@ export class DbQueryResultCache implements QueryResultCache {
         if (options.identifier) {
             return qb
                 .where(`${qb.escape("cache")}.${qb.escape("identifier")} = :identifier`)
-                .setParameters({ identifier: this.connection.driver.options.type === "mssql" ? new MssqlParameter(options.identifier, "nvarchar") : options.identifier })
+                .setParameters({ identifier: this.connection.driver instanceof SqlServerDriver ? new MssqlParameter(options.identifier, "nvarchar") : options.identifier })
                 .getRawOne();
 
         } else if (options.query) {
-            if (this.connection.driver.options.type === "oracle") {
+            if (this.connection.driver instanceof OracleDriver) {
                 return qb
                     .where(`dbms_lob.compare(${qb.escape("cache")}.${qb.escape("query")}, :query) = 0`, { query: options.query })
                     .getRawOne();
@@ -139,7 +139,7 @@ export class DbQueryResultCache implements QueryResultCache {
 
             return qb
                 .where(`${qb.escape("cache")}.${qb.escape("query")} = :query`)
-                .setParameters({ query: this.connection.driver.options.type === "mssql" ? new MssqlParameter(options.query, "nvarchar") : options.query })
+                .setParameters({ query: this.connection.driver instanceof SqlServerDriver ? new MssqlParameter(options.query, "nvarchar") : options.query })
                 .getRawOne();
         }
 
@@ -165,7 +165,7 @@ export class DbQueryResultCache implements QueryResultCache {
         }
 
         let insertedValues: ObjectLiteral = options;
-        if (this.connection.driver.options.type === "mssql") { // todo: bad abstraction, re-implement this part, probably better if we create an entity metadata for cache table
+        if (this.connection.driver instanceof SqlServerDriver) { // todo: bad abstraction, re-implement this part, probably better if we create an entity metadata for cache table
             insertedValues = {
                 identifier: new MssqlParameter(options.identifier, "nvarchar"),
                 time: new MssqlParameter(options.time, "bigint"),
@@ -190,7 +190,7 @@ export class DbQueryResultCache implements QueryResultCache {
                 .update(this.queryResultCacheTable)
                 .set(insertedValues);
 
-            if (this.connection.driver.options.type === "oracle") {
+            if (this.connection.driver instanceof OracleDriver) {
                 qb.where(`dbms_lob.compare("query", :condition) = 0`, { condition: insertedValues.query });
 
             } else {

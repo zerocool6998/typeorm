@@ -52,7 +52,7 @@ describe("query runner > create index", () => {
         let table = await queryRunner.getTable("question");
 
         // CockroachDB stores unique indices as UNIQUE constraints
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             table!.indices.length.should.be.equal(1);
             table!.uniques.length.should.be.equal(1);
 

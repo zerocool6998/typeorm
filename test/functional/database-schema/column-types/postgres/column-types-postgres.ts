@@ -15,7 +15,7 @@ describe("database schema > column types > postgres", () => {
         });
 
         for (const connection of connections) {
-            if (connection.driver.options.type === "postgres") {
+            if (connection.driver instanceof PostgresDriver) {
                 // We want to have UTC as timezone
                 await connection.query("SET TIME ZONE 'UTC';");
             }

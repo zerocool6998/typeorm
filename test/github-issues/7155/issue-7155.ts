@@ -24,7 +24,7 @@ describe("github issues > #7155", () => {
 
     /**
      * ------------------ SINGLE ID ------------------
-     *
+     * 
      * Closure table
      */
     it("(Closure/SingleID/Save) Update without parent", () =>
@@ -294,7 +294,7 @@ describe("github issues > #7155", () => {
     it("(Closure/SingleID/Remove) Remove branch with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -333,7 +333,7 @@ describe("github issues > #7155", () => {
     it("(Closure/SingleID/Remove) Remove multiple branches with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -713,7 +713,7 @@ describe("github issues > #7155", () => {
     it("(Nested/SingleID/Remove) Remove branch with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -769,7 +769,7 @@ describe("github issues > #7155", () => {
     it("(Nested/SingleID/Remove) Remove multiple branches with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -1068,7 +1068,7 @@ describe("github issues > #7155", () => {
     it("(Materialized/SingleID/Remove) Remove branch with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -1107,7 +1107,7 @@ describe("github issues > #7155", () => {
     it("(Materialized/SingleID/Remove) Remove multiple branches with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -1154,7 +1154,7 @@ describe("github issues > #7155", () => {
 
     /**
      * ------------------ MULTI ID ------------------
-     *
+     * 
      * Nested set
      */
     it("(Nested/MultiID/Save) Update without tree change", () =>
@@ -1544,7 +1544,7 @@ describe("github issues > #7155", () => {
     it("(Nested/MultiID/Remove) Remove branch with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -1610,7 +1610,7 @@ describe("github issues > #7155", () => {
     it("(Nested/MultiID/Remove) Remove multiple branches with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -1977,7 +1977,7 @@ describe("github issues > #7155", () => {
     it("(Materialized/MultiID/Remove) Remove branch with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -2026,7 +2026,7 @@ describe("github issues > #7155", () => {
     it("(Materialized/MultiID/Remove) Remove multiple branches with single root", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (connection.driver.options.type === "mssql") {
+                if (connection.driver instanceof SqlServerDriver) {
                     // This test will not working on sql server
                     return;
                 }
@@ -2087,7 +2087,7 @@ describe("github issues > #7155", () => {
     it("(SQL Server) Check if tree entity with a onDelete: CASCADE on the parent throws an error", () =>
         Promise.all(
             connections.map(async (connection) => {
-                if (!(connection.driver.options.type === "mssql")) {
+                if (!(connection.driver instanceof SqlServerDriver)) {
                     // Only run this test for sql server.
                     return;
                 }
@@ -2254,7 +2254,7 @@ async function generateConnections(): Promise<Connection[]> {
 }
 
 function getEntity(connection: Connection, type: EntityType): any {
-    if (connection.driver.options.type === "mssql") {
+    if (connection.driver instanceof SqlServerDriver) {
         return entityMap[type]["mssql"];
     }
     return entityMap[type]["other"];

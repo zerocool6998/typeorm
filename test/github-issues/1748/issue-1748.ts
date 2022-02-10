@@ -16,7 +16,7 @@ describe("github issues > #1748 PrimaryColumn combined with transformer leads to
     after(() => closeTestingConnections(connections));
 
     it("should work as expected", () => Promise.all(connections.map(async connection => {
-        if (connection.driver.options.type === "mssql") return;
+        if (connection.driver instanceof SqlServerDriver) return;
 
         const postRepository = connection.getRepository(Post);
         const id = new Uuid("6f715828-d2c6-4e96-a749-aecb9598fd69");

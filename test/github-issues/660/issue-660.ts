@@ -27,7 +27,7 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
                 .insert()
                 .into(User)
                 .values(user)
-                .returning(connection.driver.options.type === "postgres" ? "*" : "inserted.*")
+                .returning(connection.driver instanceof PostgresDriver ? "*" : "inserted.*")
                 .disableEscaping()
                 .getSql();
 
@@ -35,10 +35,10 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
             expect(err.message).to.eql(new ReturningStatementNotSupportedError().message);
         }
 
-        if (connection.driver.options.type === "mssql") {
+        if (connection.driver instanceof SqlServerDriver) {
             expect(sql).to.equal("INSERT INTO user(name) OUTPUT inserted.* VALUES (@0)");
 
-        } else if (connection.driver.options.type === "postgres") {
+        } else if (connection.driver instanceof PostgresDriver) {
             expect(sql).to.equal("INSERT INTO user(name) VALUES ($1) RETURNING *");
         }
     })));
@@ -47,15 +47,15 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
 
         const user = new User();
         user.name = "Tim Merrison";
-
-        if (connection.driver.options.type === "mssql" || connection.driver.options.type === "postgres") {
+    
+        if (connection.driver instanceof SqlServerDriver || connection.driver instanceof PostgresDriver) {
             const returning = await connection.createQueryBuilder()
                 .insert()
                 .into(User)
                 .values(user)
-                .returning(connection.driver.options.type === "postgres" ? "*" : "inserted.*")
+                .returning(connection.driver instanceof PostgresDriver ? "*" : "inserted.*")
                 .execute();
-
+    
             returning.raw.should.be.eql([
                 { id: 1, name: user.name }
             ]);
@@ -72,13 +72,13 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
                 .update(User)
                 .set({ name: "Joe Bloggs" })
                 .where("name = :name", { name: user.name })
-                .returning(connection.driver.options.type === "postgres" ? "*" : "inserted.*")
+                .returning(connection.driver instanceof PostgresDriver ? "*" : "inserted.*")
                 .disableEscaping()
                 .getSql();
-
-            if (connection.driver.options.type === "mssql") {
+    
+            if (connection.driver instanceof SqlServerDriver) {
                 expect(sql).to.equal("UPDATE user SET name = @0 OUTPUT inserted.* WHERE name = @1");
-            } else if (connection.driver.options.type === "postgres") {
+            } else if (connection.driver instanceof PostgresDriver) {
                 expect(sql).to.equal("UPDATE user SET name = $1 WHERE name = $2 RETURNING *");
             }
         } catch (err) {
@@ -93,14 +93,14 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
 
         await connection.manager.save(user);
 
-        if (connection.driver.options.type === "mssql" || connection.driver.options.type === "postgres") {
+        if (connection.driver instanceof SqlServerDriver || connection.driver instanceof PostgresDriver) {
             const returning = await connection.createQueryBuilder()
                 .update(User)
                 .set({ name: "Joe Bloggs" })
                 .where("name = :name", { name: user.name })
-                .returning(connection.driver.options.type === "postgres" ? "*" : "inserted.*")
+                .returning(connection.driver instanceof PostgresDriver ? "*" : "inserted.*")
                 .execute();
-
+    
             returning.raw.should.be.eql([
                 { id: 1, name: "Joe Bloggs" }
             ]);
@@ -112,18 +112,18 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
         try {
             const user = new User();
             user.name = "Tim Merrison";
-
+    
             const sql = connection.createQueryBuilder()
                 .delete()
                 .from(User)
                 .where("name = :name", { name: user.name })
-                .returning(connection.driver.options.type === "postgres" ? "*" : "deleted.*")
+                .returning(connection.driver instanceof PostgresDriver ? "*" : "deleted.*")
                 .disableEscaping()
                 .getSql();
-
-            if (connection.driver.options.type === "mssql") {
+    
+            if (connection.driver instanceof SqlServerDriver) {
                 expect(sql).to.equal("DELETE FROM user OUTPUT deleted.* WHERE name = @0");
-            } else if (connection.driver.options.type === "postgres") {
+            } else if (connection.driver instanceof PostgresDriver) {
                 expect(sql).to.equal("DELETE FROM user WHERE name = $1 RETURNING *");
             }
         } catch (err) {
@@ -138,14 +138,14 @@ describe("github issues > #660 Specifying a RETURNING or OUTPUT clause with Quer
 
         await connection.manager.save(user);
 
-        if (connection.driver.options.type === "mssql" || connection.driver.options.type === "postgres") {
+        if (connection.driver instanceof SqlServerDriver || connection.driver instanceof PostgresDriver) {
             const returning = await connection.createQueryBuilder()
                 .delete()
                 .from(User)
                 .where("name = :name", { name: user.name })
-                .returning(connection.driver.options.type === "postgres" ? "*" : "deleted.*")
+                .returning(connection.driver instanceof PostgresDriver ? "*" : "deleted.*")
                 .execute();
-
+    
             returning.raw.should.be.eql([
                 { id: 1, name: user.name }
             ]);

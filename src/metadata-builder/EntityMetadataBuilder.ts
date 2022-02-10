@@ -135,8 +135,8 @@ export class EntityMetadataBuilder {
                         relation.registerJoinColumns(columns);
                     }
                     if (uniqueConstraint) {
-                        if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api"
-                            || this.connection.driver.options.type === "mssql" || this.connection.driver.options.type === "sap") {
+                        if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver
+                            || this.connection.driver instanceof SqlServerDriver || this.connection.driver instanceof SapDriver) {
                             const index = new IndexMetadata({
                                 entityMetadata: uniqueConstraint.entityMetadata,
                                 columns: uniqueConstraint.columns,
@@ -148,7 +148,7 @@ export class EntityMetadataBuilder {
                                 }
                             });
 
-                            if (this.connection.driver.options.type === "mssql") {
+                            if (this.connection.driver instanceof SqlServerDriver) {
                                 index.where = index.columns.map(column => {
                                     return `${this.connection.driver.escape(column.databaseName)} IS NOT NULL`;
                                 }).join(" AND ");
@@ -171,7 +171,7 @@ export class EntityMetadataBuilder {
                         }
                     }
 
-                    if (foreignKey && this.connection.driver.options.type === "cockroachdb") {
+                    if (foreignKey && this.connection.driver instanceof CockroachDriver) {
                         const index = new IndexMetadata({
                             entityMetadata: relation.entityMetadata,
                             columns: foreignKey.columns,
@@ -515,13 +515,13 @@ export class EntityMetadataBuilder {
         });
 
         // Only PostgreSQL supports exclusion constraints.
-        if (this.connection.driver.options.type === "postgres") {
+        if (this.connection.driver instanceof PostgresDriver) {
             entityMetadata.exclusions = this.metadataArgsStorage.filterExclusions(entityMetadata.inheritanceTree).map(args => {
                 return new ExclusionMetadata({ entityMetadata, args });
             });
         }
 
-        if (this.connection.driver.options.type === "cockroachdb") {
+        if (this.connection.driver instanceof CockroachDriver) {
             entityMetadata.ownIndices = this.metadataArgsStorage.filterIndices(entityMetadata.inheritanceTree)
                 .filter(args => !args.unique)
                 .map(args => {
@@ -549,7 +549,7 @@ export class EntityMetadataBuilder {
         }
 
         // Mysql and SAP HANA stores unique constraints as unique indices.
-        if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api" || this.connection.driver.options.type === "sap") {
+        if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver || this.connection.driver instanceof SapDriver) {
             const indices = this.metadataArgsStorage.filterUniques(entityMetadata.inheritanceTree).map(args => {
                 return new IndexMetadata({
                     entityMetadata: entityMetadata,

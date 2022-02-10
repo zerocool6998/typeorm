@@ -164,7 +164,7 @@ export class ClosureSubjectExecutor {
 
         /**
          * Only insert new parent if it exits
-         *
+         * 
          * This only happens if the entity doesn't become a root entity
          */
         if (parent) {
@@ -217,7 +217,7 @@ export class ClosureSubjectExecutor {
     */
     async remove(subjects: Subject|Subject[]): Promise<void> {
         // Only mssql need to execute deletes for the juntion table as it doesn't support multi cascade paths.
-        if (!(this.queryRunner.connection.driver.options.type === "mssql")) {
+        if (!(this.queryRunner.connection.driver instanceof SqlServerDriver)) {
             return;
         }
 

@@ -28,7 +28,7 @@ describe("github issues > #1099 BUG - QueryBuilder MySQL skip sql is wrong", () 
             .orderBy("a.id")
             .skip(1);
 
-        if (connection.driver.options.type === "mysql" || connection.driver.options.type === "aurora-data-api"  || connection.driver.options.type === "sap" ) {
+        if (connection.driver instanceof MysqlDriver || connection.driver instanceof AuroraDataApiDriver  || connection.driver instanceof SapDriver ) {
             await qb.getManyAndCount().should.be.rejectedWith(OffsetWithoutLimitNotSupportedError);
         } else {
             await qb.getManyAndCount().should.eventually.be.eql([[{ id: 2, name: "dog", categories: [] }, { id: 3, name: "bear", categories: [] }, { id: 4, name: "snake", categories: [] }, ], 4]);

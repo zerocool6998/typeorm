@@ -20,7 +20,7 @@ describe("github issues > #1476 subqueries", () => {
     it("should", () => Promise.all(connections.map(async connection => {
         const planRepo = connection.getRepository(Plan);
         const itemRepo = connection.getRepository(Item);
-
+        
         const plan1 = new Plan();
         plan1.planId = 1;
         plan1.planName = "Test";
@@ -56,7 +56,7 @@ describe("github issues > #1476 subqueries", () => {
         expect(plan.b_planName).to.be.equal("Test");
         expect(plan.planId).to.be.equal(1);
 
-        if (connection.driver.options.type === "mysql") {
+        if (connection.driver instanceof MysqlDriver) {
             expect(plan.total).to.be.equal("2");
         } else {
             expect(plan.total).to.be.equal(2);

@@ -270,7 +270,7 @@ export async function createTestingConnections(options?: TestingOptions): Promis
             await queryRunner.createDatabase(database, true);
         }
 
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             await queryRunner.query(`ALTER RANGE default CONFIGURE ZONE USING num_replicas = 1, gc.ttlseconds = 60;`);
             await queryRunner.query(`ALTER DATABASE system CONFIGURE ZONE USING num_replicas = 1, gc.ttlseconds = 60;`);
             await queryRunner.query(`ALTER TABLE system.public.jobs CONFIGURE ZONE USING num_replicas = 1, gc.ttlseconds = 60;`);

@@ -97,7 +97,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 ));
             }
 
-            if (returningColumns.length > 0 && this.connection.driver.options.type === "mssql") {
+            if (returningColumns.length > 0 && this.connection.driver instanceof SqlServerDriver) {
                 declareSql = this.connection.driver.buildTableVariableDeclaration("@OutputTable", returningColumns);
                 selectOutputSql = `SELECT * FROM @OutputTable`;
             }
@@ -409,17 +409,17 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     // todo: duplication zone
                     if (value instanceof Function) { // support for SQL expressions in update query
                         updateColumnAndValues.push(this.escape(column.databaseName) + " = " + value());
-                    } else if (this.connection.driver.options.type === "sap" && value === null) {
+                    } else if (this.connection.driver instanceof SapDriver && value === null) {
                         updateColumnAndValues.push(this.escape(column.databaseName) + " = NULL");
                     } else {
-                        if (this.connection.driver.options.type === "mssql") {
+                        if (this.connection.driver instanceof SqlServerDriver) {
                             value = this.connection.driver.parametrizeValue(column, value);
                         }
 
                         const paramName = this.createParameter(value);
 
                         let expression = null;
-                        if ((this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api") && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
+                        if ((this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
                             const useLegacy = this.connection.driver.options.legacySpatialSupport;
                             const geomFromText = useLegacy ? "GeomFromText" : "ST_GeomFromText";
                             if (column.srid != null) {
@@ -427,13 +427,13 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                             } else {
                                 expression = `${geomFromText}(${paramName})`;
                             }
-                        } else if (this.connection.driver.options.type === "postgres" && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
+                        } else if (this.connection.driver instanceof PostgresDriver && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
                             if (column.srid != null) {
                               expression = `ST_SetSRID(ST_GeomFromGeoJSON(${paramName}), ${column.srid})::${column.type}`;
                             } else {
                               expression = `ST_GeomFromGeoJSON(${paramName})::${column.type}`;
                             }
-                        } else if (this.connection.driver.options.type === "mssql" && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
+                        } else if (this.connection.driver instanceof SqlServerDriver && this.connection.driver.spatialTypes.indexOf(column.type) !== -1) {
                             expression = column.type + "::STGeomFromText(" + paramName + ", " + (column.srid || "0") + ")";
                         } else {
                             expression = paramName;
@@ -457,7 +457,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 // todo: duplication zone
                 if (value instanceof Function) { // support for SQL expressions in update query
                     updateColumnAndValues.push(this.escape(key) + " = " + value());
-                } else if (this.connection.driver.options.type === "sap" && value === null) {
+                } else if (this.connection.driver instanceof SapDriver && value === null) {
                     updateColumnAndValues.push(this.escape(key) + " = NULL");
                 } else {
 
@@ -480,10 +480,10 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         const returningExpression = this.createReturningExpression();
 
         // generate and return sql update query
-        if (returningExpression && (this.connection.driver.options.type === "postgres" || this.connection.driver.options.type === "oracle" || this.connection.driver.options.type === "cockroachdb")) {
+        if (returningExpression && (this.connection.driver instanceof PostgresDriver || this.connection.driver instanceof OracleDriver || this.connection.driver instanceof CockroachDriver)) {
             return `UPDATE ${this.getTableName(this.getMainTableName())} SET ${updateColumnAndValues.join(", ")}${whereExpression} RETURNING ${returningExpression}`;
 
-        } else if (returningExpression && this.connection.driver.options.type === "mssql") {
+        } else if (returningExpression && this.connection.driver instanceof SqlServerDriver) {
             return `UPDATE ${this.getTableName(this.getMainTableName())} SET ${updateColumnAndValues.join(", ")} OUTPUT ${returningExpression}${whereExpression}`;
 
         } else {
@@ -517,7 +517,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         let limit: number|undefined = this.expressionMap.limit;
 
         if (limit) {
-            if (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api") {
+            if (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver) {
                 return " LIMIT " + limit;
             } else {
                 throw new LimitOnUpdateNotSupportedError();

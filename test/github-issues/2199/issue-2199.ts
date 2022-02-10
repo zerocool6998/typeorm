@@ -47,7 +47,7 @@ describe("github issues > #2199 - Inserting value for @PrimaryGeneratedColumn() 
     })));
 
     it("should reset mssql's INSERT_IDENTITY flag correctly after failed queries", () => Promise.all(connections
-        .filter(connection => connection.driver.options.type === "mssql")
+        .filter(connection => connection.driver instanceof SqlServerDriver)
         .map(async connection => {
             // Run a query that failes at the database level
             await expect(connection.createQueryBuilder()

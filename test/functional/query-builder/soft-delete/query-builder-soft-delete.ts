@@ -140,7 +140,7 @@ describe("query builder > soft-delete", () => {
 
         const limitNum = 2;
 
-        if (connection.driver.options.type === "mysql") {
+        if (connection.driver instanceof MysqlDriver) {
             await connection.createQueryBuilder()
             .softDelete()
             .from(User)
@@ -179,7 +179,7 @@ describe("query builder > soft-delete", () => {
 
         const limitNum = 2;
 
-        if (connection.driver.options.type === "mysql") {
+        if (connection.driver instanceof MysqlDriver) {
             await connection.createQueryBuilder()
             .softDelete()
             .from(User)

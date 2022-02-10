@@ -458,7 +458,7 @@ describe("repository > find options > operators", () => {
     })));
 
     it("any", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver.options.type === "postgres"))
+        if (!(connection.driver instanceof PostgresDriver))
             return;
 
         // insert some fake data
@@ -480,7 +480,7 @@ describe("repository > find options > operators", () => {
     })));
 
     it("not(any)", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver.options.type === "postgres"))
+        if (!(connection.driver instanceof PostgresDriver))
             return;
 
         // insert some fake data

@@ -21,7 +21,7 @@ describe("schema builder > change check constraint", () => {
 
     it("should correctly add new check constraint", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver.options.type === "mysql")
+        if (connection.driver instanceof MysqlDriver)
             return;
 
         const teacherMetadata = connection.getMetadata(Teacher);
@@ -46,7 +46,7 @@ describe("schema builder > change check constraint", () => {
 
     it("should correctly change check", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver.options.type === "mysql")
+        if (connection.driver instanceof MysqlDriver)
             return;
 
         const postMetadata = connection.getMetadata(Post);
@@ -64,7 +64,7 @@ describe("schema builder > change check constraint", () => {
 
     it("should correctly drop removed check", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver.options.type === "mysql")
+        if (connection.driver instanceof MysqlDriver)
             return;
 
         const postMetadata = connection.getMetadata(Post);

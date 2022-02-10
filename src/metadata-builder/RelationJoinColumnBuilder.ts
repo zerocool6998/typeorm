@@ -77,7 +77,7 @@ export class RelationJoinColumnBuilder {
         });
 
         // Oracle does not allow both primary and unique constraints on the same column
-        if (this.connection.driver.options.type === "oracle" && columns.every(column => column.isPrimary))
+        if (this.connection.driver instanceof OracleDriver && columns.every(column => column.isPrimary))
             return { foreignKey, columns, uniqueConstraint: undefined };
 
         // CockroachDB requires UNIQUE constraints on referenced columns
@@ -148,7 +148,7 @@ export class RelationJoinColumnBuilder {
                             name: joinColumnName,
                             type: referencedColumn.type,
                             length: !referencedColumn.length
-                                        && (this.connection.driver.options.type === "mysql" || this.connection.driver.options.type === "aurora-data-api")
+                                        && (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
                                         && (referencedColumn.generationStrategy === "uuid" || referencedColumn.type === "uuid")
                                     ? "36"
                                     : referencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604

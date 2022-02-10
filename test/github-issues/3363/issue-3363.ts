@@ -19,7 +19,7 @@ describe("github issues > #3363 Isolation Level in transaction() from Connection
 
     it("should execute operations in READ UNCOMMITED isolation level", () => Promise.all(connections.map(async function(connection) {
         // SAP, Oracle does not support READ UNCOMMITTED isolation level
-        if (connection.driver.options.type === "sap" || connection.driver.options.type === "oracle")
+        if (connection.driver instanceof SapDriver || connection.driver instanceof OracleDriver)
             return;
 
         let postId: number|undefined = undefined, categoryId: number|undefined = undefined;

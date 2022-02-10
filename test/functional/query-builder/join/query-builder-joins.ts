@@ -178,7 +178,7 @@ describe("query builder > joins", () => {
                 .where("post.id = :id", { id: post.id })
                 .getRawOne();
 
-            if (connection.driver.options.type === "cockroachdb") {
+            if (connection.driver instanceof CockroachDriver) {
                 expect(loadedRawPost!["categories_id"]).to.be.equal("1");
 
             } else {

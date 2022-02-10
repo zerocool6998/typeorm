@@ -71,7 +71,7 @@ describe("schema builder > change index", () => {
         const studentTable = await queryRunner.getTable("student");
         await queryRunner.release();
         // CockroachDB also stores indices for relation columns
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             studentTable!.indices.length.should.be.equal(2);
         } else {
             studentTable!.indices.length.should.be.equal(0);
@@ -91,7 +91,7 @@ describe("schema builder > change index", () => {
 
         teacherTable = await queryRunner.getTable("teacher");
         // CockroachDB stores unique indices as UNIQUE constraints
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             teacherTable!.indices.length.should.be.equal(0);
             teacherTable!.uniques.length.should.be.equal(1);
             teacherTable!.findColumnByName("name")!.isUnique.should.be.true;
@@ -104,7 +104,7 @@ describe("schema builder > change index", () => {
 
         teacherTable = await queryRunner.getTable("teacher");
         // CockroachDB stores unique indices as UNIQUE constraints
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             teacherTable!.indices.length.should.be.equal(0);
             teacherTable!.uniques.length.should.be.equal(0);
             teacherTable!.findColumnByName("name")!.isUnique.should.be.false;

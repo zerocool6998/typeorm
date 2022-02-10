@@ -43,7 +43,7 @@ describe("database schema > indices > reading index from entity and updating dat
         await queryRunner.release();
 
         // CockroachDB stores unique indices as UNIQUE constraints
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             expect(table!.uniques.length).to.be.equal(1);
             expect(table!.uniques[0].name).to.be.equal("IDX_TEST");
             expect(table!.uniques[0].columnNames.length).to.be.equal(2);

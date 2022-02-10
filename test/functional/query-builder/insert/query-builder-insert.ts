@@ -55,7 +55,7 @@ describe("query builder > insert", () => {
 
     it("should perform bulk insertion correctly", () => Promise.all(connections.map(async connection => {
         // it is skipped for Oracle and SAP because it does not support bulk insertion
-        if (connection.driver.options.type === "oracle" || connection.driver.options.type === "sap")
+        if (connection.driver instanceof OracleDriver || connection.driver instanceof SapDriver)
             return;
 
         await connection.createQueryBuilder()
@@ -83,7 +83,7 @@ describe("query builder > insert", () => {
             .insert()
             .into(User)
             .values({
-                name: () => connection.driver.options.type === "mssql" ? "SUBSTRING('Dima Zotov', 1, 4)" : "SUBSTR('Dima Zotov', 1, 4)"
+                name: () => connection.driver instanceof SqlServerDriver ? "SUBSTRING('Dima Zotov', 1, 4)" : "SUBSTR('Dima Zotov', 1, 4)"
             })
             .execute();
 
@@ -96,7 +96,7 @@ describe("query builder > insert", () => {
     it("should be able to insert entities with different properties set even inside embeds", () => Promise.all(connections.map(async connection => {
         // this test is skipped for sqlite based drivers because it does not support DEFAULT values in insertions,
         // also it is skipped for Oracle and SAP because it does not support bulk insertion
-        if (connection.driver instanceof AbstractSqliteDriver || connection.driver.options.type === "oracle" || connection.driver.options.type === "sap")
+        if (connection.driver instanceof AbstractSqliteDriver || connection.driver instanceof OracleDriver || connection.driver instanceof SapDriver)
             return;
 
         await connection

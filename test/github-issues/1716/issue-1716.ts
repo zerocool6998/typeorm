@@ -30,7 +30,7 @@ const isDriverEnabled = (driver: string) => {
 
 
 describe("github issues > #1716 send timestamp to database without converting it into UTC", () => {
-
+    
     describe("postgres", async () => {
 
         if (!isDriverEnabled("postgres")) {
@@ -50,7 +50,7 @@ describe("github issues > #1716 send timestamp to database without converting it
             });
 
             for (const connection of connections) {
-                if (connection.driver.options.type === "postgres") {
+                if (connection.driver instanceof PostgresDriver) {
                     // We want to have UTC as timezone
                     await connection.query("SET TIME ZONE 'UTC';");
                 }

@@ -50,7 +50,7 @@ describe("query runner > create foreign key", () => {
                 },
                 {
                     name: "questionId",
-                    isUnique: connection.driver.options.type === "cockroachdb", // CockroachDB requires UNIQUE constraints on referenced columns
+                    isUnique: connection.driver instanceof CockroachDriver, // CockroachDB requires UNIQUE constraints on referenced columns
                     type: "int",
                 }
             ]

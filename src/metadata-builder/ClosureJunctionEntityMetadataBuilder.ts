@@ -118,14 +118,14 @@ export class ClosureJunctionEntityMetadataBuilder {
                 referencedEntityMetadata: parentClosureEntityMetadata,
                 columns: [entityMetadata.ownColumns[0]],
                 referencedColumns: parentClosureEntityMetadata.primaryColumns,
-                onDelete: this.connection.driver.options.type === "mssql" ? "NO ACTION" : "CASCADE"
+                onDelete: this.connection.driver instanceof SqlServerDriver ? "NO ACTION" : "CASCADE"
             }),
             new ForeignKeyMetadata({
                 entityMetadata: entityMetadata,
                 referencedEntityMetadata: parentClosureEntityMetadata,
                 columns: [entityMetadata.ownColumns[1]],
                 referencedColumns: parentClosureEntityMetadata.primaryColumns,
-                onDelete: this.connection.driver.options.type === "mssql" ? "NO ACTION" : "CASCADE"
+                onDelete: this.connection.driver instanceof SqlServerDriver ? "NO ACTION" : "CASCADE"
             }),
         ];
 

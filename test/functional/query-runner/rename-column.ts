@@ -62,7 +62,7 @@ describe("query runner > rename column", () => {
 
         // should successfully drop pk if pk constraint was correctly renamed.
         // CockroachDB does not allow to drop PK
-        if (!(connection.driver.options.type === "cockroachdb"))
+        if (!(connection.driver instanceof CockroachDriver))
             await queryRunner.dropPrimaryKey(table!);
 
         table = await queryRunner.getTable("post");
@@ -70,7 +70,7 @@ describe("query runner > rename column", () => {
         table!.findColumnByName("id2")!.should.be.exist;
 
         // MySql and SAP does not support unique constraints
-        if (!(connection.driver.options.type === "mysql") && !(connection.driver.options.type === "sap")) {
+        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof SapDriver)) {
             const oldUniqueConstraintName = connection.namingStrategy.uniqueConstraintName(table!, ["text", "tag"]);
             let tableUnique = table!.uniques.find(unique => {
                 return !!unique.columnNames.find(columnName => columnName === "tag");
@@ -105,18 +105,18 @@ describe("query runner > rename column", () => {
         let categoryTableName: string = "category";
 
         // create different names to test renaming with custom schema and database.
-        if (connection.driver.options.type === "mssql") {
+        if (connection.driver instanceof SqlServerDriver) {
             questionTableName = "testDB.testSchema.question";
             categoryTableName = "testDB.testSchema.category";
             await queryRunner.createDatabase("testDB", true);
             await queryRunner.createSchema("testDB.testSchema", true);
 
-        } else if (connection.driver.options.type === "postgres") {
+        } else if (connection.driver instanceof PostgresDriver) {
             questionTableName = "testSchema.question";
             categoryTableName = "testSchema.category";
             await queryRunner.createSchema("testSchema", true);
 
-        } else if (connection.driver.options.type === "mysql") {
+        } else if (connection.driver instanceof MysqlDriver) {
             questionTableName = "testDB.question";
             categoryTableName = "testDB.category";
             await queryRunner.createDatabase("testDB", true);

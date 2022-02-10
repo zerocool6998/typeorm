@@ -23,7 +23,7 @@ describe("persistence > entity updation", () => {
         post.text = "Hello Post";
         await connection.manager.save(post);
         // CockroachDB does not use incremental ids
-        if (!(connection.driver.options.type === "cockroachdb"))
+        if (!(connection.driver instanceof CockroachDriver))
             post.id.should.be.equal(1);
     })));
 

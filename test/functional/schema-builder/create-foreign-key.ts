@@ -34,7 +34,7 @@ describe("schema builder > create foreign key", () => {
         categoryMetadata.foreignKeys.push(fkMetadata);
 
         // CockroachDB requires unique constraint for foreign key referenced columns
-        if (connection.driver.options.type === "cockroachdb") {
+        if (connection.driver instanceof CockroachDriver) {
             const uniqueConstraint = new UniqueMetadata({
                 entityMetadata: categoryMetadata,
                 columns: fkMetadata.columns,

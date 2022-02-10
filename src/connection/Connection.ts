@@ -280,7 +280,7 @@ export class Connection {
     async dropDatabase(): Promise<void> {
         const queryRunner = this.createQueryRunner();
         try {
-            if (this.driver.options.type === "mssql" || this.driver.options.type === "mysql" || this.driver.options.type === "aurora-data-api") {
+            if (this.driver instanceof SqlServerDriver || this.driver instanceof MysqlDriver || this.driver instanceof AuroraDataApiDriver) {
                 const databases: string[] = this.driver.database ? [this.driver.database] : [];
                 this.entityMetadatas.forEach(metadata => {
                     if (metadata.database && databases.indexOf(metadata.database) === -1)
@@ -378,7 +378,7 @@ export class Connection {
      * Works only if connection is mongodb-specific.
      */
     getMongoRepository<Entity>(target: EntityTarget<Entity>): MongoRepository<Entity> {
-        if (!(this.driver.options.type === "mongodb"))
+        if (!(this.driver instanceof MongoDriver))
             throw new TypeORMError(`You can use getMongoRepository only for MongoDB connections.`);
 
         return this.manager.getRepository(target) as any;

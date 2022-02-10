@@ -231,10 +231,10 @@ export class DeleteQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         const whereExpression = this.createWhereExpression();
         const returningExpression = this.createReturningExpression();
 
-        if (returningExpression && (this.connection.driver.options.type === "postgres" || this.connection.driver.options.type === "cockroachdb")) {
+        if (returningExpression && (this.connection.driver instanceof PostgresDriver || this.connection.driver instanceof CockroachDriver)) {
             return `DELETE FROM ${tableName}${whereExpression} RETURNING ${returningExpression}`;
 
-        } else if (returningExpression !== "" && this.connection.driver.options.type === "mssql") {
+        } else if (returningExpression !== "" && this.connection.driver instanceof SqlServerDriver) {
             return `DELETE FROM ${tableName} OUTPUT ${returningExpression}${whereExpression}`;
 
         } else {

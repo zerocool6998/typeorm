@@ -82,7 +82,7 @@ export class EntityMetadataValidator {
                 throw new TypeORMError(`Relation count can not be implemented on ManyToOne or OneToOne relations.`);
         });
 
-        if (!(driver.options.type === "mongodb")) {
+        if (!(driver instanceof MongoDriver)) {
             entityMetadata.columns.forEach(column => {
                 const normalizedColumn = driver.normalizeType(column) as ColumnType;
                 if (driver.supportedDataTypes.indexOf(normalizedColumn) === -1)
@@ -94,7 +94,7 @@ export class EntityMetadataValidator {
             });
         }
 
-        if (driver.options.type === "mysql" || driver.options.type === "aurora-data-api") {
+        if (driver instanceof MysqlDriver || driver instanceof AuroraDataApiDriver) {
             const generatedColumns = entityMetadata.columns.filter(column => column.isGenerated && column.generationStrategy !== "uuid");
             if (generatedColumns.length > 1)
                 throw new TypeORMError(`Error in ${entityMetadata.name} entity. There can be only one auto-increment column in MySql table.`);
@@ -103,13 +103,13 @@ export class EntityMetadataValidator {
         // for mysql we are able to not define a default selected database, instead all entities can have their database
         // defined in their decorators. To make everything work either all entities must have database define and we
         // can live without database set in the connection options, either database in the connection options must be set
-        if (driver.options.type === "mysql") {
+        if (driver instanceof MysqlDriver) {
             const metadatasWithDatabase = allEntityMetadatas.filter(metadata => metadata.database);
             if (metadatasWithDatabase.length === 0 && !driver.database)
                 throw new NoConnectionOptionError("database");
         }
 
-        if (driver.options.type === "mssql") {
+        if (driver instanceof SqlServerDriver) {
             const charsetColumns = entityMetadata.columns.filter(column => column.charset);
             if (charsetColumns.length > 1)
                 throw new TypeORMError(`Character set specifying is not supported in Sql Server`);

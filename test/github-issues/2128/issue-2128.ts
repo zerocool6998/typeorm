@@ -38,7 +38,7 @@ describe("github issues > #2128 skip preparePersistentValue for value functions"
         await connection.createQueryBuilder()
             .update(Post)
             .set({
-                meta: () => connection.driver.options.type === "postgres"
+                meta: () => connection.driver instanceof PostgresDriver
                     ? `'${metaAddition}'::JSONB || meta::JSONB`
                     : `JSON_MERGE('${metaAddition}', meta)`
             })

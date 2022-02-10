@@ -22,7 +22,7 @@ describe("query runner > change column", () => {
     it("should correctly change column and revert change", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not allow changing primary columns and renaming constraints
-        if (connection.driver.options.type === "cockroachdb")
+        if (connection.driver instanceof CockroachDriver)
             return;
 
         const queryRunner = connection.createQueryRunner();
@@ -84,7 +84,7 @@ describe("query runner > change column", () => {
     it("should correctly change column 'isGenerated' property and revert change", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not allow changing generated columns in existent tables
-        if (connection.driver.options.type === "cockroachdb")
+        if (connection.driver instanceof CockroachDriver)
             return;
 
         const queryRunner = connection.createQueryRunner();
@@ -140,7 +140,7 @@ describe("query runner > change column", () => {
     it("should correctly change generated as expression", () => Promise.all(connections.map(async connection => {
 
         // Only works on postgres
-        if (!(connection.driver.options.type === "postgres")) return;
+        if (!(connection.driver instanceof PostgresDriver)) return;
 
         const queryRunner = connection.createQueryRunner();
 
