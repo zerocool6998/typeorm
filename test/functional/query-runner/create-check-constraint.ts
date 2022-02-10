@@ -1,7 +1,9 @@
 import "reflect-metadata";
-import {Connection, Table} from "../../../src";
+import {Connection} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Table} from "../../../src";
 import {TableCheck} from "../../../src/schema-builder/table/TableCheck";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 
 describe("query runner > create check constraint", () => {
 

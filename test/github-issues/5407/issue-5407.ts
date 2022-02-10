@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 
 describe("github issues > #5407 Wrong migration created because of default column value format", () => {

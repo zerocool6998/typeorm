@@ -1,9 +1,9 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import {Sailing} from "./entity/Sailing";
-import {ScheduledSailing} from "./entity/ScheduledSailing";
+import { Connection } from "../../../src";
+import { closeTestingConnections, createTestingConnections } from "../../utils/test-utils";
+import { Sailing } from "./entity/Sailing";
+import { ScheduledSailing } from "./entity/ScheduledSailing";
 
 describe("github issues > #8026 Inserting a value for a column that has a relation, and is also a date, results in the value being inserted as DEFAULT", () => {
 
@@ -20,7 +20,7 @@ describe("github issues > #8026 Inserting a value for a column that has a relati
   it("it should include a related date column in the constructed query", async () => await Promise.all(connections.map(async connection => {
 
     let queryBuilder = await connection.createQueryBuilder();
-
+    
     const insertValue = {
       scheduled_departure_time: new Date(),
       scheduled_arrival_time: new Date(),
@@ -31,7 +31,7 @@ describe("github issues > #8026 Inserting a value for a column that has a relati
       .into(ScheduledSailing)
       .values([insertValue])
       .getQueryAndParameters()
-
+      
     expect(query.includes("DEFAULT")).to.be.false;
     expect(params).length(2);
 

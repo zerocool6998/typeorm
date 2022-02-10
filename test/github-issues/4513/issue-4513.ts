@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {User} from "./entity/User";
+import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { User } from "./entity/User";
 
 describe("github issues > #4513 CockroachDB support for onConflict", () => {
 

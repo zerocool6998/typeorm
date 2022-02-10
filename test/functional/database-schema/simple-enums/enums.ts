@@ -1,13 +1,7 @@
 import "reflect-metadata";
-import {Connection} from "../../../../src";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {
-    HeterogeneousEnum,
-    NumericEnum,
-    SimpleEnumEntity,
-    StringEnum,
-    StringNumericEnum
-} from "./entity/SimpleEnumEntity";
+import { Connection } from "../../../../src";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../utils/test-utils";
+import { SimpleEnumEntity, NumericEnum, StringEnum, HeterogeneousEnum, StringNumericEnum } from "./entity/SimpleEnumEntity";
 
 describe("database schema > simple-enums", () => {
 

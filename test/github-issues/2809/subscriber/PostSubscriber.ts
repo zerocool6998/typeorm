@@ -1,5 +1,5 @@
 import {Post} from "../entity/Post";
-import {EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent} from "../../../../src";
+import {EntitySubscriberInterface, EventSubscriber, UpdateEvent, InsertEvent} from "../../../../src";
 
 @EventSubscriber()
 export class PostSubscriber implements EntitySubscriberInterface<Post> {

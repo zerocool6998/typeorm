@@ -1,17 +1,16 @@
 import {
-    Column,
     Entity,
-    JoinColumn,
+    PrimaryGeneratedColumn,
+    Column,
+    VersionColumn,
+    ManyToOne,
     JoinTable,
     ManyToMany,
-    ManyToOne,
-    OneToOne,
-    PrimaryGeneratedColumn,
-    VersionColumn,
+    OneToOne, JoinColumn,
 } from "../../../../../src";
-import {Tag} from "./Tag";
-import {Category} from "./Category";
-import {HeroImage} from "./HeroImage";
+import { Tag } from "./Tag";
+import { Category } from "./Category";
+import { HeroImage } from "./HeroImage";
 
 @Entity()
 export class Post {

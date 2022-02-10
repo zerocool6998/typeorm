@@ -1,10 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
+import {SapDriver} from "../../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {User} from "./entity/User";
+import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 import {Photo} from "./entity/Photo";
 import {AbstractSqliteDriver} from "../../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
+import {OracleDriver} from "../../../../src/driver/oracle/OracleDriver";
 
 describe("query builder > insert", () => {
 

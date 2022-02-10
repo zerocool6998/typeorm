@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import {Category} from "./entity/Category";
-import {Connection} from "../../../src/connection/Connection";
+import { Category } from "./entity/Category";
+import { Connection } from "../../../src/connection/Connection";
 import {
     closeTestingConnections,
     createTestingConnections,

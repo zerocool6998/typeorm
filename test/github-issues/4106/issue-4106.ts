@@ -1,10 +1,10 @@
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {Human} from "./entity/Human";
-import {Animal} from "./entity/Animal";
-import {Gender} from "./entity/GenderEnum";
-import {EntityManager} from "../../../src/entity-manager/EntityManager";
-import {expect} from "chai";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { Human } from "./entity/Human";
+import { Animal } from "./entity/Animal";
+import { Gender } from "./entity/GenderEnum";
+import { EntityManager } from "../../../src/entity-manager/EntityManager";
+import { expect } from "chai";
 
 describe("github issues > #4106 Specify enum type name in postgres", () => {
     let connections: Connection[];

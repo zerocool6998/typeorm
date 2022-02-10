@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {expect} from "chai";
-import {DummyJSONEntity} from "./entity/json-entity";
-import {DummyJSONBEntity} from "./entity/jsonb-entity";
+import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { expect } from "chai";
+import { DummyJSONEntity } from "./entity/json-entity";
+import { DummyJSONBEntity } from "./entity/jsonb-entity";
 
 describe("other issues > correctly compute change for transformed json / jsonb columns", () => {
 

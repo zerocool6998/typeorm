@@ -1,6 +1,6 @@
 import {Entity} from "../../../../../src/decorator/entity/Entity";
-import {ManyToOne, PrimaryColumn} from "../../../../../src";
-import {Foo} from "./Foo";
+import { ManyToOne, PrimaryColumn } from "../../../../../src";
+import { Foo } from "./Foo";
 
 @Entity()
 export class Bar {

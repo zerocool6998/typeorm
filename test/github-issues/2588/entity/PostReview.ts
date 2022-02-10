@@ -1,5 +1,5 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "../../../../src";
-import {Post} from "./Post";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "../../../../src";
+import { Post } from "./Post";
 
 
 @Entity()

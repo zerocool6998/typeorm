@@ -1,12 +1,16 @@
 import "reflect-metadata";
-import {Connection} from "../../../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../../../utils/test-utils";
-import {User} from "./entity/User";
-import {Profile} from "./entity/Profile";
-import {Editor} from "./entity/Editor";
-import {Post} from "./entity/Post";
-import {Category} from "./entity/Category";
-import {expect} from "chai";
+import { Connection } from "../../../../../src/connection/Connection";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+} from "../../../../utils/test-utils";
+import { User } from "./entity/User";
+import { Profile } from "./entity/Profile";
+import { Editor } from "./entity/Editor";
+import { Post } from "./entity/Post";
+import { Category } from "./entity/Category";
+import { expect } from "chai";
 
 describe("relations > eager relations > lazy nested eager relations", () => {
     let connections: Connection[];

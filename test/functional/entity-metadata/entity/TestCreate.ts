@@ -1,6 +1,6 @@
-import {Column} from "../../../../src/decorator/columns/Column";
-import {Entity} from "../../../../src/decorator/entity/Entity";
-import {PrimaryGeneratedColumn} from "../../../../src";
+import { Column } from "../../../../src/decorator/columns/Column";
+import { Entity } from "../../../../src/decorator/entity/Entity";
+import { PrimaryGeneratedColumn } from "../../../../src";
 
 @Entity()
 export class TestCreate {

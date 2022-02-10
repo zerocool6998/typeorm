@@ -48,7 +48,7 @@ import {TableCheck} from "../../schema-builder/table/TableCheck";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
 import {TypeORMError} from "../../error";
 import {ReplicationMode} from "../types/ReplicationMode";
-
+ 
 /**
  * Runs queries on a single MongoDB connection.
  */

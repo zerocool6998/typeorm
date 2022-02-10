@@ -3,6 +3,7 @@ import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {Connection} from "../connection/Connection";
 import {IndexMetadata} from "../metadata/IndexMetadata";
+import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 
 /**
  * Creates EntityMetadata for junction tables of the closure entities.

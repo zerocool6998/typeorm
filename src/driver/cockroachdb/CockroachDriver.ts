@@ -20,10 +20,10 @@ import {OrmUtils} from "../../util/OrmUtils";
 import {CockroachQueryRunner} from "./CockroachQueryRunner";
 import {ApplyValueTransformers} from "../../util/ApplyValueTransformers";
 import {ReplicationMode} from "../types/ReplicationMode";
-import {TypeORMError} from "../../error";
-import {Table} from "../../schema-builder/table/Table";
-import {View} from "../../schema-builder/view/View";
-import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
+import { TypeORMError } from "../../error";
+import { Table } from "../../schema-builder/table/Table";
+import { View } from "../../schema-builder/view/View";
+import { TableForeignKey } from "../../schema-builder/table/TableForeignKey";
 
 /**
  * Organizes communication with Cockroach DBMS.

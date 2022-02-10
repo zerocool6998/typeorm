@@ -1,7 +1,11 @@
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {EntitySchema} from "../../../src";
-import {Post, PostSchema} from "./entity/Post";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases
+} from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { EntitySchema } from "../../../src";
+import { Post, PostSchema } from "./entity/Post";
 
 describe("github issues > #4147 `SQLITE_ERROR: near \"-\": syntax error` when use sqlite, simple-enum", () => {
     let connections: Connection[];

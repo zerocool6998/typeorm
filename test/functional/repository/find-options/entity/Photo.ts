@@ -1,5 +1,9 @@
 import {Entity} from "../../../../../src/decorator/entity/Entity";
-import {JoinTable, ManyToMany, PrimaryGeneratedColumn} from "../../../../../src/index";
+import {
+    PrimaryGeneratedColumn,
+    ManyToMany,
+    JoinTable
+} from "../../../../../src/index";
 import {Column} from "../../../../../src/decorator/columns/Column";
 import {Category} from "./Category";
 

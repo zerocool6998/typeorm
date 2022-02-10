@@ -1,6 +1,6 @@
 import {BaseEntity, Column, Entity, ManyToOne, PrimaryColumn} from "../../../../src";
-import {User} from "./User";
-import {Organization} from "./Organization";
+import { User } from "./User";
+import { Organization } from "./Organization";
 
 @Entity()
 export class OrganizationMembership extends BaseEntity {

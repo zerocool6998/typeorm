@@ -1,7 +1,10 @@
-import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections,} from "../../utils/test-utils";
-import {MemoryLogger} from "./memory-logger";
+import { expect } from "chai";
+import { Connection } from "../../../src/connection/Connection";
+import {
+    createTestingConnections,
+    closeTestingConnections,
+} from "../../utils/test-utils";
+import { MemoryLogger } from "./memory-logger";
 
 describe("github issues > #7662 postgres extensions installation should be optional", function () {
     it("should NOT install extensions if option is disabled", async function () {

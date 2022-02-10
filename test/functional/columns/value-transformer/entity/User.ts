@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn, ValueTransformer} from "../../../../../src";
+import { Column, ValueTransformer, Entity, PrimaryGeneratedColumn } from "../../../../../src";
 
 const encode: ValueTransformer = {
     to: (entityValue: string) => {

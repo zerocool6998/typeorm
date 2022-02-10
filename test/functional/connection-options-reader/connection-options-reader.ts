@@ -1,4 +1,4 @@
-import {existsSync, promises as fs} from "fs";
+import {promises as fs, existsSync} from "fs";
 import {expect} from "chai";
 import {ConnectionOptions} from "../../../src/connection/ConnectionOptions";
 import {ConnectionOptionsReader} from "../../../src/connection/ConnectionOptionsReader";

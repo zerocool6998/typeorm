@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {EquipmentModel} from "./entity/EquipmentModel";
-import {expect} from "chai";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { EquipmentModel } from "./entity/EquipmentModel";
+import { expect } from "chai";
 
 
 describe("github issues > #3587 do not generate change queries for number based enum types every time", () => {

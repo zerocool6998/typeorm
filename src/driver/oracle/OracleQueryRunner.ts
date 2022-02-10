@@ -21,8 +21,8 @@ import {ColumnType} from "../types/ColumnTypes";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
 import {ReplicationMode} from "../types/ReplicationMode";
-import {TypeORMError} from "../../error";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { TypeORMError } from "../../error";
+import { QueryResult } from "../../query-runner/QueryResult";
 import {MetadataTableType} from "../types/MetadataTableType";
 
 /**

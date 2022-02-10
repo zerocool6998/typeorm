@@ -1,5 +1,5 @@
-import {Entity, JoinTable, ManyToMany, PrimaryColumn} from "../../../../src";
-import {UsersObject} from "./usersObject";
+import { Entity, PrimaryColumn, ManyToMany, JoinTable } from "../../../../src";
+import { UsersObject } from "./usersObject";
 
 @Entity("User")
 export class User {

@@ -1,7 +1,8 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
-import {Realm, User} from "./entity/User";
+import { Realm } from "./entity/User";
+import {User} from "./entity/User";
 
 describe("github issues > #4630 Enum string not escaping resulting in broken migrations.", () => {
 

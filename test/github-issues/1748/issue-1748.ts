@@ -3,6 +3,7 @@ import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection, Equal} from "../../../src";
 import {Post, Uuid} from "./entity/Post";
+import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
 
 describe("github issues > #1748 PrimaryColumn combined with transformer leads to error on save", () => {
 

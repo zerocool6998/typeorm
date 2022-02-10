@@ -2,13 +2,7 @@ import {Chat} from "./Chat";
 import {User} from "./User";
 import {Recipient} from "./Recipient";
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
+    Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany,
     PrimaryGeneratedColumn
 } from "../../../../src/index";
 

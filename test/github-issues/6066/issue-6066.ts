@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import {Connection, QueryFailedError} from "../../../src";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
+import {QueryFailedError, Connection} from "../../../src";
 import {Session} from "./entity/Session";
 import {expect} from "chai";
 

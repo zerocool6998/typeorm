@@ -1,10 +1,14 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {Post} from "./entity/Post";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { Post } from "./entity/Post";
 import sinon from "sinon";
-import {SelectQueryBuilder} from "../../../src";
-import {assert} from "chai";
+import { SelectQueryBuilder } from "../../../src";
+import { assert } from "chai";
 
 describe("github issues > #6266 Many identical selects after insert bunch of items", () => {
     let connections: Connection[];

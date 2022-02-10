@@ -1,9 +1,9 @@
 import sinon from "sinon";
 import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {EntityManager, QueryRunner, SimpleConsoleLogger} from "../../../src";
-import {Foo} from "./entity/Foo";
-import {expect} from "chai";
+import {createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { EntityManager, QueryRunner, SimpleConsoleLogger } from "../../../src";
+import { Foo } from "./entity/Foo";
+import { expect } from "chai";
 
 describe("github issues > #2216 - Ability to capture Postgres notifications in logger", () => {
     let connections: Connection[];

@@ -1,6 +1,6 @@
-import {PrimaryGeneratedColumn, UpdateDateColumn} from "../../../../src";
+import { PrimaryGeneratedColumn, UpdateDateColumn } from "../../../../src";
 
-import {Entity} from "../../../../src/decorator/entity/Entity";
+import { Entity } from "../../../../src/decorator/entity/Entity";
 
 @Entity("foo")
 export class Foo {

@@ -1,12 +1,4 @@
-import {
-    Column,
-    CreateDateColumn,
-    PrimaryGeneratedColumn,
-    Tree,
-    TreeChildren,
-    TreeParent,
-    UpdateDateColumn
-} from "../../../../src";
+import {Column, PrimaryGeneratedColumn, Tree, TreeParent, TreeChildren, UpdateDateColumn, CreateDateColumn} from "../../../../src";
 import {Entity} from "../../../../src/decorator/entity/Entity";
 
 @Entity()

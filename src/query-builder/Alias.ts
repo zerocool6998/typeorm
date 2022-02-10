@@ -1,6 +1,6 @@
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ObjectUtils} from "../util/ObjectUtils";
-import {TypeORMError} from "../error";
+import { TypeORMError } from "../error";
 
 /**
  */

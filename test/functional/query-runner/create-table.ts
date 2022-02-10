@@ -1,13 +1,17 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
+import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
+import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Table} from "../../../src/schema-builder/table/Table";
 import {TableOptions} from "../../../src/schema-builder/options/TableOptions";
 import {Post} from "./entity/Post";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
+import {OracleDriver} from "../../../src/driver/oracle/OracleDriver";
 import {Photo} from "./entity/Photo";
-import {Book, Book2} from "./entity/Book";
+import {Book2, Book} from "./entity/Book";
 
 describe("query runner > create table", () => {
 

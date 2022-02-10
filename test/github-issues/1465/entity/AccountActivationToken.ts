@@ -1,8 +1,8 @@
-import {Entity} from "../../../../src/decorator/entity/Entity";
-import {TableInheritance} from "../../../../src/decorator/entity/TableInheritance";
-import {Token} from "./Token";
-import {JoinColumn, OneToOne} from "../../../../src/index";
-import {Account} from "./Account";
+import { Entity } from "../../../../src/decorator/entity/Entity";
+import { TableInheritance } from "../../../../src/decorator/entity/TableInheritance";
+import { Token } from "./Token";
+import { OneToOne, JoinColumn } from "../../../../src/index";
+import { Account } from "./Account";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

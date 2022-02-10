@@ -16,6 +16,7 @@ import {
     Not
 } from "../../../../src";
 import {Post} from "./entity/Post";
+import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
 import {Raw} from "../../../../src/find-options/operator/Raw";
 import {PersonAR} from "./entity/PersonAR";
 import {expect} from "chai";

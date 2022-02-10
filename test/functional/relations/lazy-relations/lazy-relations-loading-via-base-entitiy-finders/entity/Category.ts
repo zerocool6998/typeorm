@@ -3,7 +3,7 @@ import {PrimaryGeneratedColumn} from "../../../../../../src/decorator/columns/Pr
 import {Column} from "../../../../../../src/decorator/columns/Column";
 import {Post} from "./Post";
 import {OneToMany} from "../../../../../../src/decorator/relations/OneToMany";
-import {BaseEntity} from "../../../../../../src";
+import { BaseEntity } from "../../../../../../src";
 
 @Entity()
 export class Category extends BaseEntity {

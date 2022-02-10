@@ -1,8 +1,11 @@
 import "reflect-metadata";
+import {AuroraDataApiDriver} from "../../../src/driver/aurora-data-api/AuroraDataApiDriver";
+import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Animal} from "./entity/Animal";
 import {OffsetWithoutLimitNotSupportedError} from "../../../src/error/OffsetWithoutLimitNotSupportedError";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 
 describe("github issues > #1099 BUG - QueryBuilder MySQL skip sql is wrong", () => {
 

@@ -1,8 +1,14 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection, Table} from "../../../src";
+import {Connection} from "../../../src";
+import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
+import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {Table} from "../../../src";
+import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
+import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 
 describe("query runner > rename column", () => {
 

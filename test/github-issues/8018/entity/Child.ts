@@ -1,6 +1,12 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,} from "../../../../src";
-import {Grandchild} from "./Grandchild";
-import {Parent} from "./Parent";
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from "../../../../src";
+import { Grandchild } from "./Grandchild";
+import { Parent } from "./Parent";
 
 @Entity()
 export class Child {

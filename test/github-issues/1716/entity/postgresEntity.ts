@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryColumn} from "../../../../src";
+import { PrimaryColumn, Entity, Column } from "../../../../src";
 
 @Entity()
 export class PostgresEntity {

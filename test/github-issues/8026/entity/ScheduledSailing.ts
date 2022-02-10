@@ -1,5 +1,5 @@
-import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from "../../../../src";
-import {Sailing} from "./Sailing";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "../../../../src";
+import { Sailing } from "./Sailing";
 
 @Entity()
 export class ScheduledSailing extends BaseEntity {

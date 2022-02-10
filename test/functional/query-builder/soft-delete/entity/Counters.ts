@@ -1,6 +1,5 @@
 import {Column} from "../../../../../src/decorator/columns/Column";
 import {DeleteDateColumn} from "../../../../../src/decorator/columns/DeleteDateColumn";
-
 export class Counters {
 
     @Column({ default: 1 })

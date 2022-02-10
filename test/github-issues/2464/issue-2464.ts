@@ -3,8 +3,8 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 
 import {Connection} from "../../../src/connection/Connection";
-import {Foo} from "./entity/Foo";
-import {QueryFailedError} from "../../../src";
+import { Foo } from "./entity/Foo";
+import { QueryFailedError } from "../../../src";
 import {expect} from "chai";
 
 describe("github issues > #2464 - ManyToMany onDelete option not working", () => {

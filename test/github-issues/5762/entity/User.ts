@@ -1,6 +1,6 @@
 import {Entity} from "../../../../src/decorator/entity/Entity";
-import {Column, PrimaryColumn} from "../../../../src";
-import {URL} from "url";
+import {PrimaryColumn, Column} from "../../../../src";
+import { URL } from "url";
 
 @Entity()
 export class User {

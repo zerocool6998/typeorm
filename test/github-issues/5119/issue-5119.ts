@@ -5,8 +5,8 @@ import {
     reloadTestingDatabases,
     setupSingleTestingConnection
 } from "../../utils/test-utils";
-import {Connection, createConnection} from "../../../src";
-import {fail} from "assert";
+import { Connection, createConnection } from "../../../src";
+import { fail } from "assert";
 
 describe("github issues > #5119 migration with foreign key that changes target", () => {
     let connections: Connection[];

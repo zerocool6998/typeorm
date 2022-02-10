@@ -1,5 +1,5 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src";
-import {PostReview} from "./PostReview";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "../../../../src";
+import { PostReview } from "./PostReview";
 
 
 @Entity()

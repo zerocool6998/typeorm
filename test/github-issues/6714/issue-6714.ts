@@ -1,9 +1,13 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {expect} from "chai";
-import {Session as baseEntity} from "./entity/session";
-import {Session as changedEntity} from "./entity/sessionchanged";
+import {
+    createTestingConnections,
+    closeTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { expect } from "chai";
+import { Session as baseEntity } from "./entity/session";
+import { Session as changedEntity } from "./entity/sessionchanged";
 
 describe("github issues > #6714 Migration:generate issue with onUpdate using mariadb 10.4", () => {
     it("dont change anything", async () => {

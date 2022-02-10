@@ -1,14 +1,14 @@
 import mkdirp from "mkdirp";
 import path from "path";
-import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
-import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
-import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
-import {ColumnType} from "../types/ColumnTypes";
-import {QueryRunner} from "../../query-runner/QueryRunner";
-import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
-import {BetterSqlite3ConnectionOptions} from "./BetterSqlite3ConnectionOptions";
-import {BetterSqlite3QueryRunner} from "./BetterSqlite3QueryRunner";
+import { DriverPackageNotInstalledError } from "../../error/DriverPackageNotInstalledError";
+import { DriverOptionNotSetError } from "../../error/DriverOptionNotSetError";
+import { PlatformTools } from "../../platform/PlatformTools";
+import { Connection } from "../../connection/Connection";
+import { ColumnType } from "../types/ColumnTypes";
+import { QueryRunner } from "../../query-runner/QueryRunner";
+import { AbstractSqliteDriver } from "../sqlite-abstract/AbstractSqliteDriver";
+import { BetterSqlite3ConnectionOptions } from "./BetterSqlite3ConnectionOptions";
+import { BetterSqlite3QueryRunner } from "./BetterSqlite3QueryRunner";
 import {ReplicationMode} from "../types/ReplicationMode";
 
 /**

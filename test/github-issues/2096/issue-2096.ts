@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import {expect} from "chai";
-import {createConnection} from "../../../src";
-import {getTypeOrmConfig} from "../../utils/test-utils";
+import { expect } from "chai";
+import { createConnection } from "../../../src";
+import { getTypeOrmConfig } from "../../utils/test-utils";
 import {MysqlConnectionOptions} from "../../../src/driver/mysql/MysqlConnectionOptions";
 
 describe("github issues > #2096 [mysql] Database name isn't read from url", () => {

@@ -1,6 +1,9 @@
 import {expect} from "chai";
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
+import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 
 describe("schema builder > create table", () => {

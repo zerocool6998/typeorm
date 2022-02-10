@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {Post as CockroachPost} from "./entity/cockroachdb/Post";
 import {Post as MssqlPost} from "./entity/mssql/Post";
 import {Post as MysqlPost} from "./entity/mysql/Post";

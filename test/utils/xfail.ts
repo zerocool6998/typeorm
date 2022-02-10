@@ -1,5 +1,5 @@
-import {assert, AssertionError} from "chai";
-import {AsyncFunc, Context, Func, Test, TestFunction} from "mocha";
+import { assert, AssertionError } from "chai";
+import { AsyncFunc, Context, Func, Test, TestFunction } from "mocha";
 
 type XFailFunction = { it: TestFunction, unless: (condition: boolean | (() => boolean)) => { it: TestFunction } };
 

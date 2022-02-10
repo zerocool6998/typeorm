@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, TableInheritance} from "../../../../src/index";
+import { Entity, TableInheritance, PrimaryGeneratedColumn } from "../../../../src/index";
 
 @Entity()
 @TableInheritance({

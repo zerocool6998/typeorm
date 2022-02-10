@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "../../../../../src";
+import { Column, PrimaryGeneratedColumn } from "../../../../../src";
+import { Entity } from "../../../../../src";
 
 export enum Operator {
     LT = "lt",

@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import {Connection} from "../../../src";
-import {User} from "./entity/UserEntity";
+import { createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
+import { Connection } from "../../../src";
+import { User } from "./entity/UserEntity";
 
-import {expect} from "chai";
+import { expect } from "chai";
 
 describe("github issues > #5365 Generated Identity for Postgres 10+", () => {
 

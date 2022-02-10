@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
+import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 
 describe("query runner > drop column", () => {

@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Post} from "./entity/Post";
-import {expect} from "chai";
+import { Connection } from "../../../src/connection/Connection";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { Post } from "./entity/Post";
+import { expect } from "chai";
 
 describe("github issues > #5501 Incorrect data loading from JSON string for column type 'simple-json'", () => {
 

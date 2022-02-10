@@ -2,10 +2,10 @@ import {Repository} from "./Repository";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {AbstractSqliteDriver} from "../driver/sqlite-abstract/AbstractSqliteDriver";
-import {TypeORMError} from "../error/TypeORMError";
-import {FindTreeOptions} from "../find-options/FindTreeOptions";
-import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
-import {FindTreesOptions} from "./FindTreesOptions";
+import { TypeORMError } from "../error/TypeORMError";
+import { FindTreeOptions } from "../find-options/FindTreeOptions";
+import { FindOptionsUtils } from "../find-options/FindOptionsUtils";
+import { FindTreesOptions } from "./FindTreesOptions";
 
 /**
  * Repository with additional functions to work with trees.

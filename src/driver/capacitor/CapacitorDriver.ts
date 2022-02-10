@@ -1,10 +1,13 @@
-import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
-import {CapacitorConnectionOptions} from "./CapacitorConnectionOptions";
-import {CapacitorQueryRunner} from "./CapacitorQueryRunner";
-import {QueryRunner} from "../../query-runner/QueryRunner";
-import {Connection} from "../../connection/Connection";
-import {DriverOptionNotSetError, DriverPackageNotInstalledError,} from "../../error";
-import {ReplicationMode} from "../types/ReplicationMode";
+import { AbstractSqliteDriver } from "../sqlite-abstract/AbstractSqliteDriver";
+import { CapacitorConnectionOptions } from "./CapacitorConnectionOptions";
+import { CapacitorQueryRunner } from "./CapacitorQueryRunner";
+import { QueryRunner } from "../../query-runner/QueryRunner";
+import { Connection } from "../../connection/Connection";
+import {
+    DriverOptionNotSetError,
+    DriverPackageNotInstalledError,
+} from "../../error";
+import { ReplicationMode } from "../types/ReplicationMode";
 
 export class CapacitorDriver extends AbstractSqliteDriver {
     driver: any;

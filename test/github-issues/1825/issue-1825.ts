@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src";
-import {EmbeddedInThing, Thing} from "./entity/thing";
+import {Thing, EmbeddedInThing} from "./entity/thing";
 import {expect} from "chai";
 
 describe("github issues > #1825 Invalid field values being loaded with long camelCased embedded field names.", () => {

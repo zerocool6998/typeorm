@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
-import {VersionUtils} from "../../../src/util/VersionUtils";
+import { VersionUtils } from "../../../src/util/VersionUtils";
 
 describe("github issues > #4782 mariadb driver wants to recreate create/update date columns CURRENT_TIMESTAMP(6) === current_timestamp(6)", () => {
 

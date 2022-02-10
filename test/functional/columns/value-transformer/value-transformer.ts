@@ -6,7 +6,7 @@ import {Connection} from "../../../../src/connection/Connection";
 import {PhoneBook} from "./entity/PhoneBook";
 import {Complex, Post} from "./entity/Post";
 import {User} from "./entity/User";
-import {Category} from "./entity/Category";
+import {Category} from "./entity/Category";
 import {View} from "./entity/View";
 import {expect} from "chai";
 

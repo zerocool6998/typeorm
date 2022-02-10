@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {expect} from "chai";
-import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {TestEntity} from "./entity/test.entity";
+import { expect } from "chai";
+import { Connection } from "../../../src";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { TestEntity } from "./entity/test.entity";
 
 describe("github issues > #7809 MongoDB delete make changes only to first matched document", () => {
 

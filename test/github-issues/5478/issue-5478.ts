@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {expect} from "chai";
 import {UserEntity} from "./entity/UserEntity";
 

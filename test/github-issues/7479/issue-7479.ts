@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 
 describe("github issues > #7479 Only first single quote in comments is escaped", () => {

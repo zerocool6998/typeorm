@@ -1,5 +1,5 @@
 import {ObjectLiteral} from "../../common/ObjectLiteral";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { QueryResult } from "../../query-runner/QueryResult";
 
 /**
  * Result object returned by UpdateQueryBuilder execution.

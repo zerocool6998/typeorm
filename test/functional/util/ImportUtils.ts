@@ -1,4 +1,4 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import fs from "fs";
 import path from "path";
 import {importOrRequireFile} from "../../../src/util/ImportUtils";

@@ -1,7 +1,7 @@
 import {QueryBuilder} from "./QueryBuilder";
 import {RelationUpdater} from "./RelationUpdater";
 import {RelationRemover} from "./RelationRemover";
-import {TypeORMError} from "../error";
+import { TypeORMError } from "../error";
 
 /**
  * Allows to work with entity relations and perform specific operations with those relations.

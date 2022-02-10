@@ -1,6 +1,7 @@
 import {Connection} from "../connection/Connection";
 import {EntityManager} from "./EntityManager";
 import {MongoEntityManager} from "./MongoEntityManager";
+import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {SqljsEntityManager} from "./SqljsEntityManager";
 import {SqljsDriver} from "../driver/sqljs/SqljsDriver";
 import {QueryRunner} from "../query-runner/QueryRunner";

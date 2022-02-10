@@ -1,4 +1,4 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "../../../../src";
+import { PrimaryGeneratedColumn, Entity, Column, CreateDateColumn } from "../../../../src";
 
 @Entity()
 export class Post {

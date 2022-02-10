@@ -1,6 +1,6 @@
-import {Connection} from "../connection/Connection";
-import {EntityManager} from "./EntityManager";
-import {EntityTarget} from "../common/EntityTarget";
+import { Connection } from "../connection/Connection";
+import { EntityManager } from "./EntityManager";
+import { EntityTarget } from "../common/EntityTarget";
 import {
     AggregationCursor,
     BulkWriteOpResultObject,
@@ -37,19 +37,19 @@ import {
     UnorderedBulkOperation,
     UpdateWriteOpResult
 } from "../driver/mongodb/typings";
-import {ObjectLiteral} from "../common/ObjectLiteral";
-import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
-import {MongoDriver} from "../driver/mongodb/MongoDriver";
-import {DocumentToEntityTransformer} from "../query-builder/transformer/DocumentToEntityTransformer";
-import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
-import {PlatformTools} from "../platform/PlatformTools";
-import {DeepPartial} from "../common/DeepPartial";
-import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
-import {InsertResult} from "../query-builder/result/InsertResult";
-import {UpdateResult} from "../query-builder/result/UpdateResult";
-import {DeleteResult} from "../query-builder/result/DeleteResult";
-import {EntityMetadata} from "../metadata/EntityMetadata";
-import {FindConditions} from "../find-options/FindConditions";
+import { ObjectLiteral } from "../common/ObjectLiteral";
+import { MongoQueryRunner } from "../driver/mongodb/MongoQueryRunner";
+import { MongoDriver } from "../driver/mongodb/MongoDriver";
+import { DocumentToEntityTransformer } from "../query-builder/transformer/DocumentToEntityTransformer";
+import { FindOptionsUtils } from "../find-options/FindOptionsUtils";
+import { PlatformTools } from "../platform/PlatformTools";
+import { DeepPartial } from "../common/DeepPartial";
+import { QueryDeepPartialEntity } from "../query-builder/QueryPartialEntity";
+import { InsertResult } from "../query-builder/result/InsertResult";
+import { UpdateResult } from "../query-builder/result/UpdateResult";
+import { DeleteResult } from "../query-builder/result/DeleteResult";
+import { EntityMetadata } from "../metadata/EntityMetadata";
+import { FindConditions } from "../find-options/FindConditions";
 import {FindOptionsSelect, FindOptionsSelectByString} from "../find-options/FindOptionsSelect";
 import {MongoFindManyOptions} from "../find-options/mongodb/MongoFindManyOptions";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";

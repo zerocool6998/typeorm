@@ -1,4 +1,7 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "../../../../src";
+import {BaseEntity} from "../../../../src";
+import {Column} from "../../../../src";
+import {PrimaryGeneratedColumn} from "../../../../src";
+import {Entity} from "../../../../src";
 import {Contact} from "./Contact";
 
 @Entity()

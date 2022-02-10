@@ -1,5 +1,12 @@
-import {ChildEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, TableInheritance,} from "../../../../src";
-import {Comment} from "./Comment";
+import {
+    Entity,
+    OneToMany,
+    Column,
+    PrimaryGeneratedColumn,
+    TableInheritance,
+    ChildEntity,
+} from "../../../../src";
+import { Comment } from "./Comment";
 
 @Entity()
 @TableInheritance({column: {type: "string", name: "postType"}})

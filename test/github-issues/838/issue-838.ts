@@ -1,7 +1,8 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Flight} from "./entity/Flight";
+import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {expect} from "chai";
 
 describe.skip("github issues > #838 Time zones for timestamp columns are incorrectly fetched and persisted in PostgreSQL", () => {

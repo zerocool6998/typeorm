@@ -1,6 +1,6 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src";
-import {Email} from "./Email";
-import {Phone} from "./Phone";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "../../../../src";
+import { Email } from "./Email";
+import { Phone } from "./Phone";
 
 @Entity()
 export class User {

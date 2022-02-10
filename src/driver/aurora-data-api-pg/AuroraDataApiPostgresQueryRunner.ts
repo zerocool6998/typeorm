@@ -6,7 +6,7 @@ import {IsolationLevel} from "../types/IsolationLevel";
 import {AuroraDataApiPostgresDriver} from "./AuroraDataApiPostgresDriver";
 import {PostgresQueryRunner} from "../postgres/PostgresQueryRunner";
 import {ReplicationMode} from "../types/ReplicationMode";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { QueryResult } from "../../query-runner/QueryResult";
 
 class PostgresQueryRunnerWrapper extends PostgresQueryRunner {
     driver: any;

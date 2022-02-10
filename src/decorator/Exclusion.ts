@@ -1,6 +1,6 @@
 import {getMetadataArgsStorage} from "../globals";
 import {ExclusionMetadataArgs} from "../metadata-args/ExclusionMetadataArgs";
-import {TypeORMError} from "../error";
+import { TypeORMError } from "../error";
 
 /**
  * Creates a database exclusion.

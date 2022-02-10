@@ -2,11 +2,11 @@ import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src";
 
-import {assert} from "chai";
+import { assert } from "chai";
 
-import Post, {PostSchema} from "./entity/Post";
-import PostTag, {PostTagSchema} from "./entity/PostTag";
-import PostAttachment, {PostAttachmentSchema} from "./entity/PostAttachment";
+import Post, { PostSchema } from "./entity/Post";
+import PostTag, { PostTagSchema } from "./entity/PostTag";
+import PostAttachment, { PostAttachmentSchema } from "./entity/PostAttachment";
 
 describe("github issues > #6399 Combining ManyToOne, Cascade, & Composite Primary Key causes Unique Constraint issues", () => {
 

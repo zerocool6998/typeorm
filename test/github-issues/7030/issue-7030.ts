@@ -1,6 +1,10 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {
+    createTestingConnections,
+    closeTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 
 describe("github issues > #7030", () => {

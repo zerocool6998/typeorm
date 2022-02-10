@@ -1,6 +1,9 @@
 import "reflect-metadata";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
+import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection, Table} from "../../../src";
 
 describe("github issues > #3379 Migration will keep create and drop indexes if index name is the same across tables", () => {

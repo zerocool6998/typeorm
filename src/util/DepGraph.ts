@@ -8,7 +8,7 @@
  * A simple dependency graph
  */
 
-import {TypeORMError} from "../error";
+import { TypeORMError } from "../error";
 
 /**
  * Helper for creating a Depth-First-Search on

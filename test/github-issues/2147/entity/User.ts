@@ -1,3 +1,4 @@
+
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique} from "../../../../src";
 
 @Entity()

@@ -1,8 +1,8 @@
-import {OneToMany, PrimaryColumn} from "../../../../../src/index";
-import {Entity} from "../../../../../src/decorator/entity/Entity";
-import {BaseEntity} from "../../../../../src/repository/BaseEntity";
+import { PrimaryColumn, OneToMany } from "../../../../../src/index";
+import { Entity } from "../../../../../src/decorator/entity/Entity";
+import { BaseEntity } from "../../../../../src/repository/BaseEntity";
 
-import {RecordContext} from "./context";
+import { RecordContext } from "./context";
 
 @Entity({ name: "records" })
 export class Record extends BaseEntity {

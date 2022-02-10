@@ -1,4 +1,6 @@
-import {Column, Entity, PrimaryColumn} from "../../../../src";
+import {Entity} from "../../../../src";
+import {Column} from "../../../../src";
+import {PrimaryColumn} from "../../../../src";
 
 @Entity()
 export class User {

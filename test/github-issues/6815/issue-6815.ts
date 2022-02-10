@@ -1,7 +1,11 @@
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
 import {EntityManager} from "../../../src/entity-manager/EntityManager";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {
+    createTestingConnections,
+    closeTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
 import {ChildEntity} from "./entity/ChildEntity";
 import {ParentEntity} from "./entity/ParentEntity";
 

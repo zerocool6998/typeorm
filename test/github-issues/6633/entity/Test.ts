@@ -1,4 +1,4 @@
-import {Column, Entity, Index, PrimaryColumn} from "../../../../src";
+import { Entity, PrimaryColumn, Index, Column } from "../../../../src";
 
 @Entity()
 export class Test {

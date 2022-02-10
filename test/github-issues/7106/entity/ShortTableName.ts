@@ -1,5 +1,5 @@
 import {PrimaryGeneratedColumn} from "../../../../src/decorator/columns/PrimaryGeneratedColumn";
-import {Column, Entity} from "../../../../src";
+import {Column, Entity } from "../../../../src";
 
 @Entity()
 export class ShortTableName {

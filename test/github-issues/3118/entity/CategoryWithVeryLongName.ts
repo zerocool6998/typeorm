@@ -1,4 +1,4 @@
-import {Entity, JoinTable, ManyToMany} from "../../../../src";
+import {JoinTable, Entity, ManyToMany} from "../../../../src";
 import {Column} from "../../../../src/decorator/columns/Column";
 import {PrimaryGeneratedColumn} from "../../../../src/decorator/columns/PrimaryGeneratedColumn";
 import {PostWithVeryLongName} from "./PostWithVeryLongName";

@@ -1,5 +1,5 @@
-import {Column, Entity, OneToMany} from "../../../../src/index";
-import {DataModel} from "./DataModel";
+import { Column, OneToMany, Entity } from "../../../../src/index";
+import { DataModel } from "./DataModel";
 
 @Entity()
 export class ValidationModel {

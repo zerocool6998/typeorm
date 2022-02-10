@@ -2,8 +2,8 @@ import "reflect-metadata";
 import {Connection} from "../../../src";
 import {ForeignKeyMetadata} from "../../../src/metadata/ForeignKeyMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Album} from "./entity/Album";
-import {Photo} from "./entity/Photo";
+import { Album } from "./entity/Album";
+import { Photo } from "./entity/Photo";
 
 describe("schema builder > custom-db-and-schema-sync", () => {
     describe("custom database", () => {

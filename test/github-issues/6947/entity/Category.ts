@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent} from "../../../../src";
+import { Entity, PrimaryGeneratedColumn, Column, Tree, TreeParent, TreeChildren } from "../../../../src";
 
 @Entity()
 @Tree("closure-table")

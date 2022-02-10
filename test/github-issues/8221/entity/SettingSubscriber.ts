@@ -1,4 +1,4 @@
-import {EntitySubscriberInterface, EventSubscriber, LoadEvent, UpdateEvent} from "../../../../src";
+import { EntitySubscriberInterface, EventSubscriber, LoadEvent, UpdateEvent } from "../../../../src";
 import {Setting} from "./Setting";
 
 

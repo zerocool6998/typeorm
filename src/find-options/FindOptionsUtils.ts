@@ -4,7 +4,7 @@ import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {FindRelationsNotFoundError} from "../error/FindRelationsNotFoundError";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {DriverUtils} from "../driver/DriverUtils";
-import {FindTreeOptions} from "./FindTreeOptions";
+import { FindTreeOptions } from "./FindTreeOptions";
 
 /**
  * Utilities to work with FindOptions.

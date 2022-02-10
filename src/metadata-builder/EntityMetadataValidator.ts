@@ -5,9 +5,13 @@ import {DepGraph} from "../util/DepGraph";
 import {Driver} from "../driver/Driver";
 import {DataTypeNotSupportedError} from "../error/DataTypeNotSupportedError";
 import {ColumnType} from "../driver/types/ColumnTypes";
+import {MongoDriver} from "../driver/mongodb/MongoDriver";
+import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
+import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {NoConnectionOptionError} from "../error/NoConnectionOptionError";
 import {InitializedRelationError} from "../error/InitializedRelationError";
-import {TypeORMError} from "../error";
+import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
+import { TypeORMError } from "../error";
 
 /// todo: add check if there are multiple tables with the same name
 /// todo: add checks when generated column / table names are too long for the specific driver

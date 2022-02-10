@@ -1,4 +1,4 @@
-import {Column, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent} from "../../../../src";
+import {Column, PrimaryGeneratedColumn, Tree, TreeParent, TreeChildren} from "../../../../src";
 import {Entity} from "../../../../src/decorator/entity/Entity";
 
 @Entity()

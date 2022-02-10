@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {Example} from "./entity/Example";
+import { Example } from "./entity/Example";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
-import {Connection} from "../../../../src";
+import { Connection } from "../../../../src";
 
 describe("query builder > parameters", () => {
 

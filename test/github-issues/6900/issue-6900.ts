@@ -1,5 +1,8 @@
-import {expect} from "chai";
-import {closeTestingConnections, reloadTestingDatabases, setupTestingConnections} from "../../utils/test-utils";
+import { expect } from "chai";
+import {
+    closeTestingConnections, reloadTestingDatabases,
+    setupTestingConnections
+} from "../../utils/test-utils";
 import {MongoDriver} from "../../../src/driver/mongodb/MongoDriver";
 import {Connection, ConnectionOptions, createConnection, MongoClient} from "../../../src";
 import {Warn} from "./entity/Warn";

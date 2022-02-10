@@ -3,7 +3,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../../../src/connection/Connection";
 import {Photo} from "./entity/Photo";
 import {User} from "./entity/User";
-import {IsNull} from "../../../../../src";
+import { IsNull } from "../../../../../src";
 
 // todo: fix later
 describe.skip("persistence > cascades > remove", () => {

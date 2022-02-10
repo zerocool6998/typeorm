@@ -1,4 +1,4 @@
-import {Entity, OneToOne, PrimaryGeneratedColumn} from "../../../../src/index";
+import {Entity, PrimaryGeneratedColumn, OneToOne} from "../../../../src/index";
 
 import {Tournament} from "./Tournament";
 

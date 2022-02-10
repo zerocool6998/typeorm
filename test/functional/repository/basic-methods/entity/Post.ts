@@ -1,8 +1,8 @@
 import {Entity} from "../../../../../src/decorator/entity/Entity";
 import {PrimaryGeneratedColumn} from "../../../../../src/decorator/columns/PrimaryGeneratedColumn";
 import {Column} from "../../../../../src/decorator/columns/Column";
-import {CreateDateColumn, ManyToOne, UpdateDateColumn} from "../../../../../src";
-import {Category} from "./Category";
+import {CreateDateColumn,ManyToOne,UpdateDateColumn} from "../../../../../src";
+import { Category } from "./Category";
 
 
 @Entity()

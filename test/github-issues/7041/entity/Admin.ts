@@ -1,6 +1,12 @@
-import {BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn,} from "../../../../src";
-import {User} from "./User";
-import {Organization} from "./Organization";
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    JoinColumn,
+    OneToOne, PrimaryColumn,
+} from "../../../../src";
+import { User } from "./User";
+import { Organization } from "./Organization";
 
 @Entity()
 export class Admin extends BaseEntity {

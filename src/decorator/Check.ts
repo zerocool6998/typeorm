@@ -1,6 +1,6 @@
 import {getMetadataArgsStorage} from "../globals";
 import {CheckMetadataArgs} from "../metadata-args/CheckMetadataArgs";
-import {TypeORMError} from "../error";
+import { TypeORMError } from "../error";
 
 /**
  * Creates a database check.

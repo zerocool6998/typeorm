@@ -1,5 +1,12 @@
-import {Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryColumn,} from "../../../../src";
-import {Bar} from "./Bar";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    OneToOne,
+    PrimaryColumn,
+} from "../../../../src";
+import { Bar } from "./Bar";
 
 @Entity()
 export class Foo {

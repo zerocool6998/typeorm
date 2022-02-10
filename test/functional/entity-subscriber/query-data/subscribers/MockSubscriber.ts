@@ -1,4 +1,4 @@
-import {EntitySubscriberInterface, EventSubscriber, UpdateEvent} from "../../../../../src";
+import { EntitySubscriberInterface, EventSubscriber, UpdateEvent } from "../../../../../src";
 
 @EventSubscriber()
 export class MockSubscriber implements EntitySubscriberInterface {

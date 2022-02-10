@@ -1,5 +1,5 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src";
-import {Cliente} from "./cliente";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "../../../../src";
+import { Cliente } from "./cliente";
 
 @Entity()
 export class TipoCliente {

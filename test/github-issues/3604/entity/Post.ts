@@ -1,4 +1,7 @@
-import {Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "../../../../src";
+import {PrimaryGeneratedColumn} from "../../../../src";
+import {Entity} from "../../../../src";
+import {JoinColumn} from "../../../../src";
+import {ManyToOne} from "../../../../src";
 import {Author} from "./Author";
 
 @Entity()

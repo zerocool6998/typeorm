@@ -4,7 +4,7 @@ import {QueryFailedError} from "../../error/QueryFailedError";
 import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryRunner";
 import {NativescriptDriver} from "./NativescriptDriver";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { QueryResult } from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.
@@ -50,11 +50,11 @@ export class NativescriptQueryRunner extends AbstractSqliteQueryRunner {
                 const maxQueryExecutionTime = this.driver.options.maxQueryExecutionTime;
                 const queryEndTime = +new Date();
                 const queryExecutionTime = queryEndTime - queryStartTime;
-
+                
                 if (maxQueryExecutionTime && queryExecutionTime > maxQueryExecutionTime) {
                     connection.logger.logQuerySlow(queryExecutionTime, query, parameters, this);
                 }
-
+                
                 if (err) {
                     connection.logger.logQueryError(err, query, parameters, this);
                     fail(new QueryFailedError(query, parameters, err));
@@ -72,7 +72,7 @@ export class NativescriptQueryRunner extends AbstractSqliteQueryRunner {
                 } else {
                     ok(result.raw);
                 }
-
+                
             };
             const queryStartTime = +new Date();
 
@@ -80,7 +80,7 @@ export class NativescriptQueryRunner extends AbstractSqliteQueryRunner {
                 databaseConnection.execSQL(query, parameters, handler);
             } else {
                 databaseConnection.all(query, parameters, handler);
-            }
+            } 
         });
     }
 

@@ -2,7 +2,7 @@ import {RedisQueryResultCache} from "./RedisQueryResultCache";
 import {DbQueryResultCache} from "./DbQueryResultCache";
 import {QueryResultCache} from "./QueryResultCache";
 import {Connection} from "../connection/Connection";
-import {TypeORMError} from "../error/TypeORMError";
+import { TypeORMError } from "../error/TypeORMError";
 
 /**
  * Caches query result into Redis database.

@@ -4,6 +4,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Teacher} from "./entity/Teacher";
 import {Post} from "./entity/Post";
 import {CheckMetadata} from "../../../src/metadata/CheckMetadata";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 
 describe("schema builder > change check constraint", () => {
 

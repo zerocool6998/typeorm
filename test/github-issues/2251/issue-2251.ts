@@ -1,11 +1,15 @@
 import "reflect-metadata";
 
-import {expect} from "chai";
+import { expect } from "chai";
 
-import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Bar} from "./entity/Bar";
-import {Foo} from "./entity/Foo";
+import { Connection } from "../../../src/connection/Connection";
+import {
+  closeTestingConnections,
+  createTestingConnections,
+  reloadTestingDatabases
+} from "../../utils/test-utils";
+import { Bar } from "./entity/Bar";
+import { Foo } from "./entity/Foo";
 
 describe("github issues > #2251 - Unexpected behavior when passing duplicate entities to repository.save()", () => {
   let connections: Connection[];

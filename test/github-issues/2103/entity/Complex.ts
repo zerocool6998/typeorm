@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryColumn} from "../../../../src";
+import {Entity, Column, PrimaryColumn} from "../../../../src";
 
 @Entity()
 export class Complex {

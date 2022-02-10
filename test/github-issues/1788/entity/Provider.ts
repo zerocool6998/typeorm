@@ -1,5 +1,11 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "../../../../src";
-import {Personalization} from "./Personalization";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from "../../../../src";
+import { Personalization } from "./Personalization";
 
 @Entity()
 export class Provider {

@@ -3,8 +3,10 @@ import {Connection} from "../connection/Connection";
 import {Migration} from "./Migration";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryRunner} from "../query-runner/QueryRunner";
+import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {MssqlParameter} from "../driver/sqlserver/MssqlParameter";
 import {RdbmsSchemaBuilder} from "../schema-builder/RdbmsSchemaBuilder";
+import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
 import {TypeORMError} from "../error";
 

@@ -1,8 +1,12 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
-import {Bar} from "./entity/Bar";
-import {Foo} from "./entity/Foo";
+import { Connection } from "../../../src/connection/Connection";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
+import { Bar } from "./entity/Bar";
+import { Foo } from "./entity/Foo";
 
 // TODO: this test was broken after removing primary: true from relation decorators
 //  due to complexity of cascades, it was skipped fow now

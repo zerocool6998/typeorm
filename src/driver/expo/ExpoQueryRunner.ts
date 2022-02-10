@@ -5,7 +5,7 @@ import {TransactionAlreadyStartedError} from "../../error/TransactionAlreadyStar
 import {TransactionNotStartedError} from "../../error/TransactionNotStartedError";
 import {ExpoDriver} from "./ExpoDriver";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { QueryResult } from "../../query-runner/QueryResult";
 
 // Needed to satisfy the Typescript compiler
 interface IResultSet {

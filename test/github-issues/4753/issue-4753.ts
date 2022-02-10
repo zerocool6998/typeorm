@@ -1,7 +1,7 @@
-import {getConnectionManager} from "../../../src";
-import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections} from "../../utils/test-utils";
-import {User} from "./entity/User";
+import { getConnectionManager } from "../../../src";
+import { Connection } from "../../../src/connection/Connection";
+import { closeTestingConnections } from "../../utils/test-utils";
+import { User } from "./entity/User";
 
 describe("github issues > #4753 MySQL Replication Config broken", () => {
     let connections: Connection[] = [];

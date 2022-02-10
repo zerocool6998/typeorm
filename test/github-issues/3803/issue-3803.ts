@@ -1,5 +1,8 @@
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection, EntitySchema} from "../../../src";
+import {Connection} from "../../../src";
+import {EntitySchema} from "../../../src";
 import {Post, PostSchema} from "./entity/Post";
 import {expect} from "chai";
 

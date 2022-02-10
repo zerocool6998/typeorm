@@ -4,6 +4,7 @@ import {Connection} from "../../../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {PostWithoutTypes} from "./entity/PostWithoutTypes";
 import {Post} from "./entity/Post";
+import {PostgresDriver} from "../../../../../src/driver/postgres/PostgresDriver";
 
 describe("database schema > column types > postgres", () => {
     let connections: Connection[];

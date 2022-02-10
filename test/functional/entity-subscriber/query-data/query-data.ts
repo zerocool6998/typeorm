@@ -1,8 +1,10 @@
-import {Connection,} from "../../../../src";
+import {
+    Connection,
+} from "../../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../../utils/test-utils";
 import {expect} from "chai";
-import {MockSubscriber} from "./subscribers/MockSubscriber";
-import {Example} from "./entity/Example";
+import { MockSubscriber } from "./subscribers/MockSubscriber";
+import { Example } from "./entity/Example";
 
 describe("entity subscriber > query data", () => {
     let connections: Connection[];

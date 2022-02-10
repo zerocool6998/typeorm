@@ -1,8 +1,12 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../src";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../../utils/test-utils";
-import {FeatureWithoutSRID, FeatureWithSRID} from "./entity/Feature";
+import { Connection } from "../../../../src";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+} from "../../../utils/test-utils";
+import { FeatureWithoutSRID, FeatureWithSRID } from "./entity/Feature";
 
 describe("column kinds > geometry column", () => {
 
@@ -14,7 +18,7 @@ describe("column kinds > geometry column", () => {
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));
 
-
+    
 
     it("geometry column with SRID defined should be saved without error for valid WKT input", () => Promise.all(connections.map(async connection => {
         const featureRepository = connection.getRepository(FeatureWithSRID);
@@ -98,7 +102,7 @@ describe("column kinds > geometry column", () => {
         expect(updatedfeature).to.be.not.empty;
         expect(updatedfeature!.name).to.be.eql("feature");
         expect(updatedfeature!.shape).to.be.eql("POINT (0.5 0.5)");
-
+        
     })));
 
 });

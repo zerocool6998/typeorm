@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
-import {Order} from "./entity/Order";
-import {OrderCustomer} from "./entity/OrderCustomer";
-import {OrderRepository} from "./repository/OrderRepository";
-import {Broker} from "./entity/Broker";
-import {BrokerRepository} from "./repository/BrokerRepository";
+import { Order } from "./entity/Order";
+import { OrderCustomer } from "./entity/OrderCustomer";
+import { OrderRepository } from "./repository/OrderRepository";
+import { Broker } from "./entity/Broker";
+import { BrokerRepository } from "./repository/BrokerRepository";
 
 describe("github issues > #3246 Saving an entity with a 1:1 cascading insert does not return id if entity has nullable many:one relationship", () => {
 

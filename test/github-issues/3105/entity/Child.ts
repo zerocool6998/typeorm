@@ -1,5 +1,6 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "../../../../src";
-import {Parent} from "./Parent";
+import { Column, Entity, JoinColumn,
+	ManyToOne, PrimaryGeneratedColumn } from "../../../../src";
+import { Parent } from "./Parent";
 
 
 @Entity("test_child")

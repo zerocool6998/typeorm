@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {LetterBox} from "./entity/LetterBox";

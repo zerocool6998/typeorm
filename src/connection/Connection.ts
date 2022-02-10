@@ -16,6 +16,7 @@ import {MigrationInterface} from "../migration/MigrationInterface";
 import {MigrationExecutor} from "../migration/MigrationExecutor";
 import {Migration} from "../migration/Migration";
 import {MongoRepository} from "../repository/MongoRepository";
+import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {MongoEntityManager} from "../entity-manager/MongoEntityManager";
 import {EntityMetadataValidator} from "../metadata-builder/EntityMetadataValidator";
 import {ConnectionOptions} from "./ConnectionOptions";
@@ -31,10 +32,13 @@ import {QueryResultCache} from "../cache/QueryResultCache";
 import {SqljsEntityManager} from "../entity-manager/SqljsEntityManager";
 import {RelationLoader} from "../query-builder/RelationLoader";
 import {EntitySchema} from "../entity-schema/EntitySchema";
+import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
+import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
+import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {ReplicationMode} from "../driver/types/ReplicationMode";
-import {TypeORMError} from "../error/TypeORMError";
+import { TypeORMError } from "../error/TypeORMError";
 import {RelationIdLoader} from "../query-builder/RelationIdLoader";
 
 /**
@@ -170,7 +174,7 @@ export class Connection {
     /**
      * Updates current connection options with provided options.
      */
-    setOptions(options: Partial<ConnectionOptions>): this {
+    setOptions(options: Partial<ConnectionOptions>) {
         Object.assign(this.options, options);
 
         this.logger = new LoggerFactory().create(this.options.logger, this.options.logging);
@@ -180,7 +184,6 @@ export class Connection {
 
         // build all metadatas to make sure options are valid
         // await this.buildMetadatas();
-        return this;
     }
 
     /**

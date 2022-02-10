@@ -1,5 +1,5 @@
-import {Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src";
-import {Child} from "./Child";
+import { Entity, OneToMany, PrimaryGeneratedColumn } from "../../../../src";
+import { Child } from "./Child";
 
 
 @Entity("test_parent")

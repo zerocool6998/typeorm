@@ -1,4 +1,9 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from '../../../../src';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn
+} from '../../../../src';
 
 @Entity()
 export class Example {

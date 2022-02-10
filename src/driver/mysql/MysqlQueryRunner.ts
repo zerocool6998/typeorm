@@ -24,7 +24,7 @@ import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
 import {VersionUtils} from "../../util/VersionUtils";
 import {ReplicationMode} from "../types/ReplicationMode";
-import {TypeORMError} from "../../error";
+import { TypeORMError } from "../../error";
 import {MetadataTableType} from "../types/MetadataTableType";
 
 /**

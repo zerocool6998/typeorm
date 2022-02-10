@@ -1,5 +1,11 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,} from "../../../../src";
-import {Post} from "./Post";
+import {
+    Entity,
+    ManyToOne,
+    Column,
+    PrimaryGeneratedColumn,
+    JoinColumn,
+} from "../../../../src";
+import { Post } from "./Post";
 
 @Entity()
 export class Comment {

@@ -1,7 +1,16 @@
-import {Connection, EntitySubscriberInterface, EventSubscriber,} from "../../../../src";
+import {
+    Connection,
+    EntitySubscriberInterface,
+    EventSubscriber,
+} from "../../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../../utils/test-utils";
 import sinon from "sinon";
 import {expect} from "chai";
+import {SapDriver} from "../../../../src/driver/sap/SapDriver";
+import {OracleDriver} from "../../../../src/driver/oracle/OracleDriver";
+import {AuroraDataApiPostgresDriver} from "../../../../src/driver/aurora-data-api-pg/AuroraDataApiPostgresDriver";
+import {AuroraDataApiDriver} from "../../../../src/driver/aurora-data-api/AuroraDataApiDriver";
+import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 
 describe("entity subscriber > transaction flow", () => {
 

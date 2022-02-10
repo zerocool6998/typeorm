@@ -1,9 +1,10 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {User} from "./entity/User";
-
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 describe("github issues > #1780 Support for insertion ignore on duplicate error", () => {
      let connections: Connection[];
     before(async () => connections = await createTestingConnections({

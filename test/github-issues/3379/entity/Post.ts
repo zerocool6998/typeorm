@@ -1,4 +1,6 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn} from "../../../../src";
+import {Index, PrimaryGeneratedColumn} from "../../../../src";
+import {Column} from "../../../../src";
+import {Entity} from "../../../../src";
 
 @Index("name_index", ["name"])
 @Entity()

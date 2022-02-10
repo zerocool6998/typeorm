@@ -1,5 +1,6 @@
 import {expect} from "chai";
 import "reflect-metadata";
+import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
 import {Album} from "./entity/Album";
 import {Category} from "./entity/Category";
 import {Connection} from "../../../../src";

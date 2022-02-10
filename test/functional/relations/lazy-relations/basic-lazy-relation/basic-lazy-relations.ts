@@ -1,8 +1,12 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {Connection} from "../../../../../src/connection/Connection";
-import {Post,} from "./entity/Post";
-import {Category,} from "./entity/Category";
+import {
+    Post,
+} from "./entity/Post";
+import {
+    Category,
+} from "./entity/Category";
 import {EntitySchema} from "../../../../../src";
 
 /**
@@ -327,7 +331,7 @@ describe("basic-lazy-relations", () => {
             const category = new Category();
             category.name = "category of great post";
             await manager.save(category);
-
+    
             const post = new Post();
             post.title = "post with great category";
             post.text = "post with great category and great text";
@@ -345,7 +349,7 @@ describe("basic-lazy-relations", () => {
             const category = new Category();
             category.name = "category of great post";
             await manager.save(category);
-
+    
             const post = new Post();
             post.title = "post with great category";
             post.text = "post with great category and great text";

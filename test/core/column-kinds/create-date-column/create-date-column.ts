@@ -1,13 +1,13 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../src";
+import { Connection } from "../../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
     reloadTestingDatabases,
     sleep
 } from "../../../utils/test-utils";
-import {Post} from "./entity/Post";
+import { Post } from "./entity/Post";
 
 describe("column kinds > create date column", () => {
 

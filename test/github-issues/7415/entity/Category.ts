@@ -1,5 +1,11 @@
-import {Column, Entity, Tree, TreeChildren, TreeParent,} from "../../../../src";
-import {Slug} from "./Slug";
+import {
+    Column,
+    Entity,
+    Tree,
+    TreeChildren,
+    TreeParent,
+} from "../../../../src";
+import { Slug } from "./Slug";
 
 @Entity()
 @Tree("materialized-path")

@@ -1,6 +1,10 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import { Connection } from "../../../src";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
 import {Role, User} from "./entity/UserEntity";
 
 describe("github issues > #5275 Enums with spaces are not converted properly.", () => {

@@ -4,7 +4,8 @@ import {QueryExpressionMap} from "./QueryExpressionMap";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {UpdateResult} from "./result/UpdateResult";
 import {InsertResult} from "./result/InsertResult";
-import {TypeORMError} from "../error";
+import {OracleDriver} from "../driver/oracle/OracleDriver";
+import { TypeORMError } from "../error";
 
 /**
  * Updates entity with returning results in the entity insert and update operations.

@@ -1,8 +1,9 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 import {expect} from "chai";
+import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 
 describe("github issues > #2376 Naming single column unique constraint with decorator not working as expected", () => {
     let connections: Connection[];

@@ -3,6 +3,8 @@ import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src";
 import {Post} from "./entity/Post";
+import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
+import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
 
 describe("transaction > transaction with load many", () => {
 

@@ -1,6 +1,13 @@
-import {BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn,} from "../../../../src";
-import {Admin} from "./Admin";
-import {OrganizationMembership} from "./OrganizationMembership";
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from "../../../../src";
+import { Admin } from "./Admin";
+import { OrganizationMembership } from "./OrganizationMembership";
 
 @Entity()
 export class Organization extends BaseEntity {

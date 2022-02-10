@@ -1,8 +1,9 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {expect} from "chai";
-import {Post} from "./entity/Post";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { expect } from "chai";
+import { Post } from "./entity/Post";
+import { PostgresDriver } from "../../../src/driver/postgres/PostgresDriver";
 
 describe("github issues > #2128 skip preparePersistentValue for value functions", () => {
 

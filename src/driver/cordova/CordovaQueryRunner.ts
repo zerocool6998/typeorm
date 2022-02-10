@@ -4,8 +4,8 @@ import {QueryFailedError} from "../../error/QueryFailedError";
 import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryRunner";
 import {CordovaDriver} from "./CordovaDriver";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import {TypeORMError} from "../../error";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { TypeORMError } from "../../error";
+import { QueryResult } from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.

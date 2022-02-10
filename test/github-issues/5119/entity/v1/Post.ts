@@ -1,5 +1,10 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "../../../../../src/index";
-import {User} from "./User";
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn
+} from "../../../../../src/index";
+import { User } from "./User";
 
 @Entity()
 export class Post {

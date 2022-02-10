@@ -2,6 +2,8 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {User} from "./entity/User";
+import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
+import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {expect} from "chai";
 import {ReturningStatementNotSupportedError} from "../../../src/error/ReturningStatementNotSupportedError";
 

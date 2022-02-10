@@ -1,4 +1,4 @@
-import {Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent} from "../../../../src";
+import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from "../../../../src";
 
 @Entity()
 export class Relation {

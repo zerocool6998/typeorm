@@ -1,4 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn, VersionColumn} from "../../../../src";
+import {Entity} from "../../../../src";
+import {PrimaryGeneratedColumn} from "../../../../src";
+import {Column, VersionColumn} from "../../../../src";
 
 @Entity()
 export class Post {

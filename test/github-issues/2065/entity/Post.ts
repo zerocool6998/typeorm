@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryColumn} from "../../../../src";
+import { Entity, PrimaryColumn, Column } from "../../../../src";
 
 @Entity()
 export class Post {

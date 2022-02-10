@@ -2,8 +2,8 @@ import "reflect-metadata";
 import {Connection} from "../../../src";
 import {Post} from './entity/Post';
 import {Item} from './entity/Item';
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from '../../utils/test-utils';
-import {expect} from 'chai';
+import { closeTestingConnections, reloadTestingDatabases, createTestingConnections } from '../../utils/test-utils';
+import { expect } from 'chai';
 
 describe("github issues > #2434 QueryBuilder insert for Oracle failed", () => {
     let connections: Connection[] = [];

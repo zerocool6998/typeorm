@@ -1,8 +1,8 @@
-import {expect} from "chai";
-import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {User} from "./entity/user";
-import {Message} from "./entity/message";
+import { expect } from "chai";
+import { Connection } from "../../../src";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { User } from "./entity/user";
+import { Message } from "./entity/message";
 
 describe("github issues > #7851 Updating (using save method) a ManyToOne relation sets the object.relation_id to null", () => {
 

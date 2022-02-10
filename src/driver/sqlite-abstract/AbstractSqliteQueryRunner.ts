@@ -18,7 +18,7 @@ import {OrmUtils} from "../../util/OrmUtils";
 import {TableCheck} from "../../schema-builder/table/TableCheck";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
-import {TypeORMError} from "../../error";
+import { TypeORMError } from "../../error";
 import {MetadataTableType} from "../types/MetadataTableType";
 
 /**

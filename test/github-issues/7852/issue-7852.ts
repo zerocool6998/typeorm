@@ -1,8 +1,8 @@
-import {expect} from "chai";
-import {Connection} from "../../../src";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {User} from "./entity/user";
-import {UsersObject} from "./entity/usersObject";
+import { expect } from "chai";
+import { Connection } from "../../../src";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { User } from "./entity/user";
+import { UsersObject } from "./entity/usersObject";
 
 describe("github issues > #7852 saving a ManyToMany relation tries to insert (DEFAULT, entity2.id) instead of (entity1.id, entity2.id), when id is Buffer", () => {
 

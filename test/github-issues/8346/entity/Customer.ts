@@ -1,6 +1,12 @@
-import {BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn,} from "../../../../src";
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from "../../../../src";
 
-import {CustomerContact} from './CustomerContact';
+import { CustomerContact } from './CustomerContact';
 
 @Entity('Customer')
 export class Customer extends BaseEntity {

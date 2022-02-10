@@ -1,9 +1,9 @@
-import {QueryRunnerAlreadyReleasedError} from "../../error/QueryRunnerAlreadyReleasedError";
-import {QueryFailedError} from "../../error/QueryFailedError";
-import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryRunner";
-import {Broadcaster} from "../../subscriber/Broadcaster";
-import {BetterSqlite3Driver} from "./BetterSqlite3Driver";
-import {QueryResult} from "../../query-runner/QueryResult";
+import { QueryRunnerAlreadyReleasedError } from "../../error/QueryRunnerAlreadyReleasedError";
+import { QueryFailedError } from "../../error/QueryFailedError";
+import { AbstractSqliteQueryRunner } from "../sqlite-abstract/AbstractSqliteQueryRunner";
+import { Broadcaster } from "../../subscriber/Broadcaster";
+import { BetterSqlite3Driver } from "./BetterSqlite3Driver";
+import { QueryResult } from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.

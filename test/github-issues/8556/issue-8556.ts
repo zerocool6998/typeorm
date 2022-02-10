@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import {
-    closeTestingConnections,
     createTestingConnections,
-    generateRandomText,
-    reloadTestingDatabases
+    closeTestingConnections,
+    reloadTestingDatabases,
+    generateRandomText
 } from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";

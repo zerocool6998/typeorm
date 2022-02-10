@@ -1,8 +1,12 @@
 import "reflect-metadata";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
-import {expect} from "chai";
-import {JSONBKeyTest} from "./entity/test";
+import {
+    createTestingConnections,
+    closeTestingConnections,
+    reloadTestingDatabases,
+} from "../../utils/test-utils";
+import { Connection } from "../../../src/connection/Connection";
+import { expect } from "chai";
+import { JSONBKeyTest } from "./entity/test";
 
 describe("github issues > #6833 Entities with JSON key columns are incorrectly grouped", () => {
     let connections: Connection[];

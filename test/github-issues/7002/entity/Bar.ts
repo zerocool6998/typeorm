@@ -1,5 +1,10 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn,} from "../../../../src";
-import {Foo} from "./Foo";
+import {
+    Column,
+    Entity,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from "../../../../src";
+import { Foo } from "./Foo";
 
 @Entity()
 export class Bar {

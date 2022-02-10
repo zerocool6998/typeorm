@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
-import {expect} from "chai";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {TestCreate} from "./entity/TestCreate";
+import { Connection } from "../../../src/connection/Connection";
+import { expect } from "chai";
+import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import { TestCreate } from "./entity/TestCreate";
 
 describe("entity-metadata > create", () => {
     describe("without entitySkipConstructor", () => {

@@ -1,4 +1,4 @@
-import {Column, Entity, ObjectLiteral, PrimaryGeneratedColumn} from "../../../../src/index";
+import {Column, Entity, PrimaryGeneratedColumn, ObjectLiteral} from "../../../../src/index";
 
 @Entity()
 export class Post {

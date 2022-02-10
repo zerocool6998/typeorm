@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
+import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {ColumnMetadataArgs} from "../../../src/metadata-args/ColumnMetadataArgs";
 import {ColumnMetadata} from "../../../src/metadata/ColumnMetadata";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";

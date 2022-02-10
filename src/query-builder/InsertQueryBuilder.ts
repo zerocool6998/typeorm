@@ -1,7 +1,12 @@
+import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
+import {SapDriver} from "../driver/sap/SapDriver";
 import {QueryBuilder} from "./QueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {EntityTarget} from "../common/EntityTarget";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
+import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
+import {PostgresDriver} from "../driver/postgres/PostgresDriver";
+import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {RandomGenerator} from "../util/RandomGenerator";
 import {InsertResult} from "./result/InsertResult";
 import {ReturningStatementNotSupportedError} from "../error/ReturningStatementNotSupportedError";
@@ -11,7 +16,9 @@ import {ReturningResultsEntityUpdator} from "./ReturningResultsEntityUpdator";
 import {AbstractSqliteDriver} from "../driver/sqlite-abstract/AbstractSqliteDriver";
 import {BroadcasterResult} from "../subscriber/BroadcasterResult";
 import {EntitySchema} from "../entity-schema/EntitySchema";
-import {TypeORMError} from "../error";
+import {OracleDriver} from "../driver/oracle/OracleDriver";
+import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
+import { TypeORMError } from "../error";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.

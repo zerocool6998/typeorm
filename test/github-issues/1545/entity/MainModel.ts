@@ -1,5 +1,5 @@
-import {Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src/index";
-import {DataModel} from "./DataModel";
+import { Entity, PrimaryGeneratedColumn, OneToMany } from "../../../../src/index";
+import { DataModel } from "./DataModel";
 
 @Entity()
 export class MainModel {

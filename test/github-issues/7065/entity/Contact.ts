@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn, TableInheritance} from "../../../../src";
+import { Column, Entity, PrimaryGeneratedColumn, TableInheritance } from "../../../../src";
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

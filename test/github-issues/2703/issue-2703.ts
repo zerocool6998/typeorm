@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {createTestingConnections, reloadTestingDatabases, closeTestingConnections} from "../../utils/test-utils";
 import {Dummy} from "./entity/Dummy";
 import {WrappedString} from "./wrapped-string";
 import {MemoryLogger} from "./memory-logger";

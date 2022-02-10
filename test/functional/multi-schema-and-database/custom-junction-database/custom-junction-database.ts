@@ -4,6 +4,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
 import {expect} from "chai";
+import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 
 describe("multi-schema-and-database > custom-junction-database", () => {
 

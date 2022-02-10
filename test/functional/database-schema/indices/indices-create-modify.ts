@@ -1,6 +1,7 @@
 import {expect} from "chai";
 import "reflect-metadata";
 import {Connection, EntityMetadata} from "../../../../src";
+import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
 import {IndexMetadata} from "../../../../src/metadata/IndexMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 
