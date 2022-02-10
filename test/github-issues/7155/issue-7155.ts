@@ -24,7 +24,7 @@ describe("github issues > #7155", () => {
 
     /**
      * ------------------ SINGLE ID ------------------
-     * 
+     *
      * Closure table
      */
     it("(Closure/SingleID/Save) Update without parent", () =>
@@ -1154,7 +1154,7 @@ describe("github issues > #7155", () => {
 
     /**
      * ------------------ MULTI ID ------------------
-     * 
+     *
      * Nested set
      */
     it("(Nested/MultiID/Save) Update without tree change", () =>
@@ -2080,27 +2080,6 @@ describe("github issues > #7155", () => {
             })
         ));
 
-
-    /**
-     * ------------------ EXTRA ------------------
-     */
-    it("(SQL Server) Check if tree entity with a onDelete: CASCADE on the parent throws an error", () =>
-        Promise.all(
-            connections.map(async (connection) => {
-                if (!(connection.driver instanceof SqlServerDriver)) {
-                    // Only run this test for sql server.
-                    return;
-                }
-
-                try {
-                    connection.getTreeRepository(SingleIdClosure);
-                } catch (error) {
-                    assert.instanceOf(error, Error);
-                    return;
-                }
-                assert.fail("Should have thrown an error.");
-            })
-        ));
 });
 
 
