@@ -1,5 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from "../../../../src/index";
-import { Contact } from "./Contact";
+import {Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "../../../../src/index";
+import {Contact} from "./Contact";
 
 @Entity()
 export class Booking {

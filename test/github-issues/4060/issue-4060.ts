@@ -1,6 +1,6 @@
-import { expect } from "chai";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import {expect} from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Foo} from "./entity/Foo";
 import {Bar} from "./entity/Bar";
 

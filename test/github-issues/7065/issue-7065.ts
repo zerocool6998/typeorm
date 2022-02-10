@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import "../../utils/test-setup";
-import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src";
-import { expect } from "chai";
-import { Contact, Email, Phone, User } from "./entity";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src";
+import {expect} from "chai";
+import {Contact, Email, Phone, User} from "./entity";
 
 // TODO:
 //  this test doesn't work with relationLoadStrategy: "query" enabled, because there is a bug with RelationMetadata.

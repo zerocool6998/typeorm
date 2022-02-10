@@ -1,5 +1,5 @@
-import { Order } from "../entity/Order";
-import { EntityRepository, AbstractRepository } from "../../../../src";
+import {Order} from "../entity/Order";
+import {AbstractRepository, EntityRepository} from "../../../../src";
 
 @EntityRepository(Order)
 export class OrderRepository extends AbstractRepository<Order> {

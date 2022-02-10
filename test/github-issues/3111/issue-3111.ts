@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {InsertValuesMissingError} from "../../../src/error/InsertValuesMissingError";
-import {Test, DEFAULT_VALUE} from "./entity/Test";
+import {DEFAULT_VALUE, Test} from "./entity/Test";
 
 describe("github issues > #3111 Inserting with query builder attempts to insert a default row when values is empty array", () => {
 

@@ -1,5 +1,5 @@
-import { expect } from "chai";
-import { OrmUtils } from "../../../src/util/OrmUtils";
+import {expect} from "chai";
+import {OrmUtils} from "../../../src/util/OrmUtils";
 
 describe("OrmUtils.mergeDeep", () => {
     it("should handle simple values.", () => {

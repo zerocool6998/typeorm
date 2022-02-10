@@ -24,8 +24,8 @@ import {IsolationLevel} from "../types/IsolationLevel";
 import {MssqlParameter} from "./MssqlParameter";
 import {SqlServerDriver} from "./SqlServerDriver";
 import {ReplicationMode} from "../types/ReplicationMode";
-import { TypeORMError } from "../../error";
-import { QueryLock } from "../../query-runner/QueryLock";
+import {TypeORMError} from "../../error";
+import {QueryLock} from "../../query-runner/QueryLock";
 import {MetadataTableType} from "../types/MetadataTableType";
 
 /**

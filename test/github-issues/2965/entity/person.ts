@@ -1,5 +1,5 @@
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from "../../../../src/";
-import { Note } from "./note";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src/";
+import {Note} from "./note";
 
 @Entity()
 export class Person {

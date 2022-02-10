@@ -1,6 +1,4 @@
 import "reflect-metadata";
-import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
-import {SapDriver} from "../../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {PostWithVersion} from "./entity/PostWithVersion";
@@ -13,13 +11,9 @@ import {OptimisticLockVersionMismatchError} from "../../../../src/error/Optimist
 import {OptimisticLockCanNotBeUsedError} from "../../../../src/error/OptimisticLockCanNotBeUsedError";
 import {NoVersionOrUpdateDateColumnError} from "../../../../src/error/NoVersionOrUpdateDateColumnError";
 import {PessimisticLockTransactionRequiredError} from "../../../../src/error/PessimisticLockTransactionRequiredError";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
-import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 import {AbstractSqliteDriver} from "../../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
-import {OracleDriver} from "../../../../src/driver/oracle/OracleDriver";
 import {LockNotSupportedOnGivenDriverError} from "../../../../src/error/LockNotSupportedOnGivenDriverError";
-import { VersionUtils } from "../../../../src/util/VersionUtils";
+import {VersionUtils} from "../../../../src/util/VersionUtils";
 
 describe("query builder > locking", () => {
 

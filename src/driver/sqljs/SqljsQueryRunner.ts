@@ -3,7 +3,7 @@ import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryR
 import {SqljsDriver} from "./SqljsDriver";
 import {Broadcaster} from "../../subscriber/Broadcaster";
 import {QueryFailedError} from "../../error/QueryFailedError";
-import { QueryResult } from "../../query-runner/QueryResult";
+import {QueryResult} from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.

@@ -1,5 +1,5 @@
-import { expect } from "chai";
-import { snakeCase } from "../../../src/util/StringUtils";
+import {expect} from "chai";
+import {snakeCase} from "../../../src/util/StringUtils";
 
 describe("StringUtils", () => {
     describe("snakeCase", () => {

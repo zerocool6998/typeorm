@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Order } from "./entity/order";
-import { OrderTestEntity } from "./entity/order-test.entity";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Order} from "./entity/order";
+import {OrderTestEntity} from "./entity/order-test.entity";
 
 describe("github issues > #7651 Enum that contains functions is not accordingly translated to SQL", () => {
 

@@ -5,7 +5,6 @@ import {Student} from "./entity/Student";
 import {Employee} from "./entity/Employee";
 import {Other} from "./entity/Other";
 import {Person} from "./entity/Person";
-import {OracleDriver} from "../../../../../src/driver/oracle/OracleDriver";
 
 describe("table-inheritance > single-table > non-virtual-discriminator-column", () => {
 

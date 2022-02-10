@@ -1,13 +1,9 @@
 import "reflect-metadata";
-import {
-    createTestingConnections,
-    closeTestingConnections,
-    reloadTestingDatabases,
-} from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { Category } from "./entity/Category";
-import { Slug } from "./entity/Slug";
-import { expect } from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {Category} from "./entity/Category";
+import {Slug} from "./entity/Slug";
+import {expect} from "chai";
 
 describe("github issues > #7415 Tree entities with embedded primary columns are not built correctly", () => {
     let connections: Connection[];

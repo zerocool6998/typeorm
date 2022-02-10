@@ -1,4 +1,4 @@
-import {Column, PrimaryGeneratedColumn, Entity} from "../../../../src";
+import {Column, Entity, PrimaryGeneratedColumn} from "../../../../src";
 
 @Entity()
 export class Category {

@@ -1,5 +1,14 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from "../../../../src";
-import { Site } from "./Site";
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    Tree,
+    TreeChildren,
+    TreeParent
+} from "../../../../src";
+import {Site} from "./Site";
 
 @Entity()
 @Tree("materialized-path")

@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
-import { closeTestingConnections, createTestingConnections } from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Person} from "./entity/Person";
 import {User} from "./entity/User";
 

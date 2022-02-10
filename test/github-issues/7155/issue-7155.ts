@@ -1,19 +1,27 @@
-import { assert } from "chai";
-import { Connection, ObjectLiteral, TreeRepository } from "../../../src";
-import { SqlServerDriver } from "../../../src/driver/sqlserver/SqlServerDriver";
-import { NestedSetMultipleRootError } from "../../../src/error/NestedSetMultipleRootError";
+import {assert} from "chai";
+import {Connection, ObjectLiteral, TreeRepository} from "../../../src";
+import {NestedSetMultipleRootError} from "../../../src/error/NestedSetMultipleRootError";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {
-    closeTestingConnections,
-    createTestingConnections,
-    reloadTestingDatabases
-} from "../../utils/test-utils";
-import { OtherRelation, Relation, RelationClosure, RelationMaterialized, RelationNested } from "./entity/RelationEntities";
+    OtherRelation,
+    Relation,
+    RelationClosure,
+    RelationMaterialized,
+    RelationNested
+} from "./entity/RelationEntities";
 import {
-    MultiIdMaterialized, MultiIdNested, SingleIdClosure, SingleIdMaterialized, SingleIdNested
+    MultiIdMaterialized,
+    MultiIdNested,
+    SingleIdClosure,
+    SingleIdMaterialized,
+    SingleIdNested
 } from "./entity/RemainingTreeEntities";
 import {
-    SqlServerMultiIdMaterialized, SqlServerMultiIdNested, SqlServerSingleIdClosure,
-    SqlServerSingleIdMaterialized, SqlServerSingleIdNested
+    SqlServerMultiIdMaterialized,
+    SqlServerMultiIdNested,
+    SqlServerSingleIdClosure,
+    SqlServerSingleIdMaterialized,
+    SqlServerSingleIdNested
 } from "./entity/SqlServerTreeEntities";
 
 describe("github issues > #7155", () => {

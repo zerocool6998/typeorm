@@ -2,7 +2,6 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {MeetingSchema} from "./entity/Meeting";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
 
 describe("entity-schema > exclusions", () => {
 

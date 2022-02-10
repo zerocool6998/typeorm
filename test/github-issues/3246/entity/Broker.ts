@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "../../../../src";
-import { Order } from "./Order";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "../../../../src";
+import {Order} from "./Order";
 
 @Entity()
 export class Broker {
-  
+
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -2,9 +2,9 @@ import "reflect-metadata";
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import { ShortTableName } from "./entity/ShortTableName";
-import { ReallyReallyVeryVeryVeryLongTableName } from "./entity/ReallyReallyVeryVeryVeryLongTableName";
-import { QueryFailedError } from "../../../src/error/QueryFailedError";
+import {ShortTableName} from "./entity/ShortTableName";
+import {ReallyReallyVeryVeryVeryLongTableName} from "./entity/ReallyReallyVeryVeryVeryLongTableName";
+import {QueryFailedError} from "../../../src/error/QueryFailedError";
 
 
 /**

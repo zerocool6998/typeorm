@@ -1,10 +1,8 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {TableColumn} from "../../../src";
 
 describe("query runner > change column", () => {

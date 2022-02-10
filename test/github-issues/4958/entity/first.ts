@@ -1,4 +1,4 @@
-import { Column, Entity } from "../../../../src";
+import {Column, Entity} from "../../../../src";
 
 @Entity({ name: "first" })
 export default class Testing {

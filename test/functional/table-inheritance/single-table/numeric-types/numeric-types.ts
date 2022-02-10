@@ -5,7 +5,6 @@ import {Connection} from "../../../../../src/connection/Connection";
 import {Student} from "./entity/Student";
 import {Teacher} from "./entity/Teacher";
 import {Person} from "./entity/Person";
-import {CockroachDriver} from "../../../../../src/driver/cockroachdb/CockroachDriver";
 
 describe("table-inheritance > single-table > numeric types", () => {
 

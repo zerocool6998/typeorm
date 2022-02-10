@@ -193,13 +193,13 @@ export class OrmUtils {
     }
 
 
-    static replaceEmptyObjectsToBooleans(obj: any) {
+    static replaceEmptyObjectsWithBooleans(obj: any) {
         for (let key in obj) {
             if (typeof obj[key] === "object") {
                 if (Object.keys(obj[key]).length === 0) {
                     obj[key] = true;
                 } else {
-                    this.replaceEmptyObjectsToBooleans(obj[key]);
+                    this.replaceEmptyObjectsWithBooleans(obj[key]);
                 }
             }
         }
@@ -230,7 +230,7 @@ export class OrmUtils {
                 }
             }
         }
-        this.replaceEmptyObjectsToBooleans(obj);
+        this.replaceEmptyObjectsWithBooleans(obj);
         return obj;
     }
 

@@ -1,12 +1,8 @@
 import "reflect-metadata";
-import {
-    createTestingConnections,
-    closeTestingConnections,
-    reloadTestingDatabases,
-} from "../../utils/test-utils";
-import { Connection } from "../../../src";
-import { expect } from "chai";
-import { Organization, Admin, User, OrganizationMembership } from "./entity";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {Connection} from "../../../src";
+import {expect} from "chai";
+import {Admin, Organization, OrganizationMembership, User} from "./entity";
 
 describe("github issues > #7041 When requesting nested relations on foreign key primary entities, relation becomes empty entity rather than null", () => {
     let connections: Connection[];

@@ -1,6 +1,6 @@
 import {PrimaryGeneratedColumn} from "../../../../src/decorator/columns/PrimaryGeneratedColumn";
 import {AuthorWithVeryLongName} from "./AuthorWithVeryLongName";
-import {ManyToMany, Entity, ManyToOne, Column} from "../../../../src";
+import {Column, Entity, ManyToMany, ManyToOne} from "../../../../src";
 import {CategoryWithVeryLongName} from "./CategoryWithVeryLongName";
 
 @Entity()

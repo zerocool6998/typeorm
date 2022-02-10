@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 
 describe("github issues > #7521 Only first \0 is removed in comments, only first \\ is escaped etc.", () => {

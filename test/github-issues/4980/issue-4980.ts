@@ -1,9 +1,8 @@
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Author } from "./entity/Author";
-import { Book } from "./entity/Book";
-import { expect } from "chai";
-import {OracleDriver} from "../../../src/driver/oracle/OracleDriver";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Author} from "./entity/Author";
+import {Book} from "./entity/Book";
+import {expect} from "chai";
 
 describe("github issues > #4980 (Postgres) onUpdate: 'CASCADE' doesn't work on many-to-many relation", () => {
     let connections: Connection[];

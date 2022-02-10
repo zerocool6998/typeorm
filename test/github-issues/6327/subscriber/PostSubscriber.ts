@@ -1,6 +1,6 @@
-import { expect } from "chai";
-import { EntitySubscriberInterface, EventSubscriber, UpdateEvent } from "../../../../src";
-import { Post } from "../entity/Post";
+import {expect} from "chai";
+import {EntitySubscriberInterface, EventSubscriber, UpdateEvent} from "../../../../src";
+import {Post} from "../entity/Post";
 
 @EventSubscriber()
 export class PostSubscriber implements EntitySubscriberInterface<Post> {

@@ -1,10 +1,10 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Category } from "./entity/Category";
-import { Site } from "./entity/Site";
-import { Member } from "./entity/Member";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Category} from "./entity/Category";
+import {Site} from "./entity/Site";
+import {Member} from "./entity/Member";
 
 describe("github issues > #8076 Add relation options to all tree queries (missing ones)", () => {
 

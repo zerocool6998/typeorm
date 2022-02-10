@@ -1,6 +1,6 @@
-import { Connection, ViewColumn, ViewEntity } from "../../../../src";
+import {Connection, ViewColumn, ViewEntity} from "../../../../src";
 
-import { Foo } from "./Foo";
+import {Foo} from "./Foo";
 
 @ViewEntity({
     name: "foo_view",

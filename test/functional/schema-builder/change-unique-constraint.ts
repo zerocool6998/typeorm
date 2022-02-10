@@ -1,7 +1,5 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
-import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
 import {IndexMetadata} from "../../../src/metadata/IndexMetadata";
 import {UniqueMetadata} from "../../../src/metadata/UniqueMetadata";

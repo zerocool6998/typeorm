@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { expect } from "chai";
-import { Foo } from "./entities/Foo";
-import { FooView } from "./entities/FooView";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {expect} from "chai";
+import {Foo} from "./entities/Foo";
+import {FooView} from "./entities/FooView";
 
 const customTypeormMetadataTableName = "custom_typeorm_metadata_table_name";
 

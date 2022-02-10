@@ -1,12 +1,6 @@
-import {
-    Column,
-    Entity,
-    Index,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from "../../../../src";
+import {Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn,} from "../../../../src";
 
-import { Customer } from './Customer';
+import {Customer} from './Customer';
 
 @Entity('CustomerContact')
 @Index(['firstName', 'lastName'])

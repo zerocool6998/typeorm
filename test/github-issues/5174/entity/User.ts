@@ -1,5 +1,5 @@
 import {Entity} from "../../../../src/decorator/entity/Entity";
-import {PrimaryColumn, ManyToOne} from "../../../../src";
+import {ManyToOne, PrimaryColumn} from "../../../../src";
 import {Role} from "./Role";
 
 @Entity()

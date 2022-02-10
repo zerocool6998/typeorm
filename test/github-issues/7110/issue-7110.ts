@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import {Connection} from "../../../src";
 
-import { createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 
-import { Foo } from "./entity/foo.entity";
+import {Foo} from "./entity/foo.entity";
 
 describe("github issues > #7110: Typeorm Migrations ignore existing default value on column`", () => {
 

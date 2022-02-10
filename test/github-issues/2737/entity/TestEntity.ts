@@ -1,7 +1,4 @@
-import { Entity } from "../../../../src";
-import { Column } from "../../../../src";
-import { PrimaryGeneratedColumn } from "../../../../src";
-import {CreateDateColumn} from "../../../../src";
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "../../../../src";
 
 @Entity()
 export class TestEntity {

@@ -1,9 +1,7 @@
-import {SapDriver} from "../driver/sap/SapDriver";
 import {QueryBuilder} from "./QueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryExpressionMap} from "./QueryExpressionMap";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 
 /**
  * Allows to work with entity relations and perform specific operations with those relations.

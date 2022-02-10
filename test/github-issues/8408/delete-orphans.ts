@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { Connection, Repository } from "../../../src/index";
-import { reloadTestingDatabases, createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
-import { expect } from "chai";
-import { Category } from "./entity/Category";
-import { Post } from "./entity/Post";
+import {Connection, Repository} from "../../../src/index";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {expect} from "chai";
+import {Category} from "./entity/Category";
+import {Post} from "./entity/Post";
 
 describe("persistence > delete orphans", () => {
 

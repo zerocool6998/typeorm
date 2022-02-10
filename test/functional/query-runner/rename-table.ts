@@ -1,13 +1,8 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
-import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
 import {Table} from "../../../src/schema-builder/table/Table";
 import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 
 describe("query runner > rename table", () => {
 

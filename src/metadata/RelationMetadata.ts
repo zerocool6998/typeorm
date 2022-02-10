@@ -9,7 +9,7 @@ import {DeferrableType} from "./types/DeferrableType";
 import {OnUpdateType} from "./types/OnUpdateType";
 import {OnDeleteType} from "./types/OnDeleteType";
 import {PropertyTypeFactory} from "./types/PropertyTypeInFunction";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 
 /**
  * Contains all information about some entity's relation.

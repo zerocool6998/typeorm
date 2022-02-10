@@ -1,8 +1,5 @@
-import {Column} from "../../../../src";
-import {PrimaryGeneratedColumn} from "../../../../src";
-import {Entity} from "../../../../src";
-import {ManyToMany} from "../../../../src";
-import { Note } from "./Note";
+import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "../../../../src";
+import {Note} from "./Note";
 
 @Entity()
 export class Category {

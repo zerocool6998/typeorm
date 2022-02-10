@@ -1,12 +1,8 @@
 import "reflect-metadata";
-import {
-    closeTestingConnections,
-    createTestingConnections,
-    reloadTestingDatabases,
-} from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { Foo } from "./entity/foo";
-import { expect } from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {Foo} from "./entity/foo";
+import {expect} from "chai";
 
 describe("github issues > #6990 synchronize drops array columns in postgres if a length is set", () => {
     let connections: Connection[];

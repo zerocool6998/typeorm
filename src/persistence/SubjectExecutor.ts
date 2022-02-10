@@ -1,4 +1,3 @@
-import {SapDriver} from "../driver/sap/SapDriver";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {Subject} from "./Subject";
 import {SubjectTopoligicalSorter} from "./SubjectTopoligicalSorter";
@@ -7,17 +6,15 @@ import {SubjectWithoutIdentifierError} from "../error/SubjectWithoutIdentifierEr
 import {SubjectRemovedAndUpdatedError} from "../error/SubjectRemovedAndUpdatedError";
 import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
 import {MongoEntityManager} from "../entity-manager/MongoEntityManager";
-import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {SaveOptions} from "../repository/SaveOptions";
 import {RemoveOptions} from "../repository/RemoveOptions";
 import {BroadcasterResult} from "../subscriber/BroadcasterResult";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {NestedSetSubjectExecutor} from "./tree/NestedSetSubjectExecutor";
 import {ClosureSubjectExecutor} from "./tree/ClosureSubjectExecutor";
 import {MaterializedPathSubjectExecutor} from "./tree/MaterializedPathSubjectExecutor";
 import {OrmUtils} from "../util/OrmUtils";
-import { UpdateResult } from "../query-builder/result/UpdateResult";
+import {UpdateResult} from "../query-builder/result/UpdateResult";
 
 /**
  * Executes all database operations (inserts, updated, deletes) that must be executed

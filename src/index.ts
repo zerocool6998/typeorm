@@ -157,6 +157,7 @@ export {TransactionRollbackEvent} from "./subscriber/event/TransactionRollbackEv
 export {TransactionStartEvent} from "./subscriber/event/TransactionStartEvent";
 export {EntitySubscriberInterface} from "./subscriber/EntitySubscriberInterface";
 export {EntitySchema} from "./entity-schema/EntitySchema";
+export {EntitySchemaOptions} from "./entity-schema/EntitySchemaOptions";
 export {EntitySchemaColumnOptions} from "./entity-schema/EntitySchemaColumnOptions";
 export {EntitySchemaIndexOptions} from "./entity-schema/EntitySchemaIndexOptions";
 export {EntitySchemaRelationOptions} from "./entity-schema/EntitySchemaRelationOptions";

@@ -3,7 +3,7 @@ import {expect} from "chai";
 import {Connection} from "../../../src";
 import {User} from "./entity/User";
 import {Role} from "./entity/Role";
-import {createTestingConnections, reloadTestingDatabases, closeTestingConnections} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 
 describe("github issues > #5174 `selectQueryBuilder.take` messes up the query when using the `ids` parameter", () => {
 

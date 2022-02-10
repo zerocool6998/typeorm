@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import {expect} from "chai";
-import {PrimaryColumnOptions, PrimaryColumn} from "../../../src";
+import {PrimaryColumn, PrimaryColumnOptions} from "../../../src";
 
 describe("github issues > #4570 Fix PrimaryColumn decorator modifies passed option", () => {
     it("should not modify passed options to PrimaryColumn", () => {

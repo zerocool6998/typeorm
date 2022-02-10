@@ -1,7 +1,7 @@
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Test } from "./entity/Test";
-import { expect } from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Test} from "./entity/Test";
+import {expect} from "chai";
 
 describe("github issues > #6636 migration issues with scale & precision", () => {
 

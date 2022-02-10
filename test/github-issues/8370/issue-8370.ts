@@ -1,12 +1,9 @@
 import "reflect-metadata";
-import {
-    createTestingConnections,
-    closeTestingConnections,
-} from "../../utils/test-utils";
-import { Connection } from "../../../src";
-import { User } from "./entity/UserEntity";
+import {closeTestingConnections, createTestingConnections,} from "../../utils/test-utils";
+import {Connection} from "../../../src";
+import {User} from "./entity/UserEntity";
 
-import { expect } from "chai";
+import {expect} from "chai";
 
 describe("github issues > #8370 Add support for Postgres GENERATED ALWAYS AS IDENTITY", () => {
     let connections: Connection[];

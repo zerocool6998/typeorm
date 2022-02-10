@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Entity } from '../../../../src';
+import {CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from '../../../../src';
 
 @Entity()
 export class DefaultUpdateDate {

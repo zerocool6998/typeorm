@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "../../../../src";
-import { Order } from "./order";
+import {Column, Entity, PrimaryColumn} from "../../../../src";
+import {Order} from "./order";
 
 @Entity({ name: "order_test" })
 export class OrderTestEntity {

@@ -1,5 +1,5 @@
-import { PrimaryGeneratedColumn, JoinTable, ManyToMany, Entity } from "../../../../src";
-import { Book } from "./Book";
+import {Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "../../../../src";
+import {Book} from "./Book";
 
 @Entity("author")
 export class Author {

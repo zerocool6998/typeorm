@@ -1,7 +1,6 @@
-
-import { createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
-import { Connection } from "../../../src";
-import { Post } from "./entity/Post-Succeed";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {Connection} from "../../../src";
+import {Post} from "./entity/Post-Succeed";
 
 describe("mssql -> add column to existing table", () => {
     let connections: Connection[];

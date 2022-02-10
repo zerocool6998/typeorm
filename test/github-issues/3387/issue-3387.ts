@@ -2,8 +2,8 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
-import { Table } from '../../../src';
-import { xfail } from "../../utils/xfail";
+import {Table} from '../../../src';
+import {xfail} from "../../utils/xfail";
 
 describe("github issues > #3387 named columns", () => {
 

@@ -1,4 +1,4 @@
-import {PrimaryColumn, Entity, ManyToOne, OneToMany, JoinColumn} from "../../../../src";
+import {Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from "../../../../src";
 import {Year} from "./year";
 import {UserMonth} from "./user-month";
 

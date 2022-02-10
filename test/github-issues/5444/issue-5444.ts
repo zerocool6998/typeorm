@@ -1,9 +1,9 @@
-import { EntitySchemaTransformer } from "../../../src/entity-schema/EntitySchemaTransformer";
+import {EntitySchemaTransformer} from "../../../src/entity-schema/EntitySchemaTransformer";
 
 import {expect} from "chai";
 
-import { Post, PostSchema } from "./entity/Post";
-import { Author, AuthorSchema } from "./entity/Author";
+import {Post, PostSchema} from "./entity/Post";
+import {Author, AuthorSchema} from "./entity/Author";
 import {EntitySchema} from "../../../src";
 
 

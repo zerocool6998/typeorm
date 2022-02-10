@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
 
-import { Master } from "./entities/master";
-import { Detail } from "./entities/detail";
+import {Master} from "./entities/master";
+import {Detail} from "./entities/detail";
 
 describe("github issues > #863 indices > create schema", () => {
 

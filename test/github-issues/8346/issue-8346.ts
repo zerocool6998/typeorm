@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { expect } from "chai";
-import { Customer } from "./entity/Customer";
-import { CustomerContact } from "./entity/CustomerContact";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {expect} from "chai";
+import {Customer} from "./entity/Customer";
+import {CustomerContact} from "./entity/CustomerContact";
 
 
 describe("github issues > #8346 MySQL: Regression when using take, orderBy, and getMany on a joined relation", () => {

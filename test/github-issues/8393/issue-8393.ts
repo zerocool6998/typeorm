@@ -1,12 +1,8 @@
 import "reflect-metadata";
-import {
-    createTestingConnections,
-    closeTestingConnections,
-    reloadTestingDatabases
-} from "../../utils/test-utils";
-import { Connection, UpdateValuesMissingError } from "../../../src/";
-import { expect } from "chai";
-import { Post } from "./entity/Post";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection, UpdateValuesMissingError} from "../../../src/";
+import {expect} from "chai";
+import {Post} from "./entity/Post";
 
 describe("github issues > #8393 When trying to update `update: false` column with `@UpdateDateColumn` the update column is updated", () => {
     let connections: Connection[];

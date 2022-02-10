@@ -1,11 +1,10 @@
 import "reflect-metadata";
-import { expect } from "chai";
+import {expect} from "chai";
 
-import { Connection } from "../../../src/connection/Connection";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Plan } from "./entity/Plan";
-import { Item } from "./entity/Item";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {Connection} from "../../../src/connection/Connection";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Plan} from "./entity/Plan";
+import {Item} from "./entity/Item";
 
 describe("github issues > #1476 subqueries", () => {
 

@@ -1,10 +1,8 @@
 import "reflect-metadata";
-import {SapDriver} from "../../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {expect} from "chai";
 import {PersonSchema} from "./entity/Person";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
 import {AbstractSqliteDriver} from "../../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
 
 describe("entity-schema > uniques", () => {

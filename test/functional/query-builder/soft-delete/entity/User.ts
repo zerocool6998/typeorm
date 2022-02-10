@@ -3,7 +3,7 @@ import {PrimaryGeneratedColumn} from "../../../../../src/decorator/columns/Prima
 import {DeleteDateColumn} from "../../../../../src/decorator/columns/DeleteDateColumn";
 import {Column} from "../../../../../src/decorator/columns/Column";
 import {Photo} from "./Photo";
-import {JoinColumn,OneToOne} from "../../../../../src";
+import {JoinColumn, OneToOne} from "../../../../../src";
 
 @Entity()
 export class User {

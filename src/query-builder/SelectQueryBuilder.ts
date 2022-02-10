@@ -1,7 +1,5 @@
-import {SapDriver} from "../driver/sap/SapDriver";
 import {RawSqlResultsToEntityTransformer} from "./transformer/RawSqlResultsToEntityTransformer";
 import {ObjectLiteral} from "../common/ObjectLiteral";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {PessimisticLockTransactionRequiredError} from "../error/PessimisticLockTransactionRequiredError";
 import {NoVersionOrUpdateDateColumnError} from "../error/NoVersionOrUpdateDateColumnError";
 import {OptimisticLockVersionMismatchError} from "../error/OptimisticLockVersionMismatchError";
@@ -18,9 +16,6 @@ import {
 import {QueryBuilder} from "./QueryBuilder";
 import {ReadStream} from "../platform/PlatformTools";
 import {LockNotSupportedOnGivenDriverError} from "../error/LockNotSupportedOnGivenDriverError";
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
-import {PostgresDriver} from "../driver/postgres/PostgresDriver";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {SelectQuery} from "./SelectQuery";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
@@ -36,8 +31,6 @@ import {OffsetWithoutLimitNotSupportedError} from "../error/OffsetWithoutLimitNo
 import {SelectQueryBuilderOption} from "./SelectQueryBuilderOption";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {DriverUtils} from "../driver/DriverUtils";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
 import {EntityNotFoundError} from "../error/EntityNotFoundError";
 import {TypeORMError} from "../error";
 import {FindManyOptions} from "../find-options/FindManyOptions";

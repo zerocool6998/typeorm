@@ -4,7 +4,7 @@ import {QueryFailedError} from "../../error/QueryFailedError";
 import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryRunner";
 import {ReactNativeDriver} from "./ReactNativeDriver";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import { QueryResult } from "../../query-runner/QueryResult";
+import {QueryResult} from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.

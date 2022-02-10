@@ -1,11 +1,11 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
-import { PlatformTools } from "../../../src/platform/PlatformTools";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Post } from "./entity/Post";
-import { PostV2 } from "./entity/PostV2";
-import { FindConditions } from "../../../src";
+import {Connection} from "../../../src/connection/Connection";
+import {PlatformTools} from "../../../src/platform/PlatformTools";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Post} from "./entity/Post";
+import {PostV2} from "./entity/PostV2";
+import {FindConditions} from "../../../src";
 
 describe("github issues > #6552 MongoRepository delete by ObjectId deletes the wrong entity", () => {
 

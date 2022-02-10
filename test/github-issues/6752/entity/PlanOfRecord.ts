@@ -1,7 +1,5 @@
-import {
-    Check, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique,
-} from "../../../../src";
-import { Block } from "./Block";
+import {Check, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique,} from "../../../../src";
+import {Block} from "./Block";
 
 @Entity({ synchronize: true })
 @Index(["block", "softwareComponent", "module", "module_sku ", "isSafety"], { unique: true })

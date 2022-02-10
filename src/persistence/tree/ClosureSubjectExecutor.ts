@@ -4,7 +4,6 @@ import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {CannotAttachTreeChildrenEntityError} from "../../error/CannotAttachTreeChildrenEntityError";
 import {DeleteQueryBuilder} from "../../query-builder/DeleteQueryBuilder";
 import {OrmUtils} from "../../util/OrmUtils";
-import {SqlServerDriver} from "../../driver/sqlserver/SqlServerDriver";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
 
 /**

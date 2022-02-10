@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "../../../../src";
+import {Column, Entity, PrimaryGeneratedColumn} from "../../../../src";
 
 @Entity()
 export class Foo {
@@ -11,5 +11,5 @@ export class Foo {
         length: 64,
         nullable: true,
     })
-    varchararray: string[];    
+    varchararray: string[];
 }

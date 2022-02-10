@@ -1,11 +1,7 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {
-    createTestingConnections,
-    closeTestingConnections,
-    reloadTestingDatabases
-} from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
 
 describe("github issues > #4701 Duplicate migrations are executed.", () => {
     let connections: Connection[];

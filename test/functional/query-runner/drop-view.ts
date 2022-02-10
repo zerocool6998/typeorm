@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { expect } from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {expect} from "chai";
 
 describe("query runner > drop view", () => {
 

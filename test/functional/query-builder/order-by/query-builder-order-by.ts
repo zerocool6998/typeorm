@@ -3,8 +3,6 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../../src/connection/Connection";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
 
 describe("query builder > order-by", () => {
 

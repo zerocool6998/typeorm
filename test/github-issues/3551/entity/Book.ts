@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, Column, ObjectID } from "../../../../src";
+import {Column, Entity, ObjectID, ObjectIdColumn} from "../../../../src";
 
 export class Page {
     @Column()

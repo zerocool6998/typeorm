@@ -1,5 +1,5 @@
 import {PrimaryGeneratedColumn} from "../../../../src/decorator/columns/PrimaryGeneratedColumn";
-import {Column, Entity, Generated } from "../../../../src";
+import {Column, Entity, Generated} from "../../../../src";
 
 @Entity()
 export class ReallyReallyVeryVeryVeryLongTableName {

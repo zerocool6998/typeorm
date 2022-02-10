@@ -1,13 +1,12 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
-import { EntityNotFoundError, Connection, IsNull, In, Raw } from "../../../../src";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import { Category } from "./entity/Category";
+import {Connection, EntityNotFoundError, In, IsNull, Raw} from "../../../../src";
+import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
-import { Tag } from "./entity/Tag";
-import { HeroImage } from "./entity/HeroImage";
-import { ExternalPost } from "./entity/ExternalPost";
+import {Tag} from "./entity/Tag";
+import {HeroImage} from "./entity/HeroImage";
+import {ExternalPost} from "./entity/ExternalPost";
 
 describe("query builder > select", () => {
     let connections: Connection[];

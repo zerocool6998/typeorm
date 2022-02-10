@@ -1,4 +1,4 @@
-import {ManyToMany, PrimaryGeneratedColumn, RelationId, OneToMany, Entity} from "../../../../src";
+import {Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, RelationId} from "../../../../src";
 import {Root} from "./Root";
 import {Shared} from "./Shared";
 

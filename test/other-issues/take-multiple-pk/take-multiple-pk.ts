@@ -3,11 +3,7 @@ import "reflect-metadata";
 import {expect} from "chai";
 
 import {Connection} from "../../../src/connection/Connection";
-import {
-  closeTestingConnections,
-  createTestingConnections,
-  reloadTestingDatabases
-} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Role} from "./entity/Role";
 import {User} from "./entity/User";
 

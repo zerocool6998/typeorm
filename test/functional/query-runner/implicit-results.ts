@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections } from "../../utils/test-utils";
-import { expect } from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {expect} from "chai";
 
 describe("query runner > implicit results", () => {
 
@@ -18,7 +18,7 @@ describe("query runner > implicit results", () => {
 
     it("should return results for Oracle Stored Procedure with Implicit Results", () => Promise.all(connections.map(async connection => {
         const queryRunner = connection.createQueryRunner();
-        
+
         // Create sample procedure with implicit results
         await connection.query(`
           CREATE OR REPLACE PROCEDURE TEST_IMPLICIT_RESULTS

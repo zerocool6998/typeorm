@@ -10,7 +10,7 @@ import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {OrmUtils} from "../../util/OrmUtils";
 import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {ReplicationMode} from "../types/ReplicationMode";
-import { TypeORMError } from "../../error";
+import {TypeORMError} from "../../error";
 
 // This is needed to satisfy the typescript compiler.
 interface Window {

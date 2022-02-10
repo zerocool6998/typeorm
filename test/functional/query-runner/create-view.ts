@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { View } from "../../../src/schema-builder/view/View";
-import { expect } from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {View} from "../../../src/schema-builder/view/View";
+import {expect} from "chai";
 
 describe("query runner > create view", () => {
 

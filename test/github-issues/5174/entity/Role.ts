@@ -1,5 +1,5 @@
 import {Entity} from "../../../../src/decorator/entity/Entity";
-import {PrimaryColumn, OneToMany} from "../../../../src";
+import {OneToMany, PrimaryColumn} from "../../../../src";
 import {User} from "./User";
 
 @Entity()

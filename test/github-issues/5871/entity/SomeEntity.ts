@@ -1,5 +1,4 @@
-import {Column, PrimaryGeneratedColumn} from "../../../../src";
-import {Entity} from "../../../../src";
+import {Column, Entity, PrimaryGeneratedColumn} from "../../../../src";
 
 enum Test {
     TEST1 = 'testing (brackets)',

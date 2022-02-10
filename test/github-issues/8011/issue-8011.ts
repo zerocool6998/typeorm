@@ -1,12 +1,8 @@
 import "reflect-metadata";
-import { expect } from "chai";
-import { Connection } from "../../../src";
-import {
-    closeTestingConnections,
-    createTestingConnections,
-    reloadTestingDatabases,
-} from "../../utils/test-utils";
-import { Example } from "./entity/Example";
+import {expect} from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {Example} from "./entity/Example";
 
 describe("github issues > #8011 Enum values with multiple apostrophes not properly escaped in MySQL", () => {
     let connections: Connection[];

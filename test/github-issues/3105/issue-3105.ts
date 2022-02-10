@@ -1,14 +1,10 @@
 import "reflect-metadata";
-import {
-    closeTestingConnections,
-    createTestingConnections,
-    reloadTestingDatabases
-} from "../../utils/test-utils";
-import { Connection, EntityManager } from "../../../src";
-import { Parent } from "./entity/Parent";
-import { Child } from "./entity/Child";
-import { xfail } from "../../utils/xfail";
-import { expect } from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection, EntityManager} from "../../../src";
+import {Parent} from "./entity/Parent";
+import {Child} from "./entity/Child";
+import {xfail} from "../../utils/xfail";
+import {expect} from "chai";
 
 
 describe("github issues > #3105 Error with cascading saves using EntityManager in a transaction", () => {

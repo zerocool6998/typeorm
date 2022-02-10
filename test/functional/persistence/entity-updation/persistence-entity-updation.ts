@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {Connection} from "../../../../src/connection/Connection";
-import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {PostIncrement} from "./entity/PostIncrement";
 import {PostUuid} from "./entity/PostUuid";

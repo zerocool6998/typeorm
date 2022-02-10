@@ -1,6 +1,11 @@
 import "reflect-metadata";
 import "../../../utils/test-setup"
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases, sleep} from "../../../utils/test-utils";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+    sleep
+} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {Post} from "./entity/Post";
 import {QueryBuilder} from "../../../../src/query-builder/QueryBuilder";
@@ -10,11 +15,11 @@ import {Question} from "./model/Question";
 import {Blog} from "./entity/Blog";
 import {Category} from "./entity/Category";
 import {DeepPartial} from "../../../../src/common/DeepPartial";
-import {EntitySchema, Repository, TypeORMError,Like} from "../../../../src";
-import { ExternalIdPrimaryKeyEntity } from "./entity/ExternalIdPrimaryKeyEntity";
-import { EmbeddedUniqueConstraintEntity } from "./entity/EmbeddedUniqueConstraintEntity";
-import { RelationAsPrimaryKey } from "./entity/RelationAsPrimaryKey";
-import { TwoUniqueColumnsEntity } from "./entity/TwoUniqueColumns";
+import {EntitySchema, Like, Repository, TypeORMError} from "../../../../src";
+import {ExternalIdPrimaryKeyEntity} from "./entity/ExternalIdPrimaryKeyEntity";
+import {EmbeddedUniqueConstraintEntity} from "./entity/EmbeddedUniqueConstraintEntity";
+import {RelationAsPrimaryKey} from "./entity/RelationAsPrimaryKey";
+import {TwoUniqueColumnsEntity} from "./entity/TwoUniqueColumns";
 
 describe("repository > basic methods", () => {
 

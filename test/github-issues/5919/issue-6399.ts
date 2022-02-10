@@ -1,12 +1,8 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import Sinon from "sinon";
-import { Connection } from "../../../src";
-import {
-    closeTestingConnections,
-    createTestingConnections,
-    reloadTestingDatabases,
-} from "../../utils/test-utils";
-import { Comment } from "./entities";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../utils/test-utils";
+import {Comment} from "./entities";
 
 describe("github issues > #5919 Caching won't work with replication enabled", () => {
     let connections: Connection[];

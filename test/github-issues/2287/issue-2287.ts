@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 
 describe("github issues > #2287 - QueryBuilder IN and ANY Fail with .where - Postgres", () => {

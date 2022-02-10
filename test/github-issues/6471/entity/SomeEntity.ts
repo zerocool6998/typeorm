@@ -1,5 +1,4 @@
-import {Column, Unique, PrimaryGeneratedColumn} from "../../../../src";
-import {Entity} from "../../../../src";
+import {Column, Entity, PrimaryGeneratedColumn, Unique} from "../../../../src";
 
 export enum CreationMechanism {
     SOURCE_A = 'SOURCE_A',

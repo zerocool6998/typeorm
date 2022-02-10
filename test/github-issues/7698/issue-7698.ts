@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Test } from "./entity/Test";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Test} from "./entity/Test";
 
 describe("github issues > #7698 MariaDB STORED columns don't accept [NULL | NOT NULL]", () => {
 

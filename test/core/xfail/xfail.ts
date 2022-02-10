@@ -1,5 +1,5 @@
-import { expect } from "chai";
-import { xfail } from "../../utils/xfail";
+import {expect} from "chai";
+import {xfail} from "../../utils/xfail";
 
 describe("xfail", () => {
     describe("it", () => {

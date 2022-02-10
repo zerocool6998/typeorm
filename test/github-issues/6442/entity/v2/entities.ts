@@ -1,4 +1,4 @@
-import { PrimaryColumn, Generated, ManyToMany, Entity, Column, JoinTable } from "../../../../../src";
+import {Column, Entity, Generated, JoinTable, ManyToMany, PrimaryColumn} from "../../../../../src";
 
 @Entity()
 export class FooEntity {

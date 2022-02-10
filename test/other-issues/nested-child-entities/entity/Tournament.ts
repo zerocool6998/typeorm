@@ -1,4 +1,4 @@
-import {TableInheritance, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from "../../../../src/index";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "../../../../src/index";
 
 import {TournamentGraph} from "./TournamentGraph";
 

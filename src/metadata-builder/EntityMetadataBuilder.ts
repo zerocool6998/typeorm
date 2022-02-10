@@ -1,5 +1,3 @@
-import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
-import {SapDriver} from "../driver/sap/SapDriver";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {IndexMetadata} from "../metadata/IndexMetadata";
@@ -9,7 +7,7 @@ import {MetadataArgsStorage} from "../metadata-args/MetadataArgsStorage";
 import {EmbeddedMetadataArgs} from "../metadata-args/EmbeddedMetadataArgs";
 import {RelationIdMetadata} from "../metadata/RelationIdMetadata";
 import {RelationCountMetadata} from "../metadata/RelationCountMetadata";
-import { EventListenerTypes } from "../metadata/types/EventListenerTypes";
+import {EventListenerTypes} from "../metadata/types/EventListenerTypes";
 import {MetadataUtils} from "./MetadataUtils";
 import {TableMetadataArgs} from "../metadata-args/TableMetadataArgs";
 import {JunctionEntityMetadataBuilder} from "./JunctionEntityMetadataBuilder";
@@ -18,13 +16,9 @@ import {RelationJoinColumnBuilder} from "./RelationJoinColumnBuilder";
 import {Connection} from "../connection/Connection";
 import {EntityListenerMetadata} from "../metadata/EntityListenerMetadata";
 import {UniqueMetadata} from "../metadata/UniqueMetadata";
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {CheckMetadata} from "../metadata/CheckMetadata";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
-import {PostgresDriver} from "../driver/postgres/PostgresDriver";
 import {ExclusionMetadata} from "../metadata/ExclusionMetadata";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 
 /**
  * Builds EntityMetadata objects and all its sub-metadatas.

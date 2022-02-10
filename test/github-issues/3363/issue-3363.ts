@@ -1,11 +1,9 @@
 import "reflect-metadata";
-import {SapDriver} from "../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Post} from "./entity/Post";
 import {expect} from "chai";
-import { Category } from "./entity/Category";
-import { OracleDriver } from "../../../src/driver/oracle/OracleDriver";
+import {Category} from "./entity/Category";
 
 describe("github issues > #3363 Isolation Level in transaction() from Connection", () => {
 

@@ -3,8 +3,6 @@ import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {User} from "./entity/User";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 import {LimitOnUpdateNotSupportedError} from "../../../../src/error/LimitOnUpdateNotSupportedError";
 import {Photo} from "./entity/Photo";
 import {UpdateValuesMissingError} from "../../../../src/error/UpdateValuesMissingError";

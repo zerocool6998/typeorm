@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { expect } from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {expect} from "chai";
 
 describe("github issues > #3588 Migration:generate issue with onUpdate using mysql 8.0", async () => {
     let connections: Connection[];

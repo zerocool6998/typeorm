@@ -5,7 +5,7 @@ import {PlatformTools} from "../platform/PlatformTools";
 import {ConnectionOptionsEnvReader} from "./options-reader/ConnectionOptionsEnvReader";
 import {ConnectionOptionsYmlReader} from "./options-reader/ConnectionOptionsYmlReader";
 import {ConnectionOptionsXmlReader} from "./options-reader/ConnectionOptionsXmlReader";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 import {importOrRequireFile} from "../util/ImportUtils";
 
 /**

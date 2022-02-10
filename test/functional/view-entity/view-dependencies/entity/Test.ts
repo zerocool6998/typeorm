@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "../../../../../src";
-import { ViewC } from "./ViewC";
-import { ViewB } from "./ViewB";
-import { ViewA } from "./ViewA";
+import {ViewC} from "./ViewC";
+import {ViewB} from "./ViewB";
+import {ViewA} from "./ViewA";
 
 
 @Entity()

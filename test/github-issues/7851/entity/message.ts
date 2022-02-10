@@ -1,5 +1,5 @@
-import { Entity, PrimaryColumn, ManyToOne, JoinColumn } from "../../../../src";
-import { User } from "./user";
+import {Entity, JoinColumn, ManyToOne, PrimaryColumn} from "../../../../src";
+import {User} from "./user";
 
 @Entity("Message")
 export class Message {

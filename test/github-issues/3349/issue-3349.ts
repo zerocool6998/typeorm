@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { Category } from "./entity/Category";
-import { In } from "../../../src";
-import { expect } from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {Category} from "./entity/Category";
+import {In} from "../../../src";
+import {expect} from "chai";
 
 describe("github issues > #3349 Multiple where conditions with parameters", () => {
 

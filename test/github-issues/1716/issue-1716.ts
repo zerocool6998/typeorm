@@ -1,15 +1,18 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
-import { ConnectionOptions } from "../../../src/connection/ConnectionOptions";
-import { createTestingConnections, closeTestingConnections, reloadTestingDatabases, getTypeOrmConfig } from "../../utils/test-utils";
-import { expect } from "chai";
+import {Connection} from "../../../src/connection/Connection";
+import {ConnectionOptions} from "../../../src/connection/ConnectionOptions";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    getTypeOrmConfig,
+    reloadTestingDatabases
+} from "../../utils/test-utils";
+import {expect} from "chai";
 
-import { PgEntity } from "./entity/pgEntity";
-import { MysqlEntity } from "./entity/mysqlEntity";
-import { MariadbEntity } from "./entity/mariadbEntity";
-import { MssqlEntity } from "./entity/mssqlEntity";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
-
+import {PgEntity} from "./entity/pgEntity";
+import {MysqlEntity} from "./entity/mysqlEntity";
+import {MariadbEntity} from "./entity/mariadbEntity";
+import {MssqlEntity} from "./entity/mssqlEntity";
 
 
 const toISOString = (input: string) => new Date(input).toISOString();

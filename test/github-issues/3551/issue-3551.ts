@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import { Book } from "./entity/Book";
+import {Book} from "./entity/Book";
 
 describe("github issues > #3551 array of embedded documents through multiple levels are not handled", () => {
 

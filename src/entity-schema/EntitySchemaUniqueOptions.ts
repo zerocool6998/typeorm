@@ -1,4 +1,4 @@
-import { DeferrableType } from "../metadata/types/DeferrableType";
+import {DeferrableType} from "../metadata/types/DeferrableType";
 
 export interface EntitySchemaUniqueOptions {
 

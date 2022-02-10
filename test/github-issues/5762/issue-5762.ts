@@ -2,8 +2,8 @@ import "reflect-metadata";
 import {expect} from "chai";
 import {Connection} from "../../../src";
 import {User} from "./entity/User";
-import {createTestingConnections, reloadTestingDatabases, closeTestingConnections} from "../../utils/test-utils";
-import { URL } from "url";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {URL} from "url";
 
 describe("github issues > #5762 `Using URL as a rich column type breaks", () => {
 

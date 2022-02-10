@@ -4,7 +4,7 @@ import {RelationMetadata} from "../../metadata/RelationMetadata";
 import {QueryExpressionMap} from "../QueryExpressionMap";
 import {SelectQueryBuilder} from "../SelectQueryBuilder";
 import {ObjectUtils} from "../../util/ObjectUtils";
-import { TypeORMError } from "../../error/TypeORMError";
+import {TypeORMError} from "../../error/TypeORMError";
 
 export class RelationCountAttribute {
 

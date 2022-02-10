@@ -1,4 +1,4 @@
-import { PrimaryColumn } from "../../../../src";
+import {PrimaryColumn} from "../../../../src";
 
 export class Slug {
     @PrimaryColumn()

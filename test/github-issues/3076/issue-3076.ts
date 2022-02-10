@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
-import {SomeEntity, CreationMechanism} from "./entity/SomeEntity";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
+import {CreationMechanism, SomeEntity} from "./entity/SomeEntity";
 
 describe("github issues > #3076 Postgres enum in schema with default is recreated in every new generated migration", () => {
     let connections: Connection[];

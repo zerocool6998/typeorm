@@ -1,6 +1,10 @@
 import {DefaultAuthentication} from "./authentication/DefaultAuthentication";
-import {AzureActiveDirectoryAccessTokenAuthentication} from "./authentication/AzureActiveDirectoryAccessTokenAuthentication";
-import {AzureActiveDirectoryMsiAppServiceAuthentication} from "./authentication/AzureActiveDirectoryMsiAppServiceAuthentication";
+import {
+    AzureActiveDirectoryAccessTokenAuthentication
+} from "./authentication/AzureActiveDirectoryAccessTokenAuthentication";
+import {
+    AzureActiveDirectoryMsiAppServiceAuthentication
+} from "./authentication/AzureActiveDirectoryMsiAppServiceAuthentication";
 import {AzureActiveDirectoryMsiVmAuthentication} from "./authentication/AzureActiveDirectoryMsiVmAuthentication";
 import {AzureActiveDirectoryPasswordAuthentication} from "./authentication/AzureActiveDirectoryPasswordAuthentication";
 import {AzureActiveDirectoryServicePrincipalSecret} from "./authentication/AzureActiveDirectoryServicePrincipalSecret";

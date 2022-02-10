@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 
 describe("github issues > #1532 Array type default value doesnt work. PostgreSQL", () => {

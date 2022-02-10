@@ -1,9 +1,9 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Category } from "./entity/Category";
-import { Site } from "./entity/Site";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Category} from "./entity/Category";
+import {Site} from "./entity/Site";
 
 describe("github issues > #7974 Adding relations option to findTrees()", () => {
 

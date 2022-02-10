@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { expect } from "chai";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Example } from "./entity/Example";
+import {expect} from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Example} from "./entity/Example";
 
 describe("github issues > #7932  non-ascii characters assigned to var/char columns in SQL are truncated to one byte", () => {
 

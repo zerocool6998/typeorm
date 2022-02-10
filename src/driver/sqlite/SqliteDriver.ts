@@ -1,14 +1,14 @@
 import mkdirp from "mkdirp";
 import path from "path";
-import { DriverPackageNotInstalledError } from "../../error/DriverPackageNotInstalledError";
-import { SqliteQueryRunner } from "./SqliteQueryRunner";
-import { DriverOptionNotSetError } from "../../error/DriverOptionNotSetError";
-import { PlatformTools } from "../../platform/PlatformTools";
-import { Connection } from "../../connection/Connection";
-import { SqliteConnectionOptions } from "./SqliteConnectionOptions";
-import { ColumnType } from "../types/ColumnTypes";
-import { QueryRunner } from "../../query-runner/QueryRunner";
-import { AbstractSqliteDriver } from "../sqlite-abstract/AbstractSqliteDriver";
+import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
+import {SqliteQueryRunner} from "./SqliteQueryRunner";
+import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
+import {PlatformTools} from "../../platform/PlatformTools";
+import {Connection} from "../../connection/Connection";
+import {SqliteConnectionOptions} from "./SqliteConnectionOptions";
+import {ColumnType} from "../types/ColumnTypes";
+import {QueryRunner} from "../../query-runner/QueryRunner";
+import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
 import {ReplicationMode} from "../types/ReplicationMode";
 
 /**

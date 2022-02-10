@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/UserEntity";
 
 describe("github issues > #7217 Modifying enum fails migration if the enum is used in an array column", () => {

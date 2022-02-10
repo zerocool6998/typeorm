@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { Connection } from "../../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../utils/test-utils";
-import { EnumArrayEntity, NumericEnum, StringEnum, HeterogeneousEnum, StringNumericEnum } from "./entity/EnumArrayEntity";
+import {Connection} from "../../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
+import {EnumArrayEntity, HeterogeneousEnum, NumericEnum, StringEnum, StringNumericEnum} from "./entity/EnumArrayEntity";
 
 describe("database schema > enum arrays", () => {
 

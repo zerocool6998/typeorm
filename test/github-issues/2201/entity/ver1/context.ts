@@ -1,10 +1,10 @@
 import {JoinColumn} from "../../../../../src/decorator/relations/JoinColumn";
-import { Column, PrimaryColumn, ManyToOne } from "../../../../../src/index";
-import { Entity } from "../../../../../src/decorator/entity/Entity";
-import { BaseEntity } from "../../../../../src/repository/BaseEntity";
+import {Column, ManyToOne, PrimaryColumn} from "../../../../../src/index";
+import {Entity} from "../../../../../src/decorator/entity/Entity";
+import {BaseEntity} from "../../../../../src/repository/BaseEntity";
 
-import { User } from "./user";
-import { Record } from "./record";
+import {User} from "./user";
+import {Record} from "./record";
 
 @Entity({ name: "record_contexts" })
 export class RecordContext extends BaseEntity {

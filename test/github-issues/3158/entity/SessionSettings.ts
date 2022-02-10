@@ -1,5 +1,5 @@
-import { Entity, OneToOne, JoinColumn, PrimaryColumn } from "../../../../src";
-import { Session } from "./Session";
+import {Entity, JoinColumn, OneToOne, PrimaryColumn} from "../../../../src";
+import {Session} from "./Session";
 
 @Entity({
     name: "SessionSettings"

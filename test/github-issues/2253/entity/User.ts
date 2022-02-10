@@ -1,4 +1,4 @@
-import { ChildEntity, Column, Entity, PrimaryColumn, TableInheritance } from "../../../../src";
+import {ChildEntity, Column, Entity, PrimaryColumn, TableInheritance} from "../../../../src";
 
 @TableInheritance({ column: "type" })
 @Entity()

@@ -1,5 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "../../../../src";
-import { Category } from "./Category";
+import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "../../../../src";
+import {Category} from "./Category";
 
 @Entity()
 export class Site extends BaseEntity {

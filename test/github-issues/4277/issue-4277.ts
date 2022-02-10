@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {User} from "./entity/User";
@@ -21,7 +21,7 @@ describe("github issues > #4277 Using cache in findAndCount and getManyAndCount 
     await reloadTestingDatabases(connections);
     await Promise.all(connections.map((conn) => {
       const repo = conn.getRepository(User);
-  
+
       const usersToInsert = [...Array(10)].map((e) => {
         const user = new User();
         user.name = "Jeremy Clarkson";
@@ -57,7 +57,7 @@ describe("github issues > #4277 Using cache in findAndCount and getManyAndCount 
     expect(count2).equal(10);
 
     await repo.save({ name: "Jeremy Clarkson" });
-    
+
     // After caching, both queries should be cached correctly. Save above should not affect results
     const [_users, _count] = await getManyAndCount();
     expect(_users.length).equal(10);
@@ -89,7 +89,7 @@ describe("github issues > #4277 Using cache in findAndCount and getManyAndCount 
     expect(count2).equal(10);
 
     await repo.save({ name: "Jeremy Clarkson" });
-    
+
     // After caching, both queries should be cached correctly. Save above should not affect results
     const [_users, _count] = await getManyAndCount();
     expect(_users.length).equal(10);
@@ -118,7 +118,7 @@ describe("github issues > #4277 Using cache in findAndCount and getManyAndCount 
     expect(count2).equal(10);
 
     await repo.save({ name: "Jeremy Clarkson" });
-    
+
     // After queries, both should NOT be cached. Save above SHOULD affect results
     const [_users, _count] = await getManyAndCount();
     expect(_users.length).equal(11);

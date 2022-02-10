@@ -1,5 +1,5 @@
-import { Order } from "./Order";
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn } from "../../../../src";
+import {Order} from "./Order";
+import {Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "../../../../src";
 
 @Entity()
 export class OrderCustomer {

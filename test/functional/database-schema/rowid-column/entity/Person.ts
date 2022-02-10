@@ -1,8 +1,4 @@
-import {Generated} from "../../../../../src";
-import {PrimaryColumn} from "../../../../../src";
-import {PrimaryGeneratedColumn} from "../../../../../src";
-import {Entity} from "../../../../../src";
-import {Column} from "../../../../../src";
+import {Column, Entity, Generated, PrimaryColumn, PrimaryGeneratedColumn} from "../../../../../src";
 
 @Entity()
 export class Person {

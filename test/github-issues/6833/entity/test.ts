@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn } from "../../../../src";
+import {Entity, PrimaryColumn} from "../../../../src";
 
 export class MyId {
     first: number;

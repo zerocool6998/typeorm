@@ -1,11 +1,6 @@
-import { Entity } from "../../../../src/decorator/entity/Entity";
-import {
-    ManyToOne,
-    Column,
-    DeleteDateColumn,
-    PrimaryGeneratedColumn,
-} from "../../../../src";
-import { Role } from "./Role";
+import {Entity} from "../../../../src/decorator/entity/Entity";
+import {Column, DeleteDateColumn, ManyToOne, PrimaryGeneratedColumn,} from "../../../../src";
+import {Role} from "./Role";
 
 @Entity()
 export class User {

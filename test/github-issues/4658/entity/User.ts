@@ -1,6 +1,4 @@
-import {Entity} from "../../../../src";
-import {PrimaryColumn} from "../../../../src";
-import {CreateDateColumn, UpdateDateColumn} from "../../../../src";
+import {CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn} from "../../../../src";
 
 @Entity()
 export class User {

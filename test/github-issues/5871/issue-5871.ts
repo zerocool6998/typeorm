@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
+import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {SomeEntity} from "./entity/SomeEntity";
 
 describe("github issues > #5871 Migration generate does not play well with mysql enum with parentheses in the enum value", () => {

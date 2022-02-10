@@ -1,7 +1,7 @@
 import {getMetadataArgsStorage} from "../../globals";
 import {RelationMetadataArgs} from "../../metadata-args/RelationMetadataArgs";
-import { ObjectType } from "../../common/ObjectType";
-import { RelationOptions } from "../options/RelationOptions";
+import {ObjectType} from "../../common/ObjectType";
+import {RelationOptions} from "../options/RelationOptions";
 
 /**
  * One-to-one relation allows to create direct relation between two entities. Entity1 have only one Entity2.

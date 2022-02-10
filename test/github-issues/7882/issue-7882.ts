@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { expect } from "chai";
-import { Connection } from "../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Example } from "./entity/Example";
-import { ExampleText } from "./entity/ExampleText";
+import {expect} from "chai";
+import {Connection} from "../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Example} from "./entity/Example";
+import {ExampleText} from "./entity/ExampleText";
 
 describe("github issues > #7882  .findOne reduces relations to an empty array", () => {
 

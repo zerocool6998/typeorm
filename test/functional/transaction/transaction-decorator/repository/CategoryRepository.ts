@@ -1,5 +1,5 @@
-import { Repository } from "../../../../../src/repository/Repository";
-import { EntityRepository } from "../../../../../src/decorator/EntityRepository";
+import {Repository} from "../../../../../src/repository/Repository";
+import {EntityRepository} from "../../../../../src/decorator/EntityRepository";
 import {Category} from "../entity/Category";
 
 @EntityRepository(Category)
