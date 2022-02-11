@@ -2689,7 +2689,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             } else if (relation) {
                 let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
                 joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
-
+                // console.log("joinAlias", joinAlias, joinAlias.length, this.connection.driver.maxAliasLength)
                 // todo: use expressionMap.joinAttributes, and create a new one using
                 //  const joinAttribute = new JoinAttribute(this.connection, this.expressionMap);
 

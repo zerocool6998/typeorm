@@ -5,6 +5,7 @@ import {DatabaseType} from "../driver/types/DatabaseType";
 import {Logger} from "../logger/Logger";
 import {Connection} from "./Connection";
 import {QueryResultCache} from "../cache/QueryResultCache";
+import {MixedList} from "../common/MixedList";
 
 /**
  * BaseConnectionOptions is set of connection options shared by all database types.
@@ -27,21 +28,21 @@ export interface BaseConnectionOptions {
      * Accepts both entity classes and directories where from entities need to be loaded.
      * Directories support glob patterns.
      */
-    readonly entities?: ((Function|string|EntitySchema<any>))[];
+    readonly entities?: MixedList<Function | string | EntitySchema>;
 
     /**
      * Subscribers to be loaded for this connection.
      * Accepts both subscriber classes and directories where from subscribers need to be loaded.
      * Directories support glob patterns.
      */
-    readonly subscribers?: (Function|string)[];
+    readonly subscribers?: MixedList<Function | string>;
 
     /**
      * Migrations to be loaded for this connection.
      * Accepts both migration classes and directories where from migrations need to be loaded.
      * Directories support glob patterns.
      */
-    readonly migrations?: (Function|string)[];
+    readonly migrations?: MixedList<Function | string>;
 
     /**
      * Migrations table name, in case of different name from "migrations".

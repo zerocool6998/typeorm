@@ -532,15 +532,18 @@ export class Connection {
         const entityMetadataValidator = new EntityMetadataValidator();
 
         // create subscribers instances if they are not disallowed from high-level (for example they can disallowed from migrations run process)
-        const subscribers = await connectionMetadataBuilder.buildSubscribers(this.options.subscribers || []);
+        const flattenedSubscribers = ObjectUtils.mixedListToArray(this.options.subscribers || [])
+        const subscribers = await connectionMetadataBuilder.buildSubscribers(flattenedSubscribers);
         ObjectUtils.assign(this, { subscribers: subscribers });
 
         // build entity metadatas
-        const entityMetadatas = await connectionMetadataBuilder.buildEntityMetadatas(this.options.entities || []);
+        const flattenedEntities = ObjectUtils.mixedListToArray(this.options.entities || [])
+        const entityMetadatas = await connectionMetadataBuilder.buildEntityMetadatas(flattenedEntities);
         ObjectUtils.assign(this, { entityMetadatas: entityMetadatas });
 
         // create migration instances
-        const migrations = await connectionMetadataBuilder.buildMigrations(this.options.migrations || []);
+        const flattenedMigrations = ObjectUtils.mixedListToArray(this.options.migrations || [])
+        const migrations = await connectionMetadataBuilder.buildMigrations(flattenedMigrations);
         ObjectUtils.assign(this, { migrations: migrations });
 
         // validate all created entity metadatas to make sure user created entities are valid and correct

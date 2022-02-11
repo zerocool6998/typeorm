@@ -1,3 +1,5 @@
+import {MixedList} from "../common/MixedList";
+
 export class ObjectUtils {
   /**
    * Copy the values of all of the enumerable own properties from one or more source objects to a
@@ -38,5 +40,16 @@ export class ObjectUtils {
           (target as any)[prop] = source[prop];
       }
     }
+  }
+
+  /**
+   * Converts MixedList<T> to strictly an array of its T items.
+   */
+  static mixedListToArray<T>(list: MixedList<T>): T[] {
+      if (typeof list === "object") {
+          return Object.keys(list).map((key) => (list as { [key: string]: T })[key])
+      } else {
+          return list
+      }
   }
 }

@@ -11,6 +11,7 @@ export * from "./container";
 export * from "./common/EntityTarget";
 export * from "./common/ObjectType";
 export * from "./common/ObjectLiteral";
+export * from "./common/MixedList";
 export * from "./common/DeepPartial";
 export * from "./common/RelationType";
 export * from "./error";
