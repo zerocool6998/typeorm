@@ -6,6 +6,7 @@ import {QueryExpressionMap} from "./QueryExpressionMap";
 import {Alias} from "./Alias";
 import {ObjectUtils} from "../util/ObjectUtils";
 import { TypeORMError } from "../error";
+import {DriverUtils} from "../driver/DriverUtils";
 
 /**
  * Stores all join attributes which will be used to build a JOIN query.
@@ -202,7 +203,11 @@ export class JoinAttribute {
         if (!this.relation)
             throw new TypeORMError(`Cannot get junction table for join without relation.`);
 
-        return this.relation.isOwning ? this.parentAlias + "_" + this.alias.name : this.alias.name + "_" + this.parentAlias;
+        if (this.relation.isOwning) {
+            return DriverUtils.buildAlias(this.connection.driver, this.parentAlias!, this.alias.name)
+        } else {
+            return DriverUtils.buildAlias(this.connection.driver, this.alias.name, this.parentAlias!)
+        }
     }
 
     get mapToPropertyParentAlias(): string|undefined {
