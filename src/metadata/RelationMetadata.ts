@@ -10,6 +10,7 @@ import {OnUpdateType} from "./types/OnUpdateType";
 import {OnDeleteType} from "./types/OnDeleteType";
 import {PropertyTypeFactory} from "./types/PropertyTypeInFunction";
 import { TypeORMError } from "../error";
+import {EntitySchema} from "../entity-schema/EntitySchema";
 
 /**
  * Contains all information about some entity's relation.
@@ -315,7 +316,19 @@ export class RelationMetadata {
         this.orphanedRowAction = args.options.orphanedRowAction || "nullify";
         this.isTreeParent = args.isTreeParent || false;
         this.isTreeChildren = args.isTreeChildren || false;
-        this.type = args.type instanceof Function ? (args.type as () => any)() : args.type;
+
+        if (typeof args.type === "function") {
+            this.type = typeof args.type === "function" ? (args.type as () => any)() : args.type;
+
+        } else if (args.type instanceof EntitySchema) {
+            this.type = args.type.options.name;
+
+        } else if (typeof args.type === "object" && typeof args.type.name === "string") {
+            this.type = args.type.name;
+
+        } else {
+            this.type = args.type as string | Function;
+        }
 
         this.isOneToOne = this.relationType === "one-to-one";
         this.isOneToMany = this.relationType === "one-to-many";
