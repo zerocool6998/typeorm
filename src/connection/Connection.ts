@@ -532,17 +532,17 @@ export class Connection {
         const entityMetadataValidator = new EntityMetadataValidator();
 
         // create subscribers instances if they are not disallowed from high-level (for example they can disallowed from migrations run process)
-        const flattenedSubscribers = ObjectUtils.mixedListToArray(this.options.subscribers || [])
+        const flattenedSubscribers = ObjectUtils.mixedListToArray(this.options.subscribers || []);
         const subscribers = await connectionMetadataBuilder.buildSubscribers(flattenedSubscribers);
         ObjectUtils.assign(this, { subscribers: subscribers });
 
         // build entity metadatas
-        const flattenedEntities = ObjectUtils.mixedListToArray(this.options.entities || [])
+        const flattenedEntities = ObjectUtils.mixedListToArray(this.options.entities || []);
         const entityMetadatas = await connectionMetadataBuilder.buildEntityMetadatas(flattenedEntities);
         ObjectUtils.assign(this, { entityMetadatas: entityMetadatas });
 
         // create migration instances
-        const flattenedMigrations = ObjectUtils.mixedListToArray(this.options.migrations || [])
+        const flattenedMigrations = ObjectUtils.mixedListToArray(this.options.migrations || []);
         const migrations = await connectionMetadataBuilder.buildMigrations(flattenedMigrations);
         ObjectUtils.assign(this, { migrations: migrations });
 

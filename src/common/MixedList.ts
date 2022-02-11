@@ -3,4 +3,4 @@
  *
  * Example usage: entities as an array of imported using import * as syntax.
  */
-export type MixedList<T> = T[] | { [key: string]: T }
+export type MixedList<T> = T[] | { [key: string]: T };

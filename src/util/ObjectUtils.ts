@@ -47,9 +47,9 @@ export class ObjectUtils {
    */
   static mixedListToArray<T>(list: MixedList<T>): T[] {
       if (typeof list === "object") {
-          return Object.keys(list).map((key) => (list as { [key: string]: T })[key])
+          return Object.keys(list).map((key) => (list as { [key: string]: T })[key]);
       } else {
-          return list
+          return list;
       }
   }
 }
