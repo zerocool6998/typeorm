@@ -28,7 +28,7 @@ import {ObjectID} from "../driver/mongodb/typings";
 import {InsertResult} from "../query-builder/result/InsertResult";
 import {UpdateResult} from "../query-builder/result/UpdateResult";
 import {DeleteResult} from "../query-builder/result/DeleteResult";
-import {FindConditions} from "../find-options/FindConditions";
+import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {EntitySchema} from "../entity-schema/EntitySchema";
@@ -704,13 +704,13 @@ export class EntityManager {
      * Counts entities that match given conditions.
      * Useful for pagination.
      */
-    count<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindConditions<Entity> | FindConditions<Entity>[]): Promise<number>;
+    count<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<number>;
 
     /**
      * Counts entities that match given find options or conditions.
      * Useful for pagination.
      */
-    async count<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindConditions<Entity> | FindConditions<Entity>[] |FindOneOptions<Entity>|FindManyOptions<Entity>): Promise<number> {
+    async count<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[] |FindOneOptions<Entity>|FindManyOptions<Entity>): Promise<number> {
         const metadata = this.connection.getMetadata(entityClass);
         const qb = this.createQueryBuilder(entityClass, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
 
@@ -730,12 +730,12 @@ export class EntityManager {
     /**
      * Finds entities that match given conditions.
      */
-    find<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindConditions<Entity> | FindConditions<Entity>[]): Promise<Entity[]>;
+    find<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]>;
 
     /**
      * Finds entities that match given find options or conditions.
      */
-    async find<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindManyOptions<Entity>|FindConditions<Entity> | FindConditions<Entity>[]): Promise<Entity[]> {
+    async find<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindManyOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]> {
         const metadata = this.connection.getMetadata(entityClass);
         const qb = this.createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
         if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
@@ -758,14 +758,14 @@ export class EntityManager {
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    findAndCount<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindConditions<Entity> | FindConditions<Entity>[]): Promise<[Entity[], number]>;
+    findAndCount<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<[Entity[], number]>;
 
     /**
      * Finds entities that match given find options and conditions.
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    async findAndCount<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindConditions<Entity> | FindConditions<Entity>[] | FindManyOptions<Entity>): Promise<[Entity[], number]> {
+    async findAndCount<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[] | FindManyOptions<Entity>): Promise<[Entity[], number]> {
         const metadata = this.connection.getMetadata(entityClass);
         const qb = this.createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
 
@@ -788,13 +788,13 @@ export class EntityManager {
      * Finds entities with ids.
      * Optionally conditions can be applied.
      */
-    findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], conditions?: FindConditions<Entity> | FindConditions<Entity>[]): Promise<Entity[]>;
+    findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]>;
 
     /**
      * Finds entities with ids.
      * Optionally find options or conditions can be applied.
      */
-    async findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], optionsOrConditions?: FindConditions<Entity> | FindConditions<Entity>[] | FindManyOptions<Entity>): Promise<Entity[]> {
+    async findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], optionsOrConditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[] | FindManyOptions<Entity>): Promise<Entity[]> {
 
         // if no ids passed, no need to execute a query - just return an empty array of values
         if (!ids.length)
@@ -825,12 +825,12 @@ export class EntityManager {
     /**
      * Finds first entity that matches given conditions.
      */
-    findOne<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindConditions<Entity> | FindConditions<Entity>[], options?: FindOneOptions<Entity>): Promise<Entity|null>;
+    findOne<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], options?: FindOneOptions<Entity>): Promise<Entity|null>;
 
     /**
      * Finds first entity that matches given conditions.
      */
-    async findOne<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOneOptions<Entity>|FindConditions<Entity> | FindConditions<Entity>[], maybeOptions?: FindOneOptions<Entity>): Promise<Entity|null> {
+    async findOne<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOneOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], maybeOptions?: FindOneOptions<Entity>): Promise<Entity|null> {
 
         let findOptions: FindManyOptions = {};
         if (FindOptionsUtils.isFindOneOptions(idOrOptionsOrConditions)) {
@@ -891,12 +891,12 @@ export class EntityManager {
     /**
      * Finds first entity that matches given conditions or rejects the returned promise on error.
      */
-    findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindConditions<Entity> | FindConditions<Entity>[], options?: FindOneOptions<Entity>): Promise<Entity>;
+    findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], options?: FindOneOptions<Entity>): Promise<Entity>;
 
     /**
      * Finds first entity that matches given conditions or rejects the returned promise on error.
      */
-    async findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOneOptions<Entity>|FindConditions<Entity> | FindConditions<Entity>[], maybeOptions?: FindOneOptions<Entity>): Promise<Entity> {
+    async findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOneOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], maybeOptions?: FindOneOptions<Entity>): Promise<Entity> {
         return this.findOne<Entity>(entityClass as any, idOrOptionsOrConditions as any, maybeOptions).then((value) => {
             if (value === null) {
                 return Promise.reject(new EntityNotFoundError(entityClass, idOrOptionsOrConditions));

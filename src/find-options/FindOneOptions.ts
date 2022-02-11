@@ -1,5 +1,5 @@
 import {JoinOptions} from "./JoinOptions";
-import {FindConditions} from "./FindConditions";
+import {FindOptionsWhere} from "./FindOptionsWhere";
 import {FindOptionsSelect, FindOptionsSelectByString} from "./FindOptionsSelect";
 import {FindOptionsRelation, FindOptionsRelationByString} from "./FindOptionsRelation";
 import {FindOptionsOrder} from "./FindOptionsOrder";
@@ -26,7 +26,7 @@ export interface FindOneOptions<Entity = any> {
     /**
      * Simple condition that should be applied to match entities.
      */
-    where?: FindConditions<Entity>[]|FindConditions<Entity>;
+    where?: FindOptionsWhere<Entity>[]|FindOptionsWhere<Entity>;
 
     /**
      * Indicates what relations of entity should be loaded (simplified left join form).

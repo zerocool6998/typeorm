@@ -1,6 +1,6 @@
 import {Repository} from "./Repository";
 import {getConnection} from "../globals";
-import {FindConditions} from "../find-options/FindConditions";
+import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {DeepPartial} from "../common/DeepPartial";
 import {SaveOptions} from "./SaveOptions";
 import {FindOneOptions} from "../find-options/FindOneOptions";
@@ -247,7 +247,7 @@ export class BaseEntity {
      * Executes fast and efficient UPDATE query.
      * Does not check if entity exist in the database.
      */
-    static update<T extends BaseEntity>(this: ObjectType<T>, criteria: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindConditions<T>, partialEntity: QueryDeepPartialEntity<T>, options?: SaveOptions): Promise<UpdateResult> {
+    static update<T extends BaseEntity>(this: ObjectType<T>, criteria: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOptionsWhere<T>, partialEntity: QueryDeepPartialEntity<T>, options?: SaveOptions): Promise<UpdateResult> {
         return (this as any).getRepository().update(criteria, partialEntity, options);
     }
 
@@ -268,7 +268,7 @@ export class BaseEntity {
      * Executes fast and efficient DELETE query.
      * Does not check if entity exist in the database.
      */
-    static delete<T extends BaseEntity>(this: ObjectType<T>, criteria: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindConditions<T>, options?: RemoveOptions): Promise<DeleteResult> {
+    static delete<T extends BaseEntity>(this: ObjectType<T>, criteria: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOptionsWhere<T>, options?: RemoveOptions): Promise<DeleteResult> {
         return (this as any).getRepository().delete(criteria, options);
     }
 
@@ -280,12 +280,12 @@ export class BaseEntity {
     /**
      * Counts entities that match given conditions.
      */
-    static count<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindConditions<T>): Promise<number>;
+    static count<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>): Promise<number>;
 
     /**
      * Counts entities that match given find options or conditions.
      */
-    static count<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindConditions<T>): Promise<number> {
+    static count<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<number> {
         return (this as any).getRepository().count(optionsOrConditions as any);
     }
 
@@ -297,12 +297,12 @@ export class BaseEntity {
     /**
      * Finds entities that match given conditions.
      */
-    static find<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindConditions<T>): Promise<T[]>;
+    static find<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>): Promise<T[]>;
 
     /**
      * Finds entities that match given find options or conditions.
      */
-    static find<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindConditions<T>): Promise<T[]> {
+    static find<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<T[]> {
         return (this as any).getRepository().find(optionsOrConditions as any);
     }
 
@@ -318,14 +318,14 @@ export class BaseEntity {
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindConditions<T>): Promise<[ T[], number ]>;
+    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>): Promise<[ T[], number ]>;
 
     /**
      * Finds entities that match given find options or conditions.
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindConditions<T>): Promise<[ T[], number ]> {
+    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<[ T[], number ]> {
         return (this as any).getRepository().findAndCount(optionsOrConditions as any);
     }
 
@@ -339,13 +339,13 @@ export class BaseEntity {
      * Finds entities by ids.
      * Optionally conditions can be applied.
      */
-    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], conditions?: FindConditions<T>): Promise<T[]>;
+    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], conditions?: FindOptionsWhere<T>): Promise<T[]>;
 
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
      */
-    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], optionsOrConditions?: FindManyOptions<T>|FindConditions<T>): Promise<T[]> {
+    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<T[]> {
         return (this as any).getRepository().findByIds(ids, optionsOrConditions as any);
     }
 
@@ -362,12 +362,12 @@ export class BaseEntity {
     /**
      * Finds first entity that matches given conditions.
      */
-    static findOne<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindConditions<T>, options?: FindOneOptions<T>): Promise<T|undefined>;
+    static findOne<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>, options?: FindOneOptions<T>): Promise<T|undefined>;
 
     /**
      * Finds first entity that matches given conditions.
      */
-    static findOne<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<T>|FindConditions<T>, maybeOptions?: FindOneOptions<T>): Promise<T|undefined> {
+    static findOne<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<T>|FindOptionsWhere<T>, maybeOptions?: FindOneOptions<T>): Promise<T|undefined> {
         return (this as any).getRepository().findOne(optionsOrConditions as any, maybeOptions);
     }
 
@@ -384,12 +384,12 @@ export class BaseEntity {
     /**
      * Finds first entity that matches given conditions.
      */
-    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindConditions<T>, options?: FindOneOptions<T>): Promise<T>;
+    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>, options?: FindOneOptions<T>): Promise<T>;
 
     /**
      * Finds first entity that matches given conditions.
      */
-    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<T>|FindConditions<T>, maybeOptions?: FindOneOptions<T>): Promise<T> {
+    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<T>|FindOptionsWhere<T>, maybeOptions?: FindOneOptions<T>): Promise<T> {
         return (this as any).getRepository().findOneOrFail(optionsOrConditions as any, maybeOptions);
     }
 

@@ -49,7 +49,7 @@ import { InsertResult } from "../query-builder/result/InsertResult";
 import { UpdateResult } from "../query-builder/result/UpdateResult";
 import { DeleteResult } from "../query-builder/result/DeleteResult";
 import { EntityMetadata } from "../metadata/EntityMetadata";
-import { FindConditions } from "../find-options/FindConditions";
+import { FindOptionsWhere } from "../find-options/FindOptionsWhere";
 import {FindOptionsSelect, FindOptionsSelectByString} from "../find-options/FindOptionsSelect";
 import {MongoFindManyOptions} from "../find-options/mongodb/MongoFindManyOptions";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
@@ -224,7 +224,7 @@ export class MongoEntityManager extends EntityManager {
      * Executes fast and efficient UPDATE query.
      * Does not check if entity exist in the database.
      */
-    async update<Entity>(target: EntityTarget<Entity>, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindConditions<Entity>, partialEntity: QueryDeepPartialEntity<Entity>): Promise<UpdateResult> {
+    async update<Entity>(target: EntityTarget<Entity>, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOptionsWhere<Entity>, partialEntity: QueryDeepPartialEntity<Entity>): Promise<UpdateResult> {
         const result = new UpdateResult();
 
         if (Array.isArray(criteria)) {
@@ -253,7 +253,7 @@ export class MongoEntityManager extends EntityManager {
      * Executes fast and efficient DELETE query.
      * Does not check if entity exist in the database.
      */
-    async delete<Entity>(target: EntityTarget<Entity>, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindConditions<Entity>): Promise<DeleteResult> {
+    async delete<Entity>(target: EntityTarget<Entity>, criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | FindOptionsWhere<Entity>): Promise<DeleteResult> {
         const result = new DeleteResult();
 
         if (Array.isArray(criteria)) {

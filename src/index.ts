@@ -74,7 +74,7 @@ export * from "./find-options/operator/MoreThan";
 export * from "./find-options/operator/MoreThanOrEqual";
 export * from "./find-options/operator/Not";
 export * from "./find-options/operator/Raw";
-export * from "./find-options/FindConditions";
+export * from "./find-options/FindOptionsWhere";
 export * from "./find-options/FindManyOptions";
 export * from "./find-options/FindOneOptions";
 export * from "./find-options/FindOperator";

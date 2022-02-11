@@ -44,7 +44,7 @@ import {FindManyOptions} from "../find-options/FindManyOptions";
 import {FindOptionsSelect} from "../find-options/FindOptionsSelect";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {FindOptionsOrder} from "../find-options/FindOptionsOrder";
-import {FindConditions} from "../find-options/FindConditions";
+import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
 import {FindOptionsRelation} from "../find-options/FindOptionsRelation";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
@@ -2709,7 +2709,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         }
     }
 
-    protected buildWhere(where: FindConditions<any>, metadata: EntityMetadata, alias: string, embedPrefix?: string) {
+    protected buildWhere(where: FindOptionsWhere<any>, metadata: EntityMetadata, alias: string, embedPrefix?: string) {
         let condition: string = "";
         // let parameterIndex = Object.keys(this.expressionMap.nativeParameters).length;
         if (where instanceof Array) {

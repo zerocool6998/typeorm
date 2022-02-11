@@ -1,12 +1,24 @@
+import {ObjectID} from "../driver/mongodb/typings";
+
+/**
+ * A single property handler for FindOptionsOrder.
+ */
+export type FindOptionsOrderProperty<Property> =
+    Property extends Promise<infer I> ? FindOptionsOrderProperty<I> :
+    Property extends Array<infer I> ? FindOptionsOrderProperty<I> :
+    Property extends (infer R)[] ? FindOptionsOrder<R> :
+    Property extends Function ? never :
+    Property extends Buffer ? FindOptionsOrderValue :
+    Property extends Date ? FindOptionsOrderValue :
+    Property extends ObjectID ? FindOptionsOrderValue :
+    Property extends object ? FindOptionsOrder<Property> :
+    FindOptionsOrderValue
+
 /**
  * Order by find options.
  */
 export type FindOptionsOrder<Entity> = {
-    [P in keyof Entity]?:
-        Entity[P] extends (infer R)[] ? FindOptionsOrder<R> :
-        Entity[P] extends Function ? never :
-        Entity[P] extends object ? FindOptionsOrder<Entity[P]> :
-        FindOptionsOrderValue
+    [P in keyof Entity]?: FindOptionsOrderProperty<NonNullable<Entity[P]>>
 };
 
 /**
