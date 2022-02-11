@@ -12,7 +12,7 @@ export type FindOptionsOrderProperty<Property> =
     Property extends Date ? FindOptionsOrderValue :
     Property extends ObjectID ? FindOptionsOrderValue :
     Property extends object ? FindOptionsOrder<Property> :
-    FindOptionsOrderValue
+    FindOptionsOrderValue;
 
 /**
  * Order by find options.
