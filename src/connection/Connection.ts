@@ -518,6 +518,13 @@ export class Connection {
                     return metadata.name === target || metadata.tableName === target;
                 }
             }
+            if (typeof target === "object" && typeof target.name === "string") {
+                if (target.name.indexOf(".") !== -1) {
+                    return metadata.tablePath === target.name;
+                } else {
+                    return metadata.name === target.name || metadata.tableName === target.name;
+                }
+            }
 
             return false;
         });
