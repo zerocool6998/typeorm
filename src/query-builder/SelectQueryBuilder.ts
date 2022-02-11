@@ -2553,7 +2553,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 );
             } else if (relation) {
                 let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
-                joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
+                joinAlias = DriverUtils.buildAlias(this.connection.driver, { joiner: "__" }, alias, joinAlias);
                 if (relationValue === true || typeof relationValue === "object") {
                     if (this.expressionMap.relationLoadStrategy === "query") {
                         this.relationMetadatas.push(relation);
@@ -2619,12 +2619,12 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 );
             } else if (relation) {
                 let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
-                joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
+                joinAlias = DriverUtils.buildAlias(this.connection.driver, { joiner: "__" }, alias, joinAlias);
 
                 if (relationValue === true || typeof relationValue === "object") {
                     relation.inverseEntityMetadata.eagerRelations.forEach(eagerRelation => {
                         let eagerRelationJoinAlias = joinAlias + "_" + eagerRelation.propertyPath.replace("\.", "_");
-                        eagerRelationJoinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, joinAlias, eagerRelationJoinAlias);
+                        eagerRelationJoinAlias = DriverUtils.buildAlias(this.connection.driver, { joiner: "__" }, joinAlias, eagerRelationJoinAlias);
 
                         const existJoin = this.joins.find(join => join.alias === eagerRelationJoinAlias);
                         if (!existJoin) {
@@ -2688,7 +2688,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
             } else if (relation) {
                 let joinAlias = alias + "_" + propertyPath.replace("\.", "_");
-                joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
+                joinAlias = DriverUtils.buildAlias(this.connection.driver, { joiner: "__" }, alias, joinAlias);
                 // console.log("joinAlias", joinAlias, joinAlias.length, this.connection.driver.maxAliasLength)
                 // todo: use expressionMap.joinAttributes, and create a new one using
                 //  const joinAttribute = new JoinAttribute(this.connection, this.expressionMap);
@@ -2840,7 +2840,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
                         // const joinAlias = alias + "_" + relation.propertyName;
                         let joinAlias = alias + "_" + relation.propertyPath.replace("\.", "_");
-                        joinAlias = DriverUtils.buildAlias(this.connection.driver, { shorten: true, joiner: "__" }, alias, joinAlias);
+                        joinAlias = DriverUtils.buildAlias(this.connection.driver, { joiner: "__" }, alias, joinAlias);
 
                         const existJoin = this.joins.find(join => join.alias === joinAlias);
                         if (!existJoin) {

@@ -272,7 +272,7 @@ export class FindOptionsUtils {
         matchedBaseRelations.forEach(relation => {
 
             // generate a relation alias
-            let relationAlias: string = DriverUtils.buildAlias(qb.connection.driver, { shorten: true, joiner: "__" }, alias, relation);
+            let relationAlias: string = DriverUtils.buildAlias(qb.connection.driver, { joiner: "__" }, alias, relation);
 
             // add a join for the found relation
             const selection = alias + "." + relation;
@@ -297,7 +297,7 @@ export class FindOptionsUtils {
         metadata.eagerRelations.forEach(relation => {
 
             // generate a relation alias
-            let relationAlias = DriverUtils.buildAlias(qb.connection.driver, { shorten: true }, qb.connection.namingStrategy.eagerJoinRelationAlias(alias, relation.propertyPath));
+            let relationAlias = DriverUtils.buildAlias(qb.connection.driver, qb.connection.namingStrategy.eagerJoinRelationAlias(alias, relation.propertyPath));
 
             // add a join for the relation
             // Checking whether the relation wasn't joined yet.
