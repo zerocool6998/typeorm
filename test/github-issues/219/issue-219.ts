@@ -2,6 +2,7 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Post} from "./entity/Post";
+import {IsNull} from "../../../src";
 
 describe("github issues > #219 FindOptions should be able to resolve null values", () => {
 
@@ -20,7 +21,11 @@ describe("github issues > #219 FindOptions should be able to resolve null values
             await connection.manager.save(post1);
         }
 
-        const postsWithoutText1 = await connection.manager.find(Post, { where: { text: null } });
+        const postsWithoutText1 = await connection.manager.find(Post, {
+            where: {
+                text: IsNull()
+            }
+        });
         postsWithoutText1.length.should.be.equal(5);
 
         const postsWithText1 = await connection.manager.find(Post, { where: {  text: "about post" } });

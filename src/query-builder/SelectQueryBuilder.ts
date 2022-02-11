@@ -2720,7 +2720,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         } else {
             let andConditions: string[] = [];
             for (let key in where) {
-                if (where[key] === undefined)
+                if (where[key] === undefined || where[key] === null)
                     continue;
 
                 const propertyPath = embedPrefix ? embedPrefix + "." + key : key;

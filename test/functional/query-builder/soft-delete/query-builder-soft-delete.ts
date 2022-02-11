@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "../../../utils/test-setup";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
@@ -267,7 +267,9 @@ describe("query builder > soft-delete", () => {
         expect(users[0].picture.deletedAt).to.equal(null);
         expect(users[1].picture.deletedAt).to.equal(null);
 
-        await photoRepository.softDelete(photo1);
+        await photoRepository.softDelete({
+            id: photo1.id,
+        });
 
         const usersWithSoftDelete = await userRepository.find({
             withDeleted: true,

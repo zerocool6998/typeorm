@@ -3,40 +3,21 @@ import {ObjectID} from "../driver/mongodb/typings";
 import {EqualOperator} from "./EqualOperator";
 
 /**
+ * A single property handler for FindOptionsWere.
+ */
+export type FindConditionsProperty<Property> =
+      Property extends Promise<infer I> ? FindConditionsProperty<I>
+    : Property extends Array<infer I> ? FindConditionsProperty<I>
+    : Property extends Function ? never
+    : Property extends Buffer ? Property | FindOperator<Property>
+    : Property extends Date ? Property | FindOperator<Property>
+    : Property extends ObjectID ? Property | FindOperator<Property>
+    : Property extends object ? FindConditions<Property> | FindConditions<Property>[] | EqualOperator<Property> | FindOperator<any> | boolean
+    : Property | FindOperator<Property>;
+
+/**
  * Used for find operations.
- *
- * todo: rename to FindOptionsWhere
  */
 export type FindConditions<Entity> = {
-    [P in keyof Entity]?:
-        Entity[P] extends Promise<infer U> ? (
-            U extends Array<infer I> ? (
-                I extends Function ? never
-                : I extends Buffer ? I | FindOperator<I>
-                : I extends Date ? I | FindOperator<I>
-                : I extends ObjectID ? I | FindOperator<I>
-                : I extends object ? FindConditions<I> | FindConditions<I>[] | EqualOperator<I> | FindOperator<any> | boolean
-                : I[] | FindOperator<I>
-            )
-            : U extends Function ? never
-            : U extends Buffer ? U | FindOperator<U>
-            : U extends Date ? U | FindOperator<U>
-            : U extends ObjectID ? U | FindOperator<U>
-            : U extends object ? FindConditions<U> | FindConditions<U>[] | EqualOperator<U> | FindOperator<any> | boolean
-            : U | FindOperator<U>
-        )
-        : Entity[P] extends Array<infer I> ? (
-              I extends Function ? never
-            : I extends Buffer ? I | FindOperator<I>
-            : I extends Date ? I | FindOperator<I>
-            : I extends ObjectID ? I | FindOperator<I>
-            : I extends object ? FindConditions<I> | FindConditions<I>[] | EqualOperator<I> | FindOperator<any> | boolean
-            : I[] | FindOperator<I>
-        )
-        : Entity[P] extends Function ? never
-        : Entity[P] extends Buffer ? Entity[P] | FindOperator<Entity[P]>
-        : Entity[P] extends Date ? Entity[P] | FindOperator<Entity[P]>
-        : Entity[P] extends ObjectID ? Entity[P] | FindOperator<Entity[P]>
-        : Entity[P] extends object ? FindConditions<Entity[P]> | FindConditions<Entity[P]>[] | EqualOperator<Entity[P]> | FindOperator<any> | boolean
-        : Entity[P] | FindOperator<Entity[P]>;
+    [P in keyof Entity]?: FindConditionsProperty<NonNullable<Entity[P]>>;
 };

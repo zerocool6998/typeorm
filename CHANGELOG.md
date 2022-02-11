@@ -318,6 +318,34 @@ Logically it makes more sense to return `null`.
 
 * `where` in `FindOptions` (e.g. `find({ where: { ... })`) is more sensitive to input criteria now.
 
+* `FindConditions` (`where` in `FindOptions`) was renamed to `FindOptionsWhere`.
+
+* `null` as value in `where` used in `find*` methods is not supported anymore.
+Now you must explicitly use `IsNull()` operator.
+
+Before:
+
+```ts
+userRepository.find({
+    where: {
+        photo: null
+    }
+})
+```
+
+After:
+
+```ts
+userRepository.find({
+    where: {
+        photo: IsNull()
+    }
+})
+```
+
+This change was made to make it more transparent on how to add "IS NULL" statement to final SQL,
+because before it bring too much confusion for ORM users.
+
 * if you had entity properties of a non-primitive type (except Buffer) defined as columns,
 then you won't be able to use it in `find*`'s `where`. Example:
 

@@ -1152,13 +1152,13 @@ export abstract class QueryBuilder<Entity> {
                     ]
                 };
             }
-        } else if (parameterValue === null) {
-            return {
-                operator: "isNull",
-                parameters: [
-                    aliasPath,
-                ]
-            };
+        // } else if (parameterValue === null) {
+        //     return {
+        //         operator: "isNull",
+        //         parameters: [
+        //             aliasPath,
+        //         ]
+        //     };
         } else {
             return {
                 operator: "equal",
