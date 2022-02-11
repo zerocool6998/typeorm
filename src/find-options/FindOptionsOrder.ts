@@ -1,12 +1,11 @@
 import {ObjectID} from "../driver/mongodb/typings";
-import {NonNever} from "../common/NonNever";
 
 /**
  * A single property handler for FindOptionsOrder.
  */
 export type FindOptionsOrderProperty<Property> =
-    Property extends Promise<infer I> ? FindOptionsOrderProperty<I> :
-    Property extends Array<infer I> ? FindOptionsOrderProperty<I> :
+    Property extends Promise<infer I> ? FindOptionsOrderProperty<NonNullable<I>> :
+    Property extends Array<infer I> ? FindOptionsOrderProperty<NonNullable<I>> :
     Property extends Function ? never :
     Property extends Buffer ? FindOptionsOrderValue :
     Property extends Date ? FindOptionsOrderValue :
@@ -17,9 +16,9 @@ export type FindOptionsOrderProperty<Property> =
 /**
  * Order by find options.
  */
-export type FindOptionsOrder<Entity> = NonNever<{
+export type FindOptionsOrder<Entity> = {
     [P in keyof Entity]?: FindOptionsOrderProperty<NonNullable<Entity[P]>>
-}>;
+};
 
 /**
  * Value of order by in find options.

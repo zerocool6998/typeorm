@@ -2506,7 +2506,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 // this.addSelect(alias + "." + propertyPath);
 
             } else if (embed) {
-                this.buildSelect(select[key] as FindOptionsOrder<any>, metadata, alias, key);
+                this.buildSelect(select[key] as FindOptionsSelect<any>, metadata, alias, key);
 
                 // } else if (relation) {
                 //     const joinAlias = alias + "_" + relation.propertyName;
