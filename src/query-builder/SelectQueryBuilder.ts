@@ -46,7 +46,7 @@ import {RelationMetadata} from "../metadata/RelationMetadata";
 import {FindOptionsOrder} from "../find-options/FindOptionsOrder";
 import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
-import {FindOptionsRelation} from "../find-options/FindOptionsRelation";
+import {FindOptionsRelations} from "../find-options/FindOptionsRelations";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
 import {FindOperator} from "../find-options/FindOperator";
 import {OrmUtils} from "../util/OrmUtils";
@@ -2526,7 +2526,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     }
 
     protected buildRelations(
-        relations: FindOptionsRelation<any>,
+        relations: FindOptionsRelations<any>,
         selection: FindOptionsSelect<any> | undefined,
         metadata: EntityMetadata,
         alias: string,
@@ -2592,7 +2592,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     }
 
     protected buildEagerRelations(
-        relations: FindOptionsRelation<any>,
+        relations: FindOptionsRelations<any>,
         selection: FindOptionsSelect<any> | undefined,
         metadata: EntityMetadata,
         alias: string,

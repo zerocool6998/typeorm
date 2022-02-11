@@ -1,7 +1,7 @@
 import {JoinOptions} from "./JoinOptions";
 import {FindOptionsWhere} from "./FindOptionsWhere";
 import {FindOptionsSelect, FindOptionsSelectByString} from "./FindOptionsSelect";
-import {FindOptionsRelation, FindOptionsRelationByString} from "./FindOptionsRelation";
+import {FindOptionsRelations, FindOptionsRelationByString} from "./FindOptionsRelations";
 import {FindOptionsOrder} from "./FindOptionsOrder";
 
 /**
@@ -32,7 +32,7 @@ export interface FindOneOptions<Entity = any> {
      * Indicates what relations of entity should be loaded (simplified left join form).
      */
     relations?:
-        | FindOptionsRelation<Entity>
+        | FindOptionsRelations<Entity>
         | FindOptionsRelationByString;
 
     /**

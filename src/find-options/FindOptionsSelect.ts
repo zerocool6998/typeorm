@@ -1,11 +1,23 @@
+import {ObjectID} from "../driver/mongodb/typings";
+
+/**
+ * A single property handler for FindOptionsSelect.
+ */
+export type FindOptionsSelectProperty<Property> =
+    Property extends Promise<infer I> ? FindOptionsSelectProperty<I> | boolean :
+    Property extends Array<infer I> ? FindOptionsSelectProperty<I> | boolean :
+    Property extends Function ? never :
+    Property extends Buffer ? boolean :
+    Property extends Date ? boolean :
+    Property extends ObjectID ? boolean :
+    Property extends object ? FindOptionsSelect<Property> :
+    boolean;
+
 /**
  * Select find options.
  */
 export type FindOptionsSelect<Entity> = {
-    [P in keyof Entity]?:
-        Entity[P] extends (infer R)[] ? FindOptionsSelect<R> | boolean :
-        Entity[P] extends object ? FindOptionsSelect<Entity[P]> | boolean :
-        boolean;
+    [P in keyof Entity]?: FindOptionsSelectProperty<NonNullable<Entity[P]>>
 };
 
 /**
