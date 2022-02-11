@@ -204,9 +204,9 @@ export class JoinAttribute {
             throw new TypeORMError(`Cannot get junction table for join without relation.`);
 
         if (this.relation.isOwning) {
-            return DriverUtils.buildAlias(this.connection.driver, this.parentAlias!, this.alias.name)
+            return DriverUtils.buildAlias(this.connection.driver, this.parentAlias!, this.alias.name);
         } else {
-            return DriverUtils.buildAlias(this.connection.driver, this.alias.name, this.parentAlias!)
+            return DriverUtils.buildAlias(this.connection.driver, this.alias.name, this.parentAlias!);
         }
     }
 
