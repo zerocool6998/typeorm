@@ -11,7 +11,6 @@ describe("find options > order", () => {
     let connections: Connection[];
     before(async () => connections = await createTestingConnections({
         __dirname,
-        logging: true
     }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

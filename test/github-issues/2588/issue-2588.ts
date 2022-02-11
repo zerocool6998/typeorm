@@ -37,9 +37,11 @@ describe("github issues > #2588 - createQueryBuilder always does left joins on r
         expect(postFromDb).to.exist;
         expect(postFromDb!.reviews).lengthOf(5);
 
+        const joinCondition = `${connection.driver.escape("post_review")}.${connection.driver.escape("postId")} = ${connection.driver.escape("post")}.${connection.driver.escape("id")} AND ${connection.driver.escape("post_review")}.${connection.driver.escape("rating")} >= 3`
+
         postFromDb = await postRepo.createQueryBuilder("post")
             .where(`post.id = :postId`, { postId: post.id })
-            .leftJoinAndSelect("post.reviews", "post_review", `post_review.${connection.driver.escape("postId")} = post.id AND post_review.rating >= 3`)
+            .leftJoinAndSelect("post.reviews", "post_review", joinCondition)
             .getOne();
         expect(postFromDb).to.exist;
         expect(postFromDb!.reviews).lengthOf(3);
