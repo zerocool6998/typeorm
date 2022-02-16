@@ -142,8 +142,10 @@ export interface BaseConnectionOptions {
 
     /**
      * Holds reference to the baseDirectory where configuration file are expected.
+     *
+     * @internal
      */
-    readonly baseDirectory?: string;
+    baseDirectory?: string;
 
     /**
      * Allows to setup cache options.
