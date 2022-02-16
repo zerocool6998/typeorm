@@ -3,7 +3,7 @@
 Changes in the version includes changes from the `next` branch and `typeorm@next` version.
 They were pending their migration from 2018. Finally, they are in the master branch and master version.
 
-### FEATURES
+### Features
 
 * compilation `target` now is `es2020`. This requires Node.JS version `12.9.0`+
 
@@ -196,113 +196,13 @@ userRepository.find({
 })
 ```
 
-### DEPRECATIONS
-
-* `select` in `FindOptions` (used in `find*` methods) used as an array of property names is deprecated.
-Now you should use a new object-literal notation. Example:
-
-Deprecated way of loading entity relations:
-
-```ts
-userRepository.find({
-    select: ["id", "firstName", "lastName"]
-})
-```
-
-New way of loading entity relations:
-
-```ts
-userRepository.find({
-    select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-    }
-})
-```
-
-This change is due to type-safety improvement new `select` signature brings.
-
-* `relations` in `FindOptions` (used in `find*` methods) used as an array of relation names is deprecated.
-Now you should use a new object-literal notation. Example:
-
-Deprecated way of loading entity relations:
-
-```ts
-userRepository.find({
-    relations: ["contacts", "photos", "photos.album"]
-})
-```
-
-New way of loading entity relations:
-
-```ts
-userRepository.find({
-    relations: {
-        contacts: true,
-        photos: {
-            album: true
-        }
-    }
-})
-```
-
-This change is due to type-safety improvement new `relations` signature brings.
-
-* `join` in `FindOptions` (used in `find*` methods) is deprecated. Use `QueryBuilder` to build queries containing manual joins.
-
-* `Connection`, `ConnectionOptions` are deprecated, new names to use are: `DataSource` and `DataSourceOptions`.
-To create the same connection you had before use a new syntax: `new DataSource({ /*...*/ })`.
-
-* `createConnection()`, `createConnections()` are deprecated, since `Connection` is called `DataSource` now, to create a connection and connect to the database
-simply do:
-
-```ts
-const myDataSource = new DataSource({ /*...*/ })
-await myDataSource.connect()
-```
-
-* `getConnection()` is deprecated. To have a globally accessible connection, simply export your data source and use it in places you need it:
-
-```ts
-export const myDataSource = new DataSource({ /*...*/ })
-// now you can use myDataSource anywhere in your application
-```
-
-* `getManager()`, `getMongoManager()`, `getSqljsManager()`, `getRepository()`, `getTreeRepository()`, `getMongoRepository()`, `createQueryBuilder()`
-are all deprecated now. Use globally accessible data source instead:
-
-```ts
-export const myDataSource = new DataSource({ /*...*/ })
-export const Manager = myDataSource.manager
-export const UserRepository = myDataSource.getRepository(UserEntity)
-export const PhotoRepository = myDataSource.getRepository(PhotoEntity)
-// ...
-```
-
-* `getConnectionManager()` and `ConnectionManager` itself are deprecated - now `Connection` is called `DataSource`,
-and each data source can be defined in exported variable. If you want to have a collection
-of data sources, just define them in a variable, simply as:
-
-```ts
-const dataSource1 = new DataSource({ /*...*/ })
-const dataSource2 = new DataSource({ /*...*/ })
-const dataSource3 = new DataSource({ /*...*/ })
-
-export const MyDataSources = {
-    dataSource1,
-    dataSource2,
-    dataSource3,
-}
-```
-
-* `getConnectionOptions()` is deprecated - in next version we are going to implement different mechanism of connection options loading
-
-* `AbstractRepository` is deprecated. Use new way of custom repositories creation.
-
-* all deprecated signatures will be removed in `0.4.0`
-
 ### BREAKING CHANGES
+
+* prefix relation id columns contained in embedded entities ([#7432](https://github.com/typeorm/typeorm/pull/7432))
+
+* find by Date object in sqlite driver ([#7538](https://github.com/typeorm/typeorm/pull/7538))
+
+* issue with non-reliable `new Date(ISOString)` parsing ([#7796](https://github.com/typeorm/typeorm/pull/7796))
 
 * minimal Node.JS version requirement now is `12.9.0`
 
@@ -414,6 +314,112 @@ user: User
 ```
 
 This change was required to simplify ORM internals and introduce new features.
+
+### DEPRECATIONS
+
+* `select` in `FindOptions` (used in `find*` methods) used as an array of property names is deprecated.
+  Now you should use a new object-literal notation. Example:
+
+Deprecated way of loading entity relations:
+
+```ts
+userRepository.find({
+    select: ["id", "firstName", "lastName"]
+})
+```
+
+New way of loading entity relations:
+
+```ts
+userRepository.find({
+    select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+    }
+})
+```
+
+This change is due to type-safety improvement new `select` signature brings.
+
+* `relations` in `FindOptions` (used in `find*` methods) used as an array of relation names is deprecated.
+  Now you should use a new object-literal notation. Example:
+
+Deprecated way of loading entity relations:
+
+```ts
+userRepository.find({
+    relations: ["contacts", "photos", "photos.album"]
+})
+```
+
+New way of loading entity relations:
+
+```ts
+userRepository.find({
+    relations: {
+        contacts: true,
+        photos: {
+            album: true
+        }
+    }
+})
+```
+
+This change is due to type-safety improvement new `relations` signature brings.
+
+* `join` in `FindOptions` (used in `find*` methods) is deprecated. Use `QueryBuilder` to build queries containing manual joins.
+
+* `Connection`, `ConnectionOptions` are deprecated, new names to use are: `DataSource` and `DataSourceOptions`.
+  To create the same connection you had before use a new syntax: `new DataSource({ /*...*/ })`.
+
+* `createConnection()`, `createConnections()` are deprecated, since `Connection` is called `DataSource` now, to create a connection and connect to the database
+  simply do:
+
+```ts
+const myDataSource = new DataSource({ /*...*/ })
+await myDataSource.connect()
+```
+
+* `getConnection()` is deprecated. To have a globally accessible connection, simply export your data source and use it in places you need it:
+
+```ts
+export const myDataSource = new DataSource({ /*...*/ })
+// now you can use myDataSource anywhere in your application
+```
+
+* `getManager()`, `getMongoManager()`, `getSqljsManager()`, `getRepository()`, `getTreeRepository()`, `getMongoRepository()`, `createQueryBuilder()`
+  are all deprecated now. Use globally accessible data source instead:
+
+```ts
+export const myDataSource = new DataSource({ /*...*/ })
+export const Manager = myDataSource.manager
+export const UserRepository = myDataSource.getRepository(UserEntity)
+export const PhotoRepository = myDataSource.getRepository(PhotoEntity)
+// ...
+```
+
+* `getConnectionManager()` and `ConnectionManager` itself are deprecated - now `Connection` is called `DataSource`,
+  and each data source can be defined in exported variable. If you want to have a collection
+  of data sources, just define them in a variable, simply as:
+
+```ts
+const dataSource1 = new DataSource({ /*...*/ })
+const dataSource2 = new DataSource({ /*...*/ })
+const dataSource3 = new DataSource({ /*...*/ })
+
+export const MyDataSources = {
+    dataSource1,
+    dataSource2,
+    dataSource3,
+}
+```
+
+* `getConnectionOptions()` is deprecated - in next version we are going to implement different mechanism of connection options loading
+
+* `AbstractRepository` is deprecated. Use new way of custom repositories creation.
+
+* all deprecated signatures will be removed in `0.4.0`
 
 ### EXPERIMENTAL FEATURES NOT PORTED FROM NEXT BRANCH
 
