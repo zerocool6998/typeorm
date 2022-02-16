@@ -141,6 +141,11 @@ export interface BaseConnectionOptions {
     readonly typename?: string;
 
     /**
+     * Holds reference to the baseDirectory where configuration file are expected.
+     */
+    readonly baseDirectory?: string;
+
+    /**
      * Allows to setup cache options.
      */
     readonly cache?: boolean|{

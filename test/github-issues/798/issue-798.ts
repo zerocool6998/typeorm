@@ -4,7 +4,7 @@ import {createConnection, getConnectionOptions} from "../../../src/index";
 import {Connection} from "../../../src/connection/Connection";
 import {getTypeOrmConfig} from "../../utils/test-utils";
 
-describe("github issues > #798 sqlite: 'database' path in ormconfig.json is not relative", () => {
+describe.only("github issues > #798 sqlite: 'database' path in ormconfig.json is not relative", () => {
     let connection: Connection;
     const oldCwd = process.cwd();
 

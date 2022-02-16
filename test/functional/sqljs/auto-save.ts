@@ -52,7 +52,7 @@ describe("sqljs driver > autosave", () => {
 
         await connection.close();
 
-        expect(saves).to.be.equal(7);
+        expect(saves).to.be.equal(8);
     })));
 });
 
