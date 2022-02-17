@@ -242,6 +242,7 @@ const user = await userRepository.findOneBy({
 ```
 
 This change was made to provide a more type-safe approach for data querying.
+Due to this change you might need to refactor the way you loading entities using MongoDB driver.
 
 * `findOne`, `findOneOrFail`, `find`, `count`, `findAndCount` methods now only accept `FindOptions` as parameter, e.g.:
 

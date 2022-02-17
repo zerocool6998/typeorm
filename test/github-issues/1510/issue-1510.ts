@@ -57,7 +57,7 @@ describe("github issues > #1510 entity schema does not support mode=objectId", (
 
             expect(true).to.be.false;
         } catch (e) {
-            expect(e.message).to.eq("Cannot read property 'createValueMap' of undefined");
+            expect(e.message).to.eq("Cannot read properties of undefined (reading 'createValueMap')");
         }
     })));
 

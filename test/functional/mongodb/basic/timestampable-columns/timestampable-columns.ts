@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "../../../../utils/test-setup";
 import {Connection} from "../../../../../src/connection/Connection";
 import {
     closeTestingConnections,
@@ -45,7 +45,7 @@ describe("mongodb > timestampable columns", () => {
 
         await commentMongoRepository.save(post);
 
-        const updatedPost = await commentMongoRepository.findOneBy({ id: post.id });
+        const updatedPost = await commentMongoRepository.findOneBy({ _id: post.id });
 
         expect(updatedPost).to.be.ok;
 

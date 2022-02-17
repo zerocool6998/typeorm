@@ -37,6 +37,7 @@ import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import { TypeORMError } from "../error/TypeORMError";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
+import {FindOneOptions} from "../find-options/FindOneOptions";
 
 /**
  * Repository used to manage mongodb documents of a single entity type.
@@ -149,6 +150,22 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
         id: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[]
     ): Promise<Entity | null> {
         return this.manager.findOneById(this.metadata.target, id);
+    }
+
+    /**
+     * Finds first entity by a given find options.
+     * If entity was not found in the database - rejects with error.
+     */
+    async findOneOrFail(options: FindOneOptions<Entity>): Promise<Entity> {
+        return this.manager.findOneOrFail(this.metadata.target, options);
+    }
+
+    /**
+     * Finds first entity that matches given where condition.
+     * If entity was not found in the database - rejects with error.
+     */
+    async findOneByOrFail(where: any): Promise<Entity> {
+        return this.manager.findOneByOrFail(this.metadata.target, where);
     }
 
     /**

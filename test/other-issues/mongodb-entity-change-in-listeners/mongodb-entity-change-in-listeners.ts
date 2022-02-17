@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Post} from "./entity/Post";
@@ -15,26 +15,27 @@ describe("other issues > mongodb entity change in listeners should affect persis
     after(() => closeTestingConnections(connections));
 
     it("if entity was changed in the listener, changed property should be updated in the db", () => Promise.all(connections.map(async function (connection) {
+        const postRepository = connection.getMongoRepository(Post);
 
         // insert a post
         const post = new Post();
         post.title = "hello";
-        await connection.manager.save(post);
+        await postRepository.save(post);
 
         // check if it was inserted correctly
-        const loadedPost = await connection.manager.findOneBy(Post, {
-            id: post.id,
+        const loadedPost = await postRepository.findOneBy({
+            _id: post.id,
         });
         expect(loadedPost).not.to.be.null;
         loadedPost!.title.should.be.equal("hello");
 
         // now update some property and let update listener trigger
         loadedPost!.active = true;
-        await connection.manager.save(loadedPost!);
+        await postRepository.save(loadedPost!);
 
         // check if update listener was triggered and entity was really updated by the changes in the listener
-        const loadedUpdatedPost = await connection.manager.findOneBy(Post, {
-            id: post.id,
+        const loadedUpdatedPost = await postRepository.findOneBy({
+            _id: post.id,
         });
 
         expect(loadedUpdatedPost).not.to.be.null;
@@ -44,19 +45,20 @@ describe("other issues > mongodb entity change in listeners should affect persis
     })));
 
     it("if entity was loaded in the listener, loaded property should be changed", () => Promise.all(connections.map(async function (connection) {
+        const postRepository = connection.getMongoRepository(Post);
 
         // insert a post
         const post = new Post();
         post.title = "hello";
-        await connection.manager.save(post);
+        await postRepository.save(post);
 
-        const loadedPost = await connection.manager.findOneByOrFail(Post, {
-            id: post.id,
+        const loadedPost = await postRepository.findOneByOrFail({
+            _id: post.id,
         });
 
         expect(loadedPost).not.to.be.null;
         loadedPost!.loaded.should.be.equal(true);
-        await connection.manager.save(loadedPost!);
+        await postRepository.save(loadedPost!);
 
     })));
 });

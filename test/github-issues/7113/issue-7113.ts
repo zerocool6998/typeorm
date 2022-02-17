@@ -1,9 +1,8 @@
-import "reflect-metadata";
-import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
-import { expect } from "chai";
-import { Configuration } from "./entity/Configuration";
-import { ConfigurationRepository } from "./repository/ConfigurationRepository";
+import "../../utils/test-setup";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Connection} from "../../../src/connection/Connection";
+import {expect} from "chai";
+import {Configuration} from "./entity/Configuration";
 
 describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb", () => {
 
@@ -19,14 +18,14 @@ describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb"
 
     it("should not pull soft deleted docs with find", () => Promise.all(connections.map(async connection => {
 
-        const repository = connection.getCustomRepository(ConfigurationRepository);
+        const repository = connection.getMongoRepository(Configuration);
         const configuration = new Configuration();
 
         await repository.save(configuration);
 
-        await repository.deleteConfiguration(configuration);
+        await repository.softRemove(configuration);
 
-        const withoutDeleted = await repository.findAllConfigurations();
+        const withoutDeleted = await repository.find();
         expect(withoutDeleted.length).to.be.eq(0);
 
         const withDeleted = await repository.find({ withDeleted: true });
@@ -39,7 +38,7 @@ describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb"
 
     it("should not pull soft deleted docs with findAndCount", () => Promise.all(connections.map(async connection => {
 
-        const repository = connection.getCustomRepository(ConfigurationRepository);
+        const repository = connection.getMongoRepository(Configuration);
         const configuration = new Configuration();
 
         await repository.save(configuration);
@@ -57,39 +56,9 @@ describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb"
 
     })));
 
-    it("should not pull soft deleted docs with findByIds", () => Promise.all(connections.map(async connection => {
-
-        const repository = connection.getCustomRepository(ConfigurationRepository);
-        const configuration = new Configuration();
-
-        await repository.save(configuration);
-
-        await repository.softRemove(configuration);
-
-        const withoutDeletedById = await repository.findByIds([configuration._id]);
-        expect(withoutDeletedById.length).to.be.eq(0);
-
-        const withDeletedById = await repository.findOne({
-            where: {
-                _id: configuration._id
-            },
-            withDeleted: true
-        });
-        expect(withDeletedById).not.to.be.null;
-
-        const withOtherOptionById = await repository.findOne({
-            where: {
-                _id: configuration._id
-            },
-            cache: true
-        });
-        expect(withOtherOptionById).not.to.be.null;
-
-    })));
-
     it("should not pull soft deleted docs with findOne", () => Promise.all(connections.map(async connection => {
 
-        const repository = connection.getCustomRepository(ConfigurationRepository);
+        const repository = connection.getMongoRepository(Configuration);
         const configuration = new Configuration();
 
         await repository.save(configuration);
@@ -99,14 +68,14 @@ describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb"
         const withoutDeletedOne = await repository.findOne({
             where: { _id: configuration._id }
         });
-        expect(withoutDeletedOne).to.be.undefined;
+        expect(withoutDeletedOne).to.be.null;
 
         const withDeletedOne = await repository.findOne(
             {
                 where: { _id: configuration._id },
                 withDeleted: true
             });
-        expect(withDeletedOne).not.to.be.undefined;
+        expect(withDeletedOne).not.to.be.null;
 
         const withOtherOptionOne = await repository.findOne(
             {
@@ -114,7 +83,7 @@ describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb"
                 cache: true
             }
         );
-        expect(withOtherOptionOne).to.be.undefined;
+        expect(withOtherOptionOne).to.be.null;
 
     })));
 

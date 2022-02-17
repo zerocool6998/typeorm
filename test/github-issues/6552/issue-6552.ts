@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import "reflect-metadata";
+import "../../utils/test-setup";
 import {Connection} from "../../../src/connection/Connection";
 import {PlatformTools} from "../../../src/platform/PlatformTools";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
@@ -53,14 +53,16 @@ describe("github issues > #6552 MongoRepository delete by ObjectId deletes the w
   // before the fix this wouldn't delete anything
   it("should delete the correct entity when id column is not called _id", () => Promise.all(connections.map(async function (connection) {
 
+    const postV2Repository = connection.getMongoRepository(PostV2);
+
     // setup: create 2 posts
     const post1 = new PostV2();
     post1.title = "Post 1";
-    await connection.manager.save(post1);
+    await postV2Repository.save(post1);
 
     const post2 = new PostV2();
     post2.title = "Post 2";
-    await connection.manager.save(post2);
+    await postV2Repository.save(post2);
 
     const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
 
@@ -70,15 +72,15 @@ describe("github issues > #6552 MongoRepository delete by ObjectId deletes the w
     expect(post2.postId).to.be.instanceof(objectIdInstance);
 
     // delete Post 2 by ObjectId directly
-    await connection.manager.delete(PostV2, post2.postId);
+    await postV2Repository.delete(post2.postId);
     // This used to wrongly perform deleteOne({_id: Buffer}) - not deleting anything because Buffer is not an ObjectId
 
     // Post 1 should remain in the DB
-    const count1 = await connection.manager.countBy(PostV2, { postId: post1.postId });
+    const count1 = await postV2Repository.countBy({ _id: post1.postId });
     expect(count1).to.be.equal(1, "Post 1 should still exist");
 
     // Post 2 should be deleted
-    const count2 = await connection.manager.countBy(PostV2, { postId: post2.postId });
+    const count2 = await postV2Repository.countBy({ _id: post2.postId });
     expect(count2).to.be.equal(0, "Post 2 should be deleted");
 
 
