@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "../../../utils/test-setup";
 import { expect } from 'chai';
 import { Connection } from "../../../../src/connection/Connection";
 import {
@@ -14,6 +14,7 @@ import { filepathToName } from "../../../../src/util/PathUtils";
 import rimraf from "rimraf";
 import path from "path";
 import fs from "fs";
+import appRoot from "app-root-path";
 
 const VALID_NAME_REGEX = /^(?!sqlite_).{1,63}$/
 
@@ -59,7 +60,7 @@ describe("multi-database > basic-functionality", () => {
     describe("multiple databases", () => {
 
         let connections: Connection[];
-        const tempPath = path.resolve(__dirname, "../../../../../../temp");
+        const tempPath = path.resolve(appRoot.path, "temp");
         const attachAnswerPath = path.join(tempPath, "filename-sqlite.db");
         const attachAnswerHandle = filepathToName("filename-sqlite.db");
         const attachCategoryPath = path.join(tempPath, "./subdir/relative-subdir-sqlite.db");
