@@ -91,9 +91,9 @@ export class SubjectDatabaseEntityLoader {
             };
 
             // load database entities for all given ids
-            let entities: any[] = []
+            let entities: any[] = [];
             if (this.queryRunner.connection.driver.options.type === "mongodb") {
-                const mongoRepo = this.queryRunner.manager.getRepository<ObjectLiteral>(subjectGroup.target) as MongoRepository<ObjectLiteral>
+                const mongoRepo = this.queryRunner.manager.getRepository<ObjectLiteral>(subjectGroup.target) as MongoRepository<ObjectLiteral>;
                 entities = await mongoRepo.findByIds(allIds, findOptions);
 
             } else {
