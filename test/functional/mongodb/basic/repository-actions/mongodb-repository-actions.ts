@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "../../../../utils/test-setup";
 import {expect} from "chai";
 import {Connection} from "../../../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
@@ -108,7 +108,7 @@ describe("mongodb > basic repository actions", () => {
     })));
 
     it("should return persisted objects using find* methods", () => Promise.all(connections.map(async connection => {
-        const postRepository = connection.getRepository(Post);
+        const postRepository = connection.getMongoRepository(Post);
 
         const post1 = new Post();
         post1.title = "First Post";
@@ -247,7 +247,7 @@ describe("mongodb > basic repository actions", () => {
     })));
 
     it("remove should remove given entity", () => Promise.all(connections.map(async connection => {
-        const postRepository = connection.getRepository(Post);
+        const postRepository = connection.getMongoRepository(Post);
 
         const post1 = new Post();
         post1.title = "First Post";
