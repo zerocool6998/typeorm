@@ -78,6 +78,16 @@ userRepository
 For queries returning big amount of data, we recommend to use `query` strategy,
 because it can be a more performant approach to query relations.
 
+* added new `findOneBy`, `findOneByOrFail`, `findBy`, `countBy`, `findAndCountBy` methods to `BaseEntity`, `EntityManager` and `Repository`:
+
+```ts
+const users = await userRepository.findBy({
+    name: "Michael"
+})
+```
+
+Overall `find*` and `count*` method signatures where changed, read the breaking changes section for more info.
+
 * new `select` type signature in `FindOptions` (used in `find*` methods):
 
 ```ts
@@ -213,11 +223,56 @@ userRepository.find({
 * now migrations are running before schema synchronization if you have both pending migrations and schema synchronization pending
   (it works if you have both `migrationsRun` and `synchronize` enabled in connection options).
 
-* `findOne()` signature without parameters was dropped. See [this issue](https://github.com/typeorm/typeorm/issues/2500) for details.
+* `findOne()` signature without parameters was dropped.
+If you need a single from the db you can use a following syntax:
 
-* `findOne(id)` signature was dropped.
+```ts
+const [user] = await userRepository.find()
+```
 
-* `findOne(id)` signature was dropped. Use `findOneById(id)` instead.
+This change was made to prevent user confusion.
+See [this issue](https://github.com/typeorm/typeorm/issues/2500) for details.
+
+* `findOne(id)` signature was dropped. Use following syntax instead:
+
+```ts
+const user = await userRepository.findOneBy({
+    id: id // where id is your column name
+})
+```
+
+This change was made to provide a more type-safe approach for data querying.
+
+* `findOne`, `findOneOrFail`, `find`, `count`, `findAndCount` methods now only accept `FindOptions` as parameter, e.g.:
+
+```ts
+const users = await userRepository.find({
+    where: { /* conditions */ },
+    relations: { /* relations */ }
+})
+```
+
+To supply `where` conditions directly without `FindOptions` new methods were added:
+`findOneBy`, `findOneByOrFail`, `findBy`, `countBy`, `findAndCountBy`. Example:
+
+```ts
+const users = await userRepository.findBy({
+    name: "Michael"
+})
+```
+
+This change was required to simply current `find*` and `count*` methods typings,
+improve type safety and prevent user confusion.
+
+* `findByIds` was deprecated, use `findBy` method instead in conjunction with `In` operator, for example:
+
+```ts
+userRepository.findBy({
+    id: In([1, 2, 3])
+})
+```
+
+This change was made to provide a more type-safe approach for data querying.
 
 * `findOne` and `QueryBuilder.getOne()` now return `null` instead of `undefined` in the case if it didn't find anything in the database.
 Logically it makes more sense to return `null`.

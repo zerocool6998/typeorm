@@ -110,6 +110,8 @@ export class MongoEntityManager extends EntityManager {
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
+     *
+     * @deprecated use `findBy` method instead.
      */
     async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[]): Promise<Entity[]> {
         let optionsOrConditions: any = undefined;
@@ -178,6 +180,12 @@ export class MongoEntityManager extends EntityManager {
 
     /**
      * Finds entity that matches given id.
+     *
+     * @deprecated use `findOneBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findOneBy({
+     *     id: 1 // where "id" is your primary column name
+     * })
      */
     async findOneById<Entity>(
         entityClassOrName: EntityTarget<Entity>,

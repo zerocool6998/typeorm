@@ -746,6 +746,12 @@ export class EntityManager {
     /**
      * Finds entities with ids.
      * Optionally find options or conditions can be applied.
+     *
+     * @deprecated use `findBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findBy({
+     *     id: In([1, 2, 3])
+     * })
      */
     async findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[]): Promise<Entity[]> {
 
@@ -800,6 +806,12 @@ export class EntityManager {
     /**
      * Finds first entity that matches given id.
      * If entity was not found in the database - returns null.
+     *
+     * @deprecated use `findOneBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findOneBy({
+     *     id: 1 // where "id" is your primary column name
+     * })
      */
     async findOneById<Entity>(entityClass: EntityTarget<Entity>, id: number | string | Date | ObjectID): Promise<Entity | null> {
         const metadata = this.connection.getMetadata(entityClass);
@@ -834,19 +846,6 @@ export class EntityManager {
         return this.findOneBy<Entity>(entityClass as any, where).then((value) => {
             if (value === null) {
                 return Promise.reject(new EntityNotFoundError(entityClass, where));
-            }
-            return Promise.resolve(value);
-        });
-    }
-
-    /**
-     * Finds first entity that matches given id.
-     * If entity was not found in the database - rejects with error.
-     */
-    async findOneByIdOrFail<Entity>(entityClass: EntityTarget<Entity>, id: number | string | Date | ObjectID): Promise<Entity> {
-        return this.findOneById<Entity>(entityClass, id).then((value) => {
-            if (value === null) {
-                return Promise.reject(new EntityNotFoundError(entityClass, id));
             }
             return Promise.resolve(value);
         });

@@ -108,6 +108,12 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
+     *
+     * @deprecated use `findBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findBy({
+     *     id: In([1, 2, 3])
+     * })
      */
     findByIds(ids: any[]): Promise<Entity[]> {
         return this.manager.findByIds(this.metadata.target, ids);
@@ -133,6 +139,12 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
 
     /**
      * Finds entity that matches given id.
+     *
+     * @deprecated use `findOneBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findOneBy({
+     *     id: 1 // where "id" is your primary column name
+     * })
      */
     async findOneById(
         id: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[]

@@ -30,7 +30,9 @@ describe("other issues > correctly compute change for transformed json / jsonb c
 
 		await repository.save(dummy);
 
-		const dummyEntity = await repository.findOneByIdOrFail(dummy.id);
+		const dummyEntity = await repository.findOneByOrFail({
+            id: dummy.id
+        });
 		expect(dummyEntity.version).to.equal(1);
 	})));
 
@@ -47,7 +49,9 @@ describe("other issues > correctly compute change for transformed json / jsonb c
 
 		await repository.save(dummy);
 
-		const dummyEntity = await repository.findOneByIdOrFail(dummy.id);
+		const dummyEntity = await repository.findOneByOrFail({
+            id: dummy.id
+        });
 		expect(dummyEntity.version).to.equal(1);
 	})));
 });

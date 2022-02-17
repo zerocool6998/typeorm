@@ -322,6 +322,12 @@ export class BaseEntity {
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
+     *
+     * @deprecated use `findBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findBy({
+     *     id: In([1, 2, 3])
+     * })
      */
     static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[]): Promise<T[]> {
         return (this as any).getRepository().findByIdsBy(ids);
@@ -343,6 +349,12 @@ export class BaseEntity {
 
     /**
      * Finds first entity that matches given options.
+     *
+     * @deprecated use `findOneBy` method instead in conjunction with `In` operator, for example:
+     *
+     * .findOneBy({
+     *     id: 1 // where "id" is your primary column name
+     * })
      */
     static findOneById<T extends BaseEntity>(this: ObjectType<T>, id?: string|number|Date|ObjectID): Promise<T|null> {
         return (this as any).getRepository().findOneById(id);
@@ -360,13 +372,6 @@ export class BaseEntity {
      */
     static findOneByOrFail<T extends BaseEntity>(this: ObjectType<T>, where?: FindOptionsWhere<T>): Promise<T> {
         return (this as any).getRepository().findOneByOrFail(where);
-    }
-
-    /**
-     * Finds first entity that matches given options.
-     */
-    static findOneByIdOrFail<T extends BaseEntity>(this: ObjectType<T>, id?: string|number|Date|ObjectID): Promise<T> {
-        return (this as any).getRepository().findOneByIdOrFail (id);
     }
 
     /**

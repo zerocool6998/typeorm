@@ -40,7 +40,9 @@ describe("mssql -> add column to existing table", () => {
 
         await Promise.all(connections.map(async connection => {
             await connection.synchronize().should.eventually.eq(undefined);
-            const post = await connection.getRepository<Post>("Post").findOneByIdOrFail(1);
+            const post = await connection.getRepository<Post>("Post").findOneByOrFail({
+                id: 1
+            });
             post.should.exist;
             post.id.should.be.eq(1);
             post.title.should.be.eq("test");
