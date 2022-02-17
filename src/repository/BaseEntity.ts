@@ -175,7 +175,7 @@ export class BaseEntity {
      * Returns undefined if entity with given id was not found.
      */
     static preload<T extends BaseEntity>(this: ObjectType<T>, entityLike: DeepPartial<T>): Promise<T|undefined> {
-        const thisRepository = (this as any).getRepository() as Repository<T>
+        const thisRepository = (this as any).getRepository() as Repository<T>;
         return thisRepository.preload(entityLike);
     }
 

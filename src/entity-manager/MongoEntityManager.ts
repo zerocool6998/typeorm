@@ -83,28 +83,28 @@ export class MongoEntityManager extends EntityManager {
      * Finds entities that match given find options.
      */
     async find<Entity>(entityClassOrName: EntityTarget<Entity>, options?: MongoFindManyOptions<Entity>): Promise<Entity[]> {
-        return this.executeFind(entityClassOrName, options)
+        return this.executeFind(entityClassOrName, options);
     }
 
     /**
      * Finds entities that match given conditions.
      */
     async findBy<Entity>(entityClassOrName: EntityTarget<Entity>, where: any): Promise<Entity[]> {
-        return this.executeFind(entityClassOrName, where)
+        return this.executeFind(entityClassOrName, where);
     }
 
     /**
      * Finds entities that match given find options.
      */
     async findAndCount<Entity>(entityClassOrName: EntityTarget<Entity>, options?: MongoFindManyOptions<Entity>): Promise<[Entity[], number]> {
-        return this.executeFindAndCount(entityClassOrName, options)
+        return this.executeFindAndCount(entityClassOrName, options);
     }
 
     /**
      * Finds entities that match given where conditions.
      */
     async findAndCountBy<Entity>(entityClassOrName: EntityTarget<Entity>, where: any): Promise<[Entity[], number]> {
-        return this.executeFindAndCount(entityClassOrName, where)
+        return this.executeFindAndCount(entityClassOrName, where);
     }
 
     /**
@@ -165,7 +165,7 @@ export class MongoEntityManager extends EntityManager {
         entityClassOrName: EntityTarget<Entity>,
         options: MongoFindOneOptions<Entity>
     ): Promise<Entity | null> {
-        return this.executeFindOne(entityClassOrName, options)
+        return this.executeFindOne(entityClassOrName, options);
     }
 
     /**
@@ -175,7 +175,7 @@ export class MongoEntityManager extends EntityManager {
         entityClassOrName: EntityTarget<Entity>,
         where: DeepPartial<Entity>
     ): Promise<Entity | null> {
-        return this.executeFindOne(entityClassOrName, where)
+        return this.executeFindOne(entityClassOrName, where);
     }
 
     /**
@@ -191,7 +191,7 @@ export class MongoEntityManager extends EntityManager {
         entityClassOrName: EntityTarget<Entity>,
         id: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[]
     ): Promise<Entity | null> {
-        return this.executeFindOne(entityClassOrName, id)
+        return this.executeFindOne(entityClassOrName, id);
     }
 
     /**
