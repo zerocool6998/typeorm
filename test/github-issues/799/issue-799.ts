@@ -27,8 +27,8 @@ describe("github issues > #799 sqlite: 'database' path should be created", () =>
 
     it("should create the whole path to database file", async function () {
         // run test only if better-sqlite3 is enabled in ormconfig
-        const isEnabled = getTypeOrmConfig().some(conf => conf.type === "sqlite" && conf.skip === false)
-        if (isEnabled === false) return
+        const isEnabled = getTypeOrmConfig().some(conf => conf.type === "sqlite" && conf.skip === false);
+        if (isEnabled === false) return;
 
         connection = await createConnection({
             "name": "sqlite",
@@ -41,8 +41,8 @@ describe("github issues > #799 sqlite: 'database' path should be created", () =>
 
     it("should create the whole path to database file for better-sqlite3", async function () {
         // run test only if better-sqlite3 is enabled in ormconfig
-        const isEnabled = getTypeOrmConfig().some(conf => conf.type === "better-sqlite3" && conf.skip === false)
-        if (isEnabled === false) return
+        const isEnabled = getTypeOrmConfig().some(conf => conf.type === "better-sqlite3" && conf.skip === false);
+        if (isEnabled === false) return;
 
         connection = await createConnection({
             "name": "better-sqlite3",
