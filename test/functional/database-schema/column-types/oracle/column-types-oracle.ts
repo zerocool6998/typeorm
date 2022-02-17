@@ -58,7 +58,9 @@ describe("database schema > column types > oracle", () => {
         post.simpleArray = ["A", "B", "C"];
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.number.should.be.equal(post.number);
@@ -143,7 +145,9 @@ describe("database schema > column types > oracle", () => {
         post.timestampWithLocalTimeZone = new Date();
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.number.should.be.equal(post.number);
         loadedPost.numeric.should.be.equal(post.numeric);
@@ -208,7 +212,9 @@ describe("database schema > column types > oracle", () => {
         post.datetime = new Date();
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.boolean.should.be.equal(post.boolean);

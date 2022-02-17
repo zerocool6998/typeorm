@@ -55,7 +55,9 @@ describe("mongodb > object id columns", () => {
 
         expect(post._id).to.be.not.undefined;
 
-        const loadedPost = await postMongoRepository.findOne(post._id);
+        const loadedPost = await postMongoRepository.findOneBy({
+            _id: post._id
+        });
         expect(loadedPost!._id).to.be.not.undefined;
     })));
 

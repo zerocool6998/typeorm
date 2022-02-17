@@ -29,12 +29,12 @@ describe("github issues > #2286 find operators like MoreThan and LessThan doesn'
 
         await connection.manager.save(post);
 
-        const postByDateEquals = await connection.manager.findOne(Post, {
+        const postByDateEquals = await connection.manager.findOneBy(Post, {
             dateTimeColumn: middle
         });
         expect(postByDateEquals).to.not.be.undefined;
 
-        const postByDateBetween = await connection.manager.findOne(Post, {
+        const postByDateBetween = await connection.manager.findOneBy(Post, {
             dateTimeColumn: Between(start, end)
         });
         expect(postByDateBetween).to.not.be.undefined;
@@ -65,7 +65,7 @@ describe("github issues > #2286 find operators like MoreThan and LessThan doesn'
 
         const repo = connection.manager.getRepository(Example);
 
-        let example = await repo.findOneOrFail({ id: middle });
+        let example = await repo.findOneByOrFail({ id: middle });
 
         expect(example.text).to.be.equal("middle");
 
@@ -73,7 +73,7 @@ describe("github issues > #2286 find operators like MoreThan and LessThan doesn'
 
         await repo.save(example);
 
-        example = await repo.findOneOrFail({ id: middle });
+        example = await repo.findOneByOrFail({ id: middle });
 
         expect(example.text).to.be.equal("in between");
     })));

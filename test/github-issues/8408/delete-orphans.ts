@@ -45,14 +45,14 @@ describe("persistence > delete orphans", () => {
             await categoryRepository.save(categoryToInsert);
             categoryId = categoryToInsert.id;
 
-            const categoryToUpdate = (await categoryRepository.findOne(categoryId))!;
+            const categoryToUpdate = (await categoryRepository.findOneBy({ id: categoryId }))!;
             categoryToUpdate.posts = categoryToInsert.posts.filter(p => p.id === 1); // Keep the first post
 
             await categoryRepository.save(categoryToUpdate);
         });
 
         it("should retain a Post on the Category", async () => {
-            const category = await categoryRepository.findOne(categoryId);
+            const category = await categoryRepository.findOneBy({ id: categoryId });
             expect(category).not.to.be.null;
             expect(category!.posts).to.have.lengthOf(1);
             expect(category!.posts[0].id).to.equal(1);

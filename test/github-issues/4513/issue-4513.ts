@@ -66,7 +66,7 @@ describe("github issues > #4513 CockroachDB support for onConflict", () => {
       .onConflict(`("name", "email") DO UPDATE SET age = EXCLUDED.age`)
       .execute();
 
-    await connection.manager.findOne(User, { name: "example", email: "example@example.com" }).should.eventually.be.eql({
+    await connection.manager.findOneBy(User, { name: "example", email: "example@example.com" }).should.eventually.be.eql({
       name: "example",
       email: "example@example.com",
       age: 42,
@@ -97,7 +97,7 @@ describe("github issues > #4513 CockroachDB support for onConflict", () => {
       .onConflict(`("name", "email") DO NOTHING`)
       .execute();
 
-    await connection.manager.findOne(User, { name: "example", email: "example@example.com" }).should.eventually.be.eql({
+    await connection.manager.findOneBy(User, { name: "example", email: "example@example.com" }).should.eventually.be.eql({
       name: "example",
       email: "example@example.com",
       age: 30,
@@ -128,7 +128,7 @@ describe("github issues > #4513 CockroachDB support for onConflict", () => {
       .orUpdate(["age"], ["name", "email"])
       .execute();
 
-    await connection.manager.findOne(User, { name: "example", email: "example@example.com" }).should.eventually.be.eql({
+    await connection.manager.findOneBy(User, { name: "example", email: "example@example.com" }).should.eventually.be.eql({
       name: "example",
       email: "example@example.com",
       age: 42,

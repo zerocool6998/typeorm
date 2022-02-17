@@ -25,7 +25,7 @@ describe("entity schemas > basic functionality", () => {
         });
         await postRepository.save(post);
 
-        const loadedPost = await connection.manager.findOne(PostEntity, { title: "First Post" });
+        const loadedPost = await connection.manager.findOneBy(PostEntity, { title: "First Post" });
         loadedPost!.id.should.be.equal(post.id);
         loadedPost!.title.should.be.equal("First Post");
         loadedPost!.text.should.be.equal("About first post");

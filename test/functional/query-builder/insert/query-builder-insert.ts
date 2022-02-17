@@ -87,7 +87,7 @@ describe("query builder > insert", () => {
             })
             .execute();
 
-        const loadedUser1 = await connection.getRepository(User).findOne({ name: "Dima" });
+        const loadedUser1 = await connection.getRepository(User).findOneBy({ name: "Dima" });
         expect(loadedUser1).to.exist;
         loadedUser1!.name.should.be.equal("Dima");
 
@@ -115,7 +115,7 @@ describe("query builder > insert", () => {
             }])
             .execute();
 
-        const loadedPhoto1 = await connection.getRepository(Photo).findOne({ url: "1.jpg" });
+        const loadedPhoto1 = await connection.getRepository(Photo).findOneBy({ url: "1.jpg" });
         expect(loadedPhoto1).to.exist;
         loadedPhoto1!.should.be.eql({
             id: 1,
@@ -127,7 +127,7 @@ describe("query builder > insert", () => {
             }
         });
 
-        const loadedPhoto2 = await connection.getRepository(Photo).findOne({ url: "2.jpg" });
+        const loadedPhoto2 = await connection.getRepository(Photo).findOneBy({ url: "2.jpg" });
         expect(loadedPhoto2).to.exist;
         loadedPhoto2!.should.be.eql({
             id: 2,

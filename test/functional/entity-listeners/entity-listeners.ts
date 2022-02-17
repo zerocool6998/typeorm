@@ -18,11 +18,11 @@ describe("entity-listeners", () => {
         post.text = "post text";
         await connection.manager.save(post);
 
-        let loadedPost = await connection.getRepository(Post).findOne(post.id);
+        let loadedPost = await connection.getRepository(Post).findOneBy({ id: post.id });
         loadedPost!.title = "post title   ";
         await connection.manager.save(loadedPost);
 
-        loadedPost = await connection.getRepository(Post).findOne(post.id);
+        loadedPost = await connection.getRepository(Post).findOneBy({ id: post.id });
         loadedPost!.title.should.be.equal("post title");
     })));
 

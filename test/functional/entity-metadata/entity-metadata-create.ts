@@ -35,7 +35,7 @@ describe("entity-metadata > create", () => {
 
             const { id } = await repo.save({ foo: "baz" });
 
-            const entity = await repo.findOneOrFail(id);
+            const entity = await repo.findOneByOrFail({id});
 
             expect(entity.hasCalledConstructor).to.be.true;
         })))
@@ -73,7 +73,7 @@ describe("entity-metadata > create", () => {
 
             const { id } = await repo.save({ foo: "baz" });
 
-            const entity = await repo.findOneOrFail(id);
+            const entity = await repo.findOneByOrFail({id});
 
             expect(entity.hasCalledConstructor).not.to.be.true;
         })))

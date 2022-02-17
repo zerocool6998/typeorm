@@ -84,7 +84,9 @@ describe("database schema > column types > mysql", () => {
         post.simpleClassEnum1 = FruitEnum.Apple;
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.bit.toString().should.be.equal(post.bit.toString());
         loadedPost.int.should.be.equal(post.int);
@@ -230,7 +232,9 @@ describe("database schema > column types > mysql", () => {
         post.time = "15:30:00.256";
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.float.should.be.equal(post.float);
@@ -283,7 +287,9 @@ describe("database schema > column types > mysql", () => {
         post.datetime.setMilliseconds(0); // set milliseconds to zero, because if datetime type specified without precision, milliseconds won't save in database
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.boolean.should.be.equal(post.boolean);

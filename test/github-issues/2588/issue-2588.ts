@@ -33,7 +33,7 @@ describe("github issues > #2588 - createQueryBuilder always does left joins on r
         }
 
         // Load the post
-        let postFromDb = await postRepo.findOne(post.id);
+        let postFromDb = await postRepo.findOneBy({ id: post.id });
         expect(postFromDb).to.exist;
         expect(postFromDb!.reviews).lengthOf(5);
 

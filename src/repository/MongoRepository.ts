@@ -37,6 +37,7 @@ import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import { TypeORMError } from "../error/TypeORMError";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
+import {DeepPartial} from "../common/DeepPartial";
 
 /**
  * Repository used to manage mongodb documents of a single entity type.
@@ -97,10 +98,30 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
     }
 
     /**
-     * Finds first entity that matches given conditions and/or find options.
+     * Finds first entity that matches given find options.
      */
-    findOne(optionsOrConditions?: string|number|Date|ObjectID|MongoFindOneOptions<Entity>|Partial<Entity>, maybeOptions?: MongoFindOneOptions<Entity>): Promise<Entity|null> {
-        return this.manager.findOne(this.metadata.target, optionsOrConditions as any, maybeOptions as any);
+    async findOne(
+        options: MongoFindOneOptions<Entity>
+    ): Promise<Entity | null> {
+        return this.manager.findOne(this.metadata.target, options);
+    }
+
+    /**
+     * Finds first entity that matches given WHERE conditions.
+     */
+    async findOneBy(
+        where: DeepPartial<Entity>
+    ): Promise<Entity | null> {
+        return this.manager.findOneBy(this.metadata.target, where);
+    }
+
+    /**
+     * Finds entity that matches given id.
+     */
+    async findOneById(
+        id: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[]
+    ): Promise<Entity | null> {
+        return this.manager.findOneById(this.metadata.target, id);
     }
 
     /**

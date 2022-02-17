@@ -27,7 +27,7 @@ describe("query builder > delete", () => {
             .where("name = :name", { name: "Alex Messer" })
             .execute();
 
-        const loadedUser1 = await connection.getRepository(User).findOne({ name: "Dima Zotov" });
+        const loadedUser1 = await connection.getRepository(User).findOneBy({ name: "Dima Zotov" });
         expect(loadedUser1).to.not.exist;
 
         const user2 = new User();
@@ -40,7 +40,7 @@ describe("query builder > delete", () => {
             .where("name = :name", { name: "Dima Zotov" })
             .execute();
 
-        const loadedUser2 = await connection.getRepository(User).findOne({ name: "Dima Zotov" });
+        const loadedUser2 = await connection.getRepository(User).findOneBy({ name: "Dima Zotov" });
         expect(loadedUser2).to.not.exist;
 
     })));
@@ -60,7 +60,7 @@ describe("query builder > delete", () => {
         await connection.manager.save(Photo, { url: "3.jpg" });
 
         // make sure photo with likes = 2 exist
-        const loadedPhoto1 = await connection.getRepository(Photo).findOne({ counters: { likes: 2 } });
+        const loadedPhoto1 = await connection.getRepository(Photo).findOneBy({ counters: { likes: 2 } });
         expect(loadedPhoto1).to.exist;
         loadedPhoto1!.should.be.eql({
             id: 2,
@@ -83,13 +83,13 @@ describe("query builder > delete", () => {
             })
             .execute();
 
-        const loadedPhoto2 = await connection.getRepository(Photo).findOne({ url: "1.jpg" });
+        const loadedPhoto2 = await connection.getRepository(Photo).findOneBy({ url: "1.jpg" });
         expect(loadedPhoto2).to.exist;
 
-        const loadedPhoto3 = await connection.getRepository(Photo).findOne({ url: "2.jpg" });
+        const loadedPhoto3 = await connection.getRepository(Photo).findOneBy({ url: "2.jpg" });
         expect(loadedPhoto3).not.to.exist;
 
-        const loadedPhoto4 = await connection.getRepository(Photo).findOne({ url: "3.jpg" });
+        const loadedPhoto4 = await connection.getRepository(Photo).findOneBy({ url: "3.jpg" });
         expect(loadedPhoto4).to.exist;
     })));
 

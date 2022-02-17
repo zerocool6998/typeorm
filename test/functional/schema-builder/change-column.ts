@@ -308,7 +308,7 @@ describe("schema builder > change column", () => {
                 likesCount: 45
             });
 
-        const post = await connection.getRepository(Post).findOneOrFail(1234);
+        const post = await connection.getRepository(Post).findOneByOrFail({ id: 1234 });
 
         await connection.getRepository(PostVersion)
             .insert({

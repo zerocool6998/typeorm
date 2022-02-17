@@ -30,7 +30,7 @@ describe("github issues > #7030", () => {
 
         await postRepository.save(post);
 
-        const actualPost = await postRepository.findOneOrFail({ id });
+        const actualPost = await postRepository.findOneByOrFail({ id });
 
         expect(actualPost!.id).to.be.equal(id);
     })));

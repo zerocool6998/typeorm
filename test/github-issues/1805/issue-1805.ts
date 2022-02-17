@@ -25,7 +25,9 @@ describe("github issues > #1805 bigint PK incorrectly returning as a number (exp
 
         await accountRepository.save(account);
 
-        const loadedAccount = await accountRepository.findOne(bigIntId);
+        const loadedAccount = await accountRepository.findOneBy({
+            id: bigIntId
+        });
         loadedAccount!.id.should.be.equal(bigIntId);
     })));
 

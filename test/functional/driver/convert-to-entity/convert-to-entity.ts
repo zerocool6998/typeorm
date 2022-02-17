@@ -20,7 +20,7 @@ describe("driver > convert raw results to entity", () => {
 
         await postRepository.save(post);
 
-        const loadedPost = await postRepository.findOne(1);
+        const loadedPost = await postRepository.findOneBy({ id: 1 });
         if (loadedPost) {
             expect(loadedPost.isNew).to.be.equal(null);
         }
@@ -34,7 +34,7 @@ describe("driver > convert raw results to entity", () => {
 
         await postRepository.save(post);
 
-        const loadedPost = await postRepository.findOne(1);
+        const loadedPost = await postRepository.findOneBy({ id: 1 });
         if (loadedPost) {
             expect(loadedPost.isNew).to.be.equal(true);
         }
@@ -48,7 +48,7 @@ describe("driver > convert raw results to entity", () => {
 
         await postRepository.save(post);
 
-        const loadedPost = await postRepository.findOne(1);
+        const loadedPost = await postRepository.findOneBy({ id: 1 });
         if (loadedPost) {
             expect(loadedPost.isNew).to.be.equal(false);
         }

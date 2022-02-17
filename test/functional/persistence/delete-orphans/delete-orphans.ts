@@ -45,7 +45,7 @@ describe("persistence > delete orphans", () => {
             await categoryRepository.save(categoryToInsert);
             categoryId = categoryToInsert.id;
 
-            const categoryToUpdate = (await categoryRepository.findOne(categoryId))!;
+            const categoryToUpdate = (await categoryRepository.findOneBy({ id: categoryId }))!;
             categoryToUpdate.posts = categoryToInsert.posts.filter(p => p.id === 1); // Keep the first post
 
             await categoryRepository.save(categoryToUpdate);
@@ -53,7 +53,7 @@ describe("persistence > delete orphans", () => {
 
         it("should retain a Post on the Category", async () => {
             console.log("before select")
-            const category = await categoryRepository.findOne(categoryId);
+            const category = await categoryRepository.findOneBy({ id: categoryId });
             console.log("category", category)
             expect(category).not.to.be.undefined;
             expect(category!.posts).to.have.lengthOf(1);

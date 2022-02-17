@@ -53,14 +53,14 @@ describe("persistence > basic functionality", function() {
         const user = new User(1, "Hello User");
 
         await connection.manager.save([post, category, user]);
-        await connection.manager.findOne(Post, 1).should.eventually.eql({ id: 1, title: "Hello Post" });
-        await connection.manager.findOne(Category, 1).should.eventually.eql({ id: 1, name: "Hello Category" });
-        await connection.manager.findOne(User, 1).should.eventually.eql({ id: 1, name: "Hello User" });
+        await connection.manager.findOneBy(Post, { id: 1 }).should.eventually.eql({ id: 1, title: "Hello Post" });
+        await connection.manager.findOneBy(Category, { id: 1 }).should.eventually.eql({ id: 1, name: "Hello Category" });
+        await connection.manager.findOneBy(User, { id: 1 }).should.eventually.eql({ id: 1, name: "Hello User" });
 
         await connection.manager.remove([post, category, user]);
-        await connection.manager.findOne(Post, 1).should.eventually.be.null;
-        await connection.manager.findOne(Category, 1).should.eventually.be.null;
-        await connection.manager.findOne(User, 1).should.eventually.be.null;
+        await connection.manager.findOneBy(Post, { id: 1 }).should.eventually.be.null;
+        await connection.manager.findOneBy(Category, { id: 1 }).should.eventually.be.null;
+        await connection.manager.findOneBy(User, { id: 1 }).should.eventually.be.null;
     })));
 
 });

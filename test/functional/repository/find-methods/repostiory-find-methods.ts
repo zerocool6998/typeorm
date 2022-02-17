@@ -397,17 +397,29 @@ describe("repository > find methods", () => {
                 await userRepository.save(user);
             }
 
-            let loadedUser = (await userRepository.findOne(0))!;
+            let loadedUser = (await userRepository.findOne({
+                where: {
+                    id: 0
+                }
+            }))!;
             loadedUser.id.should.be.equal(0);
             loadedUser.firstName.should.be.equal("name #0");
             loadedUser.secondName.should.be.equal("Doe");
 
-            loadedUser = (await userRepository.findOne(1))!;
+            loadedUser = (await userRepository.findOne({
+                where: {
+                    id: 1
+                }
+            }))!;
             loadedUser.id.should.be.equal(1);
             loadedUser.firstName.should.be.equal("name #1");
             loadedUser.secondName.should.be.equal("Doe");
 
-            loadedUser = (await userRepository.findOne(99))!;
+            loadedUser = (await userRepository.findOne({
+                where: {
+                    id: 99
+                }
+            }))!;
             loadedUser.id.should.be.equal(99);
             loadedUser.firstName.should.be.equal("name #99");
             loadedUser.secondName.should.be.equal("Doe");
@@ -425,8 +437,9 @@ describe("repository > find methods", () => {
                 await userRepository.save(user);
             }
 
-            let loadedUser = await userRepository.findOne(0, {
+            let loadedUser = await userRepository.findOne( {
                 where: {
+                    id: 0,
                     secondName: "Doe"
                 }
             });
@@ -434,8 +447,9 @@ describe("repository > find methods", () => {
             loadedUser!.firstName.should.be.equal("name #0");
             loadedUser!.secondName.should.be.equal("Doe");
 
-            loadedUser = await userRepository.findOne(1, {
+            loadedUser = await userRepository.findOne({
                 where: {
+                    id: 1,
                     secondName: "Dorian"
                 }
             });
@@ -482,17 +496,29 @@ describe("repository > find methods", () => {
                 await userRepository.save(user);
             }
 
-            let loadedUser = (await userRepository.findOneOrFail(0))!;
+            let loadedUser = (await userRepository.findOneOrFail({
+                where: {
+                    id: 0
+                }
+            }))!;
             loadedUser.id.should.be.equal(0);
             loadedUser.firstName.should.be.equal("name #0");
             loadedUser.secondName.should.be.equal("Doe");
 
-            loadedUser = (await userRepository.findOneOrFail(1))!;
+            loadedUser = (await userRepository.findOneOrFail({
+                where: {
+                    id: 1
+                }
+            }))!;
             loadedUser.id.should.be.equal(1);
             loadedUser.firstName.should.be.equal("name #1");
             loadedUser.secondName.should.be.equal("Doe");
 
-            loadedUser = (await userRepository.findOneOrFail(99))!;
+            loadedUser = (await userRepository.findOneOrFail({
+                where: {
+                    id: 99
+                }
+            }))!;
             loadedUser.id.should.be.equal(99);
             loadedUser.firstName.should.be.equal("name #99");
             loadedUser.secondName.should.be.equal("Doe");
@@ -510,8 +536,9 @@ describe("repository > find methods", () => {
                 await userRepository.save(user);
             }
 
-            let loadedUser = await userRepository.findOneOrFail(0, {
+            let loadedUser = await userRepository.findOneOrFail({
                 where: {
+                    id: 0,
                     secondName: "Doe"
                 }
             });
@@ -519,8 +546,9 @@ describe("repository > find methods", () => {
             loadedUser!.firstName.should.be.equal("name #0");
             loadedUser!.secondName.should.be.equal("Doe");
 
-            await userRepository.findOneOrFail(1, {
+            await userRepository.findOneOrFail({
                 where: {
+                    id: 1,
                     secondName: "Dorian"
                 }
             }).should.eventually.be.rejectedWith(EntityNotFoundError);
@@ -538,7 +566,11 @@ describe("repository > find methods", () => {
                 await userRepository.save(user);
             }
 
-            await userRepository.findOneOrFail(100).should.eventually.be.rejectedWith(EntityNotFoundError);
+            await userRepository.findOneOrFail({
+                where: {
+                    id: 100
+                }
+            }).should.eventually.be.rejectedWith(EntityNotFoundError);
         })));
     });
 

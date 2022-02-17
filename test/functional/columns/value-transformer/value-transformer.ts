@@ -35,7 +35,7 @@ describe("columns > value-transformer functionality", () => {
         await postRepository.save(post);
 
         // check if all columns are updated except for readonly columns
-        const loadedPost = await postRepository.findOne(post.id);
+        const loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.title).to.be.equal("About columns1");
         expect(loadedPost!.tags).to.deep.eq(["very", "simple"]);
 
@@ -48,7 +48,7 @@ describe("columns > value-transformer functionality", () => {
         phoneBook.phones.set("mobile", 1234567);
         await phoneBookRepository.save(phoneBook);
 
-        const loadedPhoneBook = await phoneBookRepository.findOne(phoneBook.id);
+        const loadedPhoneBook = await phoneBookRepository.findOneBy({ id: phoneBook.id });
         expect(loadedPhoneBook!.name).to.be.equal("George");
         expect(loadedPhoneBook!.phones).not.to.be.undefined;
         expect(loadedPhoneBook!.phones.get("work")).to.equal(123456);
@@ -65,7 +65,7 @@ describe("columns > value-transformer functionality", () => {
 
         await userRepository.save(user);
 
-        const dbUser = await userRepository.findOne();
+        const dbUser = await userRepository.findOneBy({ id: user.id, });
         dbUser && dbUser.email.should.be.eql(email.toLocaleLowerCase());
 
     })));
@@ -78,7 +78,7 @@ describe("columns > value-transformer functionality", () => {
 
         await categoryRepository.save(category);
 
-        const dbCategory = await categoryRepository.findOne();
+        const dbCategory = await categoryRepository.findOneBy({ id: category.id, });
         dbCategory && dbCategory.description.should.be.eql(description.toLocaleLowerCase().trim());
 
     })));
@@ -91,7 +91,7 @@ describe("columns > value-transformer functionality", () => {
 
         await viewRepository.save(view);
 
-        const dbView = await viewRepository.findOne();
+        const dbView = await viewRepository.findOneBy({ id: view.id });
         dbView && dbView.title.should.be.eql(title);
 
     })));
@@ -106,7 +106,7 @@ describe("columns > value-transformer functionality", () => {
         post.tags = ["complex", "transformer"];
         await postRepository.save(post);
 
-        let loadedPost = await postRepository.findOne(post.id);
+        let loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.complex).to.eq(null);
 
         // then update all its properties and save again
@@ -116,7 +116,7 @@ describe("columns > value-transformer functionality", () => {
         await postRepository.save(post);
 
         // check if all columns are updated except for readonly columns
-        loadedPost = await postRepository.findOne(post.id);
+        loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.title).to.be.equal("Complex transformers2!");
         expect(loadedPost!.tags).to.deep.eq(["very", "complex", "actually"]);
         expect(loadedPost!.complex!.x).to.eq(3);
@@ -128,7 +128,7 @@ describe("columns > value-transformer functionality", () => {
         post.complex = null;
         await postRepository.save(post);
 
-        loadedPost = await postRepository.findOne(post.id);
+        loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.complex).to.eq(null);
 
         // then update all its properties and save again
@@ -137,7 +137,7 @@ describe("columns > value-transformer functionality", () => {
         post.complex = new Complex("0.5 0.5");
         await postRepository.save(post);
 
-        loadedPost = await postRepository.findOne(post.id);
+        loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.complex!.x).to.eq(0.5);
         expect(loadedPost!.complex!.y).to.eq(0.5);
 
@@ -147,7 +147,7 @@ describe("columns > value-transformer functionality", () => {
         post.complex = new Complex("1.05 2.3");
         await postRepository.save(post);
 
-        loadedPost = await postRepository.findOne(post.id);
+        loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.complex!.x).to.eq(1.05);
         expect(loadedPost!.complex!.y).to.eq(2.3);
     })));

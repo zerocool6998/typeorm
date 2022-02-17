@@ -23,7 +23,7 @@ describe("database schema > simple enum arrays", () => {
         enumEntity.id = 1;
         await enumEntityRepository.save(enumEntity);
 
-        const loadedEnumEntity = await enumEntityRepository.findOne(1);
+        const loadedEnumEntity = await enumEntityRepository.findOneBy({ id: 1 });
 
         loadedEnumEntity!.numericEnums.should.be.eql([NumericEnum.GHOST, NumericEnum.ADMIN]);
         loadedEnumEntity!.stringEnums.should.be.eql([]);
@@ -48,7 +48,7 @@ describe("database schema > simple enum arrays", () => {
         enumEntity.arrayDefinedNumericEnums = [12, 13];
         await enumEntityRepository.save(enumEntity);
 
-        const loadedEnumEntity = await enumEntityRepository.findOne(1);
+        const loadedEnumEntity = await enumEntityRepository.findOneBy({ id: 1 });
 
         loadedEnumEntity!.numericEnums.should.be.eql([NumericEnum.GHOST, NumericEnum.EDITOR]);
         loadedEnumEntity!.stringEnums.should.be.eql([StringEnum.MODERATOR]);

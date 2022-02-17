@@ -24,7 +24,7 @@ describe("database schema > simple-enums", () => {
         enumEntity.enumWithoutdefault = StringEnum.EDITOR;
         await enumEntityRepository.save(enumEntity);
 
-        const loadedEnumEntity = await enumEntityRepository.findOne(1);
+        const loadedEnumEntity = await enumEntityRepository.findOneBy({ id: 1 });
         loadedEnumEntity!.numericEnum.should.be.eq(NumericEnum.MODERATOR);
         loadedEnumEntity!.stringEnum.should.be.eq(StringEnum.GHOST);
         loadedEnumEntity!.stringNumericEnum.should.be.eq(StringNumericEnum.FOUR);
@@ -50,7 +50,7 @@ describe("database schema > simple-enums", () => {
         enumEntity.enumWithoutdefault = StringEnum.ADMIN;
         await enumEntityRepository.save(enumEntity);
 
-        const loadedEnumEntity = await enumEntityRepository.findOne(1);
+        const loadedEnumEntity = await enumEntityRepository.findOneBy({ id: 1 });
         loadedEnumEntity!.numericEnum.should.be.eq(NumericEnum.EDITOR);
         loadedEnumEntity!.stringEnum.should.be.eq(StringEnum.ADMIN);
         loadedEnumEntity!.stringNumericEnum.should.be.eq(StringNumericEnum.TWO);

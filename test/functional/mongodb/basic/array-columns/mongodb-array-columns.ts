@@ -33,7 +33,7 @@ describe("mongodb > array columns", () => {
         await postRepository.save(post);
 
         // check saved post
-        const loadedPost = await postRepository.findOne({ title: "Post" });
+        const loadedPost = await postRepository.findOneBy({ title: "Post" });
 
         expect(loadedPost).to.be.not.empty;
         expect(loadedPost!.names).to.be.not.empty;
@@ -81,7 +81,7 @@ describe("mongodb > array columns", () => {
         await postRepository.save(post);
 
         // now load updated post
-        const loadedUpdatedPost = await postRepository.findOne({ title: "Post" });
+        const loadedUpdatedPost = await postRepository.findOneBy({ title: "Post" });
 
         expect(loadedUpdatedPost).to.be.not.empty;
         expect(loadedUpdatedPost!.names).to.be.not.empty;

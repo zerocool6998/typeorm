@@ -28,7 +28,7 @@ describe("mongodb > embedded columns listeners", () => {
         post.counters.information = new Information();
         await postRepository.save(post);
 
-        const loadedPost = await postRepository.findOne({ title: "Post" });
+        const loadedPost = await postRepository.findOneBy({ title: "Post" });
 
         expect(loadedPost).to.be.not.empty;
         expect(loadedPost!.counters).to.be.not.empty;
@@ -40,7 +40,7 @@ describe("mongodb > embedded columns listeners", () => {
         post.title = "Updated post";
         await postRepository.save(post);
 
-        const loadedUpdatedPost = await postRepository.findOne({ title: "Updated post" });
+        const loadedUpdatedPost = await postRepository.findOneBy({ title: "Updated post" });
 
         expect(loadedUpdatedPost).to.be.not.empty;
         expect(loadedUpdatedPost!.counters).to.be.not.empty;

@@ -71,7 +71,7 @@ describe("database schema > column types > mssql", () => { // https://github.com
         post.simpleClassEnum1 = FruitEnum.Apple;
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.bit.should.be.equal(post.bit);
@@ -189,7 +189,7 @@ describe("database schema > column types > mssql", () => { // https://github.com
         post.datetimeoffset = new Date();
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.char.should.be.equal(post.char);
         loadedPost.varchar.should.be.equal(post.varchar);
@@ -257,7 +257,7 @@ describe("database schema > column types > mssql", () => { // https://github.com
         post.datetime.setMilliseconds(0); // set milliseconds to zero because the SQL Server datetime type only has a 1/300 ms (~3.33̅ ms) resolution
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.bit.should.be.equal(post.bit);

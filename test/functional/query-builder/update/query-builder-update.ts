@@ -32,7 +32,7 @@ describe("query builder > update", () => {
             .where("name = :name", { name: "Alex Messer" })
             .execute();
 
-        const loadedUser1 = await connection.getRepository(User).findOne({ name: "Dima Zotov" });
+        const loadedUser1 = await connection.getRepository(User).findOneBy({ name: "Dima Zotov" });
         expect(loadedUser1).to.exist;
         loadedUser1!.name.should.be.equal("Dima Zotov");
 
@@ -43,7 +43,7 @@ describe("query builder > update", () => {
             .where("name = :name", { name: "Dima Zotov" })
             .execute();
 
-        const loadedUser2 = await connection.getRepository(User).findOne({ name: "Muhammad Mirzoev" });
+        const loadedUser2 = await connection.getRepository(User).findOneBy({ name: "Muhammad Mirzoev" });
         expect(loadedUser2).to.exist;
         loadedUser2!.name.should.be.equal("Muhammad Mirzoev");
 
@@ -65,7 +65,7 @@ describe("query builder > update", () => {
             .execute();
 
 
-        const loadedUser1 = await connection.getRepository(User).findOne({ name: "Dima" });
+        const loadedUser1 = await connection.getRepository(User).findOneBy({ name: "Dima" });
         expect(loadedUser1).to.exist;
         loadedUser1!.name.should.be.equal("Dima");
 
@@ -87,7 +87,7 @@ describe("query builder > update", () => {
             .where("likesCount = 1")
             .execute();
 
-        const loadedUser1 = await connection.getRepository(User).findOne({ likesCount: 2 });
+        const loadedUser1 = await connection.getRepository(User).findOneBy({ likesCount: 2 });
         expect(loadedUser1).to.exist;
         loadedUser1!.name.should.be.equal("Dima");
 
@@ -129,7 +129,7 @@ describe("query builder > update", () => {
             })
             .execute();
 
-        const loadedPhoto1 = await connection.getRepository(Photo).findOne({ url: "1.jpg" });
+        const loadedPhoto1 = await connection.getRepository(Photo).findOneBy({ url: "1.jpg" });
         expect(loadedPhoto1).to.exist;
         loadedPhoto1!.should.be.eql({
             id: 1,
@@ -141,7 +141,7 @@ describe("query builder > update", () => {
             }
         });
 
-        const loadedPhoto2 = await connection.getRepository(Photo).findOne({ url: "2.jpg" });
+        const loadedPhoto2 = await connection.getRepository(Photo).findOneBy({ url: "2.jpg" });
         expect(loadedPhoto2).to.exist;
         loadedPhoto2!.should.be.eql({
             id: 2,

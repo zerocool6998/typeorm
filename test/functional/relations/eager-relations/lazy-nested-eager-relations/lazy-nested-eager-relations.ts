@@ -68,7 +68,11 @@ describe("relations > eager relations > lazy nested eager relations", () => {
             connections.map(async (connection) => {
                 await prepareData(connection);
 
-                const loadedEditor = await connection.manager.findOne(Editor, 1);
+                const loadedEditor = await connection.manager.findOne(Editor, {
+                    where: {
+                        id: 1,
+                    },
+                });
 
                 const loadedPost = await loadedEditor?.post;
 

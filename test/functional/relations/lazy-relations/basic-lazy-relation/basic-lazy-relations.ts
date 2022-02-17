@@ -60,7 +60,7 @@ describe("basic-lazy-relations", () => {
 
         await savedPost.categories.should.eventually.be.eql([savedCategory1, savedCategory2, savedCategory3]);
 
-        const post = (await postRepository.findOne(1))!;
+        const post = (await postRepository.findOneBy({ id: 1 }))!;
         post.title.should.be.equal("Hello post");
         post.text.should.be.equal("This is post about post");
 
@@ -98,7 +98,7 @@ describe("basic-lazy-relations", () => {
 
         await savedPost.twoSideCategories.should.eventually.be.eql([savedCategory1, savedCategory2, savedCategory3]);
 
-        const post = (await postRepository.findOne(1))!;
+        const post = (await postRepository.findOneBy({ id: 1 }))!;
         post.title.should.be.equal("Hello post");
         post.text.should.be.equal("This is post about post");
 
@@ -108,7 +108,7 @@ describe("basic-lazy-relations", () => {
         categories.should.deep.include({ id: 2, name: "people" });
         categories.should.deep.include({ id: 3, name: "animals" });
 
-        const category = (await categoryRepository.findOne(1))!;
+        const category = (await categoryRepository.findOneBy({ id: 1 }))!;
         category.name.should.be.equal("kids");
 
         const twoSidePosts = await category.twoSidePosts;
@@ -137,7 +137,7 @@ describe("basic-lazy-relations", () => {
         await newUser.profile.should.eventually.be.eql(profile);
 
         // const loadOptions: FindOptions = { alias: "user", innerJoinAndSelect };
-        const loadedUser: any = await userRepository.findOne(1);
+        const loadedUser: any = await userRepository.findOneBy({ id: 1 });
         loadedUser.firstName.should.be.equal("Umed");
         loadedUser.secondName.should.be.equal("San");
 
@@ -331,7 +331,7 @@ describe("basic-lazy-relations", () => {
             const category = new Category();
             category.name = "category of great post";
             await manager.save(category);
-    
+
             const post = new Post();
             post.title = "post with great category";
             post.text = "post with great category and great text";
@@ -349,7 +349,7 @@ describe("basic-lazy-relations", () => {
             const category = new Category();
             category.name = "category of great post";
             await manager.save(category);
-    
+
             const post = new Post();
             post.title = "post with great category";
             post.text = "post with great category and great text";

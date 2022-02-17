@@ -25,7 +25,7 @@ describe("github issues > #306 embeddeds with custom column name don't work", ()
 
         await connection.manager.save(race);
 
-        const loadedRace = await connection.manager.findOne(Race, { name: "National Race" });
+        const loadedRace = await connection.manager.findOneBy(Race, { name: "National Race" });
         expect(loadedRace).to.be.not.undefined;
         expect(loadedRace!.id).to.be.not.undefined;
         expect(loadedRace!.duration).to.be.not.undefined;

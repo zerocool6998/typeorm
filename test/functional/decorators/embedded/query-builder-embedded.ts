@@ -29,7 +29,7 @@ describe("decorators > embedded", () => {
             await postRepository.save(post);
 
             // now load it
-            const loadedPost = (await postRepository.findOne(post.id))!;
+            const loadedPost = (await postRepository.findOneBy({ id: post.id }))!;
             loadedPost.id.should.be.equal(post.id);
             loadedPost.title.should.be.equal("Hello post");
             loadedPost.text.should.be.equal("This is text about the post");

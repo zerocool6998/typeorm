@@ -14,14 +14,19 @@ import {TreeRepository} from "../repository/TreeRepository";
 import {Repository} from "../repository/Repository";
 import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
 import {PlainObjectToNewEntityTransformer} from "../query-builder/transformer/PlainObjectToNewEntityTransformer";
-import {PlainObjectToDatabaseEntityTransformer} from "../query-builder/transformer/PlainObjectToDatabaseEntityTransformer";
-import {CustomRepositoryNotFoundError} from "../error/CustomRepositoryNotFoundError";
+import {
+    PlainObjectToDatabaseEntityTransformer
+} from "../query-builder/transformer/PlainObjectToDatabaseEntityTransformer";
+import {
+    CustomRepositoryCannotInheritRepositoryError,
+    CustomRepositoryNotFoundError,
+    TreeRepositoryNotSupportedError,
+    TypeORMError
+} from "../error";
 import {AbstractRepository} from "../repository/AbstractRepository";
-import {CustomRepositoryCannotInheritRepositoryError} from "../error/CustomRepositoryCannotInheritRepositoryError";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {MongoDriver} from "../driver/mongodb/MongoDriver";
-import {TreeRepositoryNotSupportedError} from "../error/TreeRepositoryNotSupportedError";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import {EntityPersistExecutor} from "../persistence/EntityPersistExecutor";
 import {ObjectID} from "../driver/mongodb/typings";
@@ -32,9 +37,7 @@ import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {EntitySchema} from "../entity-schema/EntitySchema";
-import {ObjectLiteral} from "../common/ObjectLiteral";
 import {getMetadataArgsStorage} from "../globals";
-import {TypeORMError} from "../error";
 import {UpsertOptions} from "../repository/UpsertOptions";
 
 /**
@@ -798,93 +801,93 @@ export class EntityManager {
     }
 
     /**
-     * Finds first entity that matches given find options.
+     * Finds first entity by a given find options.
+     * If entity was not found in the database - returns null.
      */
-    findOne<Entity>(entityClass: EntityTarget<Entity>, id?: string|number|Date|ObjectID, options?: FindOneOptions<Entity>): Promise<Entity|null>;
-
-    /**
-     * Finds first entity that matches given find options.
-     */
-    findOne<Entity>(entityClass: EntityTarget<Entity>, options?: FindOneOptions<Entity>): Promise<Entity|null>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    findOne<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], options?: FindOneOptions<Entity>): Promise<Entity|null>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    async findOne<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOneOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], maybeOptions?: FindOneOptions<Entity>): Promise<Entity|null> {
-
-        let findOptions: FindManyOptions = {};
-        if (FindOptionsUtils.isFindOneOptions(idOrOptionsOrConditions)) {
-            findOptions = idOrOptionsOrConditions;
-        } else if (maybeOptions && FindOptionsUtils.isFindOneOptions(maybeOptions)) {
-            findOptions = maybeOptions;
-        }
-
-        let options: ObjectLiteral|undefined = undefined;
-        if (idOrOptionsOrConditions instanceof Object && !FindOptionsUtils.isFindOneOptions(idOrOptionsOrConditions))
-            options = idOrOptionsOrConditions as ObjectLiteral;
-
+    async findOne<Entity>(entityClass: EntityTarget<Entity>, options: FindOneOptions<Entity>): Promise<Entity | null> {
         const metadata = this.connection.getMetadata(entityClass);
+
+        // prepare alias for built query
         let alias: string = metadata.name;
-        if (findOptions && findOptions.join) {
-            alias = findOptions.join.alias;
-
-        } else if (maybeOptions && FindOptionsUtils.isFindOneOptions(maybeOptions) && maybeOptions.join) {
-            alias = maybeOptions.join.alias;
+        if (options && options.join) {
+            alias = options.join.alias;
         }
-        const qb = this.createQueryBuilder<Entity>(entityClass as any, alias);
 
-        const passedId = typeof idOrOptionsOrConditions === "string" || typeof idOrOptionsOrConditions === "number" || (idOrOptionsOrConditions as any) instanceof Date;
-
-        if (!passedId) {
-            findOptions = {
-                ...(findOptions || {}),
+        // create query builder and apply find options
+        return this.createQueryBuilder<Entity>(entityClass, alias)
+            .setFindOptions({
+                ...options,
                 take: 1,
-            };
-        }
-
-        if (options) {
-            findOptions = {
-                ...(findOptions || {}),
-                where: options
-            };
-        }
-
-        qb.setFindOptions(findOptions);
-
-        if (passedId) {
-            qb.andWhereInIds(metadata.ensureEntityIdMap(idOrOptionsOrConditions));
-        }
-
-        return qb.getOne();
+            })
+            .getOne();
     }
 
     /**
-     * Finds first entity that matches given find options or rejects the returned promise on error.
+     * Finds first entity that matches given where condition.
+     * If entity was not found in the database - returns null.
      */
-    findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, id?: string|number|Date|ObjectID, options?: FindOneOptions<Entity>): Promise<Entity>;
+    async findOneBy<Entity>(entityClass: EntityTarget<Entity>, where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity | null> {
+        const metadata = this.connection.getMetadata(entityClass);
+
+        // create query builder and apply find options
+        return this.createQueryBuilder<Entity>(entityClass, metadata.name)
+            .setFindOptions({
+                where,
+                take: 1,
+            })
+            .getOne();
+    }
 
     /**
-     * Finds first entity that matches given find options or rejects the returned promise on error.
+     * Finds first entity that matches given id.
+     * If entity was not found in the database - returns null.
      */
-    findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, options?: FindOneOptions<Entity>): Promise<Entity>;
+    async findOneById<Entity>(entityClass: EntityTarget<Entity>, id: number | string | Date | ObjectID): Promise<Entity | null> {
+        const metadata = this.connection.getMetadata(entityClass);
+
+        // create query builder and apply find options
+        return this.createQueryBuilder<Entity>(entityClass, metadata.name)
+            .setFindOptions({
+                take: 1,
+            })
+            .whereInIds(metadata.ensureEntityIdMap(id))
+            .getOne();
+    }
 
     /**
-     * Finds first entity that matches given conditions or rejects the returned promise on error.
+     * Finds first entity by a given find options.
+     * If entity was not found in the database - rejects with error.
      */
-    findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], options?: FindOneOptions<Entity>): Promise<Entity>;
-
-    /**
-     * Finds first entity that matches given conditions or rejects the returned promise on error.
-     */
-    async findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, idOrOptionsOrConditions?: string|string[]|number|number[]|Date|Date[]|ObjectID|ObjectID[]|FindOneOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[], maybeOptions?: FindOneOptions<Entity>): Promise<Entity> {
-        return this.findOne<Entity>(entityClass as any, idOrOptionsOrConditions as any, maybeOptions).then((value) => {
+    async findOneOrFail<Entity>(entityClass: EntityTarget<Entity>, options: FindOneOptions<Entity>): Promise<Entity> {
+        return this.findOne<Entity>(entityClass as any, options).then((value) => {
             if (value === null) {
-                return Promise.reject(new EntityNotFoundError(entityClass, idOrOptionsOrConditions));
+                return Promise.reject(new EntityNotFoundError(entityClass, options));
+            }
+            return Promise.resolve(value);
+        });
+    }
+
+    /**
+     * Finds first entity that matches given where condition.
+     * If entity was not found in the database - rejects with error.
+     */
+    async findOneByOrFail<Entity>(entityClass: EntityTarget<Entity>, where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity> {
+        return this.findOneBy<Entity>(entityClass as any, where).then((value) => {
+            if (value === null) {
+                return Promise.reject(new EntityNotFoundError(entityClass, where));
+            }
+            return Promise.resolve(value);
+        });
+    }
+
+    /**
+     * Finds first entity that matches given id.
+     * If entity was not found in the database - rejects with error.
+     */
+    async findOneByIdOrFail<Entity>(entityClass: EntityTarget<Entity>, id: number | string | Date | ObjectID): Promise<Entity> {
+        return this.findOneById<Entity>(entityClass, id).then((value) => {
+            if (value === null) {
+                return Promise.reject(new EntityNotFoundError(entityClass, id));
             }
             return Promise.resolve(value);
         });

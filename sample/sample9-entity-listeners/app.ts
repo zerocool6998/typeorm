@@ -22,7 +22,7 @@ createConnection(options).then(connection => {
 
     let category2 = new PostCategory();
     category2.name = "post category #2";
-    
+
     let author = new PostAuthor();
     author.name = "Umed";
 
@@ -39,7 +39,7 @@ createConnection(options).then(connection => {
         .then(post => {
             console.log("Post has been saved");
             console.log("---------------------------");
-            return postRepository.findOne(post.id);
+            return postRepository.findOneBy({ id: post.id });
         })
         .then(loadedPost => {
             console.log("post is loaded. Its uid is " + loadedPost!.uid);

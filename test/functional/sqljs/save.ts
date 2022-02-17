@@ -41,7 +41,7 @@ describe("sqljs driver > save", () => {
         await manager.loadDatabase(pathToSqlite);
 
         const repository = connection.getRepository(Post);
-        const post = await repository.findOne({title: "The second title"});
+        const post = await repository.findOneBy({title: "The second title"});
 
         expect(post).not.to.be.null;
         if (post) {

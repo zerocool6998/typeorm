@@ -38,9 +38,11 @@ describe("github issues > #8393 When trying to update `update: false` column wit
                 await expect(updateResultPromise).to.be.rejectedWith(UpdateValuesMissingError);
 
                 const updatedPost = await connection.manager.findOne(
-                    Post,
-                    post.id
-                );
+                    Post, {
+                    where: {
+                        id: post.id
+                    }
+                });
 
                 expect(updatedPost).to.be.an("object");
 

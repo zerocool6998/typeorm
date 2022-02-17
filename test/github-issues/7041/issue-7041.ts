@@ -28,7 +28,10 @@ describe("github issues > #7041 When requesting nested relations on foreign key 
                 const testUser = new User();
                 testUser.randomField = "foo";
                 await userRepo.save(testUser);
-                const foundUser = await userRepo.findOne(testUser.id, {
+                const foundUser = await userRepo.findOne({
+                    where: {
+                        id: testUser.id,
+                    },
                     relations: ["admin", "admin.organization"],
                 });
                 expect(foundUser?.randomField).eq("foo");
@@ -43,7 +46,10 @@ describe("github issues > #7041 When requesting nested relations on foreign key 
                 const testUser = new User();
                 testUser.randomField = "foo";
                 await userRepo.save(testUser);
-                const foundUser = await userRepo.findOne(testUser.id, {
+                const foundUser = await userRepo.findOne({
+                    where: {
+                        id: testUser.id,
+                    },
                     relations: ["membership", "membership.organization"],
                 });
                 expect(foundUser?.randomField).eq("foo");

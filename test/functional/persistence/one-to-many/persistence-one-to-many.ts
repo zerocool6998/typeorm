@@ -40,7 +40,14 @@ describe("persistence > one-to-many", function() {
         newPost.categories = [newCategory];
         await postRepository.save(newPost);
 
-        const loadedPost = await postRepository.findOne(newPost.id, { relations: ["categories"] });
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: newPost.id
+            },
+            relations: {
+                categories: true
+            }
+        });
         expect(loadedPost!).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         expect(loadedPost!.categories![0]).not.to.be.undefined;
@@ -60,7 +67,14 @@ describe("persistence > one-to-many", function() {
         newPost.categories = [newCategory];
         await postRepository.save(newPost);
 
-        const loadedPost = await postRepository.findOne(newPost.id, { relations: ["categories"] });
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: newPost.id
+            },
+            relations: {
+                categories: true,
+            }
+        });
         expect(loadedPost).not.to.be.null;
         expect(loadedPost!.categories).not.to.be.undefined;
         expect(loadedPost!.categories![0]).not.to.be.undefined;
@@ -88,7 +102,10 @@ describe("persistence > one-to-many", function() {
         newPost.categories = [firstNewCategory];
         await postRepository.save(newPost);
 
-        const loadedPost = await postRepository.findOne(newPost.id, {
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: newPost.id
+            },
             join: {
                 alias: "post",
                 innerJoinAndSelect: {
@@ -124,7 +141,10 @@ describe("persistence > one-to-many", function() {
         newPost.categories = [];
         await postRepository.save(newPost);
 
-        const loadedPost = await postRepository.findOne(newPost.id, {
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: newPost.id
+            },
             join: {
                 alias: "post",
                 leftJoinAndSelect: {
@@ -158,7 +178,10 @@ describe("persistence > one-to-many", function() {
         newPost.categories = null;
         await postRepository.save(newPost);
 
-        const loadedPost = (await postRepository.findOne(newPost.id, {
+        const loadedPost = (await postRepository.findOne({
+            where: {
+                id: newPost.id
+            },
             join: {
                 alias: "post",
                 leftJoinAndSelect: {

@@ -18,7 +18,7 @@ describe("github issues > #704 Table alias in WHERE clause is not quoted in Post
         user.email = "john@example.com";
         await connection.manager.save(user);
 
-        const loadedUser = await connection.getRepository(User).findOne({ email: "john@example.com" });
+        const loadedUser = await connection.getRepository(User).findOneBy({ email: "john@example.com" });
 
         loadedUser!.id.should.be.equal(1);
         loadedUser!.email.should.be.equal("john@example.com");

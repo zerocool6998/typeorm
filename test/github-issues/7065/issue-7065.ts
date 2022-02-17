@@ -38,7 +38,10 @@ describe("github issues > #7065 ChildEntity type relationship produces unexpecte
         user.phones = [phone];
         await userRepo.save(user);
 
-        const result = await userRepo.findOne(1, {
+        const result = await userRepo.findOne({
+            where: {
+                id: 1,
+            },
             relations: ["emails", "phones"]
         });
 

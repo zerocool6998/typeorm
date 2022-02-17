@@ -35,7 +35,7 @@ describe("github issues > #5275 Enums with spaces are not converted properly.", 
                 Role.PlayerAlt,
             ],
         });
-        const user = await userRepository.findOneOrFail(1);
+        const user = await userRepository.findOneByOrFail({ id: 1 });
         user.roles.should.deep.equal(["Guild Master", "Officer", 'BOSS "LEVEL 80"', "Knight\\Rogue", 1, "Player Alt"]);
     })));
 
@@ -47,13 +47,13 @@ describe("github issues > #5275 Enums with spaces are not converted properly.", 
             { id: 3, role: Role.Warrior }
         ]);
 
-        const user1 = await userRepository.findOneOrFail(1);
+        const user1 = await userRepository.findOneByOrFail({ id: 1 });
         user1.role.should.equal("Guild Master");
 
-        const user2 = await userRepository.findOneOrFail(2);
+        const user2 = await userRepository.findOneByOrFail({ id: 2 });
         user2.role.should.equal('BOSS "LEVEL 80"');
 
-        const user3 = await userRepository.findOneOrFail(3);
+        const user3 = await userRepository.findOneByOrFail({ id: 3 });
         user3.role.should.equal("Knight\\Rogue");
     })));
 });

@@ -360,7 +360,9 @@ describe("repository > basic methods", () => {
 
             await postRepository.save(post);
 
-            const dbPost = await postRepository.findOne(post.id) as Post;
+            const dbPost = await postRepository.findOneByOrFail({
+                id: post.id
+            });
             dbPost.should.be.instanceOf(Post);
             dbPost.dateAdded!.should.be.instanceOf(Date);
             dbPost.dateAdded!.getTime().should.be.equal(date.getTime());
@@ -393,7 +395,7 @@ describe("repository > basic methods", () => {
             // create a new post and insert it
             await postRepository.upsert({ externalId, title: "Post title initial" }, ["externalId"]);
 
-            const initial = await postRepository.findOneOrFail({ externalId });
+            const initial = await postRepository.findOneByOrFail({ externalId });
 
             initial.title.should.be.equal("Post title initial");
 
@@ -402,7 +404,14 @@ describe("repository > basic methods", () => {
             // update post with externalId
             await postRepository.upsert({ externalId, title: "Post title updated", category }, ["externalId"]);
 
-            const updated = await postRepository.findOneOrFail({ externalId }, { relations: ["category"] });
+            const updated = await postRepository.findOneOrFail({
+                where: {
+                    externalId
+                },
+                relations: {
+                    category: true,
+                }
+            });
             // title should have changed
             updated.title.should.be.equal("Post title updated");
             // id should not have changed
@@ -429,18 +438,18 @@ describe("repository > basic methods", () => {
 
             // upserts on primary key without specifying conflict columns should upsert
             await externalIdObjects.upsert({ externalId, title: "foo" }, ["externalId"]);
-            (await externalIdObjects.findOneOrFail(externalId))!.title.should.be.equal("foo");
+            (await externalIdObjects.findOneByOrFail({externalId}))!.title.should.be.equal("foo");
 
             await externalIdObjects.upsert({ externalId, title: "bar" }, ["externalId"]);
-            (await externalIdObjects.findOneOrFail(externalId))!.title.should.be.equal("bar");
+            (await externalIdObjects.findOneByOrFail({externalId}))!.title.should.be.equal("bar");
 
             // upserts on unique relation should work
             await relationAsPrimaryKeyRepository.upsert({ categoryId: category.id }, ["categoryId"]);
 
             (
-                await relationAsPrimaryKeyRepository.findOneOrFail(
-                    { category },
-                    { relations: ["category"] }
+                await relationAsPrimaryKeyRepository.findOneOrFail({
+                    where: { category: { id: category.id } },
+                    relations: { category: true } }
                 )
             ).category.id.should.equal(category.id);
         })));
@@ -480,8 +489,8 @@ describe("repository > basic methods", () => {
             // update properties of embedded
             await postObjects.upsert({ externalId, title: "title", subTitle: "subtitle" }, ["externalId"]);
             await postObjects.upsert({ externalId, title: "title updated" }, ["externalId"]);
-            (await postObjects.findOneOrFail(({ externalId }))).subTitle.should.equal("subtitle");
-            (await postObjects.findOneOrFail(({ externalId }))).title.should.equal("title updated");
+            (await postObjects.findOneByOrFail(({ externalId }))).subTitle.should.equal("subtitle");
+            (await postObjects.findOneByOrFail(({ externalId }))).title.should.equal("title updated");
         })));
         it("should upsert with embedded columns", () => Promise.all(connections.map(async (connection) => {
             if (connection.driver.supportedUpsertType == null) return;
@@ -493,17 +502,17 @@ describe("repository > basic methods", () => {
             // update properties of embedded
             await externalIdObjects.upsert({ externalId, title: "embedded", embedded: { foo: "foo 1" } }, ["externalId"]);
 
-            (await externalIdObjects.findOneOrFail({ externalId })).embedded.foo.should.be.equal("foo 1");
+            (await externalIdObjects.findOneByOrFail({ externalId })).embedded.foo.should.be.equal("foo 1");
 
             await externalIdObjects.upsert({ externalId, title: "embedded", embedded: { foo: "foo 2" } }, ["externalId"]);
 
-            (await externalIdObjects.findOneOrFail({ externalId })).embedded.foo.should.be.equal("foo 2");
+            (await externalIdObjects.findOneByOrFail({ externalId })).embedded.foo.should.be.equal("foo 2");
 
             // upsert on embedded
             await embeddedConstraintObjects.upsert({ embedded: { id: "bar1", value: "foo 1" } }, ["embedded.id"]);
-            (await embeddedConstraintObjects.findOneOrFail({ embedded: { id: "bar1" } })).embedded.value.should.be.equal("foo 1");
+            (await embeddedConstraintObjects.findOneByOrFail({ embedded: { id: "bar1" } })).embedded.value.should.be.equal("foo 1");
             await embeddedConstraintObjects.upsert({ embedded: { id: "bar1", value: "foo 2" } }, ["embedded.id"]);
-            (await embeddedConstraintObjects.findOneOrFail({ embedded: { id: "bar1" } })).embedded.value.should.be.equal("foo 2");
+            (await embeddedConstraintObjects.findOneByOrFail({ embedded: { id: "bar1" } })).embedded.value.should.be.equal("foo 2");
         })));
         it("should upsert on one-to-one relation", () => Promise.all(connections.map(async (connection) => {
             if (connection.driver.supportedUpsertType == null) return;
@@ -520,14 +529,14 @@ describe("repository > basic methods", () => {
                 order: 1
             }, ["category.id"]);
 
-            (await oneToOneRepository.findOneOrFail({ category }))!.order.should.be.equal(1);
+            (await oneToOneRepository.findOneByOrFail({ category }))!.order.should.be.equal(1);
 
             await oneToOneRepository.upsert({
                 category,
                 order: 2
             }, ["category.id"]);
 
-            (await oneToOneRepository.findOneOrFail({ category }))!.order.should.be.equal(2);
+            (await oneToOneRepository.findOneByOrFail({ category }))!.order.should.be.equal(2);
 
         })));
         it("should bulk upsert with embedded columns", () => Promise.all(connections.map(async (connection) => {
@@ -541,8 +550,8 @@ describe("repository > basic methods", () => {
             {
                 embedded: { id: "bar3", value: "value3" },
             }], ["embedded.id"]);
-            (await embeddedConstraintObjects.findOneOrFail({ embedded: { id: "bar2" } })).embedded.value.should.be.equal("value2");
-            (await embeddedConstraintObjects.findOneOrFail({ embedded: { id: "bar3" } })).embedded.value.should.be.equal("value3");
+            (await embeddedConstraintObjects.findOneByOrFail({ embedded: { id: "bar2" } })).embedded.value.should.be.equal("value2");
+            (await embeddedConstraintObjects.findOneByOrFail({ embedded: { id: "bar3" } })).embedded.value.should.be.equal("value3");
 
             await embeddedConstraintObjects.upsert([{
                 embedded: { id: "bar2", value: "value2 2" },
@@ -550,8 +559,8 @@ describe("repository > basic methods", () => {
             {
                 embedded: { id: "bar3", value: "value3 2" },
             }], ["embedded.id"]);
-            (await embeddedConstraintObjects.findOneOrFail({ embedded: { id: "bar2" } })).embedded.value.should.be.equal("value2 2");
-            (await embeddedConstraintObjects.findOneOrFail({ embedded: { id: "bar3" } })).embedded.value.should.be.equal("value3 2");
+            (await embeddedConstraintObjects.findOneByOrFail({ embedded: { id: "bar2" } })).embedded.value.should.be.equal("value2 2");
+            (await embeddedConstraintObjects.findOneByOrFail({ embedded: { id: "bar3" } })).embedded.value.should.be.equal("value3 2");
         })));
         it("should throw if using an unsupported driver", () => Promise.all(connections.map(async (connection) => {
             if (connection.driver.supportedUpsertType != null) return;

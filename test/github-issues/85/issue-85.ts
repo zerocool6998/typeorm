@@ -21,7 +21,7 @@ describe("github issues > #85 - Column option insert: false, update: false", () 
     doc1.version = 42;
     await connection.manager.save(doc1);
     const docs = connection.getRepository(Document);
-    const doc2 = await docs.findOne();
+    const doc2 = await docs.findOneBy({ id: 1 });
     expect(doc2!.version).to.be.equal(1);
   })));
 

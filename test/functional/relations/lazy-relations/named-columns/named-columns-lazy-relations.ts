@@ -51,7 +51,7 @@ describe("named-columns-lazy-relations", () => {
 
         await savedPost.categories.should.eventually.be.eql([savedCategory1, savedCategory2, savedCategory3]);
 
-        const post = (await postRepository.findOne(1))!;
+        const post = (await postRepository.findOneBy({ id: 1 }))!;
         post.title.should.be.equal("Hello post");
         post.text.should.be.equal("This is post about post");
 
@@ -89,7 +89,7 @@ describe("named-columns-lazy-relations", () => {
 
         await savedPost.twoSideCategories.should.eventually.be.eql([savedCategory1, savedCategory2, savedCategory3]);
 
-        const post = (await postRepository.findOne(1))!;
+        const post = (await postRepository.findOneBy({ id: 1 }))!;
         post.title.should.be.equal("Hello post");
         post.text.should.be.equal("This is post about post");
 
@@ -99,7 +99,7 @@ describe("named-columns-lazy-relations", () => {
         categories.should.deep.include(savedCategory2);
         categories.should.deep.include(savedCategory3);
 
-        const category = (await categoryRepository.findOne(1))!;
+        const category = (await categoryRepository.findOneBy({ id: 1 }))!;
         category.name.should.be.equal("kids");
 
         const twoSidePosts = await category.twoSidePosts;

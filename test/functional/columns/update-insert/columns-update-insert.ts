@@ -27,7 +27,7 @@ describe("columns > update and insert control", () => {
         await postRepository.save(post);
 
         // check if all columns are as expected
-        let loadedPost = await postRepository.findOne(post.id);
+        let loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.title).to.be.equal("About columns");
         expect(loadedPost!.text).to.be.equal("Some text about columns");
         expect(loadedPost!.authorFirstName).to.be.equal("Umed");
@@ -43,7 +43,7 @@ describe("columns > update and insert control", () => {
         await postRepository.save(post);
 
         // check if all columns are as expected
-        loadedPost = await postRepository.findOne(post.id);
+        loadedPost = await postRepository.findOneBy({ id: post.id });
         expect(loadedPost!.title).to.be.equal("About columns1");
         expect(loadedPost!.text).to.be.equal("Some text about columns1");
         expect(loadedPost!.authorFirstName).to.be.equal("Umed");      // update blocked

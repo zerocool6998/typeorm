@@ -34,8 +34,12 @@ describe("query builder > soft-delete", () => {
             .execute();
 
         const loadedUser1 = await connection.getRepository(User).findOne(
-            { name: "Alex Messer" },
-            { withDeleted: true }
+            {
+                where: {
+                    name: "Alex Messer"
+                },
+                withDeleted: true
+            }
         );
         expect(loadedUser1).to.exist;
         expect(loadedUser1!.deletedAt).to.be.instanceof(Date);
@@ -47,7 +51,7 @@ describe("query builder > soft-delete", () => {
             .where("name = :name", { name: "Alex Messer" })
             .execute();
 
-        const loadedUser2 = await connection.getRepository(User).findOne({ name: "Alex Messer" });
+        const loadedUser2 = await connection.getRepository(User).findOneBy({ name: "Alex Messer" });
         expect(loadedUser2).to.exist;
         expect(loadedUser2!.deletedAt).to.be.equals(null);
 
@@ -84,10 +88,10 @@ describe("query builder > soft-delete", () => {
             })
             .execute();
 
-        const loadedPhoto1 = await connection.getRepository(Photo).findOne({ url: "1.jpg" });
+        const loadedPhoto1 = await connection.getRepository(Photo).findOneBy({ url: "1.jpg" });
         expect(loadedPhoto1).to.be.null;
 
-        const loadedPhoto2 = await connection.getRepository(Photo).findOne({ url: "2.jpg" });
+        const loadedPhoto2 = await connection.getRepository(Photo).findOneBy({ url: "2.jpg" });
         loadedPhoto2!.should.be.eql({
             id: 2,
             url: "2.jpg",
@@ -111,7 +115,7 @@ describe("query builder > soft-delete", () => {
         })
         .execute();
 
-        const restoredPhoto2 = await connection.getRepository(Photo).findOne({ url: "1.jpg" });
+        const restoredPhoto2 = await connection.getRepository(Photo).findOneBy({ url: "1.jpg" });
         restoredPhoto2!.should.be.eql({
             id: 1,
             url: "1.jpg",

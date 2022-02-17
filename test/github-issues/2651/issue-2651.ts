@@ -28,7 +28,7 @@ describe("github issues > #2651 set shouldn't have update statements twice when 
             updatedAt: new Date()
         });
 
-        const loadedPost1 = await connection.manager.findOneOrFail(Post, { id: 1 });
+        const loadedPost1 = await connection.manager.findOneByOrFail(Post, { id: 1 });
         expect(loadedPost1.title).to.be.eql("updated post");
 
     })));

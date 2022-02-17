@@ -28,8 +28,8 @@ describe("lazy-relations-loading-via-base-entity-finders", () => {
             post.title = "hello post";
             post.category = Promise.resolve(category);
             await post.save();
-            expect((await Post.findOneOrFail({category: { id: category.id, name: category.name  }})).id).equal(post.id);
-            expect((await Post.findOneOrFail({category: {id: category.id}})).id).equal(post.id);
+            expect((await Post.findOneByOrFail({category: { id: category.id, name: category.name  }})).id).equal(post.id);
+            expect((await Post.findOneByOrFail({category: {id: category.id}})).id).equal(post.id);
         }
     });
 });

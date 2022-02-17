@@ -17,7 +17,7 @@ describe("github issues > #1981 Boolean values not casted properly when used in 
         product.liked = true;
         await connection.manager.save(product);
 
-        const loadedProduct = await connection.manager.findOne(Product, { liked: true });
+        const loadedProduct = await connection.manager.findOneBy(Product, { liked: true });
         loadedProduct!.liked.should.be.equal(true);
     })));
 

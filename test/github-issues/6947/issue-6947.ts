@@ -35,7 +35,7 @@ describe("github issues > #6947 Custom primary column for TreeRepository based e
                 await categoryRepository.save(child);
 
                 const tree = await categoryRepository.findDescendantsTree(
-                    (await categoryRepository.findOne({ cat_name: "parent" }))!
+                    (await categoryRepository.findOneBy({ cat_name: "parent" }))!
                 );
 
                 tree.should.deep.include({

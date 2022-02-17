@@ -28,7 +28,7 @@ describe("github issues > #4452 InsertQueryBuilder fails on some SQL Expressions
           })
           .execute();
 
-      const loadedUser1 = await connection.getRepository(User).findOne({ name: "Ben Dover" });
+      const loadedUser1 = await connection.getRepository(User).findOneBy({ name: "Ben Dover" });
       expect(loadedUser1).to.exist;
       loadedUser1!.created_at.should.be.instanceOf(Date);
 

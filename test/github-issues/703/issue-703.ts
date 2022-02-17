@@ -26,7 +26,10 @@ describe("github issues > #703.findOne does not return an empty array on OneToMa
         post.categories = [];
         await connection.manager.save(post);
 
-        const loadedPost = await connection.getRepository(Post).findOne(1, {
+        const loadedPost = await connection.getRepository(Post).findOne({
+            where: {
+                id: 1,
+            },
             relations: ["categories"]
         });
 

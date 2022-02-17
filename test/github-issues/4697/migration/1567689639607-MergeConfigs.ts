@@ -11,7 +11,9 @@ export class MergeConfigs1567689639607 implements MigrationInterface {
       const configs = await configRepository.find();
 
       await Promise.all(configs.map(async ({itemId, data}) => {
-        const item = await itemRepository.findOne(itemId);
+        const item = await itemRepository.findOneBy({
+            _id: itemId,
+        });
 
         if (item) {
           item.config = data;

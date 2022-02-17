@@ -19,7 +19,7 @@ const options: ConnectionOptions = {
 createConnection(options).then(connection => {
 
     let questionRepository = connection.getRepository(Question);
-    
+
     const question = new Question();
     question.title = "Hello question!";
     question.counters = new Counters();
@@ -32,16 +32,18 @@ createConnection(options).then(connection => {
         .save(question)
         .then(savedQuestion => {
             console.log("question has been saved: ", savedQuestion);
-            
+
             // lets load it now:
-            return questionRepository.findOne(savedQuestion.id);
+            return questionRepository.findOneBy({
+                id: savedQuestion.id
+            });
         })
         .then(loadedQuestion => {
             console.log("question has been loaded: ", loadedQuestion);
 
             loadedQuestion!.counters.commentCount = 7;
             loadedQuestion!.counters.metadata = "#updated question";
-            
+
             return questionRepository.save(loadedQuestion!);
         })
         .then(updatedQuestion => {

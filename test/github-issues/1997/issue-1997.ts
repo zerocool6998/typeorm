@@ -53,7 +53,7 @@ describe("github issues > #1997 enum type not working in postgres when defined i
         post.name = "Post #1";
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.enum.should.be.equal(post.enum);
 
         table!.findColumnByName("enum")!.type.should.be.equal("enum");

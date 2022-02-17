@@ -25,23 +25,27 @@ describe("github issues > #513 Incorrect time/datetime types for SQLite", () => 
       dbColumns.map((dbColumn) => {
         if (dbColumn["name"] === "dateTimeColumn") {
           columnType = dbColumn["type"];
-        }        
+        }
       });
 
       // Expect "datetime" type to translate to SQLite affinity type "DATETIME"
       columnType.should.equal("datetime");
     })));
-    
+
     it("should persist correct type in datetime column in sqlite", () => Promise.all(connections.map(async connection => {
       const now: Date = new Date();
 
       const post: Post = new Post();
       post.id = 1;
       post.dateTimeColumn = now;
-      
+
       await connection.manager.save(post);
 
-      const storedPost = await connection.manager.findOne(Post, post.id);
+      const storedPost = await connection.manager.findOne(Post, {
+          where: {
+              id: post.id,
+          }
+      });
       expect(storedPost).to.not.be.null;
       storedPost!.dateTimeColumn.toDateString().should.equal(now.toDateString());
     })));
@@ -55,7 +59,7 @@ describe("github issues > #513 Incorrect time/datetime types for SQLite", () => 
       dbColumns.map((dbColumn) => {
         if (dbColumn["name"] === "timeColumn") {
           columnType = dbColumn["type"];
-        }        
+        }
       });
 
       // Expect "time" type to translate to SQLite type "TEXT"
@@ -68,10 +72,14 @@ describe("github issues > #513 Incorrect time/datetime types for SQLite", () => 
       const post: Post = new Post();
       post.id = 2;
       post.timeColumn = now; // Should maybe use Date type?
-      
+
       await connection.manager.save(post);
 
-      const storedPost = await connection.manager.findOne(Post, post.id);
+      const storedPost = await connection.manager.findOne(Post, {
+          where: {
+              id: post.id,
+          }
+      });
       expect(storedPost).to.not.be.null;
 
         const expectedTimeString = DateUtils.mixedTimeToString(now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds());

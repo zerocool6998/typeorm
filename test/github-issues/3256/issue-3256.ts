@@ -23,7 +23,7 @@ describe("github issues > #3256 wrong subscriber methods being called", () => {
         post.inserted.should.be.equal(true);
         post.updated.should.be.equal(false);
 
-        const loadedPost = await connection.getRepository(Post).findOne(1);
+        const loadedPost = await connection.getRepository(Post).findOneById(1);
         loadedPost!.title = "updated world";
         await connection.manager.save(loadedPost);
 

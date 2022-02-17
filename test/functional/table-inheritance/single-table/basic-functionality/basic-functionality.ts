@@ -296,10 +296,18 @@ describe("table-inheritance > single-table > basic-functionality", () => {
         employee.salary = 1000;
         await connection.manager.save(employee);
 
-        const loadedEmployee1 = await connection.manager.findOne(Employee, 1);
+        const loadedEmployee1 = await connection.manager.findOne(Employee, {
+            where: {
+                id: 1,
+            },
+        });
         expect(loadedEmployee1).to.be.null;
 
-        const loadedEmployee2 = await connection.manager.findOne(Employee, 2);
+        const loadedEmployee2 = await connection.manager.findOne(Employee, {
+            where: {
+                id: 2,
+            },
+        });
         loadedEmployee2!.should.be.instanceof(Employee);
         expect(loadedEmployee2).not.to.be.null;
         loadedEmployee2!.id.should.be.eql(2);
@@ -309,7 +317,11 @@ describe("table-inheritance > single-table > basic-functionality", () => {
         loadedEmployee2!.should.not.haveOwnProperty("specialization");
         loadedEmployee2!.should.not.haveOwnProperty("faculty");
 
-        const loadedStudent1 = await connection.manager.findOne(Student, 1);
+        const loadedStudent1 = await connection.manager.findOne(Student, {
+            where: {
+                id: 1,
+            },
+        });
         loadedStudent1!.should.be.instanceof(Student);
         loadedStudent1!.id.should.be.eql(1);
         loadedStudent1!.name.should.be.eql("Alice");
@@ -318,10 +330,18 @@ describe("table-inheritance > single-table > basic-functionality", () => {
         loadedStudent1!.should.not.haveOwnProperty("specialization");
         loadedStudent1!.should.not.haveOwnProperty("salary");
 
-        const loadedStudent2 = await connection.manager.findOne(Student, 2);
+        const loadedStudent2 = await connection.manager.findOne(Student, {
+            where: {
+                id: 2,
+            },
+        });
         expect(loadedStudent2).to.be.null;
 
-        const loadedPerson1 = await connection.manager.findOne(Person, 1);
+        const loadedPerson1 = await connection.manager.findOne(Person, {
+            where: {
+                id: 1,
+            },
+        });
         loadedPerson1!.should.be.instanceof(Student);
         loadedPerson1!.id.should.be.eql(1);
         loadedPerson1!.name.should.be.eql("Alice");
@@ -330,7 +350,11 @@ describe("table-inheritance > single-table > basic-functionality", () => {
         loadedPerson1!.should.not.haveOwnProperty("specialization");
         loadedPerson1!.should.not.haveOwnProperty("salary");
 
-        const loadedPerson2 = await connection.manager.findOne(Person, 2);
+        const loadedPerson2 = await connection.manager.findOne(Person, {
+            where: {
+                id: 2,
+            },
+        });
         loadedPerson2!.should.be.instanceof(Employee);
         loadedPerson2!.id.should.be.eql(2);
         loadedPerson2!.name.should.be.eql("John");

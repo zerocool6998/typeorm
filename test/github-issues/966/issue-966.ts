@@ -15,19 +15,21 @@ describe("github issues > #966 Inheritance in embeddables", () => {
 
     it("should save and load Superclass fields in embeddable", () => Promise.all(connections.map(async connection => {
         const repository = connection.getRepository(User);
-        
+
         const info = new UserInfo();
         info.firstName = "Ed";
         info.lastName = "Edd";
         info.userName = "Eddy";
         info.address = "github.com";
-        
+
         const user = new User();
         user.info = info;
 
         await repository.save(user);
 
-        const loadedUser = await repository.findOne(user.id);
+        const loadedUser = await repository.findOneBy({
+            id: user.id
+        });
 
         expect(info).to.deep.equal(loadedUser!.info);
     })));

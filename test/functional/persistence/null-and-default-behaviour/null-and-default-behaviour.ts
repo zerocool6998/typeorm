@@ -22,7 +22,9 @@ describe("persistence > null and default behaviour", () => {
         post.title = "Category saved!";
         await connection.manager.save(post);
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post,  {
+            id: 1
+        });
         expect(loadedPost).to.exist;
         loadedPost!.should.be.eql({
             id: 1,
@@ -38,7 +40,9 @@ describe("persistence > null and default behaviour", () => {
         post.id = 1;
         await connection.manager.save(post);
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post,  {
+            id: 1
+        });
         expect(loadedPost).to.exist;
         loadedPost!.should.be.eql({
             id: 1,
@@ -55,7 +59,9 @@ describe("persistence > null and default behaviour", () => {
         post.title = null;
         await connection.manager.save(post);
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post,  {
+            id: 1
+        });
         expect(loadedPost).to.exist;
         loadedPost!.should.be.eql({
             id: 1,
@@ -75,7 +81,9 @@ describe("persistence > null and default behaviour", () => {
         post.title = undefined;
         await connection.manager.save(post);
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post, {
+            id: 1
+        });
         expect(loadedPost).to.exist;
         loadedPost!.should.be.eql({
             id: 1,
@@ -94,7 +102,9 @@ describe("persistence > null and default behaviour", () => {
         post.title = null;
         await connection.manager.save(post);
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post,  {
+            id: 1
+        });
         expect(loadedPost).to.exist;
         loadedPost!.should.be.eql({
             id: 1,

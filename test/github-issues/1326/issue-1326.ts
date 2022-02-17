@@ -27,14 +27,14 @@ describe("github issue > #1326 Wrong behavior w/ the same table names in differe
             await connection.manager.save(user);
         }
 
-        const user = await connection.manager.findOne(User, { name: "user #1" });
+        const user = await connection.manager.findOneBy(User, { name: "user #1" });
         expect(user).not.to.be.null;
         user!.should.be.eql({
             id: 1,
             name: "user #1"
         });
 
-        const specificUser = await connection.manager.findOne(SpecificUser, { name: "specific user #1" });
+        const specificUser = await connection.manager.findOneBy(SpecificUser, { name: "specific user #1" });
         expect(specificUser).not.to.be.null;
         specificUser!.should.be.eql({
             id: 1,

@@ -75,7 +75,7 @@ describe("database schema > column types > cockroachdb", () => {
         post.simpleJson = { param: "VALUE" };
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.integer.should.be.equal(post.integer);
@@ -196,7 +196,7 @@ describe("database schema > column types > cockroachdb", () => {
         post.string = "This is string";
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.numeric.should.be.equal(post.numeric);
         loadedPost.decimal.should.be.equal(post.decimal);
@@ -247,7 +247,7 @@ describe("database schema > column types > cockroachdb", () => {
         post.datetime.setMilliseconds(0);
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({ id: 1 }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.boolean.should.be.equal(post.boolean);

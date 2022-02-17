@@ -23,7 +23,9 @@ describe("entity-model", () => {
             post.text = "Huge discussion how good or bad ActiveRecord is.";
             await post.save();
 
-            const loadedPost = await Post.findOne(post.id);
+            const loadedPost = await Post.findOne({
+                where: { id: post.id }
+            });
 
             loadedPost!.should.be.instanceOf(Post);
             loadedPost!.id.should.be.eql(post.id);
@@ -41,10 +43,10 @@ describe("entity-model", () => {
                 const externalId = "external-entity";
 
                 await Post.upsert({ externalId, title: "External post" }, ["externalId"]);
-                const upsertInsertedExternalPost = await Post.findOneOrFail({ externalId });
+                const upsertInsertedExternalPost = await Post.findOneByOrFail({ externalId });
 
                 await Post.upsert({ externalId, title: "External post 2" }, ["externalId"]);
-                const upsertUpdatedExternalPost = await Post.findOneOrFail({ externalId });
+                const upsertUpdatedExternalPost = await Post.findOneByOrFail({ externalId });
 
                 upsertInsertedExternalPost.id.should.be.equal(upsertUpdatedExternalPost.id);
                 upsertInsertedExternalPost.title.should.not.be.equal(upsertUpdatedExternalPost.title);

@@ -213,6 +213,12 @@ userRepository.find({
 * now migrations are running before schema synchronization if you have both pending migrations and schema synchronization pending
   (it works if you have both `migrationsRun` and `synchronize` enabled in connection options).
 
+* `findOne()` signature without parameters was dropped. See [this issue](https://github.com/typeorm/typeorm/issues/2500) for details.
+
+* `findOne(id)` signature was dropped.
+
+* `findOne(id)` signature was dropped. Use `findOneById(id)` instead.
+
 * `findOne` and `QueryBuilder.getOne()` now return `null` instead of `undefined` in the case if it didn't find anything in the database.
 Logically it makes more sense to return `null`.
 

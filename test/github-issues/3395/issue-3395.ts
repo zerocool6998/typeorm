@@ -18,7 +18,7 @@ describe("github issues > #3395 Transform.from does nothing when column is NULL"
         post.id = 1;
         await connection.getRepository(Post).save(post);
 
-        const loadedPost = await connection.getRepository(Post).findOne(1);
+        const loadedPost = await connection.getRepository(Post).findOneById(1);
 
         loadedPost!.text!.should.be.eq("This is null");
     })));

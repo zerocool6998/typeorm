@@ -27,7 +27,7 @@ describe("github issues > #7651 Enum that contains functions is not accordingly 
             await orderEntityRepository.save(orderEntity);
 
             // WHEN
-            const loadedOrderEntity = await orderEntityRepository.findOne(1);
+            const loadedOrderEntity = await orderEntityRepository.findOneBy({ id: 1 });
 
             // THEN
             loadedOrderEntity!.order.should.be.eq(Order.SECOND);
@@ -43,7 +43,7 @@ describe("github issues > #7651 Enum that contains functions is not accordingly 
             await orderEntityRepository.save(orderEntity);
 
             // WHEN
-            const loadedOrderEntity = await orderEntityRepository.findOne(1);
+            const loadedOrderEntity = await orderEntityRepository.findOneBy({ id: 1 });
 
             // THEN
             loadedOrderEntity!.orders.should.be.eql([Order.SECOND, Order.THIRD]);

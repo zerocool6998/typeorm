@@ -23,7 +23,7 @@ createConnection(options).then(connection => {
 
     let category2 = new PostCategory();
     category2.name = "post category #2";
-    
+
     let author = new PostAuthor();
     author.name = "Umed";
 
@@ -55,7 +55,7 @@ createConnection(options).then(connection => {
         .save(post)
         .then(post => {
             console.log("Post has been saved");
-            return postRepository.findOne(post.id);
+            return postRepository.findOneBy({ id: post.id });
         })
         .then(loadedPost => {
             console.log("post is loaded: ", loadedPost);
@@ -63,7 +63,7 @@ createConnection(options).then(connection => {
         })
         .then(blog => {
             console.log("Blog has been saved");
-            return blogRepository.findOne(blog.id);
+            return blogRepository.findOneBy({ id: blog.id });
         })
         .then(loadedBlog => {
             console.log("blog is loaded: ", loadedBlog);

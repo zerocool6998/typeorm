@@ -40,7 +40,7 @@ describe("other issues > escaping function parameter", () => {
             })
             .execute();
 
-        const post = await connection.manager.findOne(Post, { title: "super title" });
+        const post = await connection.manager.findOneBy(Post, { title: "super title" });
         expect(post).to.be.eql({ id: 1, title: "super title" });
 
     })));
@@ -61,7 +61,7 @@ describe("other issues > escaping function parameter", () => {
             })
             .execute();
 
-        const loadedPost = await connection.manager.findOne(Post, { title: "super title" });
+        const loadedPost = await connection.manager.findOneBy(Post, { title: "super title" });
         expect(loadedPost).to.be.eql({ id: 1, title: "super title" });
 
     })));

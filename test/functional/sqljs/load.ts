@@ -23,7 +23,7 @@ describe("sqljs driver > load", () => {
         await manager.loadDatabase("test/functional/sqljs/sqlite/test.sqlite");
 
         const repository = connection.getRepository(Post);
-        const post = await repository.findOne({title: "A post"});
+        const post = await repository.findOneBy({title: "A post"});
 
         expect(post).not.to.be.null;
         if (post) {

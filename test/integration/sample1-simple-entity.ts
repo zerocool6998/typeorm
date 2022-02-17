@@ -33,7 +33,9 @@ describe("insertion", function() {
         savedPost.should.be.equal(newPost);
         expect(savedPost.id).not.to.be.undefined;
 
-        const insertedPost = await postRepository.findOne(savedPost.id);
+        const insertedPost = await postRepository.findOneBy({
+                    id: savedPost.id
+                });
         insertedPost!.should.be.eql({
             id: savedPost.id,
             text: "Hello post",

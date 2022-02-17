@@ -80,7 +80,10 @@ describe(`repository > the global condtion of "non-deleted"`, () => {
 
         const loadedPost = await connection
             .getRepository(Post)
-            .findOne(1, {
+            .findOne({
+                where: {
+                    id: 1,
+                },
                 withDeleted: true,
             });
         expect(loadedPost).to.exist;

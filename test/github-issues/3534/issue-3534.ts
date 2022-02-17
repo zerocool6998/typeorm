@@ -22,7 +22,7 @@ describe("github issues > #3534: store regexp", () => {
         const savedFoo = await repository.save(foo);
         expect(savedFoo.bar).to.instanceOf(RegExp);
         expect(savedFoo.bar.toString()).to.eq(/foo/i.toString());
-        const storedFoo = await repository.findOneOrFail(foo.id);
+        const storedFoo = await repository.findOneByOrFail({ id: foo.id });
         expect(storedFoo.bar).to.instanceOf(RegExp);
         expect(storedFoo.bar.toString()).to.eq(/foo/i.toString());
     })));

@@ -95,7 +95,11 @@ describe("spatial-postgres", () => {
         const post = new Post();
         post.geom = geom;
         const persistedPost = await recordRepo.save(post);
-        const foundPost = await recordRepo.findOne(persistedPost.id);
+        const foundPost = await recordRepo.findOne({
+            where: {
+                id: persistedPost.id,
+            },
+        });
         expect(foundPost).to.exist;
         expect(foundPost!.geom).to.deep.equal(geom);
       })
@@ -112,7 +116,11 @@ describe("spatial-postgres", () => {
         const post = new Post();
         post.geog = geom;
         const persistedPost = await recordRepo.save(post);
-        const foundPost = await recordRepo.findOne(persistedPost.id);
+        const foundPost = await recordRepo.findOne({
+            where: {
+                id: persistedPost.id,
+            },
+        });
         expect(foundPost).to.exist;
         expect(foundPost!.geog).to.deep.equal(geom);
       })
@@ -140,7 +148,11 @@ describe("spatial-postgres", () => {
           geom: geom2
         });
 
-        const foundPost = await recordRepo.findOne(persistedPost.id);
+        const foundPost = await recordRepo.findOne({
+            where: {
+                id: persistedPost.id,
+            },
+        });
         expect(foundPost).to.exist;
         expect(foundPost!.geom).to.deep.equal(geom2);
       })
@@ -165,7 +177,11 @@ describe("spatial-postgres", () => {
         persistedPost.geom = geom2;
         await recordRepo.save(persistedPost);
 
-        const foundPost = await recordRepo.findOne(persistedPost.id);
+        const foundPost = await recordRepo.findOne({
+            where: {
+                id: persistedPost.id,
+            },
+        });
         expect(foundPost).to.exist;
         expect(foundPost!.geom).to.deep.equal(geom2);
       })

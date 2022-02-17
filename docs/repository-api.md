@@ -161,9 +161,9 @@ await repository.upsert([
     { externalId:"abc123", firstName: "Rizzrak" },
     { externalId:"bca321", firstName: "Karzzir" },
 ], ["externalId"]);
-/** executes 
- *  INSERT INTO user 
- *  VALUES 
+/** executes
+ *  INSERT INTO user
+ *  VALUES
  *      (externalId = abc123, firstName = Rizzrak),
  *      (externalId = cba321, firstName = Karzzir),
  *  ON CONFLICT (externalId) DO UPDATE firstName = EXCLUDED.firstName
@@ -247,7 +247,7 @@ const timber = await repository.findOne({ firstName: "Timber" });
 Rejects the returned promise if nothing matches.
 
 ```typescript
-const user = await repository.findOneOrFail(1);
+const user = await repository.findOneByOrFail({ id: 1 });
 const timber = await repository.findOneOrFail({ firstName: "Timber" });
 ```
 

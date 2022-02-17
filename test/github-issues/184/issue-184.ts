@@ -26,7 +26,7 @@ describe("github issues > #184 [Postgres] Single-Inheritance not working with in
         employee.shared = "e";
 
         await employeeRepository.save(employee);
-        await employeeRepository.findOne(1);
+        await employeeRepository.findOneBy({ id: "1" });
 
         // let homesitterRepository = connection.getRepository(Homesitter);
         // const homesitter = new Homesitter();

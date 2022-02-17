@@ -41,10 +41,9 @@ describe("github issues > #3349 Multiple where conditions with parameters", () =
         category.myField = 2;
         await repository.save(category);
 
-        const result = await repository.findOne(1, {
-            where: {
-                myField: In([2, 3]),
-            },
+        const result = await repository.findOneBy({
+            id: 1,
+            myField: In([2, 3]),
         });
 
         expect(result).to.not.be.null;

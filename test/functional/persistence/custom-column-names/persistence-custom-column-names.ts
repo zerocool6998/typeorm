@@ -83,7 +83,12 @@ describe("persistence > custom-column-names", function() {
         // load a post
         before(function() {
             return postRepository
-                .findOne(1, { join: { alias: "post", leftJoinAndSelect: { category: "post.category" } }})
+                .findOne({
+                    where: {
+                        id: 1,
+                    },
+                    join: { alias: "post", leftJoinAndSelect: { category: "post.category" } }
+                })
                 .then(post => loadedPost = post!);
         });
 
@@ -120,7 +125,12 @@ describe("persistence > custom-column-names", function() {
         // load a post
         before(function() {
             return postRepository
-                .findOne(1, { join: { alias: "post", leftJoinAndSelect: { category: "post.category" } } })
+                .findOne({
+                    where: {
+                        id: 1,
+                    },
+                    join: { alias: "post", leftJoinAndSelect: { category: "post.category" } }
+                })
                 .then(post => loadedPost = post!);
         });
 
@@ -152,7 +162,12 @@ describe("persistence > custom-column-names", function() {
         // load a post
         before(function() {
             return postRepository
-                .findOne(1, { join: { alias: "post", leftJoinAndSelect: { category: "post.category" } }})
+                .findOne({
+                    where: {
+                        id: 1,
+                    },
+                    join: { alias: "post", leftJoinAndSelect: { category: "post.category" } }
+                })
                 .then(post => loadedPost = post!);
         });
 
@@ -202,7 +217,12 @@ describe("persistence > custom-column-names", function() {
         // load a post
         before(function() {
             return postRepository
-                .findOne(1, { join: { alias: "post", leftJoinAndSelect: { category: "post.category", metadata: "category.metadata" } } })
+                .findOne({
+                    where: {
+                        id: 1,
+                    },
+                    join: { alias: "post", leftJoinAndSelect: { category: "post.category", metadata: "category.metadata" } }
+                })
                 .then(post => loadedPost = post!);
         });
 
@@ -249,7 +269,12 @@ describe("persistence > custom-column-names", function() {
         // load a post
         before(function() {
             return postRepository
-                .findOne(1, { join: { alias: "post", leftJoinAndSelect: { category: "post.category", metadata: "category.metadata" } } })
+                .findOne({
+                    where: {
+                        id: 1,
+                    },
+                    join: { alias: "post", leftJoinAndSelect: { category: "post.category", metadata: "category.metadata" } }
+                })
                 .then(post => loadedPost = post!);
         });
 

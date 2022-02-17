@@ -32,7 +32,12 @@ describe("github issues > #1178 subqueries must work in insert statements", () =
             .returning("*")
             .execute();
 
-        await connection.manager.findOne(Post, 1, { relations: ["user"] }).should.eventually.eql({
+        await connection.manager.findOne(Post, {
+            where: {
+                id: 1,
+            },
+            relations: ["user"]
+        }).should.eventually.eql({
             id: 1,
             name: "First post",
             user: {

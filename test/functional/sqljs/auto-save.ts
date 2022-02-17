@@ -40,7 +40,7 @@ describe("sqljs driver > autosave", () => {
         post.title = "A post";
         await repository.save(post);
 
-        let savedPost = await repository.findOne({title: "A post"});
+        let savedPost = await repository.findOneBy({title: "A post"});
 
         expect(savedPost).not.to.be.null;
 
@@ -79,7 +79,7 @@ describe("sqljs driver > autosave off", () => {
         post.title = "A post";
         await repository.save(post);
 
-        let savedPost = await repository.findOne({title: "A post"});
+        let savedPost = await repository.findOneBy({title: "A post"});
 
         expect(savedPost).not.to.be.null;
 

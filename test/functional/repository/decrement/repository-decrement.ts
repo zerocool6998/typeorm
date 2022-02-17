@@ -41,10 +41,18 @@ describe("repository > decrement method", () => {
                 .decrement(Post, { id: 2 }, "counter", 3);
 
             // load and check counter
-            const loadedPost1 = await connection.manager.findOne(Post, 1);
+            const loadedPost1 = await connection.manager.findOne(Post, {
+                where: {
+                    id: 1
+                },
+            });
             loadedPost1!.counter.should.be.equal(1);
 
-            const loadedPost2 = await connection.manager.findOne(Post, 2);
+            const loadedPost2 = await connection.manager.findOne(Post, {
+                where: {
+                    id: 2
+                },
+            });
             loadedPost2!.counter.should.be.equal(2);
         })));
 
@@ -72,10 +80,18 @@ describe("repository > decrement method", () => {
                 .decrement(Post, { id: 2 }, "counter", "33");
 
             // load and check counter
-            const loadedPost1 = await connection.manager.findOne(Post, 1);
+            const loadedPost1 = await connection.manager.findOne(Post, {
+                where: {
+                    id: 1
+                },
+            });
             loadedPost1!.counter.should.be.equal(1);
 
-            const loadedPost2 = await connection.manager.findOne(Post, 2);
+            const loadedPost2 = await connection.manager.findOne(Post, {
+                where: {
+                    id: 2
+                },
+            });
             loadedPost2!.counter.should.be.equal(2);
         })));
 
@@ -176,10 +192,18 @@ describe("repository > decrement method", () => {
                 .decrement(PostBigInt, { id: 2 }, "counter", "9000000000000000000");
 
             // load and check counter
-            const loadedPost1 = await connection.manager.findOne(PostBigInt, 1);
+            const loadedPost1 = await connection.manager.findOne(PostBigInt, {
+                where: {
+                    id: 1
+                },
+            });
             loadedPost1!.counter.should.be.equal("1");
 
-            const loadedPost2 = await connection.manager.findOne(PostBigInt, 2);
+            const loadedPost2 = await connection.manager.findOne(PostBigInt, {
+                where: {
+                    id: 2
+                },
+            });
             loadedPost2!.counter.should.be.equal("2");
 
         })));
@@ -206,7 +230,11 @@ describe("repository > decrement method", () => {
                 .getRepository(UserWithEmbededEntity)
                 .decrement({ id: 1 }, "friend.sent", 15);
 
-            const loadedUser = await connection.manager.findOne(UserWithEmbededEntity, 1);
+            const loadedUser = await connection.manager.findOne(UserWithEmbededEntity, {
+                where: {
+                    id: 1
+                },
+            });
             loadedUser!.friend.sent.should.be.equal(-15);
 
         })));

@@ -33,7 +33,7 @@ describe("table-inheritance > single-table > relations > one-to-many-cascade-sav
         faculty1.staff = [ new Professor("Economics 101"), researcher ];
         await connection.getRepository(Faculty).save(faculty1);
 
-        const loadedFaculty = await connection.getRepository(Faculty).findOne() as Faculty;
+        const loadedFaculty = await connection.getRepository(Faculty).findOneByOrFail({ id: faculty1.id });
 
         expect(loadedFaculty.staff.find(staff => staff.type === "PROFESSOR")).to.not.be.undefined;
         expect(loadedFaculty.staff.find(staff => staff.type === "RESEARCHER")).to.not.be.undefined;

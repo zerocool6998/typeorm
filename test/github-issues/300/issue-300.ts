@@ -20,7 +20,7 @@ describe("github issues > #300 support of embeddeds that are not set", () => {
 
         await connection.manager.save(race);
 
-        const loadedRace = await connection.manager.findOne(Race, { name: "National Race" });
+        const loadedRace = await connection.manager.findOneBy(Race, { name: "National Race" });
         expect(loadedRace).to.exist;
         expect(loadedRace!.id).to.exist;
         loadedRace!.name.should.be.equal("National Race");

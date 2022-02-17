@@ -17,7 +17,7 @@ describe("github issues > #433 default value (json) is not getting set in postgr
         const post = new Post();
         post.id = 1;
         await connection.getRepository(Post).save(post);
-        const loadedPost = (await connection.getRepository(Post).findOne(1))!;
+        const loadedPost = (await connection.getRepository(Post).findOneBy({ id: 1 }))!;
         loadedPost.json.should.be.eql({ hello: "world" });
     })));
 

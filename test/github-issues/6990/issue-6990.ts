@@ -33,7 +33,11 @@ describe("github issues > #6990 synchronize drops array columns in postgres if a
 
                 const loadedFoo:
                     | Foo
-                    | null = await connection.manager.findOne(Foo, 1);
+                    | null = await connection.manager.findOne(Foo, {
+                        where: {
+                            id: 1
+                        }
+                });
 
                 expect(loadedFoo).to.be.not.empty;
                 expect(loadedFoo!.varchararray).to.deep.eq([

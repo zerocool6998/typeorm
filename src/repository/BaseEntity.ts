@@ -137,24 +137,24 @@ export class BaseEntity {
     /**
      * Creates a new entity instance.
      */
-    static create<T extends BaseEntity>(this: ObjectType<T>): T;
+    static create<T extends BaseEntity>(this: ObjectType<T> & typeof BaseEntity): T;
 
     /**
      * Creates a new entities and copies all entity properties from given objects into their new entities.
      * Note that it copies only properties that present in entity schema.
      */
-    static create<T extends BaseEntity>(this: ObjectType<T>, entityLikeArray: DeepPartial<T>[]): T[];
+    static create<T extends BaseEntity>(this: ObjectType<T> & typeof BaseEntity, entityLikeArray: DeepPartial<T>[]): T[];
 
     /**
      * Creates a new entity instance and copies all entity properties from this object into a new entity.
      * Note that it copies only properties that present in entity schema.
      */
-    static create<T extends BaseEntity>(this: ObjectType<T>, entityLike: DeepPartial<T>): T;
+    static create<T extends BaseEntity>(this: ObjectType<T> & typeof BaseEntity, entityLike: DeepPartial<T>): T;
    /**
      * Creates a new entity instance and copies all entity properties from this object into a new entity.
      * Note that it copies only properties that present in entity schema.
      */
-    static create<T extends BaseEntity>(this: ObjectType<T>, entityOrEntities?: any): T {
+    static create<T extends BaseEntity>(this: ObjectType<T> & typeof BaseEntity, entityOrEntities?: any): T {
         return (this as any).getRepository().create(entityOrEntities);
     }
 
@@ -175,7 +175,8 @@ export class BaseEntity {
      * Returns undefined if entity with given id was not found.
      */
     static preload<T extends BaseEntity>(this: ObjectType<T>, entityLike: DeepPartial<T>): Promise<T|undefined> {
-        return (this as any).getRepository().preload(entityLike);
+        const thisRepository = (this as any).getRepository() as Repository<T>
+        return thisRepository.preload(entityLike);
     }
 
     /**
@@ -350,47 +351,45 @@ export class BaseEntity {
     }
 
     /**
-     * Finds first entity that matches given options.
+     * Finds first entity that matches given conditions.
      */
-    static findOne<T extends BaseEntity>(this: ObjectType<T>, id?: string|number|Date|ObjectID, options?: FindOneOptions<T>): Promise<T|undefined>;
-
-    /**
-     * Finds first entity that matches given options.
-     */
-    static findOne<T extends BaseEntity>(this: ObjectType<T>, options?: FindOneOptions<T>): Promise<T|undefined>;
+    static findOne<T extends BaseEntity>(this: ObjectType<T>, options: FindOneOptions<T>): Promise<T|null> {
+        return (this as any).getRepository().findOne(options);
+    }
 
     /**
      * Finds first entity that matches given conditions.
      */
-    static findOne<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>, options?: FindOneOptions<T>): Promise<T|undefined>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    static findOne<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<T>|FindOptionsWhere<T>, maybeOptions?: FindOneOptions<T>): Promise<T|undefined> {
-        return (this as any).getRepository().findOne(optionsOrConditions as any, maybeOptions);
+    static findOneBy<T extends BaseEntity>(this: ObjectType<T>, where?: FindOptionsWhere<T>): Promise<T|null> {
+        return (this as any).getRepository().findOneBy(where);
     }
 
     /**
      * Finds first entity that matches given options.
      */
-    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, id?: string|number|Date|ObjectID, options?: FindOneOptions<T>): Promise<T>;
+    static findOneById<T extends BaseEntity>(this: ObjectType<T>, id?: string|number|Date|ObjectID): Promise<T|null> {
+        return (this as any).getRepository().findOneById(id);
+    }
+
+    /**
+     * Finds first entity that matches given conditions.
+     */
+    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, options: FindOneOptions<T>): Promise<T> {
+        return (this as any).getRepository().findOneOrFail(options);
+    }
+
+    /**
+     * Finds first entity that matches given conditions.
+     */
+    static findOneByOrFail<T extends BaseEntity>(this: ObjectType<T>, where?: FindOptionsWhere<T>): Promise<T> {
+        return (this as any).getRepository().findOneByOrFail(where);
+    }
 
     /**
      * Finds first entity that matches given options.
      */
-    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, options?: FindOneOptions<T>): Promise<T>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>, options?: FindOneOptions<T>): Promise<T>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    static findOneOrFail<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<T>|FindOptionsWhere<T>, maybeOptions?: FindOneOptions<T>): Promise<T> {
-        return (this as any).getRepository().findOneOrFail(optionsOrConditions as any, maybeOptions);
+    static findOneByIdOrFail<T extends BaseEntity>(this: ObjectType<T>, id?: string|number|Date|ObjectID): Promise<T> {
+        return (this as any).getRepository().findOneByIdOrFail (id);
     }
 
     /**

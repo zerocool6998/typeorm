@@ -37,7 +37,7 @@ describe("repository > find options > locking", () => {
             return Promise.all([
                 connection
                     .getRepository(PostWithVersion)
-                    .findOne(1, { lock: { mode: "pessimistic_write" } })
+                    .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_write" } })
                     .should.be.rejectedWith(PessimisticLockTransactionRequiredError),
             ]);
         }
@@ -45,12 +45,12 @@ describe("repository > find options > locking", () => {
         return Promise.all([
             connection
                 .getRepository(PostWithVersion)
-                .findOne(1, { lock: { mode: "pessimistic_read" } })
+                .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_read" } })
                 .should.be.rejectedWith(PessimisticLockTransactionRequiredError),
 
             connection
                 .getRepository(PostWithVersion)
-                .findOne(1, { lock: { mode: "pessimistic_write" } })
+                .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_write" } })
                 .should.be.rejectedWith(PessimisticLockTransactionRequiredError),
         ]);
     })));
@@ -64,7 +64,7 @@ describe("repository > find options > locking", () => {
                 return Promise.all([
                     entityManager
                         .getRepository(PostWithVersion)
-                        .findOne(1, { lock: { mode: "pessimistic_write" } })
+                        .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_write" } })
                         .should.not.be.rejected
                 ]);
             });
@@ -74,12 +74,12 @@ describe("repository > find options > locking", () => {
             return Promise.all([
                 entityManager
                     .getRepository(PostWithVersion)
-                    .findOne(1, { lock: { mode: "pessimistic_read" } })
+                    .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_read" } })
                     .should.not.be.rejected,
 
                 entityManager
                     .getRepository(PostWithVersion)
-                    .findOne(1, { lock: { mode: "pessimistic_write" } })
+                    .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_write" } })
                     .should.not.be.rejected
             ]);
         });
@@ -100,7 +100,7 @@ describe("repository > find options > locking", () => {
 
             return entityManager
                 .getRepository(PostWithVersion)
-                .findOne(1, {lock: {mode: "pessimistic_read"}});
+                .findOne({ where: { id: 1 }, lock: {mode: "pessimistic_read" } });
         });
 
         if (connection.driver instanceof MysqlDriver) {
@@ -133,7 +133,7 @@ describe("repository > find options > locking", () => {
 
             return entityManager
                 .getRepository(PostWithVersion)
-                .findOne(1, { lock: { mode: "for_no_key_update" } });
+                .findOne({ where: { id: 1 }, lock: { mode: "for_no_key_update" } });
         });
 
         expect(executedSql.join(" ").includes("FOR NO KEY UPDATE")).to.be.true;
@@ -154,7 +154,7 @@ describe("repository > find options > locking", () => {
 
             return entityManager
                 .getRepository(PostWithVersion)
-                .findOne(1, {lock: {mode: "pessimistic_write"}});
+                .findOne({ where: { id: 1 }, lock: {mode: "pessimistic_write"}});
         });
 
         if (connection.driver instanceof MysqlDriver || connection.driver instanceof PostgresDriver || connection.driver instanceof OracleDriver) {
@@ -180,7 +180,7 @@ describe("repository > find options > locking", () => {
 
             return entityManager
                 .getRepository(PostWithVersion)
-                .findOne(1, {lock: {mode: "dirty_read"}});
+                .findOne({ where: { id: 1 }, lock: { mode: "dirty_read" }});
         });
 
         expect(executedSql[0].indexOf("WITH (NOLOCK)") !== -1).to.be.true;
@@ -197,7 +197,7 @@ describe("repository > find options > locking", () => {
     it("should not throw error if optimistic lock used with `findOne` method", () => Promise.all(connections.map(async connection => {
         return connection
             .getRepository(PostWithVersion)
-            .findOne(1, {lock: {mode: "optimistic", version: 1}})
+            .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: 1}})
             .should.not.be.rejected;
     })));
 
@@ -209,7 +209,7 @@ describe("repository > find options > locking", () => {
 
         return connection
             .getRepository(PostWithoutVersionAndUpdateDate)
-            .findOne(1, {lock: {mode: "optimistic", version: 1}})
+            .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: 1}})
             .should.be.rejectedWith(NoVersionOrUpdateDateColumnError);
     })));
 
@@ -221,7 +221,7 @@ describe("repository > find options > locking", () => {
 
         return connection
             .getRepository(PostWithVersion)
-            .findOne(1, {lock: {mode: "optimistic", version: 2}})
+            .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: 2}})
             .should.be.rejectedWith(OptimisticLockVersionMismatchError);
     })));
 
@@ -233,7 +233,7 @@ describe("repository > find options > locking", () => {
 
         return connection
             .getRepository(PostWithVersion)
-            .findOne(1, {lock: {mode: "optimistic", version: 1}})
+            .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: 1}})
             .should.not.be.rejected;
     })));
 
@@ -249,7 +249,7 @@ describe("repository > find options > locking", () => {
 
         return connection
             .getRepository(PostWithUpdateDate)
-            .findOne(1, {lock: {mode: "optimistic", version: new Date(2017, 1, 1)}})
+            .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: new Date(2017, 1, 1)}})
             .should.be.rejectedWith(OptimisticLockVersionMismatchError);
     })));
 
@@ -265,7 +265,7 @@ describe("repository > find options > locking", () => {
 
         return connection
             .getRepository(PostWithUpdateDate)
-            .findOne(1, {lock: {mode: "optimistic", version: post.updateDate}})
+            .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: post.updateDate}})
             .should.not.be.rejected;
     })));
 
@@ -282,11 +282,11 @@ describe("repository > find options > locking", () => {
         return Promise.all([
             connection
                 .getRepository(PostWithVersionAndUpdatedDate)
-                .findOne(1, {lock: {mode: "optimistic", version: post.updateDate}})
+                .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: post.updateDate}})
                 .should.not.be.rejected,
             connection
                 .getRepository(PostWithVersionAndUpdatedDate)
-                .findOne(1, {lock: {mode: "optimistic", version: 1}})
+                .findOne({ where: { id: 1 }, lock: {mode: "optimistic", version: 1}})
                 .should.not.be.rejected,
         ]);
     })));
@@ -297,12 +297,12 @@ describe("repository > find options > locking", () => {
                 return Promise.all([
                     entityManager
                         .getRepository(PostWithVersion)
-                        .findOne(1, { lock: { mode: "pessimistic_read" } })
+                        .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_read" } })
                         .should.be.rejectedWith(LockNotSupportedOnGivenDriverError),
 
                     entityManager
                         .getRepository(PostWithVersion)
-                        .findOne(1, { lock: { mode: "pessimistic_write" } })
+                        .findOne({ where: { id: 1 }, lock: { mode: "pessimistic_write" } })
                         .should.be.rejectedWith(LockNotSupportedOnGivenDriverError),
                 ]);
             });
@@ -312,7 +312,7 @@ describe("repository > find options > locking", () => {
                 return Promise.all([
                     entityManager
                         .getRepository(PostWithVersion)
-                        .findOne(1, { lock: { mode: "pessimistic_read" } })
+                        .findOne({  where: { id: 1 },lock: { mode: "pessimistic_read" } })
                         .should.be.rejectedWith(LockNotSupportedOnGivenDriverError),
                 ]);
             });

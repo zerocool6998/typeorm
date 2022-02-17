@@ -24,7 +24,7 @@ describe("mongodb > indices", () => {
         await postRepository.save(post);
 
         // check saved post
-        const loadedPost = await postRepository.findOne({ title: "Post" });
+        const loadedPost = await postRepository.findOneBy({ title: "Post" });
 
         expect(loadedPost).to.be.not.empty;
     })));

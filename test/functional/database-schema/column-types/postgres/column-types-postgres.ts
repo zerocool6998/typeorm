@@ -99,7 +99,9 @@ describe("database schema > column types > postgres", () => {
         post.simpleEnum = "A";
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.integer.should.be.equal(post.integer);
@@ -259,7 +261,9 @@ describe("database schema > column types > postgres", () => {
         post.int4range = "[2,4)";
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.numeric.should.be.equal(post.numeric);
         loadedPost.decimal.should.be.equal(post.decimal);
@@ -316,7 +320,9 @@ describe("database schema > column types > postgres", () => {
         post.datetime.setMilliseconds(0);
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.id.should.be.equal(post.id);
         loadedPost.name.should.be.equal(post.name);
         loadedPost.bit.should.be.equal(post.bit);

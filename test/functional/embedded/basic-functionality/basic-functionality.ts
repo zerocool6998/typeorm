@@ -28,7 +28,7 @@ describe("embedded > basic functionality", () => {
         await postRepository.save(post);
 
         // now load it
-        const loadedPost = (await postRepository.findOne(post.id))!;
+        const loadedPost = (await postRepository.findOneBy({ id: post.id }))!;
         loadedPost.title.should.be.equal("Hello post");
         loadedPost.text.should.be.equal("This is text about the post");
         loadedPost.counters.should.be.eql({
@@ -43,7 +43,7 @@ describe("embedded > basic functionality", () => {
         await postRepository.save(loadedPost);
 
         // now check it
-        const loadedPost2 = (await postRepository.findOne(post.id))!;
+        const loadedPost2 = (await postRepository.findOneBy({ id: post.id }))!;
         loadedPost2.title.should.be.equal("Hello post");
         loadedPost2.text.should.be.equal("This is text about the post");
         loadedPost2.counters.should.be.eql({
@@ -55,7 +55,7 @@ describe("embedded > basic functionality", () => {
         await postRepository.remove(loadedPost2);
 
         // now check it
-        const loadedPost3 = (await postRepository.findOne(post.id))!;
+        const loadedPost3 = (await postRepository.findOneBy({ id: post.id }))!;
         expect(loadedPost3).to.be.null;
     })));
 

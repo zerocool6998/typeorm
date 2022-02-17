@@ -71,7 +71,7 @@ describe("github issues > #2251 - Unexpected behavior when passing duplicate ent
         // remove the reference of another and insert a 3rd.
         expect(bars.length).to.equal(3);
 
-        const bar = await barRepo.findOne(1);
+        const bar = await barRepo.findOneBy({ id: 1 });
 
         expect(bar).not.to.be.null;
 

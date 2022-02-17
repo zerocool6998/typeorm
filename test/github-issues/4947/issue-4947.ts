@@ -17,9 +17,14 @@ describe("github issues > #4947 beforeUpdate subscriber entity argument is undef
 
         let repo = connection.getRepository(Post);
 
-        await repo.save(new Post());
+        const newPost = new Post()
+        await repo.save(newPost);
 
-        const createdPost = await repo.findOne();
+        const createdPost = await repo.findOne({
+            where: {
+                id: newPost.id
+            }
+        });
 
         // test that the newly inserted post was touched by beforeInsert PostSubscriber event
         expect(createdPost).not.to.be.null;
@@ -28,7 +33,11 @@ describe("github issues > #4947 beforeUpdate subscriber entity argument is undef
         // change the entity
         await repo.update(createdPost!.id, {colToUpdate: 1});
 
-        const updatedPost = await repo.findOne();
+        const updatedPost = await repo.findOne({
+            where: {
+                id: createdPost!.id
+            }
+        });
 
         // test that the updated post was touched by beforeUpdate PostSubscriber event
         expect(updatedPost).not.to.be.null;

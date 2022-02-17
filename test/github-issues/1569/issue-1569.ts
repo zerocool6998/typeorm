@@ -30,7 +30,7 @@ describe("github issue > #1569 updateById generates wrong SQL with arrays inside
             },
         });
 
-        const loadedItem = await connection.getRepository(Item).findOne(item.id);
+        const loadedItem = await connection.getRepository(Item).findOneBy({ id: item.id });
 
         expect(loadedItem!.embedded.arrayInsideEmbedded).to.eql([1, 2]);
 

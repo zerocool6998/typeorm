@@ -101,7 +101,9 @@ describe("one-to-one", function() {
             expectedPost.text = savedPost.text;
             expectedPost.title = savedPost.title;
 
-            return postRepository.findOne(savedPost.id).should.eventually.eql(expectedPost);
+            return postRepository.findOneBy({
+                    id: savedPost.id
+                }).should.eventually.eql(expectedPost);
         });
 
         it("should have inserted post details in the database", async function() {
@@ -113,7 +115,9 @@ describe("one-to-one", function() {
             expectedDetails.comment = savedPost.details!.comment;
             expectedDetails.metadata = savedPost.details!.metadata;
 
-            const loadedPostDetails = await postDetailsRepository.findOne(savedPost.details!.id);
+            const loadedPostDetails = await postDetailsRepository.findOneBy({
+                    id: savedPost.details!.id
+                });
             loadedPostDetails!.should.be.eql(expectedDetails);
         });
 
@@ -232,14 +236,18 @@ describe("one-to-one", function() {
             expectedPost.id = savedPost.id;
             expectedPost.text = savedPost.text;
             expectedPost.title = savedPost.title;
-            return postRepository.findOne(savedPost.id).should.eventually.eql(expectedPost);
+            return postRepository.findOneBy({
+                    id: savedPost.id
+                }).should.eventually.eql(expectedPost);
         });
 
         it("should have inserted category in the database", function() {
             const expectedPost = new PostCategory();
             expectedPost.id = savedPost.category.id;
             expectedPost.name = "technology";
-            return postCategoryRepository.findOne(savedPost.category.id).should.eventually.eql(expectedPost);
+            return postCategoryRepository.findOneBy({
+                id: savedPost.category.id
+            }).should.eventually.eql(expectedPost);
         });
 
         it("should load post and its category if left join used", function() {

@@ -116,8 +116,9 @@ describe("github issues > #2216 - Ability to capture Postgres notifications in l
 
         it("should not interfere with actual queries", async () => Promise.all(connections.map(async connection => {
             manager = connection.manager;
-            await manager.save(Object.assign(new Foo(), { lowercaseval: "foo", lowercaseval2: "bar"}));
-            const loadedFoo = await manager.findOne(Foo);
+            const foo = new Foo()
+            await manager.save(Object.assign(foo, { lowercaseval: "foo", lowercaseval2: "bar"}));
+            const loadedFoo = await manager.findOneBy(Foo, { uuid: foo.uuid });
             expect(loadedFoo).not.to.be.null;
             expect(loadedFoo).to.contain({
                 lowercaseval: "foo",

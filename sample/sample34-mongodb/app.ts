@@ -21,7 +21,7 @@ createConnection(options).then(async connection => {
     await connection.getRepository(Post).save(post);
     console.log("Post has been saved: ", post);
 
-    const loadedPost = await connection.getRepository(Post).findOne({
+    const loadedPost = await connection.getRepository(Post).findOneBy({
         text: "Hello how are you?",
     });
     console.log("Post has been loaded: ", loadedPost);

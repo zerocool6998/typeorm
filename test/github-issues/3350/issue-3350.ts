@@ -26,7 +26,14 @@ describe("github issues > #3350 ER_DUP_FIELDNAME with simple find", () => {
 
         const loadedPost = await connection
             .getRepository(Post)
-            .findOne(1, { relations: ["category"] });
+            .findOne({
+                where: {
+                    id: 1,
+                },
+                relations: {
+                    category: true,
+                }
+            });
         expect(loadedPost).to.be.not.empty;
         expect(loadedPost!.category).to.be.not.empty;
 

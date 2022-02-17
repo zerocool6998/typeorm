@@ -379,47 +379,51 @@ export class Repository<Entity extends ObjectLiteral> {
     }
 
     /**
-     * Finds first entity that matches given options.
+     * Finds first entity by a given find options.
+     * If entity was not found in the database - returns null.
      */
-    findOne(id?: string|number|Date|ObjectID, options?: FindOneOptions<Entity>): Promise<Entity|null>;
-
-    /**
-     * Finds first entity that matches given options.
-     */
-    findOne(options?: FindOneOptions<Entity>): Promise<Entity|null>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    findOne(conditions?: FindOptionsWhere<Entity>, options?: FindOneOptions<Entity>): Promise<Entity|null>;
-
-    /**
-     * Finds first entity that matches given conditions.
-     */
-    findOne(optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<Entity>|FindOptionsWhere<Entity>, maybeOptions?: FindOneOptions<Entity>): Promise<Entity|null> {
-        return this.manager.findOne(this.metadata.target as any, optionsOrConditions as any, maybeOptions);
+    async findOne(options: FindOneOptions<Entity>): Promise<Entity | null> {
+        return this.manager.findOne(this.metadata.target, options);
     }
 
     /**
-     * Finds first entity that matches given options.
+     * Finds first entity that matches given where condition.
+     * If entity was not found in the database - returns null.
      */
-    findOneOrFail(id?: string|number|Date|ObjectID, options?: FindOneOptions<Entity>): Promise<Entity>;
+    async findOneBy(where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity | null> {
+        return this.manager.findOneBy(this.metadata.target, where);
+    }
 
     /**
-     * Finds first entity that matches given options.
+     * Finds first entity that matches given id.
+     * If entity was not found in the database - returns null.
      */
-    findOneOrFail(options?: FindOneOptions<Entity>): Promise<Entity>;
+    async findOneById(id: number | string | Date | ObjectID): Promise<Entity | null> {
+        return this.manager.findOneById(this.metadata.target, id);
+    }
 
     /**
-     * Finds first entity that matches given conditions.
+     * Finds first entity by a given find options.
+     * If entity was not found in the database - rejects with error.
      */
-    findOneOrFail(conditions?: FindOptionsWhere<Entity>, options?: FindOneOptions<Entity>): Promise<Entity>;
+    async findOneOrFail(options: FindOneOptions<Entity>): Promise<Entity> {
+        return this.manager.findOneOrFail(this.metadata.target, options);
+    }
 
     /**
-     * Finds first entity that matches given conditions.
+     * Finds first entity that matches given where condition.
+     * If entity was not found in the database - rejects with error.
      */
-    findOneOrFail(optionsOrConditions?: string|number|Date|ObjectID|FindOneOptions<Entity>|FindOptionsWhere<Entity>, maybeOptions?: FindOneOptions<Entity>): Promise<Entity> {
-        return this.manager.findOneOrFail(this.metadata.target as any, optionsOrConditions as any, maybeOptions);
+    async findOneByOrFail(where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity> {
+        return this.manager.findOneByOrFail(this.metadata.target, where);
+    }
+
+    /**
+     * Finds first entity that matches given id.
+     * If entity was not found in the database - rejects with error.
+     */
+    async findOneByIdOrFail(id: number | string | Date | ObjectID): Promise<Entity> {
+        return this.manager.findOneByIdOrFail(this.metadata.target, id);
     }
 
     /**

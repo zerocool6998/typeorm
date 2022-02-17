@@ -37,8 +37,10 @@ describe("github issues > #2871 Empty enum array is returned as array with singl
           return;
     const documents: DocumentEnum[] = [DocumentEnum.DOCUMENT_A, DocumentEnum.DOCUMENT_B, DocumentEnum.DOCUMENT_C];
 
-    const barSaved = await repository.save({documents}) as Bar;
-    const barFromDb = await repository.findOne(barSaved.barId) as Bar;
+    const barSaved = await repository.save({documents});
+    const barFromDb = await repository.findOneByOrFail({
+        barId: barSaved.barId
+    });
 
     expect(barFromDb.documents).to.eql(documents);
   });
@@ -48,8 +50,10 @@ describe("github issues > #2871 Empty enum array is returned as array with singl
           return;
     const documents: DocumentEnum[] = [DocumentEnum.DOCUMENT_D];
 
-    const barSaved = await repository.save({documents}) as Bar;
-    const barFromDb = await repository.findOne(barSaved.barId) as Bar;
+    const barSaved = await repository.save({documents});
+    const barFromDb = await repository.findOneByOrFail({
+        barId: barSaved.barId,
+    });
 
     expect(barFromDb.documents).to.eql(documents);
   });
@@ -60,8 +64,10 @@ describe("github issues > #2871 Empty enum array is returned as array with singl
           return;
     const documents: DocumentEnum[] = [];
 
-    const barSaved = await repository.save({documents}) as Bar;
-    const barFromDb = await repository.findOne(barSaved.barId) as Bar;
+    const barSaved = await repository.save({documents});
+    const barFromDb = await repository.findOneByOrFail({
+        barId: barSaved.barId
+    });
 
     expect(barFromDb.documents).to.eql(documents);
   });

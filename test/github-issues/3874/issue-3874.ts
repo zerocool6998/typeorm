@@ -22,7 +22,11 @@ describe("github issues > #3874 Using an (empty string) enum as the type of a pr
         newSettings.value = "string";
         await connection.manager.save(newSettings);
         // Attempt to read settings back
-        const foundSettings = await connection.manager.findOne(Settings);
+        const foundSettings = await connection.manager.findOne(Settings, {
+            where: {
+                singleton: newSettings.singleton,
+            }
+        });
         expect(foundSettings).to.be.an.instanceOf(Settings);
         expect(foundSettings != null ? foundSettings.value : null).to.equal("string");
     })));

@@ -38,7 +38,11 @@ describe("query builder > insertion > on conflict", () => {
             .onConflict(`("id") DO NOTHING`)
             .execute();
 
-        await connection.manager.findOne(Post, "post#1").should.eventually.be.eql({
+        await connection.manager.findOne(Post, {
+            where: {
+                id: "post#1",
+            }
+        }).should.eventually.be.eql({
             id: "post#1",
             title: "About post",
             date: new Date('06 Aug 2020 00:12:00 GMT')
@@ -52,7 +56,11 @@ describe("query builder > insertion > on conflict", () => {
             .setParameter("title", post2.title)
             .execute();
 
-        await connection.manager.findOne(Post, "post#1").should.eventually.be.eql({
+        await connection.manager.findOne(Post, {
+            where: {
+                id: "post#1",
+            }
+        }).should.eventually.be.eql({
             id: "post#1",
             title: "Again post",
             date: new Date('06 Aug 2020 00:12:00 GMT')
@@ -84,7 +92,11 @@ describe("query builder > insertion > on conflict", () => {
             .orIgnore('date')
             .execute();
 
-        await connection.manager.findOne(Post, "post#1").should.eventually.be.eql({
+        await connection.manager.findOne(Post, {
+            where: {
+                id: "post#1",
+            }
+        }).should.eventually.be.eql({
             id: "post#1",
             title: "About post",
             date: new Date('06 Aug 2020 00:12:00 GMT')
@@ -117,7 +129,11 @@ describe("query builder > insertion > on conflict", () => {
             .setParameter("title", post2.title)
             .execute();
 
-        await connection.manager.findOne(Post, "post#1").should.eventually.be.eql({
+        await connection.manager.findOne(Post, {
+            where: {
+                id: "post#1",
+            }
+        }).should.eventually.be.eql({
             id: "post#1",
             title: "Again post",
             date: new Date('06 Aug 2020 00:12:00 GMT')

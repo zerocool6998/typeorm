@@ -47,7 +47,7 @@ describe("github issues > #2128 skip preparePersistentValue for value functions"
             })
             .execute();
 
-        const loadedPost = await connection.getRepository(Post).findOne({ title: "First Post" });
+        const loadedPost = await connection.getRepository(Post).findOneBy({ title: "First Post" });
 
         expect(loadedPost!.meta).to.deep.equal({
              author: "John Doe",

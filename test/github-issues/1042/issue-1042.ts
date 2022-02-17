@@ -33,7 +33,11 @@ describe("github issues > #1042 EntityMetadata.createPropertyPath does not work 
         await connection.manager.save(user);
 
         // load and check if saved user is correct
-        const loadedUser = await connection.manager.findOne(User, 1);
+        const loadedUser = await connection.manager.findOne(User, {
+            where: {
+                id: 1
+            }
+        });
         expect(loadedUser).not.to.be.null;
         loadedUser!.should.be.eql({
             id: 1,
@@ -66,7 +70,11 @@ describe("github issues > #1042 EntityMetadata.createPropertyPath does not work 
             .execute();
 
         // load and check again
-        const loadedUser2 = await connection.manager.findOne(User, 1);
+        const loadedUser2 = await connection.manager.findOne(User, {
+            where: {
+                id: 1
+            }
+        });
         expect(loadedUser2).not.to.be.null;
         loadedUser2!.should.be.eql({
             id: 1,
@@ -100,7 +108,11 @@ describe("github issues > #1042 EntityMetadata.createPropertyPath does not work 
             .execute();
 
         // load and check again
-        const loadedUser3 = await connection.manager.findOne(User, 1);
+        const loadedUser3 = await connection.manager.findOne(User, {
+            where: {
+                id: 1
+            }
+        });
         expect(loadedUser3).not.to.be.null;
         loadedUser3!.should.be.eql({
             id: 1,
@@ -134,7 +146,11 @@ describe("github issues > #1042 EntityMetadata.createPropertyPath does not work 
             .execute();
 
         // load and check again
-        const loadedUser4 = await connection.manager.findOne(User, 1);
+        const loadedUser4 = await connection.manager.findOne(User, {
+            where: {
+                id: 1
+            }
+        });
         expect(loadedUser4).not.to.be.null;
         loadedUser4!.should.be.eql({
             id: 1,

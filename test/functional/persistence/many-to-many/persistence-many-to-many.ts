@@ -48,7 +48,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser = await userRepository.findOne(newUser.id, {
+        const loadedUser = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }
@@ -93,7 +96,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser1 = await userRepository.findOne(newUser.id, {
+        const loadedUser1 = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }
@@ -111,7 +117,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser2 = await userRepository.findOne(newUser.id, {
+        const loadedUser2 = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }
@@ -157,7 +166,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser1 = await userRepository.findOne(newUser.id, {
+        const loadedUser1 = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }
@@ -175,7 +187,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser2 = await userRepository.findOne(newUser.id, {
+        const loadedUser2 = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }
@@ -220,7 +235,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser1 = await userRepository.findOne(newUser.id, {
+        const loadedUser1 = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }
@@ -238,7 +256,10 @@ describe("persistence > many-to-many", function() {
         await userRepository.save(newUser);
 
         // load a post
-        const loadedUser2 = await userRepository.findOne(newUser.id, {
+        const loadedUser2 = await userRepository.findOne({
+            where: {
+                id: newUser.id,
+            },
             join: {
                 alias: "user",
                 leftJoinAndSelect: { post: "user.post", categories: "post.categories" }

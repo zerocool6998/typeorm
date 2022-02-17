@@ -186,35 +186,33 @@ export class MongoEntityManager extends EntityManager {
     }
 
     /**
-     * Finds first entity that matches given conditions and/or find options.
+     * Finds first entity that matches given find options.
      */
-    async findOne<Entity>(entityClassOrName: EntityTarget<Entity>,
-                          optionsOrConditions?: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | MongoFindOneOptions<Entity> | DeepPartial<Entity>,
-                          maybeOptions?: MongoFindOneOptions<Entity>): Promise<Entity | null> {
-        const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
-        const id = (optionsOrConditions instanceof objectIdInstance) || typeof optionsOrConditions === "string" ? optionsOrConditions : undefined;
-        const findOneOptionsOrConditions = (id ? maybeOptions : optionsOrConditions) as any;
-        const query = this.convertFindOneOptionsOrConditionsToMongodbQuery(findOneOptionsOrConditions) || {};
-        if (id) {
-            query["_id"] = (id instanceof objectIdInstance) ? id : new objectIdInstance(id);
-        }
-        const cursor = await this.createEntityCursor(entityClassOrName, query);
-        const deleteDateColumn = this.connection.getMetadata(entityClassOrName).deleteDateColumn;
-        if (FindOptionsUtils.isFindOneOptions(findOneOptionsOrConditions)) {
-            if (findOneOptionsOrConditions.select)
-                cursor.project(this.convertFindOptionsSelectToProjectCriteria(findOneOptionsOrConditions.select));
-            if (findOneOptionsOrConditions.order)
-                cursor.sort(this.convertFindOptionsOrderToOrderCriteria(findOneOptionsOrConditions.order));
-            if (deleteDateColumn && !findOneOptionsOrConditions.withDeleted) {
-                this.filterSoftDeleted(cursor, deleteDateColumn);
-            }
-        } else if(deleteDateColumn) {
-            this.filterSoftDeleted(cursor, deleteDateColumn);
-        }
+    async findOne<Entity>(
+        entityClassOrName: EntityTarget<Entity>,
+        options: MongoFindOneOptions<Entity>
+    ): Promise<Entity | null> {
+        return this.executeFindOne(entityClassOrName, options)
+    }
 
-        // const result = await cursor.limit(1).next();
-        const result = await cursor.limit(1).toArray();
-        return result.length > 0 ? result[0] : null;
+    /**
+     * Finds first entity that matches given WHERE conditions.
+     */
+    async findOneBy<Entity>(
+        entityClassOrName: EntityTarget<Entity>,
+        where: DeepPartial<Entity>
+    ): Promise<Entity | null> {
+        return this.executeFindOne(entityClassOrName, where)
+    }
+
+    /**
+     * Finds entity that matches given id.
+     */
+    async findOneById<Entity>(
+        entityClassOrName: EntityTarget<Entity>,
+        id: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[]
+    ): Promise<Entity | null> {
+        return this.executeFindOne(entityClassOrName, id)
     }
 
     /**
@@ -778,6 +776,38 @@ export class MongoEntityManager extends EntityManager {
 
     protected filterSoftDeleted<Entity>(cursor: Cursor<Entity>, deleteDateColumn: ColumnMetadata) {
         cursor.filter({$where: `this.${deleteDateColumn.propertyName}==null`});
+    }
+
+    /**
+     * Finds first entity that matches given conditions and/or find options.
+     */
+    protected async executeFindOne<Entity>(entityClassOrName: EntityTarget<Entity>,
+                                           optionsOrConditions?: any,
+                                           maybeOptions?: MongoFindOneOptions<Entity>): Promise<Entity | null> {
+        const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
+        const id = (optionsOrConditions instanceof objectIdInstance) || typeof optionsOrConditions === "string" ? optionsOrConditions : undefined;
+        const findOneOptionsOrConditions = (id ? maybeOptions : optionsOrConditions) as any;
+        const query = this.convertFindOneOptionsOrConditionsToMongodbQuery(findOneOptionsOrConditions) || {};
+        if (id) {
+            query["_id"] = (id instanceof objectIdInstance) ? id : new objectIdInstance(id);
+        }
+        const cursor = await this.createEntityCursor(entityClassOrName, query);
+        const deleteDateColumn = this.connection.getMetadata(entityClassOrName).deleteDateColumn;
+        if (FindOptionsUtils.isFindOneOptions(findOneOptionsOrConditions)) {
+            if (findOneOptionsOrConditions.select)
+                cursor.project(this.convertFindOptionsSelectToProjectCriteria(findOneOptionsOrConditions.select));
+            if (findOneOptionsOrConditions.order)
+                cursor.sort(this.convertFindOptionsOrderToOrderCriteria(findOneOptionsOrConditions.order));
+            if (deleteDateColumn && !findOneOptionsOrConditions.withDeleted) {
+                this.filterSoftDeleted(cursor, deleteDateColumn);
+            }
+        } else if(deleteDateColumn) {
+            this.filterSoftDeleted(cursor, deleteDateColumn);
+        }
+
+        // const result = await cursor.limit(1).next();
+        const result = await cursor.limit(1).toArray();
+        return result.length > 0 ? result[0] : null;
     }
 
 }

@@ -45,7 +45,7 @@ describe("mongodb > timestampable columns", () => {
 
         await commentMongoRepository.save(post);
 
-        const updatedPost = await commentMongoRepository.findOne(post.id);
+        const updatedPost = await commentMongoRepository.findOneBy({ id: post.id });
 
         expect(updatedPost).to.be.ok;
 

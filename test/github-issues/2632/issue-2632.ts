@@ -40,7 +40,7 @@ describe("github issues > #2632 createQueryBuilder relation remove works only if
           .of(post1)
           .add(1);
 
-        let loadedPost1 = await connection.manager.findOne(Post, 1, { relations: ["categories"] });
+        let loadedPost1 = await connection.manager.findOne(Post, { where: { id: 1 }, relations: ["categories"] });
         expect(loadedPost1!.categories).to.deep.include({ id: 1, title: "category #1" });
 
         await connection
@@ -49,7 +49,7 @@ describe("github issues > #2632 createQueryBuilder relation remove works only if
           .of(post1)
           .remove(1);
 
-        loadedPost1 = await connection.manager.findOne(Post, 1, { relations: ["categories"] });
+        loadedPost1 = await connection.manager.findOne(Post, { where: { id: 1 }, relations: ["categories"] });
         expect(loadedPost1!.categories).to.be.eql([]);
 
         await connection
@@ -58,7 +58,7 @@ describe("github issues > #2632 createQueryBuilder relation remove works only if
           .of(2)
           .add(category2);
 
-        let loadedPost2 = await connection.manager.findOne(Post, 2, { relations: ["categories"] });
+        let loadedPost2 = await connection.manager.findOne(Post, { where: { id: 2 }, relations: ["categories"] });
         expect(loadedPost2!.categories).to.deep.include({ id: 2, title: "category #2" });
 
         await connection
@@ -67,7 +67,7 @@ describe("github issues > #2632 createQueryBuilder relation remove works only if
           .of(2)
           .remove(category2);
 
-        loadedPost1 = await connection.manager.findOne(Post, 2, { relations: ["categories"] });
+        loadedPost1 = await connection.manager.findOne(Post, { where: { id: 2 }, relations: ["categories"] });
         expect(loadedPost1!.categories).to.be.eql([]);
 
     })));

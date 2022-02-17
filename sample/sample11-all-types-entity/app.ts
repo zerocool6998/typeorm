@@ -82,7 +82,7 @@ createConnection(options).then(connection => {
             }) as Promise<EverythingEntity>;
         })
         .then(entity => {
-            return postRepository.findOne(entity.id);
+            return postRepository.findOneById(entity.id);
         })
         .then(entity => {
             console.log("Entity is loaded: ", entity);

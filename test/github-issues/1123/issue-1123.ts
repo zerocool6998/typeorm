@@ -34,7 +34,7 @@ describe("github issues > #1123 load relation eagerly by setting isEager propert
       connections.map(async connection => {
         await prepareData(connection);
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post, { id: 1 });
         loadedPost!.should.be.eql({
           id: 1,
           title: "Post 1",

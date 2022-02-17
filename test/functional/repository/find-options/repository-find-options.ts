@@ -72,7 +72,10 @@ describe("repository > find options", () => {
         await connection
             .createEntityManager(queryRunner)
             .getRepository(User)
-            .findOne(1, {
+            .findOne({
+                where: {
+                    id: 1,
+                },
                 transaction: true
             });
 

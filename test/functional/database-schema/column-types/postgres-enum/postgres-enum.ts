@@ -32,7 +32,9 @@ describe("database schema > column types > postgres-enum", () => {
         post.name = "Post #1";
         await postRepository.save(post);
 
-        const loadedPost = (await postRepository.findOne(1))!;
+        const loadedPost = (await postRepository.findOneBy({
+            id: 1
+        }))!;
         loadedPost.enum.should.be.equal(post.enum);
         loadedPost.enumArray.should.be.deep.equal(post.enumArray);
         loadedPost.enumArray2.should.be.deep.equal(post.enumArray2);

@@ -25,7 +25,7 @@ describe("github issues > #1825 Invalid field values being loaded with long came
 
         await thingRepository.save(thing);
 
-        const loadedThing = await thingRepository.findOne(thing.id);
+        const loadedThing = await thingRepository.findOneBy({ id: thing.id });
 
         expect(loadedThing).to.eql(thing);
     })));

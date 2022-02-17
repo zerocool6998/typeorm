@@ -64,7 +64,7 @@ describe("github issues > #47 wrong sql syntax when loading lazy relation", () =
         loadedPosts2![0].id.should.equal(2);
         loadedPosts2![0].title.should.equal("Hello Post #2");
 
-        const reloadedPost = await connection.manager.findOne(Post, {id: post1.id});
+        const reloadedPost = await connection.manager.findOneBy(Post, {id: post1.id});
 
         const promise = reloadedPost!.category;
         reloadedPost!.category = Promise.resolve(category2);

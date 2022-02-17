@@ -187,13 +187,7 @@ describe("github issues > #1551 complex example of cascades + multiple primary k
             ],
         }));
 
-        const message = await connection.manager.findOne(Message);
-
-        if (message) {
-            await connection.getRepository(Message).remove(message);
-        } else {
-            throw new Error("Cannot get message");
-        }
+        await connection.getRepository(Message).remove(await connection.manager.find(Message));
 
         const messages = await connection.manager.find(Message);
         messages.length.should.be.equal(0);

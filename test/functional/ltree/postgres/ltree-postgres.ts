@@ -44,7 +44,9 @@ describe("ltree-postgres", () => {
                 const post = new Post();
                 post.path = path;
                 const persistedPost = await postRepo.save(post);
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.path).to.deep.equal(path);
             })
@@ -65,7 +67,9 @@ describe("ltree-postgres", () => {
                     { path: path2 }
                 );
 
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.path).to.deep.equal(path2);
             })
@@ -84,7 +88,9 @@ describe("ltree-postgres", () => {
                 persistedPost.path = path2;
                 await postRepo.save(persistedPost);
 
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.path).to.deep.equal(path2);
             })
@@ -98,7 +104,9 @@ describe("ltree-postgres", () => {
                 const post = new Post();
                 post.path = path;
                 const persistedPost = await postRepo.save(post);
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.path).to.deep.equal('News.Featured.Opinion');
             })
@@ -112,7 +120,9 @@ describe("ltree-postgres", () => {
                 const post = new Post();
                 post.path = path;
                 const persistedPost = await postRepo.save(post);
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.path).to.deep.equal('News.Featured_Story.Opinion');
             })

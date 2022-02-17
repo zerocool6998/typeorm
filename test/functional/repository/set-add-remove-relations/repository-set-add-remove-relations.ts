@@ -47,7 +47,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await postSpecificRepository.addToRelation(post => post.manyCategories, newPost.id, [newCategory1.id, newCategory2.id]);
 
         // load a post, want to have categories count
-        const loadedPost = await postRepository.findOne(1, {
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "post",
                 leftJoinAndSelect: {
@@ -87,7 +90,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await categorySpecificRepository.addToRelation(category => category.manyPosts, newCategory.id, [newPost1.id, newPost2.id]);
 
         // load a post, want to have categories count
-        const loadedCategory = await categoryRepository.findOne(1, {
+        const loadedCategory = await categoryRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "category",
                 leftJoinAndSelect: { manyPosts: "category.manyPosts" } }
@@ -130,7 +136,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await postSpecificRepository.removeFromRelation(post => post.manyCategories, newPost.id, [newCategory1.id, newCategory3.id]);
 
         // load a post, want to have categories count
-        const loadedPost = await postRepository.findOne(1, {
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "post",
                 leftJoinAndSelect: { manyCategories: "post.manyCategories" }
@@ -174,7 +183,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await categorySpecificRepository.removeFromRelation(post => post.manyPosts, newCategory.id, [newPost1.id, newPost3.id]);
 
         // load a post, want to have categories count
-        const loadedCategory = await categoryRepository.findOne(1, {
+        const loadedCategory = await categoryRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "category",
                 leftJoinAndSelect: { manyPosts: "category.manyPosts" }
@@ -207,7 +219,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await postSpecificRepository.setRelation(post => post.categories, newPost.id, newCategory1.id);
 
         // load a post, want to have categories count
-        const loadedPost = await postRepository.findOne(1, {
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "post",
                 leftJoinAndSelect: { categories: "post.categories" }
@@ -239,7 +254,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await categorySpecificRepository.setRelation(category => category.post, newCategory.id, newPost.id);
 
         // load a post, want to have categories count
-        const loadedCategory = await categoryRepository.findOne(1, {
+        const loadedCategory = await categoryRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "category",
                 leftJoinAndSelect: { post: "category.post" }
@@ -270,7 +288,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await postSpecificRepository.setRelation(post => post.categories, newPost.id, null);
 
         // load a post, want to have categories count
-        const loadedPost = await postRepository.findOne(1, {
+        const loadedPost = await postRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "post",
                 leftJoinAndSelect: { categories: "post.categories" }
@@ -301,7 +322,10 @@ describe.skip("repository > set/add/remove relation methods", function() {
         // await categorySpecificRepository.setRelation(category => category.post, newCategory.id, null);
 
         // load a post, want to have categories count
-        const loadedCategory = await categoryRepository.findOne(1, {
+        const loadedCategory = await categoryRepository.findOne({
+            where: {
+                id: 1
+            },
             join: {
                 alias: "category",
                 leftJoinAndSelect: { post: "category.post" }

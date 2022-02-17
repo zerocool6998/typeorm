@@ -51,7 +51,9 @@ describe("cube-postgres", () => {
                 const post = new Post();
                 post.mainColor = color;
                 const persistedPost = await postRepo.save(post);
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.mainColor).to.deep.equal(color);
             })
@@ -72,7 +74,9 @@ describe("cube-postgres", () => {
                     { mainColor: color2 }
                 );
 
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.mainColor).to.deep.equal(color2);
             })
@@ -91,7 +95,9 @@ describe("cube-postgres", () => {
                 persistedPost.mainColor = color2;
                 await postRepo.save(persistedPost);
 
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.mainColor).to.deep.equal(color2);
             })
@@ -116,7 +122,9 @@ describe("cube-postgres", () => {
                 const post = new Post();
                 post.mainColor = color;
                 const persistedPost = await postRepo.save(post);
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.mainColor).to.deep.equal(color);
             })
@@ -155,7 +163,9 @@ describe("cube-postgres", () => {
                 const post = new Post();
                 post.colors = colors;
                 const persistedPost = await postRepo.save(post);
-                const foundPost = await postRepo.findOne(persistedPost.id);
+                const foundPost = await postRepo.findOneBy({
+                    id: persistedPost.id
+                });
                 expect(foundPost).to.exist;
                 expect(foundPost!.colors).to.deep.equal(colors);
             })

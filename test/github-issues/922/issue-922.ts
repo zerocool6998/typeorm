@@ -25,7 +25,9 @@ describe("github issues > #922 Support HSTORE column type", () => {
         post.hstoreStr = "name => Bob, surname => B, age => 30";
         await postRepository.save(post);
 
-        const loadedPost = await postRepository.findOne(1);
+        const loadedPost = await postRepository.findOneBy({
+            id: 1
+        });
         (loadedPost!.hstoreObj as ObjectLiteral).name.should.be.equal("Alice");
         (loadedPost!.hstoreObj as ObjectLiteral).surname.should.be.equal("A");
         (loadedPost!.hstoreObj as ObjectLiteral).age.should.be.equal("25");

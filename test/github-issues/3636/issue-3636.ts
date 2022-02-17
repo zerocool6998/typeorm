@@ -24,7 +24,7 @@ describe("github issues > #3636 synchronize drops (and then re-adds) json column
 
         await connection.synchronize();
 
-        const loadedPost = await connection.manager.findOne(Post, 1);
+        const loadedPost = await connection.manager.findOneBy(Post, { id: 1 });
 
         expect(loadedPost).to.be.not.empty;
         expect(loadedPost!.data.hello).to.be.eq("world");

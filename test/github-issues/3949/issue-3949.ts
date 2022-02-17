@@ -23,7 +23,7 @@ describe("github issues > #3949 sqlite date hydration is susceptible to corrupti
 
         await queryRunner.query(`INSERT INTO "POST"("id", "date") VALUES (?, ?)`, [1, sqlDateString]);
 
-        const post = await repo.findOne(1);
+        const post = await repo.findOneBy({ id: 1 });
 
         post!.date.should.eql(new Date(jsDateString));
     };

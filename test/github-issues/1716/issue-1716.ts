@@ -30,7 +30,7 @@ const isDriverEnabled = (driver: string) => {
 
 
 describe("github issues > #1716 send timestamp to database without converting it into UTC", () => {
-    
+
     describe("postgres", async () => {
 
         if (!isDriverEnabled("postgres")) {
@@ -76,7 +76,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldTimestampWithTZ: "2018-03-07 14:00:00+05",
             });
 
-            const result1 = await manager.findOne(PgEntity, 1);
+            const result1 = await manager.findOneBy(PgEntity, {
+                id: 1
+            });
             convertPropsToISOStrings(result1, ["fieldTimestamp", "fieldTimestampWithoutTZ", "fieldTimestampWithTZ"]);
 
             expect(result1).to.deep.equal({
@@ -101,7 +103,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldTimestampWithTZ: "2018-03-07 17:00:00",
             });
 
-            const result2 = await manager.findOne(PgEntity, 2);
+            const result2 = await manager.findOneBy(PgEntity, {
+                id: 2
+            });
             convertPropsToISOStrings(result2, ["fieldTimestamp", "fieldTimestampWithoutTZ", "fieldTimestampWithTZ"]);
 
             expect(result2).to.deep.equal({
@@ -155,7 +159,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldDatetime: "2018-03-07 14:00:00+05",
             });
 
-            const result1 = await manager.findOne(MysqlEntity, 1);
+            const result1 = await manager.findOneBy(MysqlEntity, {
+                id: 1
+            });
             convertPropsToISOStrings(result1, ["fieldTimestamp", "fieldDatetime"]);
 
             expect(result1).to.deep.equal({
@@ -174,7 +180,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldDatetime: "2018-03-07 17:00:00",
             });
 
-            const result2 = await manager.findOne(MysqlEntity, 2);
+            const result2 = await manager.findOneBy(MysqlEntity, {
+                id: 2
+            });
             convertPropsToISOStrings(result2, ["fieldTimestamp", "fieldDatetime"]);
 
             expect(result2).to.deep.equal({
@@ -225,7 +233,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldDatetime: "2018-03-07 14:00:00+05",
             });
 
-            const result1 = await manager.findOne(MariadbEntity, 1);
+            const result1 = await manager.findOneBy(MariadbEntity, {
+                id: 1
+            });
             convertPropsToISOStrings(result1, ["fieldTimestamp", "fieldDatetime"]);
 
             expect(result1).to.deep.equal({
@@ -244,7 +254,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldDatetime: "2018-03-07 17:00:00",
             });
 
-            const result2 = await manager.findOne(MariadbEntity, 2);
+            const result2 = await manager.findOneBy(MariadbEntity, {
+                id: 2
+            });
             convertPropsToISOStrings(result2, ["fieldTimestamp", "fieldDatetime"]);
 
             expect(result2).to.deep.equal({
@@ -296,7 +308,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldDatetimeoffset: "2018-03-07 14:00:00+05",
             });
 
-            const result1 = await manager.findOne(MssqlEntity, 1);
+            const result1 = await manager.findOneBy(MssqlEntity, {
+                id: 1
+            });
             convertPropsToISOStrings(result1, ["fieldDatetime", "fieldDatetime2", "fieldDatetimeoffset"]);
 
             expect(result1).to.deep.equal({
@@ -317,7 +331,9 @@ describe("github issues > #1716 send timestamp to database without converting it
                 fieldDatetimeoffset: "2018-03-07 17:00:00",
             });
 
-            const result2 = await manager.findOne(MssqlEntity, 2);
+            const result2 = await manager.findOneBy(MssqlEntity, {
+                id: 2
+            });
             convertPropsToISOStrings(result2, ["fieldDatetime", "fieldDatetime2", "fieldDatetimeoffset"]);
 
             expect(result2).to.deep.equal({
