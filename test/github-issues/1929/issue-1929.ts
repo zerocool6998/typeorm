@@ -47,7 +47,10 @@ describe("github issues > #1929 Select attributes in Find method - mongodb", () 
             await productRepository.save(product);
             product = new Product("test3", "label3", 30);
             const product3 = await productRepository.save(product);
-            await productRepository.findByIds([product3.id], {select: ["name", "label"], order: {name: 1}});
+            await productRepository.find({
+                where: { _id: product3.id },
+                select: ["name", "label"], order: {name: 1}
+            });
         })));
 
     it("return column on include in select on findByIds ",

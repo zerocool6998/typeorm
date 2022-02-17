@@ -46,7 +46,9 @@ describe.skip("persistence > cascades > remove", () => {
 
         await connection.manager.softRemove(user);
 
-        const allPhotos = await connection.manager.find(Photo, {deletedAt: IsNull()});
+        const allPhotos = await connection.manager.findBy(Photo, {
+            deletedAt: IsNull()
+        });
         allPhotos.length.should.be.equal(1);
         allPhotos[0].name.should.be.equal("Photo #1");
     })));

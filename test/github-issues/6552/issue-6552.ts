@@ -1,11 +1,10 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
-import { PlatformTools } from "../../../src/platform/PlatformTools";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Post } from "./entity/Post";
-import { PostV2 } from "./entity/PostV2";
-import { FindOptionsWhere } from "../../../src";
+import {Connection} from "../../../src/connection/Connection";
+import {PlatformTools} from "../../../src/platform/PlatformTools";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Post} from "./entity/Post";
+import {PostV2} from "./entity/PostV2";
 
 describe("github issues > #6552 MongoRepository delete by ObjectId deletes the wrong entity", () => {
 
@@ -41,11 +40,11 @@ describe("github issues > #6552 MongoRepository delete by ObjectId deletes the w
     // This used to wrongly perform deleteOne({}) - deleting the first Post in the collection
 
     // Post 1 should remain in the DB
-    const count1 = await connection.manager.count(Post, { _id: post1._id } as FindOptionsWhere<Post>);
+    const count1 = await connection.manager.countBy(Post, { _id: post1._id });
     expect(count1).to.be.equal(1, "Post 1 should still exist");
 
     // Post 2 should be deleted
-    const count2 = await connection.manager.count(Post, { _id: post2._id } as FindOptionsWhere<Post>);
+    const count2 = await connection.manager.countBy(Post, { _id: post2._id });
     expect(count2).to.be.equal(0, "Post 2 should be deleted");
 
 
@@ -75,11 +74,11 @@ describe("github issues > #6552 MongoRepository delete by ObjectId deletes the w
     // This used to wrongly perform deleteOne({_id: Buffer}) - not deleting anything because Buffer is not an ObjectId
 
     // Post 1 should remain in the DB
-    const count1 = await connection.manager.count(PostV2, { _id: post1.postId } as FindOptionsWhere<PostV2>);
+    const count1 = await connection.manager.countBy(PostV2, { postId: post1.postId });
     expect(count1).to.be.equal(1, "Post 1 should still exist");
 
     // Post 2 should be deleted
-    const count2 = await connection.manager.count(PostV2, { _id: post2.postId } as FindOptionsWhere<PostV2>);
+    const count2 = await connection.manager.countBy(PostV2, { postId: post2.postId });
     expect(count2).to.be.equal(0, "Post 2 should be deleted");
 
 
@@ -108,11 +107,11 @@ describe("github issues > #6552 MongoRepository delete by ObjectId deletes the w
     await connection.manager.delete(Post, { _id: post2._id });
 
     // Post 1 should remain in the DB
-    const count1 = await connection.manager.count(Post, { _id: post1._id } as FindOptionsWhere<Post>);
+    const count1 = await connection.manager.countBy(Post, { _id: post1._id });
     expect(count1).to.be.equal(1, "Post 1 should still exist");
 
     // Post 2 should be deleted
-    const count2 = await connection.manager.count(Post, { _id: post2._id } as FindOptionsWhere<Post>);
+    const count2 = await connection.manager.countBy(Post, { _id: post2._id } );
     expect(count2).to.be.equal(0, "Post 2 should be deleted");
 
 

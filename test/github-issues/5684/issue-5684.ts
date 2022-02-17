@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {Connection, In} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Company} from "./entity/Company";
 import {User} from "./entity/User";
@@ -79,7 +79,10 @@ describe("github issues > #5684 eager relation skips children relations", () => 
             relations: [...relations],
         });
         assert(users4.pop());
-        const users5 = await connection.getRepository(User).findByIds([userAdmin.id], {
+        const users5 = await connection.getRepository(User).find({
+            where: {
+                id: In([userAdmin.id])
+            },
             relations: [...relations],
         });
         assert(users5.pop());

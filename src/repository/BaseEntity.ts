@@ -276,35 +276,29 @@ export class BaseEntity {
     /**
      * Counts entities that match given options.
      */
-    static count<T extends BaseEntity>(this: ObjectType<T>, options?: FindManyOptions<T>): Promise<number>;
+    static count<T extends BaseEntity>(this: ObjectType<T>, options?: FindManyOptions<T>): Promise<number> {
+        return (this as any).getRepository().count(options);
+    }
 
     /**
-     * Counts entities that match given conditions.
+     * Counts entities that match given WHERE conditions.
      */
-    static count<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>): Promise<number>;
-
-    /**
-     * Counts entities that match given find options or conditions.
-     */
-    static count<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<number> {
-        return (this as any).getRepository().count(optionsOrConditions as any);
+    static countBy<T extends BaseEntity>(this: ObjectType<T>, where: FindOptionsWhere<T>): Promise<number> {
+        return (this as any).getRepository().count(where);
     }
 
     /**
      * Finds entities that match given options.
      */
-    static find<T extends BaseEntity>(this: ObjectType<T>, options?: FindManyOptions<T>): Promise<T[]>;
+    static find<T extends BaseEntity>(this: ObjectType<T>, options?: FindManyOptions<T>): Promise<T[]> {
+        return (this as any).getRepository().find(options);
+    }
 
     /**
-     * Finds entities that match given conditions.
+     * Finds entities that match given WHERE conditions.
      */
-    static find<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>): Promise<T[]>;
-
-    /**
-     * Finds entities that match given find options or conditions.
-     */
-    static find<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<T[]> {
-        return (this as any).getRepository().find(optionsOrConditions as any);
+    static findBy<T extends BaseEntity>(this: ObjectType<T>, where: FindOptionsWhere<T>): Promise<T[]> {
+        return (this as any).getRepository().find(where);
     }
 
     /**
@@ -312,42 +306,25 @@ export class BaseEntity {
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, options?: FindManyOptions<T>): Promise<[ T[], number ]>;
+    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, options?: FindManyOptions<T>): Promise<[T[], number]> {
+        return (this as any).getRepository().findAndCount(options);
+    }
 
     /**
-     * Finds entities that match given conditions.
+     * Finds entities that match given WHERE conditions.
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, conditions?: FindOptionsWhere<T>): Promise<[ T[], number ]>;
-
-    /**
-     * Finds entities that match given find options or conditions.
-     * Also counts all entities that match given conditions,
-     * but ignores pagination settings (from and take options).
-     */
-    static findAndCount<T extends BaseEntity>(this: ObjectType<T>, optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<[ T[], number ]> {
-        return (this as any).getRepository().findAndCount(optionsOrConditions as any);
+    static findAndCountBy<T extends BaseEntity>(this: ObjectType<T>, where: FindOptionsWhere<T>): Promise<[T[], number]> {
+        return (this as any).getRepository().findAndCount(where);
     }
 
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
      */
-    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], options?: FindManyOptions<T>): Promise<T[]>;
-
-    /**
-     * Finds entities by ids.
-     * Optionally conditions can be applied.
-     */
-    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], conditions?: FindOptionsWhere<T>): Promise<T[]>;
-
-    /**
-     * Finds entities by ids.
-     * Optionally find options can be applied.
-     */
-    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[], optionsOrConditions?: FindManyOptions<T>|FindOptionsWhere<T>): Promise<T[]> {
-        return (this as any).getRepository().findByIds(ids, optionsOrConditions as any);
+    static findByIds<T extends BaseEntity>(this: ObjectType<T>, ids: any[]): Promise<T[]> {
+        return (this as any).getRepository().findByIdsBy(ids);
     }
 
     /**

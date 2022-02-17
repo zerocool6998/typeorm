@@ -69,13 +69,21 @@ describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb"
         const withoutDeletedById = await repository.findByIds([configuration._id]);
         expect(withoutDeletedById.length).to.be.eq(0);
 
-        const withDeletedById = await repository.findByIds([configuration._id],
-            { withDeleted: true });
-        expect(withDeletedById.length).to.be.eq(1);
+        const withDeletedById = await repository.findOne({
+            where: {
+                _id: configuration._id
+            },
+            withDeleted: true
+        });
+        expect(withDeletedById).not.to.be.null;
 
-        const withOtherOptionById = await repository.findByIds([configuration._id],
-            { cache: true });
-        expect(withOtherOptionById.length).to.be.eq(0);
+        const withOtherOptionById = await repository.findOne({
+            where: {
+                _id: configuration._id
+            },
+            cache: true
+        });
+        expect(withOtherOptionById).not.to.be.null;
 
     })));
 

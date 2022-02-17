@@ -3,6 +3,7 @@ import {createTestingConnections, closeTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
+import {In} from "../../../src";
 
 describe("github issues > #1245 `findByIds` ignores `FindManyOptions`", () => {
 
@@ -28,8 +29,8 @@ describe("github issues > #1245 `findByIds` ignores `FindManyOptions`", () => {
 
         await connection.manager.save([post1, post2, post3]);
 
-        expect(await connection.manager.findByIds(
-          Post, [post2.id, post3.id], { name: "some_name" }
+        expect(await connection.manager.findBy(
+          Post, { id: In([post2.id, post3.id]), name: "some_name" }
         )).to.eql([post2]);
 
     })));
@@ -47,8 +48,8 @@ describe("github issues > #1245 `findByIds` ignores `FindManyOptions`", () => {
 
         await connection.manager.save([post1, post2, post3]);
 
-        expect(await connection.manager.findByIds(
-          Post, [post2.id, post3.id], { where: { name: "some_name" } }
+        expect(await connection.manager.findBy(
+          Post, { id: In([post2.id, post3.id]), name: "some_name" }
         )).to.eql([post2]);
 
     })));

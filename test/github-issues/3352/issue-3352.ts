@@ -24,7 +24,7 @@ describe("github issues > #3352 sync drops text column", () => {
 
         await connection.synchronize();
 
-        const loadedPost = await connection.manager.find(Post, { text: "hello world" });
+        const loadedPost = await connection.manager.findBy(Post, { text: "hello world" });
         expect(loadedPost).to.be.not.empty;
 
     })));

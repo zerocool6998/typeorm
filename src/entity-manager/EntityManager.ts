@@ -680,58 +680,43 @@ export class EntityManager {
      * Counts entities that match given options.
      * Useful for pagination.
      */
-    count<Entity>(entityClass: EntityTarget<Entity>, options?: FindOneOptions<Entity>): Promise<number>;
-
-    /**
-     * Counts entities that match given options.
-     * Useful for pagination.
-     */
-    count<Entity>(entityClass: EntityTarget<Entity>, options?: FindManyOptions<Entity>): Promise<number>;
+    count<Entity>(entityClass: EntityTarget<Entity>, options?: FindManyOptions<Entity>): Promise<number> {
+        const metadata = this.connection.getMetadata(entityClass);
+        return this.createQueryBuilder(entityClass, FindOptionsUtils.extractFindManyOptionsAlias(options) || metadata.name)
+            .setFindOptions(options || {})
+            .getCount();
+    }
 
     /**
      * Counts entities that match given conditions.
      * Useful for pagination.
      */
-    count<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<number>;
-
-    /**
-     * Counts entities that match given find options or conditions.
-     * Useful for pagination.
-     */
-    async count<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[] |FindOneOptions<Entity>|FindManyOptions<Entity>): Promise<number> {
+    countBy<Entity>(entityClass: EntityTarget<Entity>, where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<number> {
         const metadata = this.connection.getMetadata(entityClass);
-        const qb = this.createQueryBuilder(entityClass, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
-
-        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions) || FindOptionsUtils.isFindOneOptions(optionsOrConditions)) {
-            qb.setFindOptions(optionsOrConditions);
-        } else {
-            qb.setFindOptions({ where: optionsOrConditions });
-        }
-        return qb.getCount();
+        return this.createQueryBuilder(entityClass, metadata.name)
+            .setFindOptions({ where })
+            .getCount();
     }
 
     /**
-     * Finds entities that match given options.
+     * Finds entities that match given find options.
      */
-    find<Entity>(entityClass: EntityTarget<Entity>, options?: FindManyOptions<Entity>): Promise<Entity[]>;
-
-    /**
-     * Finds entities that match given conditions.
-     */
-    find<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]>;
-
-    /**
-     * Finds entities that match given find options or conditions.
-     */
-    async find<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindManyOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]> {
+    async find<Entity>(entityClass: EntityTarget<Entity>, options?: FindManyOptions<Entity>): Promise<Entity[]> {
         const metadata = this.connection.getMetadata(entityClass);
-        const qb = this.createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
-        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
-            qb.setFindOptions(optionsOrConditions);
-        } else {
-            qb.setFindOptions({ where: optionsOrConditions });
-        }
-        return qb.getMany();
+        return this
+            .createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(options) || metadata.name)
+            .setFindOptions(options || {})
+            .getMany();
+    }
+
+    /**
+     * Finds entities that match given find options.
+     */
+    async findBy<Entity>(entityClass: EntityTarget<Entity>, where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]> {
+        const metadata = this.connection.getMetadata(entityClass);
+        return this.createQueryBuilder<Entity>(entityClass as any, metadata.name)
+            .setFindOptions({ where: where })
+            .getMany();
     }
 
     /**
@@ -739,65 +724,39 @@ export class EntityManager {
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    findAndCount<Entity>(entityClass: EntityTarget<Entity>, options?: FindManyOptions<Entity>): Promise<[Entity[], number]>;
-
-    /**
-     * Finds entities that match given conditions.
-     * Also counts all entities that match given conditions,
-     * but ignores pagination settings (from and take options).
-     */
-    findAndCount<Entity>(entityClass: EntityTarget<Entity>, conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<[Entity[], number]>;
-
-    /**
-     * Finds entities that match given find options and conditions.
-     * Also counts all entities that match given conditions,
-     * but ignores pagination settings (from and take options).
-     */
-    async findAndCount<Entity>(entityClass: EntityTarget<Entity>, optionsOrConditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[] | FindManyOptions<Entity>): Promise<[Entity[], number]> {
+    findAndCount<Entity>(entityClass: EntityTarget<Entity>, options?: FindManyOptions<Entity>): Promise<[Entity[], number]> {
         const metadata = this.connection.getMetadata(entityClass);
-        const qb = this.createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
-
-        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
-            qb.setFindOptions(optionsOrConditions);
-        } else {
-            qb.setFindOptions({ where: optionsOrConditions });
-        }
-
-        return qb.getManyAndCount();
+        return this.createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(options) || metadata.name)
+            .setFindOptions(options || {})
+            .getManyAndCount();
     }
 
     /**
-     * Finds entities with ids.
-     * Optionally find options can be applied.
+     * Finds entities that match given WHERE conditions.
+     * Also counts all entities that match given conditions,
+     * but ignores pagination settings (from and take options).
      */
-    findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], options?: FindManyOptions<Entity>): Promise<Entity[]>;
-
-    /**
-     * Finds entities with ids.
-     * Optionally conditions can be applied.
-     */
-    findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]>;
+    findAndCountBy<Entity>(entityClass: EntityTarget<Entity>, where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<[Entity[], number]> {
+        const metadata = this.connection.getMetadata(entityClass);
+        return this.createQueryBuilder<Entity>(entityClass as any, metadata.name)
+            .setFindOptions({ where })
+            .getManyAndCount();
+    }
 
     /**
      * Finds entities with ids.
      * Optionally find options or conditions can be applied.
      */
-    async findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[], optionsOrConditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[] | FindManyOptions<Entity>): Promise<Entity[]> {
+    async findByIds<Entity>(entityClass: EntityTarget<Entity>, ids: any[]): Promise<Entity[]> {
 
         // if no ids passed, no need to execute a query - just return an empty array of values
         if (!ids.length)
             return Promise.resolve([]);
 
         const metadata = this.connection.getMetadata(entityClass);
-        const qb = this.createQueryBuilder<Entity>(entityClass as any, FindOptionsUtils.extractFindManyOptionsAlias(optionsOrConditions) || metadata.name);
-
-        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
-            qb.setFindOptions(optionsOrConditions);
-        } else {
-            qb.setFindOptions({ where: optionsOrConditions });
-        }
-
-        return qb.andWhereInIds(ids).getMany();
+        return this.createQueryBuilder<Entity>(entityClass as any, metadata.name)
+            .andWhereInIds(ids)
+            .getMany();
     }
 
     /**

@@ -76,8 +76,15 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
     /**
      * Finds entities that match given find options or conditions.
      */
-    find(optionsOrConditions?: MongoFindManyOptions<Entity>|Partial<Entity>|any[]): Promise<Entity[]> {
-        return this.manager.find(this.metadata.target, optionsOrConditions);
+    find(options?: MongoFindManyOptions<Entity>): Promise<Entity[]> {
+        return this.manager.find(this.metadata.target, options);
+    }
+
+    /**
+     * Finds entities that match given find options or conditions.
+     */
+    findBy(where: any): Promise<Entity[]> {
+        return this.manager.findBy(this.metadata.target, where);
     }
 
     /**
@@ -85,16 +92,25 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    findAndCount(optionsOrConditions?: MongoFindManyOptions<Entity>|Partial<Entity>): Promise<[ Entity[], number ]> {
-        return this.manager.findAndCount(this.metadata.target, optionsOrConditions);
+    findAndCount(options?: MongoFindManyOptions<Entity>): Promise<[Entity[], number]> {
+        return this.manager.findAndCount(this.metadata.target, options);
+    }
+
+    /**
+     * Finds entities that match given find options or conditions.
+     * Also counts all entities that match given conditions,
+     * but ignores pagination settings (from and take options).
+     */
+    findAndCountBy(where: any): Promise<[Entity[], number]> {
+        return this.manager.findAndCountBy(this.metadata.target, where);
     }
 
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
      */
-    findByIds(ids: any[], optionsOrConditions?: MongoFindManyOptions<Entity>|Partial<Entity>): Promise<Entity[]> {
-        return this.manager.findByIds(this.metadata.target, ids, optionsOrConditions);
+    findByIds(ids: any[]): Promise<Entity[]> {
+        return this.manager.findByIds(this.metadata.target, ids);
     }
 
     /**
@@ -165,6 +181,13 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
      */
     count(query?: ObjectLiteral, options?: MongoCountPreferences): Promise<number> {
         return this.manager.count(this.metadata.target, query || {}, options);
+    }
+
+    /**
+     * Count number of matching documents in the db to a query.
+     */
+    countBy(query?: ObjectLiteral, options?: MongoCountPreferences): Promise<number> {
+        return this.manager.countBy(this.metadata.target, query || {}, options);
     }
 
     /**

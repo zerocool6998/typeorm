@@ -19,7 +19,7 @@ describe("github issues > #752 postgres - count query fails for empty table", ()
         product.productVersionId = 1;
         await connection.manager.save(product);
 
-        const count = await connection.getRepository(Product).count({ productVersionId: 1 });
+        const count = await connection.getRepository(Product).countBy({ productVersionId: 1 });
         count.should.be.equal(1);
     })));
 

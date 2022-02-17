@@ -80,68 +80,39 @@ export class MongoEntityManager extends EntityManager {
     // -------------------------------------------------------------------------
 
     /**
-     * Finds entities that match given find options or conditions.
+     * Finds entities that match given find options.
      */
-    async find<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity> | any[]): Promise<Entity[]> {
-        const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions);
-        const cursor = await this.createEntityCursor(entityClassOrName, query);
-        const deleteDateColumn = this.connection.getMetadata(entityClassOrName).deleteDateColumn;
-
-        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
-            if (optionsOrConditions.select)
-                cursor.project(this.convertFindOptionsSelectToProjectCriteria(optionsOrConditions.select));
-            if (optionsOrConditions.skip)
-                cursor.skip(optionsOrConditions.skip);
-            if (optionsOrConditions.take)
-                cursor.limit(optionsOrConditions.take);
-            if (optionsOrConditions.order)
-                cursor.sort(this.convertFindOptionsOrderToOrderCriteria(optionsOrConditions.order));
-            if (deleteDateColumn && !optionsOrConditions.withDeleted) {
-                this.filterSoftDeleted(cursor, deleteDateColumn);
-            }
-        } else if(deleteDateColumn) {
-            this.filterSoftDeleted(cursor, deleteDateColumn);
-        }
-        return cursor.toArray();
+    async find<Entity>(entityClassOrName: EntityTarget<Entity>, options?: MongoFindManyOptions<Entity>): Promise<Entity[]> {
+        return this.executeFind(entityClassOrName, options)
     }
 
     /**
-     * Finds entities that match given find options or conditions.
-     * Also counts all entities that match given conditions,
-     * but ignores pagination settings (from and take options).
+     * Finds entities that match given conditions.
      */
-    async findAndCount<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity>): Promise<[Entity[], number]> {
-        const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions);
-        const cursor = await this.createEntityCursor(entityClassOrName, query);
-        const deleteDateColumn = this.connection.getMetadata(entityClassOrName).deleteDateColumn;
+    async findBy<Entity>(entityClassOrName: EntityTarget<Entity>, where: any): Promise<Entity[]> {
+        return this.executeFind(entityClassOrName, where)
+    }
 
-        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
-            if (optionsOrConditions.select)
-                cursor.project(this.convertFindOptionsSelectToProjectCriteria(optionsOrConditions.select));
-            if (optionsOrConditions.skip)
-                cursor.skip(optionsOrConditions.skip);
-            if (optionsOrConditions.take)
-                cursor.limit(optionsOrConditions.take);
-            if (optionsOrConditions.order)
-                cursor.sort(this.convertFindOptionsOrderToOrderCriteria(optionsOrConditions.order));
-            if (deleteDateColumn && !optionsOrConditions.withDeleted) {
-                this.filterSoftDeleted(cursor, deleteDateColumn);
-            }
-        } else if(deleteDateColumn) {
-            this.filterSoftDeleted(cursor, deleteDateColumn);
-        }
-        const [results, count] = await Promise.all<any>([
-            cursor.toArray(),
-            this.count(entityClassOrName, query),
-        ]);
-        return [results, parseInt(count)];
+    /**
+     * Finds entities that match given find options.
+     */
+    async findAndCount<Entity>(entityClassOrName: EntityTarget<Entity>, options?: MongoFindManyOptions<Entity>): Promise<[Entity[], number]> {
+        return this.executeFindAndCount(entityClassOrName, options)
+    }
+
+    /**
+     * Finds entities that match given where conditions.
+     */
+    async findAndCountBy<Entity>(entityClassOrName: EntityTarget<Entity>, where: any): Promise<[Entity[], number]> {
+        return this.executeFindAndCount(entityClassOrName, where)
     }
 
     /**
      * Finds entities by ids.
      * Optionally find options can be applied.
      */
-    async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[], optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity>): Promise<Entity[]> {
+    async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[]): Promise<Entity[]> {
+        let optionsOrConditions: any = undefined;
         const metadata = this.connection.getMetadata(entityClassOrName);
         const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions) || {};
         const objectIdInstance = PlatformTools.load("mongodb").ObjectID;
@@ -354,6 +325,13 @@ export class MongoEntityManager extends EntityManager {
     count<Entity>(entityClassOrName: EntityTarget<Entity>, query?: ObjectLiteral, options?: MongoCountPreferences): Promise<number> {
         const metadata = this.connection.getMetadata(entityClassOrName);
         return this.mongoQueryRunner.count(metadata.tableName, query, options);
+    }
+
+    /**
+     * Count number of matching documents in the db to a query.
+     */
+    countBy<Entity>(entityClassOrName: EntityTarget<Entity>, query?: ObjectLiteral, options?: MongoCountPreferences): Promise<number> {
+        return this.count(entityClassOrName, query, options);
     }
 
     /**
@@ -809,5 +787,59 @@ export class MongoEntityManager extends EntityManager {
         const result = await cursor.limit(1).toArray();
         return result.length > 0 ? result[0] : null;
     }
+
+    protected async executeFind<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity> | any[]): Promise<Entity[]> {
+        const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions);
+        const cursor = await this.createEntityCursor(entityClassOrName, query);
+        const deleteDateColumn = this.connection.getMetadata(entityClassOrName).deleteDateColumn;
+
+        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
+            if (optionsOrConditions.select)
+                cursor.project(this.convertFindOptionsSelectToProjectCriteria(optionsOrConditions.select));
+            if (optionsOrConditions.skip)
+                cursor.skip(optionsOrConditions.skip);
+            if (optionsOrConditions.take)
+                cursor.limit(optionsOrConditions.take);
+            if (optionsOrConditions.order)
+                cursor.sort(this.convertFindOptionsOrderToOrderCriteria(optionsOrConditions.order));
+            if (deleteDateColumn && !optionsOrConditions.withDeleted) {
+                this.filterSoftDeleted(cursor, deleteDateColumn);
+            }
+        } else if(deleteDateColumn) {
+            this.filterSoftDeleted(cursor, deleteDateColumn);
+        }
+        return cursor.toArray();
+    }
+
+    /**
+     * Finds entities that match given find options or conditions.
+     */
+    async executeFindAndCount<Entity>(entityClassOrName: EntityTarget<Entity>, optionsOrConditions?: MongoFindManyOptions<Entity> | Partial<Entity>): Promise<[Entity[], number]> {
+        const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions);
+        const cursor = await this.createEntityCursor(entityClassOrName, query);
+        const deleteDateColumn = this.connection.getMetadata(entityClassOrName).deleteDateColumn;
+
+        if (FindOptionsUtils.isFindManyOptions(optionsOrConditions)) {
+            if (optionsOrConditions.select)
+                cursor.project(this.convertFindOptionsSelectToProjectCriteria(optionsOrConditions.select));
+            if (optionsOrConditions.skip)
+                cursor.skip(optionsOrConditions.skip);
+            if (optionsOrConditions.take)
+                cursor.limit(optionsOrConditions.take);
+            if (optionsOrConditions.order)
+                cursor.sort(this.convertFindOptionsOrderToOrderCriteria(optionsOrConditions.order));
+            if (deleteDateColumn && !optionsOrConditions.withDeleted) {
+                this.filterSoftDeleted(cursor, deleteDateColumn);
+            }
+        } else if(deleteDateColumn) {
+            this.filterSoftDeleted(cursor, deleteDateColumn);
+        }
+        const [results, count] = await Promise.all<any>([
+            cursor.toArray(),
+            this.count(entityClassOrName, query),
+        ]);
+        return [results, parseInt(count)];
+    }
+
 
 }

@@ -303,36 +303,32 @@ export class Repository<Entity extends ObjectLiteral> {
 
     /**
      * Counts entities that match given options.
+     * Useful for pagination.
      */
-    count(options?: FindManyOptions<Entity>): Promise<number>;
-
-    /**
-     * Counts entities that match given conditions.
-     */
-    count(conditions?: FindOptionsWhere<Entity>): Promise<number>;
-
-    /**
-     * Counts entities that match given find options or conditions.
-     */
-    count(optionsOrConditions?: FindManyOptions<Entity>|FindOptionsWhere<Entity>): Promise<number> {
-        return this.manager.count(this.metadata.target as any, optionsOrConditions as any);
+    count(options?: FindManyOptions<Entity>): Promise<number> {
+        return this.manager.count(this.metadata.target, options);
     }
 
     /**
-     * Finds entities that match given options.
+     * Counts entities that match given conditions.
+     * Useful for pagination.
      */
-    find(options?: FindManyOptions<Entity>): Promise<Entity[]>;
+    countBy(where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<number> {
+        return this.manager.countBy(this.metadata.target, where);
+    }
 
     /**
-     * Finds entities that match given conditions.
+     * Finds entities that match given find options.
      */
-    find(conditions?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]>;
+    async find(options?: FindManyOptions<Entity>): Promise<Entity[]> {
+        return this.manager.find(this.metadata.target, options);
+    }
 
     /**
-     * Finds entities that match given find options or conditions.
+     * Finds entities that match given find options.
      */
-    find(optionsOrConditions?: FindManyOptions<Entity>|FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]> {
-        return this.manager.find(this.metadata.target as any, optionsOrConditions as any);
+    async findBy(where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<Entity[]> {
+        return this.manager.findBy(this.metadata.target, where);
     }
 
     /**
@@ -340,42 +336,25 @@ export class Repository<Entity extends ObjectLiteral> {
      * Also counts all entities that match given conditions,
      * but ignores pagination settings (from and take options).
      */
-    findAndCount(options?: FindManyOptions<Entity>): Promise<[ Entity[], number ]>;
-
-    /**
-     * Finds entities that match given conditions.
-     * Also counts all entities that match given conditions,
-     * but ignores pagination settings (from and take options).
-     */
-    findAndCount(conditions?: FindOptionsWhere<Entity>): Promise<[ Entity[], number ]>;
-
-    /**
-     * Finds entities that match given find options or conditions.
-     * Also counts all entities that match given conditions,
-     * but ignores pagination settings (from and take options).
-     */
-    findAndCount(optionsOrConditions?: FindManyOptions<Entity>|FindOptionsWhere<Entity>): Promise<[ Entity[], number ]> {
-        return this.manager.findAndCount(this.metadata.target as any, optionsOrConditions as any);
+    findAndCount(options?: FindManyOptions<Entity>): Promise<[Entity[], number]> {
+        return this.manager.findAndCount(this.metadata.target, options);
     }
 
     /**
-     * Finds entities by ids.
-     * Optionally find options can be applied.
+     * Finds entities that match given WHERE conditions.
+     * Also counts all entities that match given conditions,
+     * but ignores pagination settings (from and take options).
      */
-    findByIds(ids: any[], options?: FindManyOptions<Entity>): Promise<Entity[]>;
+    findAndCountBy(where: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[]): Promise<[Entity[], number]> {
+        return this.manager.findAndCountBy(this.metadata.target, where);
+    }
 
     /**
-     * Finds entities by ids.
-     * Optionally conditions can be applied.
+     * Finds entities with ids.
+     * Optionally find options or conditions can be applied.
      */
-    findByIds(ids: any[], conditions?: FindOptionsWhere<Entity>): Promise<Entity[]>;
-
-    /**
-     * Finds entities by ids.
-     * Optionally find options can be applied.
-     */
-    findByIds(ids: any[], optionsOrConditions?: FindManyOptions<Entity>|FindOptionsWhere<Entity>): Promise<Entity[]> {
-        return this.manager.findByIds(this.metadata.target as any, ids, optionsOrConditions as any);
+    async findByIds(ids: any[]): Promise<Entity[]> {
+        return this.manager.findByIds(this.metadata.target, ids);
     }
 
     /**

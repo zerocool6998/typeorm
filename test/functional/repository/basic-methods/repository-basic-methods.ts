@@ -433,7 +433,7 @@ describe("repository > basic methods", () => {
             //     );
 
             // unique constraint on externalId already enforces this, but test it anyways
-            const count = await postRepository.find({ externalId });
+            const count = await postRepository.findBy({ externalId });
             count.length.should.be.equal(1);
 
             // upserts on primary key without specifying conflict columns should upsert
@@ -465,7 +465,7 @@ describe("repository > basic methods", () => {
 
             await externalIdObjects.upsert(entitiesToInsert, ["externalId"]);
 
-            (await externalIdObjects.find({ externalId: Like("external-bulk-%") })).forEach((inserted, i) => {
+            (await externalIdObjects.findBy({ externalId: Like("external-bulk-%") })).forEach((inserted, i) => {
                 inserted.title.should.be.equal("Initially inserted");
             });
 
@@ -476,7 +476,7 @@ describe("repository > basic methods", () => {
 
             await externalIdObjects.upsert(entitiesToUpdate, ["externalId"]);
 
-            (await externalIdObjects.find({ externalId: Like("external-bulk-%") })).forEach((updated, i) => {
+            (await externalIdObjects.findBy({ externalId: Like("external-bulk-%") })).forEach((updated, i) => {
                 updated.title.should.be.equal("Updated");
             });
         })));

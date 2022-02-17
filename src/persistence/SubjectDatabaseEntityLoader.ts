@@ -92,7 +92,10 @@ export class SubjectDatabaseEntityLoader {
             // load database entities for all given ids
             const entities = await this.queryRunner.manager
                 .getRepository<ObjectLiteral>(subjectGroup.target)
-                .findByIds(allIds, findOptions);
+                .createQueryBuilder()
+                .setFindOptions(findOptions)
+                .whereInIds(allIds)
+                .getMany();
 
             // now when we have entities we need to find subject of each entity
             // and insert that entity into database entity of the found subjects

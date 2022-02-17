@@ -176,7 +176,7 @@ describe("query builder > update", () => {
             .limit(limitNum)
             .execute();
 
-            const loadedUsers = await connection.getRepository(User).find({ name: nameToFind });
+            const loadedUsers = await connection.getRepository(User).findBy({ name: nameToFind });
             expect(loadedUsers).to.exist;
             loadedUsers!.length.should.be.equal(limitNum);
         } else {

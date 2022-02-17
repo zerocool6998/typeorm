@@ -24,7 +24,7 @@ describe("github issues > #3374 Synchronize issue with UUID (MySQL)", () => {
 
         await connection.synchronize();
 
-        const loadedPost = await connection.manager.find(Post, { name: "hello world" });
+        const loadedPost = await connection.manager.findBy(Post, { name: "hello world" });
         expect(loadedPost).to.be.not.empty;
 
     })));
