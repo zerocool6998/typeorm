@@ -14,7 +14,7 @@ export const UserEntitySchema = new EntitySchema<User>({
         id: {
             type: Number,
             primary: true,
-            generated: "uuid",
+            generated: true,
         },
         isActive: {
             type: Boolean
