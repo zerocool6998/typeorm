@@ -112,8 +112,7 @@ export class MongoEntityManager extends EntityManager {
      *
      * @deprecated use `findBy` method instead.
      */
-    async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[]): Promise<Entity[]> {
-        let optionsOrConditions: any = undefined;
+    async findByIds<Entity>(entityClassOrName: EntityTarget<Entity>, ids: any[], optionsOrConditions?: any): Promise<Entity[]> {
         const metadata = this.connection.getMetadata(entityClassOrName);
         const query = this.convertFindManyOptionsOrConditionsToMongodbQuery(optionsOrConditions) || {};
         const objectIdInstance = PlatformTools.load("mongodb").ObjectID;

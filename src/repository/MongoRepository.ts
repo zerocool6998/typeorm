@@ -114,8 +114,8 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
      *     id: In([1, 2, 3])
      * })
      */
-    findByIds(ids: any[]): Promise<Entity[]> {
-        return this.manager.findByIds(this.metadata.target, ids);
+    findByIds(ids: any[], options?: any): Promise<Entity[]> {
+        return this.manager.findByIds(this.metadata.target, ids, options);
     }
 
     /**
