@@ -37,7 +37,6 @@ import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import { TypeORMError } from "../error/TypeORMError";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
-import {DeepPartial} from "../common/DeepPartial";
 
 /**
  * Repository used to manage mongodb documents of a single entity type.
@@ -132,7 +131,7 @@ export class MongoRepository<Entity extends ObjectLiteral> extends Repository<En
      * Finds first entity that matches given WHERE conditions.
      */
     async findOneBy(
-        where: DeepPartial<Entity>
+        where: any
     ): Promise<Entity | null> {
         return this.manager.findOneBy(this.metadata.target, where);
     }

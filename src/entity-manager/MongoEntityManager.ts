@@ -43,7 +43,6 @@ import { MongoDriver } from "../driver/mongodb/MongoDriver";
 import { DocumentToEntityTransformer } from "../query-builder/transformer/DocumentToEntityTransformer";
 import { FindOptionsUtils } from "../find-options/FindOptionsUtils";
 import { PlatformTools } from "../platform/PlatformTools";
-import { DeepPartial } from "../common/DeepPartial";
 import { QueryDeepPartialEntity } from "../query-builder/QueryPartialEntity";
 import { InsertResult } from "../query-builder/result/InsertResult";
 import { UpdateResult } from "../query-builder/result/UpdateResult";
@@ -173,7 +172,7 @@ export class MongoEntityManager extends EntityManager {
      */
     async findOneBy<Entity>(
         entityClassOrName: EntityTarget<Entity>,
-        where: DeepPartial<Entity>
+        where: any
     ): Promise<Entity | null> {
         return this.executeFindOne(entityClassOrName, where);
     }
