@@ -61,27 +61,26 @@ describe("multi-database > basic-functionality", () => {
 
         let connections: Connection[];
         const tempPath = path.resolve(appRoot.path, "temp");
-        const attachAnswerPath = path.join(tempPath, "filename-sqlite.db");
-        const attachAnswerHandle = filepathToName("filename-sqlite.db");
-        const attachCategoryPath = path.join(tempPath, "./subdir/relative-subdir-sqlite.db");
-        const attachCategoryHandle = filepathToName("./subdir/relative-subdir-sqlite.db");
+        const attachAnswerPath = path.join(tempPath, "filename-sqlite.attach.db");
+        const attachAnswerHandle = filepathToName("filename-sqlite.attach.db");
+        const attachCategoryPath = path.join(tempPath, "./subdir/relative-subdir-sqlite.attach.db");
+        const attachCategoryHandle = filepathToName("./subdir/relative-subdir-sqlite.attach.db");
 
         before(async () => {
             connections = await createTestingConnections({
                 entities: [Answer, Category, Post, User],
                 // enabledDrivers: ["sqlite", "better-sqlite3"],
                 enabledDrivers: ["sqlite"],
-                name: "sqlite",
             });
+            connections = connections.filter(connection => connection.name === "sqlite")
         });
         beforeEach(() => reloadTestingDatabases(connections));
         after(async () => {
             await closeTestingConnections(connections);
-            return new Promise(resolve => rimraf(`${tempPath}/**/*.db`, {}, () => resolve()));
+            return new Promise(resolve => rimraf(`${tempPath}/**/*.attach.db`, {}, () => resolve()));
         });
 
         it("should correctly attach and create database files", () => Promise.all(connections.map(async connection => {
-
             const expectedMainPath = path.join(tempPath, (connections[0].options.database as string).match(/^.*[\\|\/](?<filename>[^\\|\/]+)$/)!.groups!["filename"]);
 
             expect(fs.existsSync(expectedMainPath)).to.be.true;
