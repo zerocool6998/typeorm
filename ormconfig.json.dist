@@ -31,7 +31,7 @@
   },
   {
     "skip": false,
-    "name": "sqlite",
+    "name": "sqlite-2",
     "type": "sqlite",
     "database": "./temp/sqlitedb-2.db",
     "logging": false,
