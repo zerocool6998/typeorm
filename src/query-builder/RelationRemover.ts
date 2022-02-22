@@ -48,12 +48,12 @@ export class RelationRemover {
                     return [
                         ...relation.inverseRelation!.joinColumns.map((column, columnIndex) => {
                             const parameterName = "joinColumn_" + ofIndex + "_" + valueIndex + "_" + columnIndex;
-                            parameters[parameterName] = of instanceof Object ? column.referencedColumn!.getEntityValue(of) : of;
+                            parameters[parameterName] = typeof of === "object" ? column.referencedColumn!.getEntityValue(of) : of;
                             return `${column.propertyPath} = :${parameterName}`;
                         }),
                         ...relation.inverseRelation!.entityMetadata.primaryColumns.map((column, columnIndex) => {
                             const parameterName = "primaryColumn_" + valueIndex + "_" + valueIndex + "_" + columnIndex;
-                            parameters[parameterName] = value instanceof Object ? column.getEntityValue(value) : value;
+                            parameters[parameterName] = typeof value === "object" ? column.getEntityValue(value) : value;
                             return `${column.propertyPath} = :${parameterName}`;
                         })
                     ].join(" AND ");
@@ -85,12 +85,12 @@ export class RelationRemover {
                     return [
                         ...junctionMetadata.ownerColumns.map((column, columnIndex) => {
                             const parameterName = "firstValue_" + firstColumnValIndex + "_" + secondColumnValIndex + "_" + columnIndex;
-                            parameters[parameterName] = firstColumnVal instanceof Object ? column.referencedColumn!.getEntityValue(firstColumnVal) : firstColumnVal;
+                            parameters[parameterName] = typeof firstColumnVal === "object" ? column.referencedColumn!.getEntityValue(firstColumnVal) : firstColumnVal;
                             return `${column.databaseName} = :${parameterName}`;
                         }),
                         ...junctionMetadata.inverseColumns.map((column, columnIndex) => {
                             const parameterName = "secondValue_" + firstColumnValIndex + "_" + secondColumnValIndex + "_" + columnIndex;
-                            parameters[parameterName] = secondColumnVal instanceof Object ? column.referencedColumn!.getEntityValue(secondColumnVal) : secondColumnVal;
+                            parameters[parameterName] = typeof secondColumnVal === "object" ? column.referencedColumn!.getEntityValue(secondColumnVal) : secondColumnVal;
                             return `${column.databaseName} = :${parameterName}`;
                         })
                     ].join(" AND ");

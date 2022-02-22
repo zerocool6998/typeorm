@@ -47,14 +47,14 @@ export function PrimaryGeneratedColumn(strategyOrOptions?: "increment"|"uuid"|"r
         if (typeof strategyOrOptions === "string")
             strategy = strategyOrOptions as "increment"|"uuid"|"rowid"|"identity";
 
-        if (strategyOrOptions instanceof Object) {
+        if (typeof strategyOrOptions === "object") {
             strategy = "increment";
             Object.assign(options, strategyOrOptions);
         }
     } else {
         strategy = "increment";
     }
-    if (maybeOptions instanceof Object)
+    if (typeof maybeOptions === "object")
         Object.assign(options, maybeOptions);
 
     return function (object: Object, propertyName: string) {

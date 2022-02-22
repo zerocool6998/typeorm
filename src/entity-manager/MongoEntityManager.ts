@@ -676,7 +676,7 @@ export class MongoEntityManager extends EntityManager {
 
         // if it's some other type of object build a query from the columns
         // this check needs to be after the ObjectId check, because a valid ObjectId is also an Object instance
-        if (idMap instanceof Object) {
+        if (typeof idMap === "object") {
             return metadata.columns.reduce((query, column) => {
                 const columnValue = column.getEntityValue(idMap);
                 if (columnValue !== undefined)

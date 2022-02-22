@@ -694,7 +694,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
         if (Array.isArray(this.expressionMap.valuesSet))
             return this.expressionMap.valuesSet;
 
-        if (this.expressionMap.valuesSet instanceof Object)
+        if (typeof this.expressionMap.valuesSet === "object")
             return [this.expressionMap.valuesSet];
 
         throw new InsertValuesMissingError();

@@ -669,7 +669,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         relationIdAttribute.relationName = relationName;
         if (typeof aliasNameOrOptions === "string")
             relationIdAttribute.alias = aliasNameOrOptions;
-        if (aliasNameOrOptions instanceof Object && (aliasNameOrOptions as any).disableMixedMap)
+        if (typeof aliasNameOrOptions === "object" && (aliasNameOrOptions as any).disableMixedMap)
             relationIdAttribute.disableMixedMap = true;
 
         relationIdAttribute.queryBuilderFactory = queryBuilderFactory;
@@ -905,7 +905,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             throw new TypeORMError(`SelectQueryBuilder.addOrderBy "nulls" can accept only "NULLS FIRST" and "NULLS LAST" values.`);
 
         if (sort) {
-            if (sort instanceof Object) {
+            if (typeof sort === "object") {
                 this.expressionMap.orderBys = sort as OrderByCondition;
             } else {
                 if (nulls) {
@@ -2180,7 +2180,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             if (this.findOptions.loadRelationIds === true) {
                 this.loadAllRelationIds();
 
-            } else if (this.findOptions.loadRelationIds instanceof Object) {
+            } else if (typeof this.findOptions.loadRelationIds === "object") {
                 this.loadAllRelationIds(this.findOptions.loadRelationIds as any);
             }
 
@@ -2677,9 +2677,9 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 throw new EntityPropertyNotFoundError(propertyPath, metadata);
 
             if (column) {
-                let direction = order[key] instanceof Object ? (order[key] as any).direction : order[key];
+                let direction = typeof order[key] === "object" ? (order[key] as any).direction : order[key];
                 direction = direction === "DESC" || direction === "desc" || direction === -1 ? "DESC" : "ASC";
-                let nulls = order[key] instanceof Object ? (order[key] as any).nulls : undefined;
+                let nulls = typeof order[key] === "object" ? (order[key] as any).nulls : undefined;
                 nulls = nulls === "first" ? "NULLS FIRST" : nulls === "last" ? "NULLS LAST" : undefined;
 
                 this.addOrderBy(`${alias}.${propertyPath}`, direction, nulls);
@@ -2796,7 +2796,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
                     // if all properties of where are undefined we don't need to join anything
                     // this can happen when user defines map with conditional queries inside
-                    if (where[key] instanceof Object) {
+                    if (typeof where[key] === "object") {
                         const allAllUndefined = Object.keys(where[key]).every(k => where[key][k] === undefined);
                         if (allAllUndefined) {
                             continue;

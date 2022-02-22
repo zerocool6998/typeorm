@@ -14,7 +14,7 @@ export class LoggerFactory {
      * Creates a new logger depend on a given connection's driver.
      */
     create(logger?: "advanced-console"|"simple-console"|"file"|"debug"|Logger, options?: LoggerOptions): Logger {
-        if (logger instanceof Object)
+        if (typeof logger === "object")
             return logger as Logger;
 
         if (logger) {

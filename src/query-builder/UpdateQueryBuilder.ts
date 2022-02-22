@@ -300,7 +300,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
      */
     orderBy(sort?: string|OrderByCondition, order: "ASC"|"DESC" = "ASC", nulls?: "NULLS FIRST"|"NULLS LAST"): this {
         if (sort) {
-            if (sort instanceof Object) {
+            if (typeof sort === "object") {
                 this.expressionMap.orderBys = sort as OrderByCondition;
             } else {
                 if (nulls) {
@@ -398,7 +398,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
                     //
                     let value = column.getEntityValue(valuesSet);
-                    if (column.referencedColumn && value instanceof Object && !(value instanceof Buffer)) {
+                    if (column.referencedColumn && typeof value === "object" && !(Buffer.isBuffer(value))) {
                         value = column.referencedColumn.getEntityValue(value);
                     } else if (!(typeof value === "function")) {
                         value = this.connection.driver.preparePersistentValue(value, column);
@@ -526,7 +526,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
      * Gets array of values need to be inserted into the target table.
      */
     protected getValueSet(): ObjectLiteral {
-        if (this.expressionMap.valuesSet instanceof Object)
+        if (typeof this.expressionMap.valuesSet === "object")
             return this.expressionMap.valuesSet;
 
         throw new UpdateValuesMissingError();

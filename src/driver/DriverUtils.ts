@@ -23,7 +23,7 @@ export class DriverUtils {
             "expo",
             "better-sqlite3",
             "capacitor"
-        ].includes(driver.options.type)
+        ].includes(driver.options.type);
     }
 
     /**
@@ -33,7 +33,7 @@ export class DriverUtils {
         return [
             "mysql",
             "mariadb",
-        ].includes(driver.options.type)
+        ].includes(driver.options.type);
     }
 
     /**

@@ -31,7 +31,7 @@ export class RelationUpdater {
         if (relation.isManyToOne || relation.isOneToOneOwner) {
 
             const updateSet = relation.joinColumns.reduce((updateSet, joinColumn) => {
-                const relationValue = value instanceof Object ? joinColumn.referencedColumn!.getEntityValue(value) : value;
+                const relationValue = typeof value === "object" ? joinColumn.referencedColumn!.getEntityValue(value) : value;
                 joinColumn.setEntityValue(updateSet, relationValue);
                 return updateSet;
             }, {} as any);
@@ -58,7 +58,7 @@ export class RelationUpdater {
             ofs.forEach((of, ofIndex) => {
                 relation.inverseRelation!.joinColumns.map((column, columnIndex) => {
                     const parameterName = "joinColumn_" + ofIndex + "_" + columnIndex;
-                    parameters[parameterName] = of instanceof Object ? column.referencedColumn!.getEntityValue(of) : of;
+                    parameters[parameterName] = typeof of === "object" ? column.referencedColumn!.getEntityValue(of) : of;
                     conditions.push(`${column.propertyPath} = :${parameterName}`);
                 });
             });
@@ -80,7 +80,7 @@ export class RelationUpdater {
 
             const of = this.expressionMap.of;
             const updateSet = relation.inverseRelation!.joinColumns.reduce((updateSet, joinColumn) => {
-                const relationValue = of instanceof Object ? joinColumn.referencedColumn!.getEntityValue(of) : of;
+                const relationValue = typeof of === "object" ? joinColumn.referencedColumn!.getEntityValue(of) : of;
                 joinColumn.setEntityValue(updateSet, relationValue);
                 return updateSet;
             }, {} as any);
@@ -106,10 +106,10 @@ export class RelationUpdater {
                 secondColumnValues.forEach(secondColumnVal => {
                     const inserted: ObjectLiteral = {};
                     junctionMetadata.ownerColumns.forEach(column => {
-                        inserted[column.databaseName] = firstColumnVal instanceof Object ? column.referencedColumn!.getEntityValue(firstColumnVal) : firstColumnVal;
+                        inserted[column.databaseName] = typeof firstColumnVal === "object" ? column.referencedColumn!.getEntityValue(firstColumnVal) : firstColumnVal;
                     });
                     junctionMetadata.inverseColumns.forEach(column => {
-                        inserted[column.databaseName] = secondColumnVal instanceof Object ? column.referencedColumn!.getEntityValue(secondColumnVal) : secondColumnVal;
+                        inserted[column.databaseName] = typeof secondColumnVal === "object" ? column.referencedColumn!.getEntityValue(secondColumnVal) : secondColumnVal;
                     });
                     bulkInserted.push(inserted);
                 });

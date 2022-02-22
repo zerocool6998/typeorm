@@ -53,7 +53,7 @@ export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
         // if there are multiple join columns then user must send id map as "value" argument. check if he really did it
         if (relation.joinColumns &&
             relation.joinColumns.length > 1 &&
-            (!(value instanceof Object) || Object.keys(value).length < relation.joinColumns.length))
+            (!(typeof value === "object") || Object.keys(value).length < relation.joinColumns.length))
             throw new TypeORMError(`Value to be set into the relation must be a map of relation ids, for example: .set({ firstName: "...", lastName: "..." })`);
 
         const updater = new RelationUpdater(this, this.expressionMap);
@@ -84,7 +84,7 @@ export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
         // if there are multiple join columns then user must send id map as "value" argument. check if he really did it
         if (relation.joinColumns &&
             relation.joinColumns.length > 1 &&
-            (!(value instanceof Object) || Object.keys(value).length < relation.joinColumns.length))
+            (!(typeof value === "object") || Object.keys(value).length < relation.joinColumns.length))
             throw new TypeORMError(`Value to be set into the relation must be a map of relation ids, for example: .set({ firstName: "...", lastName: "..." })`);
 
         const updater = new RelationUpdater(this, this.expressionMap);
@@ -154,7 +154,7 @@ export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
      */
     async loadMany<T = any>(): Promise<T[]> {
         let of = this.expressionMap.of;
-        if (!(of instanceof Object)) {
+        if (!(typeof of === "object")) {
             const metadata = this.expressionMap.mainAlias!.metadata;
             if (metadata.hasMultiplePrimaryKeys)
                 throw new TypeORMError(`Cannot load entity because only one primary key was specified, however entity contains multiple primary keys`);

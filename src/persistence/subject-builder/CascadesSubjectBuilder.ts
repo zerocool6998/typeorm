@@ -35,7 +35,7 @@ export class CascadesSubjectBuilder {
 
                 // if relation entity is just a relation id set (for example post.tag = 1)
                 // then we don't really need to check cascades since there is no object to insert or update
-                if (!(relationEntity instanceof Object))
+                if (!(typeof relationEntity === "object"))
                     return;
 
                 // if we already has this entity in list of operated subjects then skip it to avoid recursion

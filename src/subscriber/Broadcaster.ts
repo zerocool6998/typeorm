@@ -620,7 +620,7 @@ export class Broadcaster {
                         if (relation.isLazy && !entity.hasOwnProperty(relation.propertyName)) return;
 
                         const value = relation.getEntityValue(entity);
-                        if (value instanceof Object) this.broadcastLoadEvent(result, relation.inverseEntityMetadata, Array.isArray(value) ? value : [value]);
+                        if (typeof value === "object") this.broadcastLoadEvent(result, relation.inverseEntityMetadata, Array.isArray(value) ? value : [value]);
                     });
                 });
             }

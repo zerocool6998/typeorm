@@ -79,8 +79,8 @@ export class PlainObjectToNewEntityTransformer {
                     // we just set it to the entity relation, we don't need anything more from it
                     // however we do it only if original entity does not have this relation set to object
                     // to prevent full overriding of objects
-                    if (!(objectRelatedValue instanceof Object)) {
-                        if (!(entityRelatedValue instanceof Object))
+                    if (!(typeof objectRelatedValue === "object")) {
+                        if (!(typeof entityRelatedValue === "object"))
                             relation.setEntityValue(entity, objectRelatedValue);
                         return;
                     }

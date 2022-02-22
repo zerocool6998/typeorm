@@ -602,7 +602,7 @@ export class EntityMetadata {
      * and it creates a new id map with this value and name of the primary column.
      */
     ensureEntityIdMap(id: any): ObjectLiteral {
-        if (id instanceof Object)
+        if (typeof id === "object")
             return id;
 
         if (this.hasMultiplePrimaryKeys)

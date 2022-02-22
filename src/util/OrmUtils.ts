@@ -337,7 +337,7 @@ export class OrmUtils {
             return x.toString() === y.toString();
 
         // At last checking prototypes as good as we can
-        if (!(x instanceof Object && y instanceof Object))
+        if (!(typeof x === "object" && typeof y === "object"))
             return false;
 
         if (x.isPrototypeOf(y) || y.isPrototypeOf(x))

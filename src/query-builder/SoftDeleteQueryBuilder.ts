@@ -275,7 +275,7 @@ export class SoftDeleteQueryBuilder<Entity> extends QueryBuilder<Entity> impleme
      */
     orderBy(sort?: string|OrderByCondition, order: "ASC"|"DESC" = "ASC", nulls?: "NULLS FIRST"|"NULLS LAST"): this {
         if (sort) {
-            if (sort instanceof Object) {
+            if (typeof sort === "object") {
                 this.expressionMap.orderBys = sort as OrderByCondition;
             } else {
                 if (nulls) {

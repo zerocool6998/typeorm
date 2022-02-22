@@ -360,7 +360,7 @@ export class RelationMetadata {
      * and it creates a new id map with this value and name of the primary column.
      */
     ensureRelationIdMap(id: any): ObjectLiteral {
-        if (id instanceof Object)
+        if (typeof id === "object")
             return id;
 
         const joinColumns = this.isOwning ? this.joinColumns : this.inverseRelation!.joinColumns;
