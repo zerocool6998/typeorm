@@ -2714,7 +2714,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     protected buildWhere(where: FindOptionsWhere<any>, metadata: EntityMetadata, alias: string, embedPrefix?: string) {
         let condition: string = "";
         // let parameterIndex = Object.keys(this.expressionMap.nativeParameters).length;
-        if (where instanceof Array) {
+        if (Array.isArray(where)) {
             condition = ("(" + where.map(whereItem => {
                 return this.buildWhere(whereItem, metadata, alias, embedPrefix);
             }).filter(condition => !!condition).map(condition => "(" + condition + ")").join(" OR ") + ")");

@@ -237,10 +237,10 @@ export class MetadataArgsStorage {
     protected filterByTargetAndWithoutDuplicateRelationProperties<T extends RelationMetadataArgs>(array: T[], target: (Function|string)|(Function|string)[]): T[] {
         const newArray: T[] = [];
         array.forEach(item => {
-            const sameTarget = target instanceof Array ? target.indexOf(item.target) !== -1 : item.target === target;
+            const sameTarget = Array.isArray(target) ? target.indexOf(item.target) !== -1 : item.target === target;
             if (sameTarget) {
                 const existingIndex = newArray.findIndex(newItem => newItem.propertyName === item.propertyName);
-                if (target instanceof Array && existingIndex !== -1 && target.indexOf(item.target) < target.indexOf(newArray[existingIndex].target)) {
+                if (Array.isArray(target) && existingIndex !== -1 && target.indexOf(item.target) < target.indexOf(newArray[existingIndex].target)) {
                     const clone = Object.create(newArray[existingIndex]);
                     clone.type = item.type;
                     newArray[existingIndex] = clone;

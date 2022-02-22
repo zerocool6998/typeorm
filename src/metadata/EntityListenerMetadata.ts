@@ -86,7 +86,7 @@ export class EntityListenerMetadata {
             return;
 
         if (propertyPaths.length === 0) {
-            if (entity[propertyPath] instanceof Array) {
+            if (Array.isArray(entity[propertyPath])) {
                 entity[propertyPath].map((embedded: ObjectLiteral) => embedded[this.propertyName]());
             } else {
                 entity[propertyPath][this.propertyName]();

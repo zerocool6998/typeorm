@@ -332,8 +332,8 @@ export class OrmUtils {
         if ((typeof x === "function" && typeof y === "function") ||
             (x instanceof Date && y instanceof Date) ||
             (x instanceof RegExp && y instanceof RegExp) ||
-            (x instanceof String && y instanceof String) ||
-            (x instanceof Number && y instanceof Number))
+            (typeof x === "string" && typeof y === "string") ||
+            (typeof x === "number" && typeof y === "number"))
             return x.toString() === y.toString();
 
         // At last checking prototypes as good as we can

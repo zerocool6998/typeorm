@@ -174,7 +174,7 @@ export class DateUtils {
      * Converts given string to simple array split by "," separator.
      */
     static stringToSimpleArray(value: string|any): string|any {
-        if (value instanceof String || typeof value === "string") {
+        if (typeof value === "string") {
             if (value.length > 0) {
                 return value.split(",");
             } else {
