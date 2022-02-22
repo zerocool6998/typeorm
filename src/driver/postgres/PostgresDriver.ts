@@ -25,6 +25,7 @@ import {TypeORMError} from "../../error";
 import {Table} from "../../schema-builder/table/Table";
 import {View} from "../../schema-builder/view/View";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * Organizes communication with PostgreSQL DBMS.
@@ -585,7 +586,7 @@ export class PostgresDriver implements Driver {
             value = DateUtils.mixedTimeToString(value);
 
         } else if (columnMetadata.type === "hstore") {
-            if (columnMetadata.hstoreType === "object") {
+            if (ObjectUtils.isObject(columnMetadata.hstoreType)) {
                 const unescapeString = (str: string) => str.replace(/\\./g, (m) => m[1]);
                 const regexp = /"([^"\\]*(?:\\.[^"\\]*)*)"=>(?:(NULL)|"([^"\\]*(?:\\.[^"\\]*)*)")(?:,|$)/g;
                 const object: ObjectLiteral = {};
@@ -856,7 +857,7 @@ export class PostgresDriver implements Driver {
             return this.normalizeDatetimeFunction(value);
         }
 
-        if (typeof defaultValue === "object") {
+        if (ObjectUtils.isObject(defaultValue)) {
             return `'${JSON.stringify(defaultValue)}'`;
         }
 

@@ -2,6 +2,7 @@ import {QueryBuilder} from "./QueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryExpressionMap} from "./QueryExpressionMap";
 import {TypeORMError} from "../error";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Allows to work with entity relations and perform specific operations with those relations.
@@ -31,7 +32,7 @@ export class RelationUpdater {
         if (relation.isManyToOne || relation.isOneToOneOwner) {
 
             const updateSet = relation.joinColumns.reduce((updateSet, joinColumn) => {
-                const relationValue = typeof value === "object" ? joinColumn.referencedColumn!.getEntityValue(value) : value;
+                const relationValue = ObjectUtils.isObject(value) ? joinColumn.referencedColumn!.getEntityValue(value) : value;
                 joinColumn.setEntityValue(updateSet, relationValue);
                 return updateSet;
             }, {} as any);
@@ -58,7 +59,7 @@ export class RelationUpdater {
             ofs.forEach((of, ofIndex) => {
                 relation.inverseRelation!.joinColumns.map((column, columnIndex) => {
                     const parameterName = "joinColumn_" + ofIndex + "_" + columnIndex;
-                    parameters[parameterName] = typeof of === "object" ? column.referencedColumn!.getEntityValue(of) : of;
+                    parameters[parameterName] = ObjectUtils.isObject(of) ? column.referencedColumn!.getEntityValue(of) : of;
                     conditions.push(`${column.propertyPath} = :${parameterName}`);
                 });
             });
@@ -80,7 +81,7 @@ export class RelationUpdater {
 
             const of = this.expressionMap.of;
             const updateSet = relation.inverseRelation!.joinColumns.reduce((updateSet, joinColumn) => {
-                const relationValue = typeof of === "object" ? joinColumn.referencedColumn!.getEntityValue(of) : of;
+                const relationValue = ObjectUtils.isObject(of) ? joinColumn.referencedColumn!.getEntityValue(of) : of;
                 joinColumn.setEntityValue(updateSet, relationValue);
                 return updateSet;
             }, {} as any);
@@ -106,10 +107,10 @@ export class RelationUpdater {
                 secondColumnValues.forEach(secondColumnVal => {
                     const inserted: ObjectLiteral = {};
                     junctionMetadata.ownerColumns.forEach(column => {
-                        inserted[column.databaseName] = typeof firstColumnVal === "object" ? column.referencedColumn!.getEntityValue(firstColumnVal) : firstColumnVal;
+                        inserted[column.databaseName] = ObjectUtils.isObject(firstColumnVal) ? column.referencedColumn!.getEntityValue(firstColumnVal) : firstColumnVal;
                     });
                     junctionMetadata.inverseColumns.forEach(column => {
-                        inserted[column.databaseName] = typeof secondColumnVal === "object" ? column.referencedColumn!.getEntityValue(secondColumnVal) : secondColumnVal;
+                        inserted[column.databaseName] = ObjectUtils.isObject(secondColumnVal) ? column.referencedColumn!.getEntityValue(secondColumnVal) : secondColumnVal;
                     });
                     bulkInserted.push(inserted);
                 });

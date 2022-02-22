@@ -1,6 +1,7 @@
 import {EntityTarget} from "../common/EntityTarget";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "./TypeORMError";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Thrown when no result could be found in methods which are not allowed to return undefined or an empty set.
@@ -18,10 +19,10 @@ export class EntityNotFoundError extends TypeORMError {
             return target.options.name;
         } else if (typeof target === "function") {
             return target.name;
-        } else if (typeof target === "object" && "name" in target) {
-            return target.name;
+        } else if (ObjectUtils.isObject(target) && "name" in (target as any)) {
+            return (target as any).name;
         } else {
-            return target;
+            return target as any;
         }
     }
 

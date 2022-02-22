@@ -1,6 +1,7 @@
 import {getMetadataArgsStorage} from "../../globals";
 import {TableMetadataArgs} from "../../metadata-args/TableMetadataArgs";
 import {ViewEntityOptions} from "../options/ViewEntityOptions";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * This decorator is used to mark classes that will be an entity view.
@@ -19,7 +20,7 @@ export function ViewEntity(name?: string, options?: ViewEntityOptions): ClassDec
  * Database schema will be created for all classes decorated with it, and Repository can be retrieved and used for it.
  */
 export function ViewEntity(nameOrOptions?: string|ViewEntityOptions, maybeOptions?: ViewEntityOptions): ClassDecorator {
-    const options = (typeof nameOrOptions === "object" ? nameOrOptions as ViewEntityOptions : maybeOptions) || {};
+    const options = (ObjectUtils.isObject(nameOrOptions) ? nameOrOptions as ViewEntityOptions : maybeOptions) || {};
     const name = typeof nameOrOptions === "string" ? nameOrOptions : options.name;
 
     return function (target: Function) {

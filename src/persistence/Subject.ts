@@ -4,6 +4,7 @@ import {SubjectChangeMap} from "./SubjectChangeMap";
 import {OrmUtils} from "../util/OrmUtils";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Subject is a subject of persistence.
@@ -248,7 +249,7 @@ export class Subject {
                 // or value can be a null or direct relation id, e.g. post.question = 1
                 // if its a direction relation id then we just set it to the valueMap,
                 // however if its an object then we need to extract its relation id map and set it to the valueMap
-                if (typeof value === "object" && !(Buffer.isBuffer(value))) {
+                if (ObjectUtils.isObject(value) && !(Buffer.isBuffer(value))) {
 
                     // get relation id, e.g. referenced column name and its value,
                     // for example: { id: 1 } which then will be set to relation, e.g. post.category = { id: 1 }

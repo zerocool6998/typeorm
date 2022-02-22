@@ -15,6 +15,7 @@ import {ClosureSubjectExecutor} from "./tree/ClosureSubjectExecutor";
 import {MaterializedPathSubjectExecutor} from "./tree/MaterializedPathSubjectExecutor";
 import {OrmUtils} from "../util/OrmUtils";
 import {UpdateResult} from "../query-builder/result/UpdateResult";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Executes all database operations (inserts, updated, deletes) that must be executed
@@ -803,7 +804,7 @@ export class SubjectExecutor {
                             if (column.isVirtual === true)
                                 return;
 
-                            column.setEntityValue(subject.entity!, typeof updatedRelationMap.value === "object" ? column.referencedColumn!.getEntityValue(updatedRelationMap.value) : updatedRelationMap.value);
+                            column.setEntityValue(subject.entity!, ObjectUtils.isObject(updatedRelationMap.value) ? column.referencedColumn!.getEntityValue(updatedRelationMap.value) : updatedRelationMap.value);
                         });
                     });
                 }

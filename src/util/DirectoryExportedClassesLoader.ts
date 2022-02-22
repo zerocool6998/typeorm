@@ -3,6 +3,7 @@ import {PlatformTools} from "../platform/PlatformTools";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {Logger} from "../logger/Logger";
 import {importOrRequireFile} from "./ImportUtils";
+import {ObjectUtils} from "./ObjectUtils";
 
 /**
  * Loads all exported classes from the given directory.
@@ -19,7 +20,7 @@ export async function importClassesFromDirectories(logger: Logger, directories: 
         } else if (Array.isArray(exported)) {
             exported.forEach((i: any) => loadFileClasses(i, allLoaded));
 
-        } else if (typeof exported === "object" && exported !== null) {
+        } else if (ObjectUtils.isObject(exported)) {
             Object.keys(exported).forEach(key => loadFileClasses(exported[key], allLoaded));
 
         }

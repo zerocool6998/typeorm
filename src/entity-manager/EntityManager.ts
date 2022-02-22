@@ -44,6 +44,7 @@ import {UpsertOptions} from "../repository/UpsertOptions";
  * whatever entity type are you passing.
  */
 export class EntityManager {
+    readonly "@instanceof" = Symbol("EntityManager");
 
     // -------------------------------------------------------------------------
     // Public Properties

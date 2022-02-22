@@ -1,6 +1,16 @@
 import {MixedList} from "../common/MixedList";
 
 export class ObjectUtils {
+
+    /**
+     * Checks if given value is an object.
+     * We cannot use instanceof because it has problems when running on different contexts.
+     * And we don't simply use typeof because typeof null === "object".
+     */
+    static isObject(val: any): val is Object {
+        return val !== null && typeof val === "object";
+    }
+
   /**
    * Copy the values of all of the enumerable own properties from one or more source objects to a
    * target object.
@@ -46,7 +56,7 @@ export class ObjectUtils {
    * Converts MixedList<T> to strictly an array of its T items.
    */
   static mixedListToArray<T>(list: MixedList<T>): T[] {
-      if (typeof list === "object") {
+      if (list !== null && typeof list === "object") {
           return Object.keys(list).map((key) => (list as { [key: string]: T })[key]);
       } else {
           return list;

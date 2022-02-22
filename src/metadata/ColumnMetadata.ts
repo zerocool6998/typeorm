@@ -9,6 +9,7 @@ import {OrmUtils} from "../util/OrmUtils";
 import {ValueTransformer} from "../decorator/options/ValueTransformer";
 import {FindOperator} from "../find-options/FindOperator";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * This metadata contains all information about entity's column.
@@ -377,7 +378,7 @@ export class ColumnMetadata {
         if (options.args.options.precision !== null)
             this.precision = options.args.options.precision;
         if (options.args.options.enum) {
-            if (typeof options.args.options.enum === "object" && !Array.isArray(options.args.options.enum)) {
+            if (ObjectUtils.isObject(options.args.options.enum) && !Array.isArray(options.args.options.enum)) {
                 this.enum = Object.keys(options.args.options.enum)
                     // remove numeric keys - typescript numeric enum types generate them
                     // From the documentation: “declaration merging” means that the compiler merges two separate declarations
@@ -569,7 +570,11 @@ export class ColumnMetadata {
             return Object.keys(map).length > 0 ? map : undefined;
 
         } else { // no embeds - no problems. Simply return column property name and its value of the entity
-            if (this.relationMetadata && entity[this.relationMetadata.propertyName] && typeof entity[this.relationMetadata.propertyName] === "object") {
+            if (
+                this.relationMetadata &&
+                entity[this.relationMetadata.propertyName] &&
+                ObjectUtils.isObject(entity[this.relationMetadata.propertyName])
+            ) {
                 const map = this.relationMetadata.joinColumns.reduce((map, joinColumn) => {
                     const value = joinColumn.referencedColumn!.getEntityValueMap(entity[this.relationMetadata!.propertyName]);
                     if (value === undefined) return map;
@@ -618,10 +623,10 @@ export class ColumnMetadata {
             if (embeddedObject) {
                 if (this.relationMetadata && this.referencedColumn) {
                     const relatedEntity = this.relationMetadata.getEntityValue(embeddedObject);
-                    if (relatedEntity && typeof relatedEntity === "object" && !(relatedEntity instanceof FindOperator) && !(Buffer.isBuffer(relatedEntity))) {
+                    if (relatedEntity && ObjectUtils.isObject(relatedEntity) && !(relatedEntity instanceof FindOperator) && !(Buffer.isBuffer(relatedEntity))) {
                         value = this.referencedColumn.getEntityValue(relatedEntity);
 
-                    } else if (embeddedObject[this.propertyName] && typeof embeddedObject[this.propertyName] === "object" && !(embeddedObject[this.propertyName] instanceof FindOperator) && !(Buffer.isBuffer(embeddedObject[this.propertyName])) && !(embeddedObject[this.propertyName] instanceof Date)) {
+                    } else if (embeddedObject[this.propertyName] && ObjectUtils.isObject(embeddedObject[this.propertyName]) && !(embeddedObject[this.propertyName] instanceof FindOperator) && !(Buffer.isBuffer(embeddedObject[this.propertyName])) && !(embeddedObject[this.propertyName] instanceof Date)) {
                         value = this.referencedColumn.getEntityValue(embeddedObject[this.propertyName]);
 
                     } else {
@@ -642,10 +647,10 @@ export class ColumnMetadata {
         } else { // no embeds - no problems. Simply return column name by property name of the entity
             if (this.relationMetadata && this.referencedColumn) {
                 const relatedEntity = this.relationMetadata.getEntityValue(entity);
-                if (relatedEntity && typeof relatedEntity === "object" && !(relatedEntity instanceof FindOperator) && !(typeof relatedEntity === "function") && !(Buffer.isBuffer(relatedEntity))) {
+                if (relatedEntity && ObjectUtils.isObject(relatedEntity) && !(relatedEntity instanceof FindOperator) && !(typeof relatedEntity === "function") && !(Buffer.isBuffer(relatedEntity))) {
                     value = this.referencedColumn.getEntityValue(relatedEntity);
 
-                } else if (entity[this.propertyName] && typeof entity[this.propertyName] === "object" && !(entity[this.propertyName] instanceof FindOperator) && !(typeof entity[this.propertyName] === "function") && !(Buffer.isBuffer(entity[this.propertyName])) && !(entity[this.propertyName] instanceof Date)) {
+                } else if (entity[this.propertyName] && ObjectUtils.isObject(entity[this.propertyName]) && !(entity[this.propertyName] instanceof FindOperator) && !(typeof entity[this.propertyName] === "function") && !(Buffer.isBuffer(entity[this.propertyName])) && !(entity[this.propertyName] instanceof Date)) {
                     value = this.referencedColumn.getEntityValue(entity[this.propertyName]);
 
                 } else {
@@ -712,7 +717,7 @@ export class ColumnMetadata {
      */
     compareEntityValue(entity: any, valueToCompareWith: any) {
         const columnValue = this.getEntityValue(entity);
-        if (typeof columnValue === "object") {
+        if (ObjectUtils.isObject(columnValue)) {
             return columnValue.equals(valueToCompareWith);
         }
         return columnValue === valueToCompareWith;

@@ -14,6 +14,7 @@ import {TreeRepository} from "./repository/TreeRepository";
 import {ObjectType} from "./common/ObjectType";
 import {MongoRepository} from "./repository/MongoRepository";
 import {SelectQueryBuilder} from "./query-builder/SelectQueryBuilder";
+import {ObjectUtils} from "./util/ObjectUtils";
 
 /**
  * Gets metadata args storage.
@@ -85,7 +86,7 @@ export async function createConnection(options: ConnectionOptions): Promise<Conn
  */
 export async function createConnection(optionsOrName?: any): Promise<Connection> {
     const connectionName = typeof optionsOrName === "string" ? optionsOrName : "default";
-    const options = typeof optionsOrName === "object" ? optionsOrName : await getConnectionOptions(connectionName);
+    const options = ObjectUtils.isObject(optionsOrName) ? optionsOrName as ConnectionOptions : await getConnectionOptions(connectionName);
     return getConnectionManager().create(options).connect();
 }
 

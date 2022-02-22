@@ -195,7 +195,7 @@ export class OrmUtils {
 
     static replaceEmptyObjectsWithBooleans(obj: any) {
         for (let key in obj) {
-            if (typeof obj[key] === "object") {
+            if (obj[key] && typeof obj[key] === "object") {
                 if (Object.keys(obj[key]).length === 0) {
                     obj[key] = true;
                 } else {

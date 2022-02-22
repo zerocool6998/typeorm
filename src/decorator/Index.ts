@@ -1,6 +1,7 @@
 import {getMetadataArgsStorage} from "../globals";
 import {IndexMetadataArgs} from "../metadata-args/IndexMetadataArgs";
 import {IndexOptions} from "./options/IndexOptions";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Creates a database index.
@@ -63,9 +64,9 @@ export function Index(nameOrFieldsOrOptions?: string|string[]|((object: any) => 
     // normalize parameters
     const name = typeof nameOrFieldsOrOptions === "string" ? nameOrFieldsOrOptions : undefined;
     const fields = typeof nameOrFieldsOrOptions === "string" ? <((object?: any) => (any[]|{ [key: string]: number }))|string[]> maybeFieldsOrOptions : nameOrFieldsOrOptions as string[];
-    let options = (typeof nameOrFieldsOrOptions === "object" && !Array.isArray(nameOrFieldsOrOptions)) ? nameOrFieldsOrOptions as IndexOptions : maybeOptions;
+    let options = (ObjectUtils.isObject(nameOrFieldsOrOptions) && !Array.isArray(nameOrFieldsOrOptions)) ? nameOrFieldsOrOptions as IndexOptions : maybeOptions;
     if (!options)
-        options = (typeof maybeFieldsOrOptions === "object" && !Array.isArray(maybeFieldsOrOptions)) ? maybeFieldsOrOptions as IndexOptions : maybeOptions;
+        options = (ObjectUtils.isObject(maybeFieldsOrOptions) && !Array.isArray(maybeFieldsOrOptions)) ? maybeFieldsOrOptions as IndexOptions : maybeOptions;
 
     return function (clsOrObject: Function|Object, propertyName?: string | symbol) {
 

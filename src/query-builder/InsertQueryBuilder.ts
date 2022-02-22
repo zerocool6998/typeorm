@@ -16,6 +16,7 @@ import {InsertOrUpdateOptions} from "./InsertOrUpdateOptions";
 import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {DriverUtils} from "../driver/DriverUtils";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
@@ -694,7 +695,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
         if (Array.isArray(this.expressionMap.valuesSet))
             return this.expressionMap.valuesSet;
 
-        if (typeof this.expressionMap.valuesSet === "object")
+        if (ObjectUtils.isObject(this.expressionMap.valuesSet))
             return [this.expressionMap.valuesSet];
 
         throw new InsertValuesMissingError();

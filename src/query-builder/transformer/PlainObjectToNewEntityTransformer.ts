@@ -1,5 +1,6 @@
 import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {ObjectLiteral} from "../../common/ObjectLiteral";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * Transforms plain old javascript object
@@ -79,8 +80,8 @@ export class PlainObjectToNewEntityTransformer {
                     // we just set it to the entity relation, we don't need anything more from it
                     // however we do it only if original entity does not have this relation set to object
                     // to prevent full overriding of objects
-                    if (!(typeof objectRelatedValue === "object")) {
-                        if (!(typeof entityRelatedValue === "object"))
+                    if (!(ObjectUtils.isObject(objectRelatedValue))) {
+                        if (!(ObjectUtils.isObject(entityRelatedValue)))
                             relation.setEntityValue(entity, objectRelatedValue);
                         return;
                     }

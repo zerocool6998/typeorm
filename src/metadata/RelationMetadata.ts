@@ -11,6 +11,7 @@ import {OnDeleteType} from "./types/OnDeleteType";
 import {PropertyTypeFactory} from "./types/PropertyTypeInFunction";
 import {TypeORMError} from "../error";
 import {EntitySchema} from "../entity-schema/EntitySchema";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Contains all information about some entity's relation.
@@ -323,8 +324,8 @@ export class RelationMetadata {
         } else if (args.type instanceof EntitySchema) {
             this.type = args.type.options.name;
 
-        } else if (typeof args.type === "object" && typeof args.type.name === "string") {
-            this.type = args.type.name;
+        } else if (ObjectUtils.isObject(args.type) && typeof (args.type as any).name === "string") {
+            this.type = (args.type as any).name;
 
         } else {
             this.type = args.type as string | Function;
@@ -360,7 +361,7 @@ export class RelationMetadata {
      * and it creates a new id map with this value and name of the primary column.
      */
     ensureRelationIdMap(id: any): ObjectLiteral {
-        if (typeof id === "object")
+        if (ObjectUtils.isObject(id))
             return id;
 
         const joinColumns = this.isOwning ? this.joinColumns : this.inverseRelation!.joinColumns;

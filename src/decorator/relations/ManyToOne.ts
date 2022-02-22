@@ -2,6 +2,7 @@ import {getMetadataArgsStorage} from "../../globals";
 import {RelationMetadataArgs} from "../../metadata-args/RelationMetadataArgs";
 import {ObjectType} from "../../common/ObjectType";
 import {RelationOptions} from "../options/RelationOptions";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * A many-to-one relation allows creating the type of relation where Entity1 can have a single instance of Entity2, but
@@ -30,10 +31,10 @@ export function ManyToOne<T>(typeFunctionOrTarget: string|((type?: any) => Objec
 
     // Normalize parameters.
     let inverseSideProperty: string|((object: T) => any);
-    if (typeof inverseSideOrOptions === "object") {
+    if (ObjectUtils.isObject(inverseSideOrOptions)) {
         options = <RelationOptions> inverseSideOrOptions;
     } else {
-        inverseSideProperty = <string|((object: T) => any)> inverseSideOrOptions;
+        inverseSideProperty = inverseSideOrOptions as any;
     }
 
     return function (object: Object, propertyName: string) {

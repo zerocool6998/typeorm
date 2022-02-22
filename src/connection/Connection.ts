@@ -523,7 +523,7 @@ export class Connection {
                     return metadata.name === target || metadata.tableName === target;
                 }
             }
-            if (typeof target === "object" && typeof target.name === "string") {
+            if (ObjectUtils.isObject(target) && typeof target.name === "string") {
                 if (target.name.indexOf(".") !== -1) {
                     return metadata.tablePath === target.name;
                 } else {

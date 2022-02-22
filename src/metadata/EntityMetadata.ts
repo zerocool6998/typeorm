@@ -22,6 +22,7 @@ import {TreeType} from "./types/TreeTypes";
 import {UniqueMetadata} from "./UniqueMetadata";
 import {ClosureTreeOptions} from "./types/ClosureTreeOptions";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Contains all entity metadata.
@@ -602,7 +603,7 @@ export class EntityMetadata {
      * and it creates a new id map with this value and name of the primary column.
      */
     ensureEntityIdMap(id: any): ObjectLiteral {
-        if (typeof id === "object")
+        if (ObjectUtils.isObject(id))
             return id;
 
         if (this.hasMultiplePrimaryKeys)

@@ -2,6 +2,7 @@ import {getMetadataArgsStorage} from "../../globals";
 import {RelationMetadataArgs} from "../../metadata-args/RelationMetadataArgs";
 import {ObjectType} from "../../common/ObjectType";
 import {RelationOptions} from "../options/RelationOptions";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * One-to-one relation allows to create direct relation between two entities. Entity1 have only one Entity2.
@@ -28,10 +29,10 @@ export function OneToOne<T>(typeFunctionOrTarget: string|((type?: any) => Object
 
     // normalize parameters
     let inverseSideProperty: string|((object: T) => any);
-    if (typeof inverseSideOrOptions === "object") {
+    if (ObjectUtils.isObject(inverseSideOrOptions)) {
         options = <RelationOptions> inverseSideOrOptions;
     } else {
-        inverseSideProperty = <string|((object: T) => any)> inverseSideOrOptions;
+        inverseSideProperty = inverseSideOrOptions as any;
     }
 
     return function (object: Object, propertyName: string) {

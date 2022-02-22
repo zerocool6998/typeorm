@@ -4,6 +4,7 @@ import {PrimaryGeneratedColumnUUIDOptions} from "../options/PrimaryGeneratedColu
 import {GeneratedMetadataArgs} from "../../metadata-args/GeneratedMetadataArgs";
 import {ColumnOptions} from "../options/ColumnOptions";
 import {PrimaryGeneratedColumnIdentityOptions} from "../options/PrimaryGeneratedColumnIdentityOptions";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * Column decorator is used to mark a specific class property as a table column.
@@ -47,14 +48,14 @@ export function PrimaryGeneratedColumn(strategyOrOptions?: "increment"|"uuid"|"r
         if (typeof strategyOrOptions === "string")
             strategy = strategyOrOptions as "increment"|"uuid"|"rowid"|"identity";
 
-        if (typeof strategyOrOptions === "object") {
+        if (ObjectUtils.isObject(strategyOrOptions)) {
             strategy = "increment";
             Object.assign(options, strategyOrOptions);
         }
     } else {
         strategy = "increment";
     }
-    if (typeof maybeOptions === "object")
+    if (ObjectUtils.isObject(maybeOptions))
         Object.assign(options, maybeOptions);
 
     return function (object: Object, propertyName: string) {

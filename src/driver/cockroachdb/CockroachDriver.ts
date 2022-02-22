@@ -24,6 +24,7 @@ import {TypeORMError} from "../../error";
 import {Table} from "../../schema-builder/table/Table";
 import {View} from "../../schema-builder/view/View";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
+import {ObjectUtils} from "../../util/ObjectUtils";
 
 /**
  * Organizes communication with Cockroach DBMS.
@@ -602,7 +603,7 @@ export class CockroachDriver implements Driver {
             return `'${defaultValue}'${arrayCast}`;
         }
 
-        if (typeof defaultValue === "object" && defaultValue !== null) {
+        if (ObjectUtils.isObject(defaultValue) && defaultValue !== null) {
             return `'${JSON.stringify(defaultValue)}'`;
         }
 

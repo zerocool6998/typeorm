@@ -2,6 +2,7 @@ import {QueryBuilder} from "./QueryBuilder";
 import {RelationUpdater} from "./RelationUpdater";
 import {RelationRemover} from "./RelationRemover";
 import {TypeORMError} from "../error";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Allows to work with entity relations and perform specific operations with those relations.
@@ -53,7 +54,7 @@ export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
         // if there are multiple join columns then user must send id map as "value" argument. check if he really did it
         if (relation.joinColumns &&
             relation.joinColumns.length > 1 &&
-            (!(typeof value === "object") || Object.keys(value).length < relation.joinColumns.length))
+            (!(ObjectUtils.isObject(value)) || Object.keys(value).length < relation.joinColumns.length))
             throw new TypeORMError(`Value to be set into the relation must be a map of relation ids, for example: .set({ firstName: "...", lastName: "..." })`);
 
         const updater = new RelationUpdater(this, this.expressionMap);
@@ -84,7 +85,7 @@ export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
         // if there are multiple join columns then user must send id map as "value" argument. check if he really did it
         if (relation.joinColumns &&
             relation.joinColumns.length > 1 &&
-            (!(typeof value === "object") || Object.keys(value).length < relation.joinColumns.length))
+            (!(ObjectUtils.isObject(value)) || Object.keys(value).length < relation.joinColumns.length))
             throw new TypeORMError(`Value to be set into the relation must be a map of relation ids, for example: .set({ firstName: "...", lastName: "..." })`);
 
         const updater = new RelationUpdater(this, this.expressionMap);
@@ -154,7 +155,7 @@ export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
      */
     async loadMany<T = any>(): Promise<T[]> {
         let of = this.expressionMap.of;
-        if (!(typeof of === "object")) {
+        if (!(ObjectUtils.isObject(of))) {
             const metadata = this.expressionMap.mainAlias!.metadata;
             if (metadata.hasMultiplePrimaryKeys)
                 throw new TypeORMError(`Cannot load entity because only one primary key was specified, however entity contains multiple primary keys`);

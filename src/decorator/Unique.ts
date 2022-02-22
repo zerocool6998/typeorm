@@ -1,6 +1,7 @@
 import {getMetadataArgsStorage} from "../globals";
 import {UniqueMetadataArgs} from "../metadata-args/UniqueMetadataArgs";
 import {UniqueOptions} from "./options/UniqueOptions";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Composite unique constraint must be set on entity classes and must specify entity's fields to be unique.
@@ -30,9 +31,9 @@ export function Unique(nameOrFieldsOrOptions?: string | string[] | ((object: any
                        maybeOptions?: UniqueOptions): ClassDecorator & PropertyDecorator {
     const name = typeof nameOrFieldsOrOptions === "string" ? nameOrFieldsOrOptions : undefined;
     const fields = typeof nameOrFieldsOrOptions === "string" ? <((object?: any) => (any[] | { [key: string]: number })) | string[]>maybeFieldsOrOptions : nameOrFieldsOrOptions as string[];
-    let options = (typeof nameOrFieldsOrOptions === "object" && !Array.isArray(nameOrFieldsOrOptions)) ? nameOrFieldsOrOptions as UniqueOptions : maybeOptions;
+    let options = (ObjectUtils.isObject(nameOrFieldsOrOptions) && !Array.isArray(nameOrFieldsOrOptions)) ? nameOrFieldsOrOptions as UniqueOptions : maybeOptions;
     if (!options)
-        options = (typeof maybeFieldsOrOptions === "object" && !Array.isArray(maybeFieldsOrOptions)) ? maybeFieldsOrOptions as UniqueOptions : maybeOptions;
+        options = (ObjectUtils.isObject(nameOrFieldsOrOptions) && !Array.isArray(maybeFieldsOrOptions)) ? maybeFieldsOrOptions as UniqueOptions : maybeOptions;
 
     return function (clsOrObject: Function | Object, propertyName?: string | symbol) {
 

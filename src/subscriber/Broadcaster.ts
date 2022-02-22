@@ -5,6 +5,7 @@ import {EntityMetadata} from "../metadata/EntityMetadata";
 import {BroadcasterResult} from "./BroadcasterResult";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {RelationMetadata} from "../metadata/RelationMetadata";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 interface BroadcasterEvents {
     "BeforeTransactionCommit": () => void;
@@ -620,7 +621,7 @@ export class Broadcaster {
                         if (relation.isLazy && !entity.hasOwnProperty(relation.propertyName)) return;
 
                         const value = relation.getEntityValue(entity);
-                        if (typeof value === "object") this.broadcastLoadEvent(result, relation.inverseEntityMetadata, Array.isArray(value) ? value : [value]);
+                        if (ObjectUtils.isObject(value)) this.broadcastLoadEvent(result, relation.inverseEntityMetadata, Array.isArray(value) ? value : [value]);
                     });
                 });
             }

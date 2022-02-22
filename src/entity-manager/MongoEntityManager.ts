@@ -53,6 +53,7 @@ import {FindOptionsSelect, FindOptionsSelectByString} from "../find-options/Find
 import {MongoFindManyOptions} from "../find-options/mongodb/MongoFindManyOptions";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,
@@ -61,6 +62,7 @@ import {ColumnMetadata} from "../metadata/ColumnMetadata";
  * This implementation is used for MongoDB driver which has some specifics in its EntityManager.
  */
 export class MongoEntityManager extends EntityManager {
+    readonly "@instanceof" = Symbol("MongoEntityManager");
 
     get mongoQueryRunner(): MongoQueryRunner {
         return (this.connection.driver as MongoDriver).queryRunner as MongoQueryRunner;
@@ -122,15 +124,15 @@ export class MongoEntityManager extends EntityManager {
                     return new objectIdInstance(id);
                 }
 
-                if (typeof id === "object") {
+                if (ObjectUtils.isObject(id)) {
                     if (id instanceof objectIdInstance) {
                         return id;
                     }
 
                     const propertyName = metadata.objectIdColumn!.propertyName;
 
-                    if (id[propertyName] instanceof objectIdInstance) {
-                        return id[propertyName];
+                    if ((id as any)[propertyName] instanceof objectIdInstance) {
+                        return (id as any)[propertyName];
                     }
                 }
             })
@@ -676,7 +678,7 @@ export class MongoEntityManager extends EntityManager {
 
         // if it's some other type of object build a query from the columns
         // this check needs to be after the ObjectId check, because a valid ObjectId is also an Object instance
-        if (typeof idMap === "object") {
+        if (ObjectUtils.isObject(idMap)) {
             return metadata.columns.reduce((query, column) => {
                 const columnValue = column.getEntityValue(idMap);
                 if (columnValue !== undefined)

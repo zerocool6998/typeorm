@@ -1,6 +1,7 @@
 import {EntityTarget} from "../common/EntityTarget";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "./TypeORMError";
+import {ObjectUtils} from "../util/ObjectUtils";
 
 /**
  * Thrown when repository for the given class is not found.
@@ -14,10 +15,10 @@ export class RepositoryNotTreeError extends TypeORMError {
             targetName = entityClass.options.name;
         } else if (typeof entityClass === "function") {
             targetName = entityClass.name;
-        } else if (typeof entityClass === "object" && "name" in entityClass) {
-            targetName = entityClass.name;
+        } else if (ObjectUtils.isObject(entityClass) && "name" in (entityClass as any)) {
+            targetName = (entityClass as any).name;
         } else {
-            targetName = entityClass;
+            targetName = entityClass as any;
         }
         this.message = `Repository of the "${targetName}" class is not a TreeRepository. Try to apply @Tree decorator on your entity.`;
     }
