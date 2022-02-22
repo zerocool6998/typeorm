@@ -496,7 +496,7 @@ describe("repository > basic methods", () => {
         })));
         it("should skip update when nothing has changed", () => Promise.all(connections.map(async (connection) => {
             if (!(connection.driver instanceof PostgresDriver)) return;
-            
+
             const postObjects = connection.getRepository(Post);
             const externalId1 = "external-skip-update-nothing-changed1";
             const externalId2 = "external-skip-update-nothing-changed2";
@@ -511,17 +511,17 @@ describe("repository > basic methods", () => {
                 { externalId:externalId2, title: "title2" }
             ], upsertOptions);
             insertResult.raw.should.have.length(2); // insert
-            (await postObjects.findOneOrFail(({ externalId: externalId1}))).title.should.equal("title1");
-            (await postObjects.findOneOrFail(({ externalId: externalId2}))).title.should.equal("title2");
+            (await postObjects.findOneByOrFail(({ externalId: externalId1}))).title.should.equal("title1");
+            (await postObjects.findOneByOrFail(({ externalId: externalId2}))).title.should.equal("title2");
 
             const updatedResult = await postObjects.upsert([
                 { externalId: externalId1, title: "title updated1" },
                 { externalId: externalId2, title: "title updated2" },
             ], upsertOptions);
             updatedResult.raw.should.have.length(2); // update
-            (await postObjects.findOneOrFail(({ externalId: externalId1 }))).title.should.equal("title updated1");
-            (await postObjects.findOneOrFail(({ externalId: externalId2 }))).title.should.equal("title updated2");
-            
+            (await postObjects.findOneByOrFail(({ externalId: externalId1 }))).title.should.equal("title updated1");
+            (await postObjects.findOneByOrFail(({ externalId: externalId2 }))).title.should.equal("title updated2");
+
             const skippedUpdateResult = await postObjects.upsert([
                 { externalId: externalId1, title: "title updated1" },
                 { externalId: externalId2, title: "title updated2" },

@@ -2,7 +2,8 @@ import {Connection} from "../connection/Connection";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {RelationMetadata} from "../metadata/RelationMetadata";
-import {FindOptionsUtils, SelectQueryBuilder} from "../find-options/FindOptionsUtils";
+import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
+import {SelectQueryBuilder} from "./SelectQueryBuilder";
 
 /**
  * Wraps entities and creates getters/setters for their relations

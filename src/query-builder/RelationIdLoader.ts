@@ -1,6 +1,8 @@
-import {Connection, ObjectLiteral, SelectQueryBuilder} from "../";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
+import {Connection} from "../connection/Connection";
+import {ObjectLiteral} from "../common/ObjectLiteral";
+import {SelectQueryBuilder} from "./SelectQueryBuilder";
 
 /**
  * Loads relation ids for the given entities.
