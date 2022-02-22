@@ -5,6 +5,7 @@ import {Connection} from "../../../../src";
 import {Post} from "./entity/Post";
 import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
 import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("transaction > transaction with load many", () => {
 
@@ -21,7 +22,7 @@ describe("transaction > transaction with load many", () => {
 
         const driver = connection.driver;
 
-        if (driver.options.type === "mysql") {
+        if (DriverUtils.isMySQLFamily(driver)) {
             const pool = (driver as MysqlDriver).pool;
             pool.on("acquire", () => acquireCount++);
         } else if (driver.options.type === "postgres") {

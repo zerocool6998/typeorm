@@ -88,7 +88,7 @@ describe("query runner > add column", () => {
         column2!.default!.should.be.equal("'this is description'");
 
         if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "postgres") {
-            const isMySQL = DriverUtils.isMySQLFamily(connection.driver) && connection.options.type === "mysql";
+            const isMySQL = connection.options.type === "mysql";
             let postgresSupported = false;
 
             if (connection.driver.options.type === "postgres") {
