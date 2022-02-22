@@ -1,4 +1,4 @@
-import "reflect-metadata";
+import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Post} from "./entity/Post";

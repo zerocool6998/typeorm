@@ -25,7 +25,6 @@ import {TypeORMError} from "../../error";
 import {Table} from "../../schema-builder/table/Table";
 import {View} from "../../schema-builder/view/View";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
-import {ObjectUtils} from "../../util/ObjectUtils";
 import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
@@ -587,7 +586,7 @@ export class PostgresDriver implements Driver {
             value = DateUtils.mixedTimeToString(value);
 
         } else if (columnMetadata.type === "hstore") {
-            if (ObjectUtils.isObject(columnMetadata.hstoreType)) {
+            if (columnMetadata.hstoreType === "object") {
                 const unescapeString = (str: string) => str.replace(/\\./g, (m) => m[1]);
                 const regexp = /"([^"\\]*(?:\\.[^"\\]*)*)"=>(?:(NULL)|"([^"\\]*(?:\\.[^"\\]*)*)")(?:,|$)/g;
                 const object: ObjectLiteral = {};
@@ -858,7 +857,7 @@ export class PostgresDriver implements Driver {
             return this.normalizeDatetimeFunction(value);
         }
 
-        if (ObjectUtils.isObject(defaultValue)) {
+        if (typeof defaultValue === "object") {
             return `'${JSON.stringify(defaultValue)}'`;
         }
 
