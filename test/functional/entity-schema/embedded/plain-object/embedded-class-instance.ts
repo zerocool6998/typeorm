@@ -1,7 +1,7 @@
-import { Connection } from "../../../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../../utils/test-utils";
-import { UserEntitySchema } from "./entity/User";
-import { expect } from "chai";
+import {Connection} from "../../../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
+import {UserEntitySchema} from "./entity/User";
+import {expect} from "chai";
 
 describe("entity-schema > embedded - plain-object", () => {
 

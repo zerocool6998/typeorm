@@ -1,11 +1,11 @@
 import {Repository} from "./Repository";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
-import {AbstractSqliteDriver} from "../driver/sqlite-abstract/AbstractSqliteDriver";
-import { TypeORMError } from "../error/TypeORMError";
-import { FindTreeOptions } from "../find-options/FindTreeOptions";
-import { FindOptionsUtils } from "../find-options/FindOptionsUtils";
-import { FindTreesOptions } from "./FindTreesOptions";
+import {TypeORMError} from "../error/TypeORMError";
+import {FindTreeOptions} from "../find-options/FindTreeOptions";
+import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
+import {FindTreesOptions} from "./FindTreesOptions";
+import {DriverUtils} from "../driver/DriverUtils";
 
 /**
  * Repository with additional functions to work with trees.
@@ -134,7 +134,7 @@ export class TreeRepository<Entity> extends Repository<Entity> {
                         .from(this.metadata.target, this.metadata.targetName)
                         .whereInIds(this.metadata.getEntityIdMap(entity));
 
-                    if (this.manager.connection.driver instanceof AbstractSqliteDriver) {
+                    if (DriverUtils.isSQLiteFamily(this.manager.connection.driver)) {
                         return `${alias}.${this.metadata.materializedPathColumn!.propertyPath} LIKE ${subQuery.getQuery()} || '%'`;
                     } else {
                         return `${alias}.${this.metadata.materializedPathColumn!.propertyPath} LIKE NULLIF(CONCAT(${subQuery.getQuery()}, '%'), '%')`;
@@ -229,7 +229,7 @@ export class TreeRepository<Entity> extends Repository<Entity> {
                         .from(this.metadata.target, this.metadata.targetName)
                         .whereInIds(this.metadata.getEntityIdMap(entity));
 
-                    if (this.manager.connection.driver instanceof AbstractSqliteDriver) {
+                    if (DriverUtils.isSQLiteFamily(this.manager.connection.driver)) {
                         return `${subQuery.getQuery()} LIKE ${alias}.${this.metadata.materializedPathColumn!.propertyPath} || '%'`;
 
                     } else {

@@ -1,13 +1,11 @@
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {UniqueMetadata} from "../metadata/UniqueMetadata";
 import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {JoinColumnMetadataArgs} from "../metadata-args/JoinColumnMetadataArgs";
 import {Connection} from "../connection/Connection";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
+import {DriverUtils} from "../driver/DriverUtils";
 
 /**
  * Builds join column for the many-to-one and one-to-one owner relations.
@@ -77,7 +75,7 @@ export class RelationJoinColumnBuilder {
         });
 
         // Oracle does not allow both primary and unique constraints on the same column
-        if (this.connection.driver instanceof OracleDriver && columns.every(column => column.isPrimary))
+        if (this.connection.driver.options.type === "oracle" && columns.every(column => column.isPrimary))
             return { foreignKey, columns, uniqueConstraint: undefined };
 
         // CockroachDB requires UNIQUE constraints on referenced columns
@@ -150,7 +148,7 @@ export class RelationJoinColumnBuilder {
                             name: joinColumnName,
                             type: referencedColumn.type,
                             length: !referencedColumn.length
-                                        && (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
+                                        && (DriverUtils.isMySQLFamily(this.connection.driver) || this.connection.driver.options.type === "aurora-data-api")
                                         && (referencedColumn.generationStrategy === "uuid" || referencedColumn.type === "uuid")
                                     ? "36"
                                     : referencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604

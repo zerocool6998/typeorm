@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../utils/test-utils";
-import { Connection } from "../../../../src/connection/Connection";
-import { UpdateResult } from "../../../../src";
-import { Post } from "./entity/Post";
-import { PostBigInt } from "./entity/PostBigInt";
-import { UserWithEmbededEntity } from "./entity/UserWithEmbededEntity";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
+import {Connection} from "../../../../src/connection/Connection";
+import {UpdateResult} from "../../../../src";
+import {Post} from "./entity/Post";
+import {PostBigInt} from "./entity/PostBigInt";
+import {UserWithEmbededEntity} from "./entity/UserWithEmbededEntity";
 
 describe("repository > decrement method", () => {
 

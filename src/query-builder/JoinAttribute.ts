@@ -5,7 +5,7 @@ import {QueryBuilderUtils} from "./QueryBuilderUtils";
 import {QueryExpressionMap} from "./QueryExpressionMap";
 import {Alias} from "./Alias";
 import {ObjectUtils} from "../util/ObjectUtils";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 import {DriverUtils} from "../driver/DriverUtils";
 
 /**

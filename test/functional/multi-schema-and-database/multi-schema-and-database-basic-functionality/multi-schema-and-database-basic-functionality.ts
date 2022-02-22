@@ -3,14 +3,12 @@ import {Connection} from "../../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
-import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 import {User} from "./entity/User";
 import {Category} from "./entity/Category";
 import {Person} from "./entity/Person";
 import {Question} from "./entity/Question";
 import {Answer} from "./entity/Answer";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("multi-schema-and-database > basic-functionality", () => {
 
@@ -59,10 +57,10 @@ describe("multi-schema-and-database > basic-functionality", () => {
                 .where("post.id = :id", {id: 1})
                 .getSql();
 
-            if (connection.driver instanceof PostgresDriver)
+            if (connection.driver.options.type === "postgres")
                 sql.should.be.equal(`SELECT "post"."id" AS "post_id", "post"."name" AS "post_name" FROM "custom"."post" "post" WHERE "post"."id" = $1`);
 
-            if (connection.driver instanceof SqlServerDriver)
+            if (connection.driver.options.type === "mssql")
                 sql.should.be.equal(`SELECT "post"."id" AS "post_id", "post"."name" AS "post_name" FROM "custom"."post" "post" WHERE "post"."id" = @0`);
 
             table!.name.should.be.equal("custom.post");
@@ -82,10 +80,10 @@ describe("multi-schema-and-database > basic-functionality", () => {
                 .where("user.id = :id", {id: 1})
                 .getSql();
 
-            if (connection.driver instanceof PostgresDriver)
+            if (connection.driver.options.type === "postgres")
                 sql.should.be.equal(`SELECT "user"."id" AS "user_id", "user"."name" AS "user_name" FROM "userSchema"."user" "user" WHERE "user"."id" = $1`);
 
-            if (connection.driver instanceof SqlServerDriver)
+            if (connection.driver.options.type === "mssql")
                 sql.should.be.equal(`SELECT "user"."id" AS "user_id", "user"."name" AS "user_name" FROM "userSchema"."user" "user" WHERE "user"."id" = @0`);
 
             table!.name.should.be.equal("userSchema.user");
@@ -120,12 +118,12 @@ describe("multi-schema-and-database > basic-functionality", () => {
                 .where("category.id = :id", {id: 1})
                 .getSql();
 
-            if (connection.driver instanceof PostgresDriver)
+            if (connection.driver.options.type === "postgres")
                 sql.should.be.equal(`SELECT "category"."id" AS "category_id", "category"."name" AS "category_name",` +
                     ` "category"."postId" AS "category_postId", "post"."id" AS "post_id", "post"."name" AS "post_name"` +
                     ` FROM "guest"."category" "category" INNER JOIN "custom"."post" "post" ON "post"."id"="category"."postId" WHERE "category"."id" = $1`);
 
-            if (connection.driver instanceof SqlServerDriver)
+            if (connection.driver.options.type === "mssql")
                 sql.should.be.equal(`SELECT "category"."id" AS "category_id", "category"."name" AS "category_name",` +
                     ` "category"."postId" AS "category_postId", "post"."id" AS "post_id", "post"."name" AS "post_name"` +
                     ` FROM "guest"."category" "category" INNER JOIN "custom"."post" "post" ON "post"."id"="category"."postId" WHERE "category"."id" = @0`);
@@ -158,11 +156,11 @@ describe("multi-schema-and-database > basic-functionality", () => {
 
             (await query.getRawOne())!.should.be.not.empty;
 
-            if (connection.driver instanceof PostgresDriver)
+            if (connection.driver.options.type === "postgres")
                 query.getSql().should.be.equal(`SELECT * FROM "guest"."category" "category", "userSchema"."user" "user",` +
                     ` "custom"."post" "post" WHERE "category"."id" = $1 AND "post"."id" = "category"."postId"`);
 
-            if (connection.driver instanceof SqlServerDriver)
+            if (connection.driver.options.type === "mssql")
                 query.getSql().should.be.equal(`SELECT * FROM "guest"."category" "category", "userSchema"."user" "user",` +
                     ` "custom"."post" "post" WHERE "category"."id" = @0 AND "post"."id" = "category"."postId"`);
         })));
@@ -270,7 +268,7 @@ describe("multi-schema-and-database > basic-functionality", () => {
         it("should correctly create tables when custom database used in Entity decorator", () => Promise.all(connections.map(async connection => {
 
             const queryRunner = connection.createQueryRunner();
-            const tablePath = connection.driver instanceof SqlServerDriver ? "secondDB..person" : "secondDB.person";
+            const tablePath = connection.driver.options.type === "mssql" ? "secondDB..person" : "secondDB.person";
             const table = await queryRunner.getTable(tablePath);
             await queryRunner.release();
 
@@ -282,10 +280,10 @@ describe("multi-schema-and-database > basic-functionality", () => {
                 .where("person.id = :id", {id: 1})
                 .getSql();
 
-            if (connection.driver instanceof SqlServerDriver)
+            if (connection.driver.options.type === "mssql")
                 sql.should.be.equal(`SELECT "person"."id" AS "person_id", "person"."name" AS "person_name" FROM "secondDB".."person" "person" WHERE "person"."id" = @0`);
 
-            if (connection.driver instanceof MysqlDriver)
+            if (DriverUtils.isMySQLFamily(connection.driver))
                 sql.should.be.equal("SELECT `person`.`id` AS `person_id`, `person`.`name` AS `person_name` FROM `secondDB`.`person` `person` WHERE `person`.`id` = ?");
 
             table!.name.should.be.equal(tablePath);

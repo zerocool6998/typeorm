@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {Connection} from "../../../../src/connection/Connection";
-import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {PostIncrement} from "./entity/PostIncrement";
 import {PostUuid} from "./entity/PostUuid";
@@ -23,7 +22,7 @@ describe("persistence > entity updation", () => {
         post.text = "Hello Post";
         await connection.manager.save(post);
         // CockroachDB does not use incremental ids
-        if (!(connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "cockroachdb"))
             post.id.should.be.equal(1);
     })));
 

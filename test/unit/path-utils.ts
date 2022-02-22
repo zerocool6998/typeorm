@@ -1,5 +1,5 @@
-import { toPortablePath, isAbsolute } from "../../src/util/PathUtils";
-import { expect } from "chai";
+import {isAbsolute, toPortablePath} from "../../src/util/PathUtils";
+import {expect} from "chai";
 
 describe(`path-utils`, () => {
     describe("isAbsolute", () => {

@@ -3,12 +3,11 @@ import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {User} from "./entity/User";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 import {LimitOnUpdateNotSupportedError} from "../../../../src/error/LimitOnUpdateNotSupportedError";
 import {Photo} from "./entity/Photo";
 import {UpdateValuesMissingError} from "../../../../src/error/UpdateValuesMissingError";
 import {EntityPropertyNotFoundError} from "../../../../src/error/EntityPropertyNotFoundError";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("query builder > update", () => {
 
@@ -58,7 +57,7 @@ describe("query builder > update", () => {
 
         await connection.createQueryBuilder()
             .update(User)
-            .set({ name: () => connection.driver instanceof SqlServerDriver ? "SUBSTRING('Dima Zotov', 1, 4)" : "SUBSTR('Dima Zotov', 1, 4)" })
+            .set({ name: () => connection.driver.options.type === "mssql" ? "SUBSTRING('Dima Zotov', 1, 4)" : "SUBSTR('Dima Zotov', 1, 4)" })
             .where("name = :name", {
                 name: "Alex Messer"
             })
@@ -169,7 +168,7 @@ describe("query builder > update", () => {
         const limitNum = 2;
         const nameToFind = "Dima Zotov";
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver)) {
             await connection.createQueryBuilder()
             .update(User)
             .set({ name: nameToFind })

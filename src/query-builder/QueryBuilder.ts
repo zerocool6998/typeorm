@@ -14,10 +14,6 @@ import {Brackets} from "./Brackets";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
-import {PostgresDriver} from "../driver/postgres/PostgresDriver";
-import {CockroachDriver} from "../driver/cockroachdb/CockroachDriver";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {FindOperator} from "../find-options/FindOperator";
 import {In} from "../find-options/operator/In";
@@ -26,6 +22,7 @@ import {WhereClause, WhereClauseCondition} from "./WhereClause";
 import {NotBrackets} from "./NotBrackets";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
 import {ReturningType} from "../driver/Driver";
+import {OracleDriver} from "../driver/oracle/OracleDriver";
 
 // todo: completely cover query builder with tests
 // todo: entityOrProperty can be target name. implement proper behaviour if it is.
@@ -755,7 +752,7 @@ export abstract class QueryBuilder<Entity> {
         if (columns.length) {
             let columnsExpression = columns.map(column => {
                 const name = this.escape(column.databaseName);
-                if (driver instanceof SqlServerDriver) {
+                if (driver.options.type === "mssql") {
                     if (this.expressionMap.queryType === "insert" || this.expressionMap.queryType === "update" || this.expressionMap.queryType === "soft-delete" || this.expressionMap.queryType === "restore") {
                         return "INSERTED." + name;
                     } else {
@@ -766,13 +763,13 @@ export abstract class QueryBuilder<Entity> {
                 }
             }).join(", ");
 
-            if (driver instanceof OracleDriver) {
+            if (driver.options.type === "oracle") {
                 columnsExpression += " INTO " + columns.map(column => {
-                    return this.createParameter({ type: driver.columnTypeToNativeParameter(column.type), dir: driver.oracle.BIND_OUT });
+                    return this.createParameter({ type: (driver as OracleDriver).columnTypeToNativeParameter(column.type), dir: (driver as OracleDriver).oracle.BIND_OUT });
                 }).join(", ");
             }
 
-            if (driver instanceof SqlServerDriver) {
+            if (driver.options.type === "mssql") {
                 if (this.expressionMap.queryType === "insert" || this.expressionMap.queryType === "update") {
                     columnsExpression += " INTO @OutputTable";
                 }
@@ -855,7 +852,7 @@ export abstract class QueryBuilder<Entity> {
             case "equal":
                 return `${condition.parameters[0]} = ${condition.parameters[1]}`;
             case "ilike":
-                if (driver instanceof PostgresDriver || driver instanceof CockroachDriver) {
+                if (driver.options.type === "postgres" || driver.options.type === "cockroachdb") {
                     return `${condition.parameters[0]} ILIKE ${condition.parameters[1]}`;
                 }
 

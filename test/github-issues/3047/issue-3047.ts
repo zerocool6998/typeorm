@@ -3,8 +3,8 @@ import {createTestingConnections, closeTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {User} from "./entity/User";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
+
 describe("github issues > #3047 Mysqsl on duplicate key update use current values", () => {
     let connections: Connection[];
 
@@ -30,7 +30,7 @@ describe("github issues > #3047 Mysqsl on duplicate key update use current value
 
     it("should overwrite using current value in MySQL/MariaDB", () => Promise.all(connections.map(async connection => {
       try {
-         if (connection.driver instanceof MysqlDriver) {
+         if (DriverUtils.isMySQLFamily(connection.driver)) {
             const UserRepository = connection.manager.getRepository(User);
 
             await UserRepository
@@ -60,7 +60,7 @@ describe("github issues > #3047 Mysqsl on duplicate key update use current value
 
     it("should overwrite using current value in PostgreSQL", () => Promise.all(connections.map(async connection => {
       try {
-        if (connection.driver instanceof PostgresDriver) {
+        if (connection.driver.options.type === "postgres") {
 
           const UserRepository = connection.manager.getRepository(User);
 

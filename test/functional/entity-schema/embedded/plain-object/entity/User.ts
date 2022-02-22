@@ -1,5 +1,5 @@
-import { Name, NameEntitySchema } from "./Name";
-import { EntitySchema } from "../../../../../../src";
+import {Name, NameEntitySchema} from "./Name";
+import {EntitySchema} from "../../../../../../src";
 
 export interface User {
     id: string;

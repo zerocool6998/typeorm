@@ -3,7 +3,7 @@ import {Connection} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 import {expect} from "chai";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("github issues > #2376 Naming single column unique constraint with decorator not working as expected", () => {
     let connections: Connection[];
@@ -23,7 +23,7 @@ describe("github issues > #2376 Naming single column unique constraint with deco
         let unique1 = table!.uniques.find(it => it.name === "unique-email");
         let unique2 = table!.uniques.find(it => it.name === "unique-email-nickname");
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver)) {
             unique1 = table!.indices.find(it => it.name === "unique-email");
             unique2 = table!.indices.find(it => it.name === "unique-email-nickname");
         }

@@ -2,7 +2,7 @@ import {Entity} from "../../../../../../src/decorator/entity/Entity";
 import {PrimaryGeneratedColumn} from "../../../../../../src/decorator/columns/PrimaryGeneratedColumn";
 import {Column} from "../../../../../../src/decorator/columns/Column";
 import {DeleteDateColumn} from "../../../../../../src/decorator/columns/DeleteDateColumn";
-import { AfterSoftRemove, BeforeSoftRemove } from "../../../../../../src";
+import {AfterSoftRemove, BeforeSoftRemove} from "../../../../../../src";
 
 @Entity()
 export class PostWithDeleteDateColumn {

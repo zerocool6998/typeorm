@@ -1,10 +1,5 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToOne,
-} from "../../../../../src";
-import { Post } from "./Post";
+import {Column, Entity, OneToOne, PrimaryGeneratedColumn,} from "../../../../../src";
+import {Post} from "./Post";
 
 @Entity()
 export class HeroImage {

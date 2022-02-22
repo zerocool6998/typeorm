@@ -5,7 +5,7 @@ import { Connection } from "../../../src/connection/Connection";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Plan } from "./entity/Plan";
 import { Item } from "./entity/Item";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("github issues > #1476 subqueries", () => {
 
@@ -20,7 +20,7 @@ describe("github issues > #1476 subqueries", () => {
     it("should", () => Promise.all(connections.map(async connection => {
         const planRepo = connection.getRepository(Plan);
         const itemRepo = connection.getRepository(Item);
-        
+
         const plan1 = new Plan();
         plan1.planId = 1;
         plan1.planName = "Test";
@@ -56,7 +56,7 @@ describe("github issues > #1476 subqueries", () => {
         expect(plan.b_planName).to.be.equal("Test");
         expect(plan.planId).to.be.equal(1);
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver)) {
             expect(plan.total).to.be.equal("2");
         } else {
             expect(plan.total).to.be.equal(2);

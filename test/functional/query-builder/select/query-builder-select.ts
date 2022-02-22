@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
-import { EntityNotFoundError, Connection, IsNull, In, Raw } from "../../../../src";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import { Category } from "./entity/Category";
+import {Connection, EntityNotFoundError, In, IsNull, Raw} from "../../../../src";
+import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
-import { Tag } from "./entity/Tag";
-import { HeroImage } from "./entity/HeroImage";
-import { ExternalPost } from "./entity/ExternalPost";
+import {Tag} from "./entity/Tag";
+import {HeroImage} from "./entity/HeroImage";
+import {ExternalPost} from "./entity/ExternalPost";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("query builder > select", () => {
     let connections: Connection[];
@@ -438,7 +438,7 @@ describe("query builder > select", () => {
 
     it("Support max execution time", () => Promise.all(connections.map(async connection => {
         // MAX_EXECUTION_TIME supports only in MySQL
-        if (!(connection.driver instanceof MysqlDriver)) return
+        if (!(DriverUtils.isMySQLFamily(connection.driver))) return
 
         const sql = connection
             .createQueryBuilder(Post, "post")
@@ -450,7 +450,7 @@ describe("query builder > select", () => {
 
     it("Support using certain index", () => Promise.all(connections.map(async connection => {
         // `USE INDEX` is only supported in MySQL
-        if (!(connection.driver instanceof MysqlDriver)) {
+        if (!(DriverUtils.isMySQLFamily(connection.driver))) {
             return;
         }
 

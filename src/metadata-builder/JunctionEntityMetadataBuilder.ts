@@ -1,4 +1,3 @@
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {Connection} from "../connection/Connection";
 import {EntityMetadata} from "../metadata/EntityMetadata";
@@ -6,9 +5,8 @@ import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {IndexMetadata} from "../metadata/IndexMetadata";
 import {JoinTableMetadataArgs} from "../metadata-args/JoinTableMetadataArgs";
 import {RelationMetadata} from "../metadata/RelationMetadata";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
+import {DriverUtils} from "../driver/DriverUtils";
 
 /**
  * Creates EntityMetadata for junction tables.
@@ -73,7 +71,7 @@ export class JunctionEntityMetadataBuilder {
                     options: {
                         name: columnName,
                         length: !referencedColumn.length
-                        && (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
+                        && (DriverUtils.isMySQLFamily(this.connection.driver) || this.connection.driver.options.type === "aurora-data-api")
                         && (referencedColumn.generationStrategy === "uuid" || referencedColumn.type === "uuid")
                             ? "36"
                             : referencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604
@@ -113,7 +111,7 @@ export class JunctionEntityMetadataBuilder {
                     propertyName: columnName,
                     options: {
                         length: !inverseReferencedColumn.length
-                        && (this.connection.driver instanceof MysqlDriver || this.connection.driver instanceof AuroraDataApiDriver)
+                        && (DriverUtils.isMySQLFamily(this.connection.driver) || this.connection.driver.options.type === "aurora-data-api")
                         && (inverseReferencedColumn.generationStrategy === "uuid" || inverseReferencedColumn.type === "uuid")
                             ? "36"
                             : inverseReferencedColumn.length, // fix https://github.com/typeorm/typeorm/issues/3604
@@ -152,7 +150,7 @@ export class JunctionEntityMetadataBuilder {
                 columns: junctionColumns,
                 referencedColumns: referencedColumns,
                 onDelete: relation.onDelete || "CASCADE",
-                onUpdate: this.connection.driver instanceof OracleDriver ? "NO ACTION" : relation.onUpdate || "CASCADE",
+                onUpdate: this.connection.driver.options.type === "oracle" ? "NO ACTION" : relation.onUpdate || "CASCADE",
             }),
             new ForeignKeyMetadata({
                 entityMetadata: entityMetadata,
@@ -160,7 +158,7 @@ export class JunctionEntityMetadataBuilder {
                 columns: inverseJunctionColumns,
                 referencedColumns: inverseReferencedColumns,
                 onDelete: relation.inverseRelation ? relation.inverseRelation.onDelete : "CASCADE",
-                onUpdate: this.connection.driver instanceof OracleDriver
+                onUpdate: this.connection.driver.options.type === "oracle"
                     ? "NO ACTION"
                     : relation.inverseRelation
                         ? relation.inverseRelation.onUpdate

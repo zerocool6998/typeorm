@@ -5,7 +5,6 @@ import {Connection} from "../../../../../src/connection/Connection";
 import {Student} from "./entity/Student";
 import {Teacher} from "./entity/Teacher";
 import {Person} from "./entity/Person";
-import {CockroachDriver} from "../../../../../src/driver/cockroachdb/CockroachDriver";
 
 describe("table-inheritance > single-table > numeric types", () => {
 
@@ -17,7 +16,7 @@ describe("table-inheritance > single-table > numeric types", () => {
     after(() => closeTestingConnections(connections));
 
     it("should allow numeric types for the discriminator, including 0", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             return;
         }
 

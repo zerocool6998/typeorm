@@ -1,4 +1,3 @@
-import {SapDriver} from "../driver/sap/SapDriver";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {Subject} from "./Subject";
 import {SubjectTopoligicalSorter} from "./SubjectTopoligicalSorter";
@@ -7,17 +6,15 @@ import {SubjectWithoutIdentifierError} from "../error/SubjectWithoutIdentifierEr
 import {SubjectRemovedAndUpdatedError} from "../error/SubjectRemovedAndUpdatedError";
 import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
 import {MongoEntityManager} from "../entity-manager/MongoEntityManager";
-import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {SaveOptions} from "../repository/SaveOptions";
 import {RemoveOptions} from "../repository/RemoveOptions";
 import {BroadcasterResult} from "../subscriber/BroadcasterResult";
-import {OracleDriver} from "../driver/oracle/OracleDriver";
 import {NestedSetSubjectExecutor} from "./tree/NestedSetSubjectExecutor";
 import {ClosureSubjectExecutor} from "./tree/ClosureSubjectExecutor";
 import {MaterializedPathSubjectExecutor} from "./tree/MaterializedPathSubjectExecutor";
 import {OrmUtils} from "../util/OrmUtils";
-import { UpdateResult } from "../query-builder/result/UpdateResult";
+import {UpdateResult} from "../query-builder/result/UpdateResult";
 
 /**
  * Executes all database operations (inserts, updated, deletes) that must be executed
@@ -256,7 +253,7 @@ export class SubjectExecutor {
             const bulkInsertMaps: ObjectLiteral[] = [];
             const bulkInsertSubjects: Subject[] = [];
             const singleInsertSubjects: Subject[] = [];
-            if (this.queryRunner.connection.driver instanceof MongoDriver) {
+            if (this.queryRunner.connection.driver.options.type === "mongodb") {
                 subjects.forEach(subject => {
                     if (subject.metadata.createDateColumn && subject.entity) {
                         subject.entity[subject.metadata.createDateColumn.databaseName] = new Date();
@@ -271,7 +268,7 @@ export class SubjectExecutor {
                     bulkInsertSubjects.push(subject);
                     bulkInsertMaps.push(subject.entity!);
                 });
-            } else if (this.queryRunner.connection.driver instanceof OracleDriver) {
+            } else if (this.queryRunner.connection.driver.options.type === "oracle") {
                 subjects.forEach(subject => {
                     singleInsertSubjects.push(subject);
                 });
@@ -284,8 +281,8 @@ export class SubjectExecutor {
                     // - when oracle is used, since oracle's bulk insertion is very bad
                     if (subject.changeMaps.length === 0 ||
                         subject.metadata.treeType ||
-                        this.queryRunner.connection.driver instanceof OracleDriver ||
-                        this.queryRunner.connection.driver instanceof SapDriver) {
+                        this.queryRunner.connection.driver.options.type === "oracle" ||
+                        this.queryRunner.connection.driver.options.type === "sap") {
                         singleInsertSubjects.push(subject);
 
                     } else {

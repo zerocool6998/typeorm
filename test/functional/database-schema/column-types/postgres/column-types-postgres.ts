@@ -4,7 +4,6 @@ import {Connection} from "../../../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {PostWithoutTypes} from "./entity/PostWithoutTypes";
 import {Post} from "./entity/Post";
-import {PostgresDriver} from "../../../../../src/driver/postgres/PostgresDriver";
 
 describe("database schema > column types > postgres", () => {
     let connections: Connection[];
@@ -15,7 +14,7 @@ describe("database schema > column types > postgres", () => {
         });
 
         for (const connection of connections) {
-            if (connection.driver instanceof PostgresDriver) {
+            if (connection.driver.options.type === "postgres") {
                 // We want to have UTC as timezone
                 await connection.query("SET TIME ZONE 'UTC';");
             }

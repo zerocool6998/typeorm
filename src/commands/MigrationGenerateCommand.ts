@@ -4,8 +4,8 @@ import {createConnection} from "../globals";
 import {camelCase} from "../util/StringUtils";
 import * as yargs from "yargs";
 import chalk from "chalk";
-import { format } from "@sqltools/formatter/lib/sqlFormatter";
-import { PlatformTools } from "../platform/PlatformTools";
+import {format} from "@sqltools/formatter/lib/sqlFormatter";
+import {PlatformTools} from "../platform/PlatformTools";
 
 /**
  * Generates a new migration file with sql needs to be executed to update schema.

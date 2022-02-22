@@ -1,13 +1,11 @@
 import "reflect-metadata";
 import {Connection} from "../../../src";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
-import {SapDriver} from "../../../src/driver/sap/SapDriver";
-import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
 import {IndexMetadata} from "../../../src/metadata/IndexMetadata";
 import {UniqueMetadata} from "../../../src/metadata/UniqueMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {Teacher} from "./entity/Teacher";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("schema builder > change unique constraint", () => {
 
@@ -29,7 +27,7 @@ describe("schema builder > change unique constraint", () => {
         let uniqueMetadata: UniqueMetadata|undefined = undefined;
 
         // Mysql and SAP stores unique constraints as unique indices.
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "sap") {
             uniqueIndexMetadata = new IndexMetadata({
                 entityMetadata: teacherMetadata,
                 columns: [nameColumn],
@@ -60,7 +58,7 @@ describe("schema builder > change unique constraint", () => {
         const table = await queryRunner.getTable("teacher");
         await queryRunner.release();
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "sap") {
             table!.indices.length.should.be.equal(1);
             table!.indices[0].isUnique!.should.be.true;
 
@@ -77,13 +75,13 @@ describe("schema builder > change unique constraint", () => {
 
     it("should correctly change unique constraint", () => Promise.all(connections.map(async connection => {
         // Sqlite does not store unique constraint name
-        if (connection.driver instanceof AbstractSqliteDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver))
             return;
 
         const postMetadata = connection.getMetadata(Post);
 
         // Mysql and SAP stores unique constraints as unique indices.
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "sap") {
             const uniqueIndexMetadata = postMetadata.indices.find(i => i.columns.length === 2 && i.isUnique === true);
             uniqueIndexMetadata!.name = "changed_unique";
 
@@ -98,7 +96,7 @@ describe("schema builder > change unique constraint", () => {
         const table = await queryRunner.getTable("post");
         await queryRunner.release();
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "sap") {
             const tableIndex = table!.indices.find(index => index.columnNames.length === 2 && index.isUnique === true);
             tableIndex!.name!.should.be.equal("changed_unique");
 
@@ -121,7 +119,7 @@ describe("schema builder > change unique constraint", () => {
         const postMetadata = connection.getMetadata(Post);
 
         // Mysql and SAP stores unique constraints as unique indices.
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "sap") {
             const index = postMetadata!.indices.find(i => i.columns.length === 2 && i.isUnique === true);
             postMetadata!.indices.splice(postMetadata!.indices.indexOf(index!), 1);
 
@@ -136,7 +134,7 @@ describe("schema builder > change unique constraint", () => {
         const table = await queryRunner.getTable("post");
         await queryRunner.release();
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof SapDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "sap") {
             table!.indices.length.should.be.equal(1);
 
         } else {

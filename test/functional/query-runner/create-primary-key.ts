@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Table} from "../../../src/schema-builder/table/Table";
 
@@ -20,7 +19,7 @@ describe("query runner > create primary key", () => {
     it("should correctly create primary key and revert creation", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not allow altering primary key
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const queryRunner = connection.createQueryRunner();

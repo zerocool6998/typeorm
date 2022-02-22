@@ -1,4 +1,4 @@
-import { hash } from "./StringUtils";
+import {hash} from "./StringUtils";
 
 const WINDOWS_PATH_REGEXP = /^([a-zA-Z]:.*)$/;
 const UNC_WINDOWS_PATH_REGEXP = /^\\\\(\.\\)?(.*)$/;

@@ -16,7 +16,6 @@ import {MigrationInterface} from "../migration/MigrationInterface";
 import {MigrationExecutor} from "../migration/MigrationExecutor";
 import {Migration} from "../migration/Migration";
 import {MongoRepository} from "../repository/MongoRepository";
-import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {MongoEntityManager} from "../entity-manager/MongoEntityManager";
 import {EntityMetadataValidator} from "../metadata-builder/EntityMetadataValidator";
 import {ConnectionOptions} from "./ConnectionOptions";
@@ -32,15 +31,12 @@ import {QueryResultCache} from "../cache/QueryResultCache";
 import {SqljsEntityManager} from "../entity-manager/SqljsEntityManager";
 import {RelationLoader} from "../query-builder/RelationLoader";
 import {EntitySchema} from "../entity-schema/EntitySchema";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
-import {AbstractSqliteDriver} from "../driver/sqlite-abstract/AbstractSqliteDriver";
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {ReplicationMode} from "../driver/types/ReplicationMode";
-import { TypeORMError } from "../error/TypeORMError";
+import {TypeORMError} from "../error/TypeORMError";
 import {RelationIdLoader} from "../query-builder/RelationIdLoader";
+import {DriverUtils} from "../driver/DriverUtils";
 
 /**
  * Connection is a single database ORM connection to a specific database.
@@ -282,7 +278,7 @@ export class Connection {
     async dropDatabase(): Promise<void> {
         const queryRunner = this.createQueryRunner();
         try {
-            if (this.driver instanceof SqlServerDriver || this.driver instanceof MysqlDriver || this.driver instanceof AuroraDataApiDriver || this.driver instanceof AbstractSqliteDriver) {
+            if (this.driver.options.type === "mssql" || DriverUtils.isMySQLFamily(this.driver) || this.driver.options.type === "aurora-data-api" || DriverUtils.isSQLiteFamily(this.driver)) {
                 const databases: string[] = [];
                 this.entityMetadatas.forEach(metadata => {
                     if (metadata.database && databases.indexOf(metadata.database) === -1)
@@ -388,7 +384,7 @@ export class Connection {
      * Works only if connection is mongodb-specific.
      */
     getMongoRepository<Entity>(target: EntityTarget<Entity>): MongoRepository<Entity> {
-        if (!(this.driver instanceof MongoDriver))
+        if (!(this.driver.options.type === "mongodb"))
             throw new TypeORMError(`You can use getMongoRepository only for MongoDB connections.`);
 
         return this.manager.getRepository(target) as any;

@@ -1,7 +1,6 @@
 import {expect} from "chai";
 import "reflect-metadata";
 import {Connection, EntityMetadata} from "../../../../src";
-import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
 import {IndexMetadata} from "../../../../src/metadata/IndexMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 
@@ -43,7 +42,7 @@ describe("database schema > indices > reading index from entity and updating dat
         await queryRunner.release();
 
         // CockroachDB stores unique indices as UNIQUE constraints
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             expect(table!.uniques.length).to.be.equal(1);
             expect(table!.uniques[0].name).to.be.equal("IDX_TEST");
             expect(table!.uniques[0].columnNames.length).to.be.equal(2);

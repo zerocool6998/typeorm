@@ -1,8 +1,8 @@
-import { Connection } from "../../../../../src";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../../utils/test-utils";
-import { UserEntitySchema } from "./entity/User";
-import { expect } from "chai";
-import { Name } from "./entity/Name";
+import {Connection} from "../../../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
+import {UserEntitySchema} from "./entity/User";
+import {expect} from "chai";
+import {Name} from "./entity/Name";
 
 describe("entity-schema > embedded - class-instance", () => {
 

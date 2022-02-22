@@ -1,7 +1,6 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {Connection, Table} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Table} from "../../../src";
 import {TableExclusion} from "../../../src/schema-builder/table/TableExclusion";
 
 describe("query runner > create exclusion constraint", () => {

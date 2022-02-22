@@ -16,7 +16,6 @@ import {
     Not
 } from "../../../../src";
 import {Post} from "./entity/Post";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
 import {Raw} from "../../../../src/find-options/operator/Raw";
 import {PersonAR} from "./entity/PersonAR";
 import {expect} from "chai";
@@ -458,7 +457,7 @@ describe("repository > find options > operators", () => {
     })));
 
     it("any", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver))
+        if (!(connection.driver.options.type === "postgres"))
             return;
 
         // insert some fake data
@@ -480,7 +479,7 @@ describe("repository > find options > operators", () => {
     })));
 
     it("not(any)", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver))
+        if (!(connection.driver.options.type === "postgres"))
             return;
 
         // insert some fake data

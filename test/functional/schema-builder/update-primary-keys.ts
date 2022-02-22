@@ -1,10 +1,9 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Category} from "./entity/Category";
 import {Question} from "./entity/Question";
-import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("schema builder > update primary keys", () => {
 
@@ -21,7 +20,7 @@ describe("schema builder > update primary keys", () => {
     it("should correctly update composite primary keys", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not support changing primary key constraint
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const metadata = connection.getMetadata(Category);
@@ -40,11 +39,11 @@ describe("schema builder > update primary keys", () => {
 
     it("should correctly update composite primary keys when table already have primary generated column", () => Promise.all(connections.map(async connection => {
         // Sqlite does not support AUTOINCREMENT on composite primary key
-        if (connection.driver instanceof AbstractSqliteDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver))
             return;
 
         // CockroachDB does not support changing primary key constraint
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const metadata = connection.getMetadata(Question);

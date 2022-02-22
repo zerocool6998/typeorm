@@ -1,6 +1,11 @@
 import "reflect-metadata";
 import "../../../utils/test-setup"
-import {closeTestingConnections, createTestingConnections, reloadTestingDatabases, sleep} from "../../../utils/test-utils";
+import {
+    closeTestingConnections,
+    createTestingConnections,
+    reloadTestingDatabases,
+    sleep
+} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {Post} from "./entity/Post";
 import {QueryBuilder} from "../../../../src/query-builder/QueryBuilder";
@@ -10,14 +15,13 @@ import {Question} from "./model/Question";
 import {Blog} from "./entity/Blog";
 import {Category} from "./entity/Category";
 import {DeepPartial} from "../../../../src/common/DeepPartial";
-import {EntitySchema, Repository, TypeORMError,Like} from "../../../../src";
-import { ExternalIdPrimaryKeyEntity } from "./entity/ExternalIdPrimaryKeyEntity";
-import { EmbeddedUniqueConstraintEntity } from "./entity/EmbeddedUniqueConstraintEntity";
-import { RelationAsPrimaryKey } from "./entity/RelationAsPrimaryKey";
-import { TwoUniqueColumnsEntity } from "./entity/TwoUniqueColumns";
-import { OneToOneRelationEntity } from "./entity/OneToOneRelation";
-import { UpsertOptions } from "../../../../src/repository/UpsertOptions";
-import { PostgresDriver } from "../../../../src/driver/postgres/PostgresDriver";
+import {EntitySchema, Like, Repository, TypeORMError} from "../../../../src";
+import {ExternalIdPrimaryKeyEntity} from "./entity/ExternalIdPrimaryKeyEntity";
+import {EmbeddedUniqueConstraintEntity} from "./entity/EmbeddedUniqueConstraintEntity";
+import {RelationAsPrimaryKey} from "./entity/RelationAsPrimaryKey";
+import {TwoUniqueColumnsEntity} from "./entity/TwoUniqueColumns";
+import {OneToOneRelationEntity} from "./entity/OneToOneRelation";
+import {UpsertOptions} from "../../../../src/repository/UpsertOptions";
 
 describe("repository > basic methods", () => {
 
@@ -495,7 +499,7 @@ describe("repository > basic methods", () => {
             (await postObjects.findOneByOrFail(({ externalId }))).title.should.equal("title updated");
         })));
         it("should skip update when nothing has changed", () => Promise.all(connections.map(async (connection) => {
-            if (!(connection.driver instanceof PostgresDriver)) return;
+            if (!(connection.driver.options.type === "postgres")) return;
 
             const postObjects = connection.getRepository(Post);
             const externalId1 = "external-skip-update-nothing-changed1";

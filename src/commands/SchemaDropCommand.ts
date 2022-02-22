@@ -3,7 +3,7 @@ import {Connection} from "../connection/Connection";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import * as yargs from "yargs";
 import chalk from "chalk";
-import { PlatformTools } from "../platform/PlatformTools";
+import {PlatformTools} from "../platform/PlatformTools";
 
 /**
  * Drops all tables of the database from the given connection.

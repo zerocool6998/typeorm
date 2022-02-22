@@ -1,15 +1,15 @@
 import sinon from "sinon";
-import { ConnectionOptions, ConnectionOptionsReader, DatabaseType } from "../../../src";
+import {ConnectionOptions, ConnectionOptionsReader, DatabaseType} from "../../../src";
 import {
-    setupTestingConnections,
-    createTestingConnections,
     closeTestingConnections,
-    reloadTestingDatabases
+    createTestingConnections,
+    reloadTestingDatabases,
+    setupTestingConnections
 } from "../../utils/test-utils";
-import { CommandUtils } from "../../../src/commands/CommandUtils";
-import { MigrationGenerateCommand } from "../../../src/commands/MigrationGenerateCommand";
-import { Post } from "./entity/Post";
-import { resultsTemplates } from "./templates/result-templates-generate";
+import {CommandUtils} from "../../../src/commands/CommandUtils";
+import {MigrationGenerateCommand} from "../../../src/commands/MigrationGenerateCommand";
+import {Post} from "./entity/Post";
+import {resultsTemplates} from "./templates/result-templates-generate";
 
 describe("commands - migration generate", () => {
     let connectionOptions: ConnectionOptions[];

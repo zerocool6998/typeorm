@@ -2,8 +2,8 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
 import {Post} from "./entity/Post";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
 import {Category} from "./entity/Category";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("github issues > #813 order by must support functions", () => {
 
@@ -15,7 +15,7 @@ describe("github issues > #813 order by must support functions", () => {
     after(() => closeTestingConnections(connections));
 
     it("should work perfectly", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof MysqlDriver))
+        if (!(DriverUtils.isMySQLFamily(connection.driver)))
             return;
 
         const categories = [new Category(), new Category()];
@@ -36,7 +36,7 @@ describe("github issues > #813 order by must support functions", () => {
     })));
 
     it("should work perfectly with pagination as well", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof MysqlDriver))
+        if (!(DriverUtils.isMySQLFamily(connection.driver)))
             return;
 
         const categories = [new Category(), new Category()];

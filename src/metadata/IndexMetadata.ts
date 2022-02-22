@@ -3,7 +3,7 @@ import {IndexMetadataArgs} from "../metadata-args/IndexMetadataArgs";
 import {NamingStrategyInterface} from "../naming-strategy/NamingStrategyInterface";
 import {ColumnMetadata} from "./ColumnMetadata";
 import {EmbeddedMetadata} from "./EmbeddedMetadata";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 
 /**
  * Index metadata contains all information about table's index.

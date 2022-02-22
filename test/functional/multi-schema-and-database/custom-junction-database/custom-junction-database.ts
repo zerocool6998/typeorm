@@ -4,7 +4,6 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
 import {expect} from "chai";
-import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
 
 describe("multi-schema-and-database > custom-junction-database", () => {
 
@@ -20,7 +19,7 @@ describe("multi-schema-and-database > custom-junction-database", () => {
 
     it("should correctly create tables when custom table schema used", () => Promise.all(connections.map(async connection => {
         const queryRunner = connection.createQueryRunner();
-        if (connection.driver instanceof SqlServerDriver) {
+        if (connection.driver.options.type === "mssql") {
             const postTable = await queryRunner.getTable("yoman..post");
             const categoryTable = await queryRunner.getTable("yoman..category");
             const junctionMetadata = connection.getManyToManyMetadata(Post, "categories")!;

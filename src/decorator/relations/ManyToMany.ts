@@ -1,7 +1,7 @@
 import {getMetadataArgsStorage} from "../../globals";
 import {RelationMetadataArgs} from "../../metadata-args/RelationMetadataArgs";
-import { ObjectType } from "../../common/ObjectType";
-import { RelationOptions } from "../options/RelationOptions";
+import {ObjectType} from "../../common/ObjectType";
+import {RelationOptions} from "../options/RelationOptions";
 
 /**
  * Many-to-many is a type of relationship when Entity1 can have multiple instances of Entity2, and Entity2 can have

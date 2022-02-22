@@ -3,7 +3,7 @@ import {CommandUtils} from "./CommandUtils";
 import {camelCase} from "../util/StringUtils";
 import * as yargs from "yargs";
 import chalk from "chalk";
-import { PlatformTools } from "../platform/PlatformTools";
+import {PlatformTools} from "../platform/PlatformTools";
 
 /**
  * Creates a new migration file.

@@ -1,9 +1,7 @@
 import {Connection} from "../connection/Connection";
 import {EntityManager} from "./EntityManager";
 import {MongoEntityManager} from "./MongoEntityManager";
-import {MongoDriver} from "../driver/mongodb/MongoDriver";
 import {SqljsEntityManager} from "./SqljsEntityManager";
-import {SqljsDriver} from "../driver/sqljs/SqljsDriver";
 import {QueryRunner} from "../query-runner/QueryRunner";
 
 /**
@@ -15,10 +13,10 @@ export class EntityManagerFactory {
      * Creates a new entity manager depend on a given connection's driver.
      */
     create(connection: Connection, queryRunner?: QueryRunner): EntityManager {
-        if (connection.driver instanceof MongoDriver)
+        if (connection.driver.options.type === "mongodb")
             return new MongoEntityManager(connection);
 
-        if (connection.driver instanceof SqljsDriver)
+        if (connection.driver.options.type === "sqljs")
             return new SqljsEntityManager(connection, queryRunner);
 
         return new EntityManager(connection, queryRunner);

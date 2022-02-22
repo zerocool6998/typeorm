@@ -5,8 +5,8 @@ import {PlatformTools} from "../platform/PlatformTools";
 import {ConnectionOptionsEnvReader} from "./options-reader/ConnectionOptionsEnvReader";
 import {ConnectionOptionsYmlReader} from "./options-reader/ConnectionOptionsYmlReader";
 import {ConnectionOptionsXmlReader} from "./options-reader/ConnectionOptionsXmlReader";
-import { TypeORMError } from "../error";
-import { isAbsolute } from "../util/PathUtils";
+import {TypeORMError} from "../error";
+import {isAbsolute} from "../util/PathUtils";
 import {importOrRequireFile} from "../util/ImportUtils";
 
 /**

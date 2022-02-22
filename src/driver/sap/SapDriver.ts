@@ -22,7 +22,7 @@ import {SapConnectionOptions} from "./SapConnectionOptions";
 import {SapQueryRunner} from "./SapQueryRunner";
 import {ReplicationMode} from "../types/ReplicationMode";
 import {DriverUtils} from "../DriverUtils";
-import { View } from "../../schema-builder/view/View";
+import {View} from "../../schema-builder/view/View";
 
 /**
  * Organizes communication with SAP Hana DBMS.

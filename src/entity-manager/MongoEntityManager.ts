@@ -1,6 +1,6 @@
-import { Connection } from "../connection/Connection";
-import { EntityManager } from "./EntityManager";
-import { EntityTarget } from "../common/EntityTarget";
+import {Connection} from "../connection/Connection";
+import {EntityManager} from "./EntityManager";
+import {EntityTarget} from "../common/EntityTarget";
 import {
     AggregationCursor,
     BulkWriteOpResultObject,
@@ -37,22 +37,22 @@ import {
     UnorderedBulkOperation,
     UpdateWriteOpResult
 } from "../driver/mongodb/typings";
-import { ObjectLiteral } from "../common/ObjectLiteral";
-import { MongoQueryRunner } from "../driver/mongodb/MongoQueryRunner";
-import { MongoDriver } from "../driver/mongodb/MongoDriver";
-import { DocumentToEntityTransformer } from "../query-builder/transformer/DocumentToEntityTransformer";
-import { FindOptionsUtils } from "../find-options/FindOptionsUtils";
-import { PlatformTools } from "../platform/PlatformTools";
-import { QueryDeepPartialEntity } from "../query-builder/QueryPartialEntity";
-import { InsertResult } from "../query-builder/result/InsertResult";
-import { UpdateResult } from "../query-builder/result/UpdateResult";
-import { DeleteResult } from "../query-builder/result/DeleteResult";
-import { EntityMetadata } from "../metadata/EntityMetadata";
-import { FindOptionsWhere } from "../find-options/FindOptionsWhere";
+import {ObjectLiteral} from "../common/ObjectLiteral";
+import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
+import {MongoDriver} from "../driver/mongodb/MongoDriver";
+import {DocumentToEntityTransformer} from "../query-builder/transformer/DocumentToEntityTransformer";
+import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
+import {PlatformTools} from "../platform/PlatformTools";
+import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
+import {InsertResult} from "../query-builder/result/InsertResult";
+import {UpdateResult} from "../query-builder/result/UpdateResult";
+import {DeleteResult} from "../query-builder/result/DeleteResult";
+import {EntityMetadata} from "../metadata/EntityMetadata";
+import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {FindOptionsSelect, FindOptionsSelectByString} from "../find-options/FindOptionsSelect";
 import {MongoFindManyOptions} from "../find-options/mongodb/MongoFindManyOptions";
 import {MongoFindOneOptions} from "../find-options/mongodb/MongoFindOneOptions";
-import { ColumnMetadata } from "../metadata/ColumnMetadata";
+import {ColumnMetadata} from "../metadata/ColumnMetadata";
 
 /**
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,

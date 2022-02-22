@@ -1,7 +1,7 @@
 import {JoinOptions} from "./JoinOptions";
 import {FindOptionsWhere} from "./FindOptionsWhere";
 import {FindOptionsSelect, FindOptionsSelectByString} from "./FindOptionsSelect";
-import {FindOptionsRelations, FindOptionsRelationByString} from "./FindOptionsRelations";
+import {FindOptionsRelationByString, FindOptionsRelations} from "./FindOptionsRelations";
 import {FindOptionsOrder} from "./FindOptionsOrder";
 
 /**

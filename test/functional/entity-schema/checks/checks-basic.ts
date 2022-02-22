@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {PersonSchema} from "./entity/Person";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("entity-schema > checks", () => {
 
@@ -15,7 +15,7 @@ describe("entity-schema > checks", () => {
 
     it("should create a check constraints", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver instanceof MysqlDriver)
+        if (DriverUtils.isMySQLFamily(connection.driver))
             return;
 
         const queryRunner = connection.createQueryRunner();

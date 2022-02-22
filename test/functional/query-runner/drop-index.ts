@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 
 describe("query runner > drop index", () => {
@@ -22,7 +21,7 @@ describe("query runner > drop index", () => {
 
         let table = await queryRunner.getTable("student");
         // CockroachDB also stores indices for relation columns
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             table!.indices.length.should.be.equal(3);
         } else {
             table!.indices.length.should.be.equal(1);
@@ -32,7 +31,7 @@ describe("query runner > drop index", () => {
 
         table = await queryRunner.getTable("student");
         // CockroachDB also stores indices for relation columns
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             table!.indices.length.should.be.equal(2);
         } else {
             table!.indices.length.should.be.equal(0);
@@ -42,7 +41,7 @@ describe("query runner > drop index", () => {
 
         table = await queryRunner.getTable("student");
         // CockroachDB also stores indices for relation columns
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             table!.indices.length.should.be.equal(3);
         } else {
             table!.indices.length.should.be.equal(1);

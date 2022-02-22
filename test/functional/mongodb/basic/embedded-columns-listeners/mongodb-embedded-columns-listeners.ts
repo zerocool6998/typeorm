@@ -5,7 +5,7 @@ import {Post} from "./entity/Post";
 import {Counters} from "./entity/Counters";
 import {Information} from "./entity/Information";
 import {expect} from "chai";
-import { Tags } from "./entity/Tags";
+import {Tags} from "./entity/Tags";
 
 describe("mongodb > embedded columns listeners", () => {
 

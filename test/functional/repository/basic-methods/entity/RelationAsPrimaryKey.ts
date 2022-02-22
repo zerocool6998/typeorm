@@ -1,5 +1,5 @@
 import {Entity, JoinColumn, OneToOne, PrimaryColumn} from "../../../../../src";
-import { Category } from "./Category";
+import {Category} from "./Category";
 
 @Entity()
 export class RelationAsPrimaryKey {

@@ -1,4 +1,4 @@
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
 
 export class EntitySchemaEmbeddedError extends TypeORMError {
     static createEntitySchemaIsRequiredException(field: string): EntitySchemaEmbeddedError {

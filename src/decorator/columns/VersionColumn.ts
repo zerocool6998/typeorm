@@ -1,6 +1,6 @@
 import {getMetadataArgsStorage} from "../../globals";
 import {ColumnMetadataArgs} from "../../metadata-args/ColumnMetadataArgs";
-import { ColumnOptions } from "../options/ColumnOptions";
+import {ColumnOptions} from "../options/ColumnOptions";
 
 /**
  * This column will store a number - version of the entity.

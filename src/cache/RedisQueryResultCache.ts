@@ -3,7 +3,7 @@ import {QueryResultCacheOptions} from "./QueryResultCacheOptions";
 import {PlatformTools} from "../platform/PlatformTools";
 import {Connection} from "../connection/Connection";
 import {QueryRunner} from "../query-runner/QueryRunner";
-import { TypeORMError } from "../error/TypeORMError";
+import {TypeORMError} from "../error/TypeORMError";
 
 /**
  * Caches query result into Redis database.

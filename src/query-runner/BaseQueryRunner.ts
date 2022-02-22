@@ -9,10 +9,10 @@ import {EntityManager} from "../entity-manager/EntityManager";
 import {TableColumn} from "../schema-builder/table/TableColumn";
 import {Broadcaster} from "../subscriber/Broadcaster";
 import {ReplicationMode} from "../driver/types/ReplicationMode";
-import { TypeORMError } from "../error/TypeORMError";
-import { EntityMetadata } from "../metadata/EntityMetadata";
-import { TableForeignKey } from "../schema-builder/table/TableForeignKey";
-import { OrmUtils } from "../util/OrmUtils";
+import {TypeORMError} from "../error/TypeORMError";
+import {EntityMetadata} from "../metadata/EntityMetadata";
+import {TableForeignKey} from "../schema-builder/table/TableForeignKey";
+import {OrmUtils} from "../util/OrmUtils";
 import {MetadataTableType} from "../driver/types/MetadataTableType";
 
 export abstract class BaseQueryRunner {

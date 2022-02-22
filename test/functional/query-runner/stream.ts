@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
-import { expect } from "chai";
-import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Book } from "./entity/Book";
+import {Connection} from "../../../src";
+import {expect} from "chai";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
+import {Book} from "./entity/Book";
 
 describe("query runner > stream", () => {
 

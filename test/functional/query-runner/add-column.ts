@@ -1,12 +1,10 @@
 import {expect} from "chai";
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
-import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
 import {TableColumn} from "../../../src/schema-builder/table/TableColumn";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("query runner > add column", () => {
 
@@ -33,11 +31,11 @@ describe("query runner > add column", () => {
         });
 
         // CockroachDB does not support altering primary key constraint
-        if (!(connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "cockroachdb"))
             column1.isPrimary = true;
 
         // MySql and Sqlite does not supports autoincrement composite primary keys.
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof AbstractSqliteDriver) && !(connection.driver instanceof CockroachDriver)) {
+        if (!(DriverUtils.isMySQLFamily(connection.driver)) && !(DriverUtils.isSQLiteFamily(connection.driver)) && !(connection.driver.options.type === "cockroachdb")) {
             column1.isGenerated = true;
             column1.generationStrategy = "increment";
         }
@@ -75,11 +73,11 @@ describe("query runner > add column", () => {
         column1!.isNullable.should.be.false;
 
         // CockroachDB does not support altering primary key constraint
-        if (!(connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "cockroachdb"))
             column1!.isPrimary.should.be.true;
 
         // MySql and Sqlite does not supports autoincrement composite primary keys.
-        if (!(connection.driver instanceof MysqlDriver) && !(connection.driver instanceof AbstractSqliteDriver) && !(connection.driver instanceof CockroachDriver)) {
+        if (!(DriverUtils.isMySQLFamily(connection.driver)) && !(DriverUtils.isSQLiteFamily(connection.driver)) && !(connection.driver.options.type === "cockroachdb")) {
             column1!.isGenerated.should.be.true;
             column1!.generationStrategy!.should.be.equal("increment");
         }
@@ -89,12 +87,12 @@ describe("query runner > add column", () => {
         column2.length.should.be.equal("100");
         column2!.default!.should.be.equal("'this is description'");
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof PostgresDriver) {
-            const isMySQL = connection.driver instanceof MysqlDriver && connection.options.type === "mysql";
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "postgres") {
+            const isMySQL = DriverUtils.isMySQLFamily(connection.driver) && connection.options.type === "mysql";
             let postgresSupported = false;
 
-            if (connection.driver instanceof PostgresDriver) {
-                postgresSupported = connection.driver.isGeneratedColumnsSupported;
+            if (connection.driver.options.type === "postgres") {
+                postgresSupported = (connection.driver as PostgresDriver).isGeneratedColumnsSupported;
             }
 
             if (isMySQL || postgresSupported) {
@@ -105,7 +103,7 @@ describe("query runner > add column", () => {
                 column3!.generatedType!.should.be.equals("STORED");
                 column3!.asExpression!.should.be.a("string");
 
-                if (connection.driver instanceof MysqlDriver) {
+                if (DriverUtils.isMySQLFamily(connection.driver)) {
                     await queryRunner.addColumn(table!, column4);
                     table = await queryRunner.getTable("post");
                     column4 = table!.findColumnByName("textAndTag2")!;

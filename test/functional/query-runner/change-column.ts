@@ -1,11 +1,10 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {Connection} from "../../../src/connection/Connection";
-import {CockroachDriver} from "../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {TableColumn} from "../../../src";
+import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("query runner > change column", () => {
 
@@ -22,7 +21,7 @@ describe("query runner > change column", () => {
     it("should correctly change column and revert change", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not allow changing primary columns and renaming constraints
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const queryRunner = connection.createQueryRunner();
@@ -45,7 +44,7 @@ describe("query runner > change column", () => {
         table!.findColumnByName("name")!.isNullable.should.be.true;
 
         // SQLite does not impose any length restrictions
-        if (!(connection.driver instanceof AbstractSqliteDriver))
+        if (!(DriverUtils.isSQLiteFamily(connection.driver)))
             table!.findColumnByName("name")!.length!.should.be.equal("500");
 
         const textColumn = table!.findColumnByName("text")!;
@@ -84,7 +83,7 @@ describe("query runner > change column", () => {
     it("should correctly change column 'isGenerated' property and revert change", () => Promise.all(connections.map(async connection => {
 
         // CockroachDB does not allow changing generated columns in existent tables
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return;
 
         const queryRunner = connection.createQueryRunner();
@@ -140,12 +139,12 @@ describe("query runner > change column", () => {
     it("should correctly change generated as expression", () => Promise.all(connections.map(async connection => {
 
         // Only works on postgres
-        if (!(connection.driver instanceof PostgresDriver)) return;
+        if (!(connection.driver.options.type === "postgres")) return;
 
         const queryRunner = connection.createQueryRunner();
 
         // Database is running < postgres 12
-        if (!connection.driver.isGeneratedColumnsSupported) return;
+        if (!(connection.driver as PostgresDriver).isGeneratedColumnsSupported) return;
 
         let generatedColumn = new TableColumn({
             name: "generated",

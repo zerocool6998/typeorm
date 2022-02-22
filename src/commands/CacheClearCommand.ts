@@ -3,7 +3,7 @@ import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import {Connection} from "../connection/Connection";
 import * as yargs from "yargs";
 import chalk from "chalk";
-import { PlatformTools } from "../platform/PlatformTools";
+import {PlatformTools} from "../platform/PlatformTools";
 
 /**
  * Clear cache command.

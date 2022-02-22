@@ -21,9 +21,9 @@ import {Query} from "../Query";
 import {IsolationLevel} from "../types/IsolationLevel";
 import {SapDriver} from "./SapDriver";
 import {ReplicationMode} from "../types/ReplicationMode";
-import { QueryFailedError, TypeORMError } from "../../error";
-import { QueryResult } from "../../query-runner/QueryResult";
-import { QueryLock } from "../../query-runner/QueryLock";
+import {QueryFailedError, TypeORMError} from "../../error";
+import {QueryResult} from "../../query-runner/QueryResult";
+import {QueryLock} from "../../query-runner/QueryLock";
 import {MetadataTableType} from "../types/MetadataTableType";
 
 /**

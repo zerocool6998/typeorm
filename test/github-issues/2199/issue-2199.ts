@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import "reflect-metadata";
 import { Connection } from "../../../src/connection/Connection";
-import { SqlServerDriver } from '../../../src/driver/sqlserver/SqlServerDriver';
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Bar } from "./entity/Bar";
 
@@ -47,7 +46,7 @@ describe("github issues > #2199 - Inserting value for @PrimaryGeneratedColumn() 
     })));
 
     it("should reset mssql's INSERT_IDENTITY flag correctly after failed queries", () => Promise.all(connections
-        .filter(connection => connection.driver instanceof SqlServerDriver)
+        .filter(connection => connection.driver.options.type === "mssql")
         .map(async connection => {
             // Run a query that failes at the database level
             await expect(connection.createQueryBuilder()

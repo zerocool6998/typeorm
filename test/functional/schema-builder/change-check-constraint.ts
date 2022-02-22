@@ -4,7 +4,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {Teacher} from "./entity/Teacher";
 import {Post} from "./entity/Post";
 import {CheckMetadata} from "../../../src/metadata/CheckMetadata";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("schema builder > change check constraint", () => {
 
@@ -21,7 +21,7 @@ describe("schema builder > change check constraint", () => {
 
     it("should correctly add new check constraint", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver instanceof MysqlDriver)
+        if (DriverUtils.isMySQLFamily(connection.driver))
             return;
 
         const teacherMetadata = connection.getMetadata(Teacher);
@@ -46,7 +46,7 @@ describe("schema builder > change check constraint", () => {
 
     it("should correctly change check", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver instanceof MysqlDriver)
+        if (DriverUtils.isMySQLFamily(connection.driver))
             return;
 
         const postMetadata = connection.getMetadata(Post);
@@ -64,7 +64,7 @@ describe("schema builder > change check constraint", () => {
 
     it("should correctly drop removed check", () => Promise.all(connections.map(async connection => {
         // Mysql does not support check constraints.
-        if (connection.driver instanceof MysqlDriver)
+        if (DriverUtils.isMySQLFamily(connection.driver))
             return;
 
         const postMetadata = connection.getMetadata(Post);

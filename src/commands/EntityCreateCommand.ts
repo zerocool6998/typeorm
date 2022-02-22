@@ -2,7 +2,7 @@ import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import {CommandUtils} from "./CommandUtils";
 import * as yargs from "yargs";
 import chalk from "chalk";
-import { PlatformTools } from "../platform/PlatformTools";
+import {PlatformTools} from "../platform/PlatformTools";
 
 /**
  * Generates a new entity.

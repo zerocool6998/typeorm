@@ -3,8 +3,8 @@ import {createTestingConnections, closeTestingConnections, reloadTestingDatabase
 import {Connection} from "../../../src/connection/Connection";
 import {expect} from "chai";
 import {User} from "./entity/User";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
+
 describe("github issues > #1780 Support for insertion ignore on duplicate error", () => {
      let connections: Connection[];
     before(async () => connections = await createTestingConnections({
@@ -27,7 +27,7 @@ describe("github issues > #1780 Support for insertion ignore on duplicate error"
     // https://doxygen.postgresql.org/nodeModifyTable_8c_source.html : Line 1356
      it("should save one row without duplicate error in MySQL/MariaDB", () => Promise.all(connections.map(async connection => {
       try {
-         if (connection.driver instanceof MysqlDriver) {
+         if (DriverUtils.isMySQLFamily(connection.driver)) {
              const UserRepository = connection.manager.getRepository(User);
              // ignore while insertion duplicated row
             await UserRepository
@@ -77,7 +77,7 @@ describe("github issues > #1780 Support for insertion ignore on duplicate error"
      })));
      it("should save one row without duplicate error in PostgreSQL", () => Promise.all(connections.map(async connection => {
          try {
-            if (connection.driver instanceof PostgresDriver) {
+            if (connection.driver.options.type === "postgres") {
 
                 const UserRepository = connection.manager.getRepository(User);
                  // ignore while insertion duplicated row

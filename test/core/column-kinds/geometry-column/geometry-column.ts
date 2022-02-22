@@ -1,12 +1,8 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../../src";
-import {
-    closeTestingConnections,
-    createTestingConnections,
-    reloadTestingDatabases,
-} from "../../../utils/test-utils";
-import { FeatureWithoutSRID, FeatureWithSRID } from "./entity/Feature";
+import {Connection} from "../../../../src";
+import {closeTestingConnections, createTestingConnections, reloadTestingDatabases,} from "../../../utils/test-utils";
+import {FeatureWithoutSRID, FeatureWithSRID} from "./entity/Feature";
 
 describe("column kinds > geometry column", () => {
 

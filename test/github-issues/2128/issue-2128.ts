@@ -3,7 +3,6 @@ import { closeTestingConnections, createTestingConnections, reloadTestingDatabas
 import { Connection } from "../../../src/connection/Connection";
 import { expect } from "chai";
 import { Post } from "./entity/Post";
-import { PostgresDriver } from "../../../src/driver/postgres/PostgresDriver";
 
 describe("github issues > #2128 skip preparePersistentValue for value functions", () => {
 
@@ -38,7 +37,7 @@ describe("github issues > #2128 skip preparePersistentValue for value functions"
         await connection.createQueryBuilder()
             .update(Post)
             .set({
-                meta: () => connection.driver instanceof PostgresDriver
+                meta: () => connection.driver.options.type === "postgres"
                     ? `'${metaAddition}'::JSONB || meta::JSONB`
                     : `JSON_MERGE('${metaAddition}', meta)`
             })

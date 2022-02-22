@@ -4,7 +4,6 @@ import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {CannotAttachTreeChildrenEntityError} from "../../error/CannotAttachTreeChildrenEntityError";
 import {DeleteQueryBuilder} from "../../query-builder/DeleteQueryBuilder";
 import {OrmUtils} from "../../util/OrmUtils";
-import {SqlServerDriver} from "../../driver/sqlserver/SqlServerDriver";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
 
 /**
@@ -164,7 +163,7 @@ export class ClosureSubjectExecutor {
 
         /**
          * Only insert new parent if it exits
-         * 
+         *
          * This only happens if the entity doesn't become a root entity
          */
         if (parent) {
@@ -217,7 +216,7 @@ export class ClosureSubjectExecutor {
     */
     async remove(subjects: Subject|Subject[]): Promise<void> {
         // Only mssql need to execute deletes for the juntion table as it doesn't support multi cascade paths.
-        if (!(this.queryRunner.connection.driver instanceof SqlServerDriver)) {
+        if (!(this.queryRunner.connection.driver.options.type === "mssql")) {
             return;
         }
 

@@ -4,8 +4,8 @@ import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryR
 import {SqliteConnectionOptions} from "./SqliteConnectionOptions";
 import {SqliteDriver} from "./SqliteDriver";
 import {Broadcaster} from "../../subscriber/Broadcaster";
-import { ConnectionIsNotSetError } from '../../error/ConnectionIsNotSetError';
-import { QueryResult } from "../../query-runner/QueryResult";
+import {ConnectionIsNotSetError} from '../../error/ConnectionIsNotSetError';
+import {QueryResult} from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.

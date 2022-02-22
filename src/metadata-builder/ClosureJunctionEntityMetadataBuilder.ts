@@ -3,7 +3,6 @@ import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {Connection} from "../connection/Connection";
 import {IndexMetadata} from "../metadata/IndexMetadata";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 
 /**
  * Creates EntityMetadata for junction tables of the closure entities.
@@ -118,14 +117,14 @@ export class ClosureJunctionEntityMetadataBuilder {
                 referencedEntityMetadata: parentClosureEntityMetadata,
                 columns: [entityMetadata.ownColumns[0]],
                 referencedColumns: parentClosureEntityMetadata.primaryColumns,
-                onDelete: this.connection.driver instanceof SqlServerDriver ? "NO ACTION" : "CASCADE"
+                onDelete: this.connection.driver.options.type === "mssql" ? "NO ACTION" : "CASCADE"
             }),
             new ForeignKeyMetadata({
                 entityMetadata: entityMetadata,
                 referencedEntityMetadata: parentClosureEntityMetadata,
                 columns: [entityMetadata.ownColumns[1]],
                 referencedColumns: parentClosureEntityMetadata.primaryColumns,
-                onDelete: this.connection.driver instanceof SqlServerDriver ? "NO ACTION" : "CASCADE"
+                onDelete: this.connection.driver.options.type === "mssql" ? "NO ACTION" : "CASCADE"
             }),
         ];
 

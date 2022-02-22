@@ -1,11 +1,11 @@
-import { CommandUtils } from "./CommandUtils";
-import { ObjectLiteral } from "../common/ObjectLiteral";
+import {CommandUtils} from "./CommandUtils";
+import {ObjectLiteral} from "../common/ObjectLiteral";
 import * as path from "path";
 import * as yargs from "yargs";
 import chalk from "chalk";
-import { exec } from "child_process";
-import { TypeORMError } from "../error/TypeORMError";
-import { PlatformTools } from "../platform/PlatformTools";
+import {exec} from "child_process";
+import {TypeORMError} from "../error/TypeORMError";
+import {PlatformTools} from "../platform/PlatformTools";
 
 /**
  * Generates a new project with TypeORM.

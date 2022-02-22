@@ -3,7 +3,6 @@ import {expect} from "chai";
 import {Connection} from "../../../src";
 import {Post} from "./entity/Post";
 import {createTestingConnections, reloadTestingDatabases, closeTestingConnections} from "../../utils/test-utils";
-import {SqlServerDriver} from "../../../src/driver/sqlserver/SqlServerDriver";
 
 describe("github issues > #5160 (MSSQL) DML statement cannot have any enabled triggers if the statement contains an OUTPUT clause without INTO clause", () => {
 
@@ -20,7 +19,7 @@ describe("github issues > #5160 (MSSQL) DML statement cannot have any enabled tr
         await reloadTestingDatabases(connections);
 
         return Promise.all(connections.map(async connection => {
-            if (!(connection.driver instanceof SqlServerDriver)) {
+            if (!(connection.driver.options.type === "mssql")) {
                 return;
             }
 
@@ -38,7 +37,7 @@ describe("github issues > #5160 (MSSQL) DML statement cannot have any enabled tr
     after(() => closeTestingConnections(connections));
 
     it("should update entity model after insertion to MSSQL table with trigger", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof SqlServerDriver)) {
+        if (!(connection.driver.options.type === "mssql")) {
             return;
         }
 
@@ -70,7 +69,7 @@ describe("github issues > #5160 (MSSQL) DML statement cannot have any enabled tr
     })));
 
     it("should update entity model after save to MSSQL table with trigger", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof SqlServerDriver)) {
+        if (!(connection.driver.options.type === "mssql")) {
             return;
         }
 

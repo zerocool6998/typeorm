@@ -1,5 +1,5 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "../../../../../src";
-import { Category } from "./Category";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "../../../../../src";
+import {Category} from "./Category";
 
 @Entity()
 export class OneToOneRelationEntity {

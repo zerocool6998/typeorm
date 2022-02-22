@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "../../../../../src";
+import {Column, Entity, PrimaryColumn} from "../../../../../src";
 
 class FriendStats {
     @Column({ default: 0 })

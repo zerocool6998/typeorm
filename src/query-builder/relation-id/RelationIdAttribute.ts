@@ -4,7 +4,7 @@ import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {QueryExpressionMap} from "../QueryExpressionMap";
 import {SelectQueryBuilder} from "../SelectQueryBuilder";
 import {ObjectUtils} from "../../util/ObjectUtils";
-import { TypeORMError } from "../../error/TypeORMError";
+import {TypeORMError} from "../../error/TypeORMError";
 
 /**
  * Stores all join relation id attributes which will be used to build a JOIN query.

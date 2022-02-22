@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {Connection} from "../../../src/connection/Connection";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("query runner > drop check constraint", () => {
 
@@ -19,7 +19,7 @@ describe("query runner > drop check constraint", () => {
     it("should correctly drop check constraint and revert drop", () => Promise.all(connections.map(async connection => {
 
         // Mysql does not support check constraints.
-        if (connection.driver instanceof MysqlDriver)
+        if (DriverUtils.isMySQLFamily(connection.driver))
             return;
 
         const queryRunner = connection.createQueryRunner();

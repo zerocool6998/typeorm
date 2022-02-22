@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import "reflect-metadata";
 import {Connection} from "../../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../../utils/test-utils";

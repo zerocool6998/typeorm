@@ -1,4 +1,4 @@
-import { EntitySchema } from "../../../../../../src";
+import {EntitySchema} from "../../../../../../src";
 
 export class Name {
     first: string;

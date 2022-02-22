@@ -1,19 +1,19 @@
-import { MetadataArgsStorage } from "./metadata-args/MetadataArgsStorage";
-import { PlatformTools } from "./platform/PlatformTools";
-import { ConnectionOptions } from "./connection/ConnectionOptions";
-import { ConnectionOptionsReader } from "./connection/ConnectionOptionsReader";
-import { ConnectionManager } from "./connection/ConnectionManager";
-import { getFromContainer } from "./container";
-import { Connection } from "./connection/Connection";
-import { EntityManager } from "./entity-manager/EntityManager";
-import { MongoEntityManager } from "./entity-manager/MongoEntityManager";
-import { SqljsEntityManager } from "./entity-manager/SqljsEntityManager";
-import { EntityTarget } from "./common/EntityTarget";
-import { Repository } from "./repository/Repository";
-import { TreeRepository } from "./repository/TreeRepository";
-import { ObjectType } from "./common/ObjectType";
-import { MongoRepository } from "./repository/MongoRepository";
-import { SelectQueryBuilder } from "./query-builder/SelectQueryBuilder";
+import {MetadataArgsStorage} from "./metadata-args/MetadataArgsStorage";
+import {PlatformTools} from "./platform/PlatformTools";
+import {ConnectionOptions} from "./connection/ConnectionOptions";
+import {ConnectionOptionsReader} from "./connection/ConnectionOptionsReader";
+import {ConnectionManager} from "./connection/ConnectionManager";
+import {getFromContainer} from "./container";
+import {Connection} from "./connection/Connection";
+import {EntityManager} from "./entity-manager/EntityManager";
+import {MongoEntityManager} from "./entity-manager/MongoEntityManager";
+import {SqljsEntityManager} from "./entity-manager/SqljsEntityManager";
+import {EntityTarget} from "./common/EntityTarget";
+import {Repository} from "./repository/Repository";
+import {TreeRepository} from "./repository/TreeRepository";
+import {ObjectType} from "./common/ObjectType";
+import {MongoRepository} from "./repository/MongoRepository";
+import {SelectQueryBuilder} from "./query-builder/SelectQueryBuilder";
 
 /**
  * Gets metadata args storage.
@@ -85,7 +85,7 @@ export async function createConnection(options: ConnectionOptions): Promise<Conn
  */
 export async function createConnection(optionsOrName?: any): Promise<Connection> {
     const connectionName = typeof optionsOrName === "string" ? optionsOrName : "default";
-    const options = optionsOrName instanceof Object ? optionsOrName : await getConnectionOptions(connectionName);
+    const options = typeof optionsOrName === "object" ? optionsOrName : await getConnectionOptions(connectionName);
     return getConnectionManager().create(options).connect();
 }
 

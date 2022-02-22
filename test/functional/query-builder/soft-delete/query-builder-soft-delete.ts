@@ -3,12 +3,12 @@ import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {User} from "./entity/User";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
 import {LimitOnUpdateNotSupportedError} from "../../../../src/error/LimitOnUpdateNotSupportedError";
 import {Not, IsNull} from "../../../../src";
 import {MissingDeleteDateColumnError} from "../../../../src/error/MissingDeleteDateColumnError";
 import {UserWithoutDeleteDateColumn} from "./entity/UserWithoutDeleteDateColumn";
 import {Photo} from "./entity/Photo";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("query builder > soft-delete", () => {
 
@@ -144,7 +144,7 @@ describe("query builder > soft-delete", () => {
 
         const limitNum = 2;
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver)) {
             await connection.createQueryBuilder()
             .softDelete()
             .from(User)
@@ -183,7 +183,7 @@ describe("query builder > soft-delete", () => {
 
         const limitNum = 2;
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver)) {
             await connection.createQueryBuilder()
             .softDelete()
             .from(User)

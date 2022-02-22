@@ -1,8 +1,8 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import sinon from "sinon";
-import { Connection } from "../../../src";
-import { DriverUtils } from "../../../src/driver/DriverUtils";
-import { MongoDriver } from "../../../src/driver/mongodb/MongoDriver";
+import {Connection} from "../../../src";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
+import {MongoDriver} from "../../../src/driver/mongodb/MongoDriver";
 
 describe("MongoDriver", () => {
     async function getConnectionUrlFromFakedMongoClient(url: string): Promise<string> {

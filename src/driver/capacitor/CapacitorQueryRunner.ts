@@ -1,10 +1,10 @@
-import { QueryRunnerAlreadyReleasedError } from "../../error/QueryRunnerAlreadyReleasedError";
-import { QueryFailedError } from "../../error/QueryFailedError";
-import { AbstractSqliteQueryRunner } from "../sqlite-abstract/AbstractSqliteQueryRunner";
-import { CapacitorDriver } from "./CapacitorDriver";
-import { Broadcaster } from "../../subscriber/Broadcaster";
-import { ObjectLiteral } from "../../common/ObjectLiteral";
-import { QueryResult } from "../../query-runner/QueryResult";
+import {QueryRunnerAlreadyReleasedError} from "../../error/QueryRunnerAlreadyReleasedError";
+import {QueryFailedError} from "../../error/QueryFailedError";
+import {AbstractSqliteQueryRunner} from "../sqlite-abstract/AbstractSqliteQueryRunner";
+import {CapacitorDriver} from "./CapacitorDriver";
+import {Broadcaster} from "../../subscriber/Broadcaster";
+import {ObjectLiteral} from "../../common/ObjectLiteral";
+import {QueryResult} from "../../query-runner/QueryResult";
 
 /**
  * Runs queries on a single sqlite database connection.

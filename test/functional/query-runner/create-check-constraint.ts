@@ -1,9 +1,8 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {Connection, Table} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Table} from "../../../src";
 import {TableCheck} from "../../../src/schema-builder/table/TableCheck";
-import {MysqlDriver} from "../../../src/driver/mysql/MysqlDriver";
+import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("query runner > create check constraint", () => {
 
@@ -21,7 +20,7 @@ describe("query runner > create check constraint", () => {
     it("should correctly create check constraint and revert creation", () => Promise.all(connections.map(async connection => {
 
         // Mysql does not support check constraints.
-        if (connection.driver instanceof MysqlDriver)
+        if (DriverUtils.isMySQLFamily(connection.driver))
             return;
 
         const queryRunner = connection.createQueryRunner();

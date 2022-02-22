@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Connection} from "../../../src/connection/Connection";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 import {User} from "./entity/User";
 import {expect} from "chai";
 
@@ -20,7 +19,7 @@ describe("github issues > #2067 Unhandled promise rejection warning on postgres 
     it("should return a catchable error on connection errors in queries", () => Promise.all(connections.map(async connection => {
         const connectionFailureMessage = "Test error to simulate a connection error";
 
-        if (connection.driver instanceof PostgresDriver) {
+        if (connection.driver.options.type === "postgres") {
           connection.driver.obtainMasterConnection = () => Promise.reject<any>(new Error(connectionFailureMessage));
           connection.driver.obtainSlaveConnection = () => Promise.reject<any>(new Error(connectionFailureMessage));
         }

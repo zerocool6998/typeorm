@@ -5,13 +5,10 @@ import {DepGraph} from "../util/DepGraph";
 import {Driver} from "../driver/Driver";
 import {DataTypeNotSupportedError} from "../error/DataTypeNotSupportedError";
 import {ColumnType} from "../driver/types/ColumnTypes";
-import {MongoDriver} from "../driver/mongodb/MongoDriver";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
-import {MysqlDriver} from "../driver/mysql/MysqlDriver";
 import {NoConnectionOptionError} from "../error/NoConnectionOptionError";
 import {InitializedRelationError} from "../error/InitializedRelationError";
-import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
-import { TypeORMError } from "../error";
+import {TypeORMError} from "../error";
+import {DriverUtils} from "../driver/DriverUtils";
 
 /// todo: add check if there are multiple tables with the same name
 /// todo: add checks when generated column / table names are too long for the specific driver
@@ -82,7 +79,7 @@ export class EntityMetadataValidator {
                 throw new TypeORMError(`Relation count can not be implemented on ManyToOne or OneToOne relations.`);
         });
 
-        if (!(driver instanceof MongoDriver)) {
+        if (!(driver.options.type === "mongodb")) {
             entityMetadata.columns.forEach(column => {
                 const normalizedColumn = driver.normalizeType(column) as ColumnType;
                 if (driver.supportedDataTypes.indexOf(normalizedColumn) === -1)
@@ -94,7 +91,7 @@ export class EntityMetadataValidator {
             });
         }
 
-        if (driver instanceof MysqlDriver || driver instanceof AuroraDataApiDriver) {
+        if (DriverUtils.isMySQLFamily(driver) || driver.options.type === "aurora-data-api") {
             const generatedColumns = entityMetadata.columns.filter(column => column.isGenerated && column.generationStrategy !== "uuid");
             if (generatedColumns.length > 1)
                 throw new TypeORMError(`Error in ${entityMetadata.name} entity. There can be only one auto-increment column in MySql table.`);
@@ -103,13 +100,13 @@ export class EntityMetadataValidator {
         // for mysql we are able to not define a default selected database, instead all entities can have their database
         // defined in their decorators. To make everything work either all entities must have database define and we
         // can live without database set in the connection options, either database in the connection options must be set
-        if (driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(driver)) {
             const metadatasWithDatabase = allEntityMetadatas.filter(metadata => metadata.database);
             if (metadatasWithDatabase.length === 0 && !driver.database)
                 throw new NoConnectionOptionError("database");
         }
 
-        if (driver instanceof SqlServerDriver) {
+        if (driver.options.type === "mssql") {
             const charsetColumns = entityMetadata.columns.filter(column => column.charset);
             if (charsetColumns.length > 1)
                 throw new TypeORMError(`Character set specifying is not supported in Sql Server`);

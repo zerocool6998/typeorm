@@ -3,7 +3,6 @@ import {ObjectLiteral} from "../common/ObjectLiteral";
 import {EntityTarget} from "../common/EntityTarget";
 import {Connection} from "../connection/Connection";
 import {QueryRunner} from "../query-runner/QueryRunner";
-import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {WhereExpressionBuilder} from "./WhereExpressionBuilder";
 import {Brackets} from "./Brackets";
 import {DeleteResult} from "./result/DeleteResult";
@@ -233,7 +232,7 @@ export class DeleteQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         if (returningExpression === "") {
             return `DELETE FROM ${tableName}${whereExpression}`;
         }
-        if (this.connection.driver instanceof SqlServerDriver) {
+        if (this.connection.driver.options.type === "mssql") {
             return `DELETE FROM ${tableName} OUTPUT ${returningExpression}${whereExpression}`;
         }
         return `DELETE FROM ${tableName}${whereExpression} RETURNING ${returningExpression}`;

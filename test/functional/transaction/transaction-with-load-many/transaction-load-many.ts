@@ -21,11 +21,11 @@ describe("transaction > transaction with load many", () => {
 
         const driver = connection.driver;
 
-        if (driver instanceof MysqlDriver) {
-            const pool = driver.pool;
+        if (driver.options.type === "mysql") {
+            const pool = (driver as MysqlDriver).pool;
             pool.on("acquire", () => acquireCount++);
-        } else if (driver instanceof PostgresDriver) {
-            const pool = driver.master;
+        } else if (driver.options.type === "postgres") {
+            const pool = (driver as PostgresDriver).master;
             pool.on("acquire", () => acquireCount++);
         }
 

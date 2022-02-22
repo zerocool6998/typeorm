@@ -21,10 +21,10 @@ import {PostgresConnectionCredentialsOptions} from "./PostgresConnectionCredenti
 import {PostgresConnectionOptions} from "./PostgresConnectionOptions";
 import {PostgresQueryRunner} from "./PostgresQueryRunner";
 import {DriverUtils} from "../DriverUtils";
-import { TypeORMError } from "../../error";
-import { Table } from "../../schema-builder/table/Table";
-import { View } from "../../schema-builder/view/View";
-import { TableForeignKey } from "../../schema-builder/table/TableForeignKey";
+import {TypeORMError} from "../../error";
+import {Table} from "../../schema-builder/table/Table";
+import {View} from "../../schema-builder/view/View";
+import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
 
 /**
  * Organizes communication with PostgreSQL DBMS.

@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src/connection/Connection";
 import {Tag} from "./entity/Tag";
@@ -178,7 +177,7 @@ describe("query builder > joins", () => {
                 .where("post.id = :id", { id: post.id })
                 .getRawOne();
 
-            if (connection.driver instanceof CockroachDriver) {
+            if (connection.driver.options.type === "cockroachdb") {
                 expect(loadedRawPost!["categories_id"]).to.be.equal("1");
 
             } else {

@@ -8,7 +8,6 @@ import { PgEntity } from "./entity/pgEntity";
 import { MysqlEntity } from "./entity/mysqlEntity";
 import { MariadbEntity } from "./entity/mariadbEntity";
 import { MssqlEntity } from "./entity/mssqlEntity";
-import {PostgresDriver} from "../../../src/driver/postgres/PostgresDriver";
 
 
 
@@ -50,7 +49,7 @@ describe("github issues > #1716 send timestamp to database without converting it
             });
 
             for (const connection of connections) {
-                if (connection.driver instanceof PostgresDriver) {
+                if (connection.driver.options.type === "postgres") {
                     // We want to have UTC as timezone
                     await connection.query("SET TIME ZONE 'UTC';");
                 }

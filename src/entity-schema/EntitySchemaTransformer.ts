@@ -13,9 +13,9 @@ import {GeneratedMetadataArgs} from "../metadata-args/GeneratedMetadataArgs";
 import {UniqueMetadataArgs} from "../metadata-args/UniqueMetadataArgs";
 import {CheckMetadataArgs} from "../metadata-args/CheckMetadataArgs";
 import {ExclusionMetadataArgs} from "../metadata-args/ExclusionMetadataArgs";
-import { EntitySchemaColumnOptions } from "./EntitySchemaColumnOptions";
-import { EntitySchemaOptions } from "./EntitySchemaOptions";
-import { EntitySchemaEmbeddedError } from "./EntitySchemaEmbeddedError";
+import {EntitySchemaColumnOptions} from "./EntitySchemaColumnOptions";
+import {EntitySchemaOptions} from "./EntitySchemaOptions";
+import {EntitySchemaEmbeddedError} from "./EntitySchemaEmbeddedError";
 
 /**
  * Transforms entity schema into metadata args storage.

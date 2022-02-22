@@ -1,4 +1,4 @@
-import { EntitySchema } from "./EntitySchema";
+import {EntitySchema} from "./EntitySchema";
 
 export class EntitySchemaEmbeddedColumnOptions {
     /**

@@ -1,6 +1,4 @@
 import "reflect-metadata";
-import {CockroachDriver} from "../../../../src/driver/cockroachdb/CockroachDriver";
-import {SapDriver} from "../../../../src/driver/sap/SapDriver";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Connection} from "../../../../src";
 import {PostWithVersion} from "./entity/PostWithVersion";
@@ -13,12 +11,8 @@ import {OptimisticLockVersionMismatchError} from "../../../../src/error/Optimist
 import {OptimisticLockCanNotBeUsedError} from "../../../../src/error/OptimisticLockCanNotBeUsedError";
 import {NoVersionOrUpdateDateColumnError} from "../../../../src/error/NoVersionOrUpdateDateColumnError";
 import {PessimisticLockTransactionRequiredError} from "../../../../src/error/PessimisticLockTransactionRequiredError";
-import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
-import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
-import {SqlServerDriver} from "../../../../src/driver/sqlserver/SqlServerDriver";
-import {AbstractSqliteDriver} from "../../../../src/driver/sqlite-abstract/AbstractSqliteDriver";
-import {OracleDriver} from "../../../../src/driver/oracle/OracleDriver";
 import {LockNotSupportedOnGivenDriverError} from "../../../../src/error/LockNotSupportedOnGivenDriverError";
+import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("repository > find options > locking", () => {
 
@@ -30,10 +24,10 @@ describe("repository > find options > locking", () => {
     after(() => closeTestingConnections(connections));
 
     it("should throw error if pessimistic lock used without transaction", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof AbstractSqliteDriver || connection.driver instanceof SapDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver) || connection.driver.options.type === "sap")
             return;
 
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             return Promise.all([
                 connection
                     .getRepository(PostWithVersion)
@@ -56,10 +50,10 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should not throw error if pessimistic lock used with transaction", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof AbstractSqliteDriver || connection.driver instanceof SapDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver) || connection.driver.options.type === "sap")
             return;
 
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             return connection.manager.transaction(entityManager => {
                 return Promise.all([
                     entityManager
@@ -86,7 +80,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should attach pessimistic read lock statement on query if locking enabled", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof AbstractSqliteDriver || connection.driver instanceof CockroachDriver || connection.driver instanceof SapDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver) || connection.driver.options.type === "cockroachdb" || connection.driver.options.type === "sap")
             return;
 
         const executedSql: string[] = [];
@@ -103,23 +97,23 @@ describe("repository > find options > locking", () => {
                 .findOne({ where: { id: 1 }, lock: {mode: "pessimistic_read" } });
         });
 
-        if (connection.driver instanceof MysqlDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver)) {
             expect(executedSql[0].indexOf("LOCK IN SHARE MODE") !== -1).to.be.true;
 
-        } else if (connection.driver instanceof PostgresDriver) {
+        } else if (connection.driver.options.type === "postgres") {
             expect(executedSql[0].indexOf("FOR SHARE") !== -1).to.be.true;
 
-        } else if (connection.driver instanceof OracleDriver) {
+        } else if (connection.driver.options.type === "oracle") {
             expect(executedSql[0].indexOf("FOR UPDATE") !== -1).to.be.true;
 
-        } else if (connection.driver instanceof SqlServerDriver) {
+        } else if (connection.driver.options.type === "mssql") {
             expect(executedSql[0].indexOf("WITH (HOLDLOCK, ROWLOCK)") !== -1).to.be.true;
         }
 
     })));
 
     it("should attach for no key update lock statement on query if locking enabled", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver))
+        if (!(connection.driver.options.type === "postgres"))
             return;
 
         const executedSql: string[] = [];
@@ -140,7 +134,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should attach pessimistic write lock statement on query if locking enabled", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof AbstractSqliteDriver || connection.driver instanceof SapDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver) || connection.driver.options.type === "sap")
             return;
 
         const executedSql: string[] = [];
@@ -157,17 +151,17 @@ describe("repository > find options > locking", () => {
                 .findOne({ where: { id: 1 }, lock: {mode: "pessimistic_write"}});
         });
 
-        if (connection.driver instanceof MysqlDriver || connection.driver instanceof PostgresDriver || connection.driver instanceof OracleDriver) {
+        if (DriverUtils.isMySQLFamily(connection.driver) || connection.driver.options.type === "postgres" || connection.driver.options.type === "oracle") {
             expect(executedSql[0].indexOf("FOR UPDATE") !== -1).to.be.true;
 
-        } else if (connection.driver instanceof SqlServerDriver) {
+        } else if (connection.driver.options.type === "mssql") {
             expect(executedSql[0].indexOf("WITH (UPDLOCK, ROWLOCK)") !== -1).to.be.true;
         }
 
     })));
 
     it("should attach dirty read lock statement on query if locking enabled", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof SqlServerDriver)) return;
+        if (!(connection.driver.options.type === "mssql")) return;
 
         const executedSql: string[] = [];
 
@@ -240,7 +234,7 @@ describe("repository > find options > locking", () => {
     it("should throw error if actual updated date does not equal expected updated date", () => Promise.all(connections.map(async connection => {
 
         // skipped because inserted milliseconds are not always equal to what we say it to insert, unskip when needed
-        if (connection.driver instanceof SqlServerDriver)
+        if (connection.driver.options.type === "mssql")
             return;
 
         const post = new PostWithUpdateDate();
@@ -256,7 +250,7 @@ describe("repository > find options > locking", () => {
     it("should not throw error if actual updated date and expected updated date are equal", () => Promise.all(connections.map(async connection => {
 
         // skipped because inserted milliseconds are not always equal to what we say it to insert, unskip when needed
-        if (connection.driver instanceof SqlServerDriver)
+        if (connection.driver.options.type === "mssql")
             return;
 
         const post = new PostWithUpdateDate();
@@ -272,7 +266,7 @@ describe("repository > find options > locking", () => {
     it("should work if both version and update date columns applied", () => Promise.all(connections.map(async connection => {
 
         // skipped because inserted milliseconds are not always equal to what we say it to insert, unskip when needed
-        if (connection.driver instanceof SqlServerDriver)
+        if (connection.driver.options.type === "mssql")
             return;
 
         const post = new PostWithVersionAndUpdatedDate();
@@ -292,7 +286,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should throw error if pessimistic locking not supported by given driver", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof AbstractSqliteDriver || connection.driver instanceof SapDriver)
+        if (DriverUtils.isSQLiteFamily(connection.driver) || connection.driver.options.type === "sap")
             return connection.manager.transaction(entityManager => {
                 return Promise.all([
                     entityManager
@@ -307,7 +301,7 @@ describe("repository > find options > locking", () => {
                 ]);
             });
 
-        if (connection.driver instanceof CockroachDriver)
+        if (connection.driver.options.type === "cockroachdb")
             return connection.manager.transaction(entityManager => {
                 return Promise.all([
                     entityManager
@@ -321,7 +315,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should not allow empty array for lockTables", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver || connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "postgres" || connection.driver.options.type === "cockroachdb"))
             return;
 
         return connection.manager.transaction(entityManager => {
@@ -335,7 +329,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should throw error when specifying a table that is not part of the query", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver || connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "postgres" || connection.driver.options.type === "cockroachdb"))
             return;
 
         return connection.manager.transaction(entityManager => {
@@ -350,7 +344,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should allow on a left join", () => Promise.all(connections.map(async connection => {
-        if (connection.driver instanceof CockroachDriver) {
+        if (connection.driver.options.type === "cockroachdb") {
             return connection.manager.transaction(entityManager => {
                 return Promise.all([
                     entityManager.getRepository(Post).findOne({
@@ -365,7 +359,7 @@ describe("repository > find options > locking", () => {
             });
         }
 
-        if (connection.driver instanceof PostgresDriver) {
+        if (connection.driver.options.type === "postgres") {
             return connection.manager.transaction(entityManager => {
                 return Promise.all([
                     entityManager.getRepository(Post).findOne({
@@ -384,7 +378,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should allow using lockTables on all types of locking", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver))
+        if (!(connection.driver.options.type === "postgres"))
             return;
 
         return connection.manager.transaction(entityManager => {
@@ -415,7 +409,7 @@ describe("repository > find options > locking", () => {
     })));
 
     it("should allow locking a relation of a relation", () => Promise.all(connections.map(async connection => {
-        if (!(connection.driver instanceof PostgresDriver || connection.driver instanceof CockroachDriver))
+        if (!(connection.driver.options.type === "postgres" || connection.driver.options.type === "cockroachdb"))
             return;
 
         return connection.manager.transaction(entityManager => {

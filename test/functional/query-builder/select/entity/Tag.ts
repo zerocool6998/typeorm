@@ -1,5 +1,5 @@
-import { Post } from "./Post";
-import { Entity, ManyToMany, Column, PrimaryGeneratedColumn } from "../../../../../src";
+import {Post} from "./Post";
+import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "../../../../../src";
 
 @Entity()
 export class Tag {
