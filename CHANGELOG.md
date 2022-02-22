@@ -7,6 +7,9 @@ They were pending their migration from 2018. Finally, they are in the master bra
 
 * compilation `target` now is `es2020`. This requires Node.JS version `12.9.0`+
 
+* TypeORM now properly works when installed within different node_modules contexts
+(often happen if TypeORM is a dependency of another library or TypeORM is heavily used in monorepo projects)
+
 * `Connection` was renamed to `DataSource`.
 Old `Connection` is still there, but now it's deprecated. It will be removed in next version.
 New API:
