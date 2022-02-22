@@ -196,7 +196,7 @@ export class EmbeddedMetadata {
      * Creates a new embedded object.
      */
     create(options?: { fromDeserializer?: boolean }): any {
-        if (!(this.type instanceof Function)) {
+        if (!(typeof this.type === "function")) {
             return {};
         }
 

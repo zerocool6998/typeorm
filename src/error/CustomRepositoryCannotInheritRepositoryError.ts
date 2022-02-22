@@ -6,7 +6,7 @@ import {TypeORMError} from "./TypeORMError";
 export class CustomRepositoryCannotInheritRepositoryError extends TypeORMError {
     constructor(repository: any) {
         super(
-            `Custom entity repository ${repository instanceof Function ? repository.name : repository.constructor.name} ` +
+            `Custom entity repository ${typeof repository === "function" ? repository.name : repository.constructor.name} ` +
             ` cannot inherit Repository class without entity being set in the @EntityRepository decorator.`
         );
     }

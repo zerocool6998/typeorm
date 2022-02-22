@@ -102,7 +102,7 @@ export class AbstractRepository<Entity extends ObjectLiteral> {
      */
     private getCustomRepositoryTarget(customRepository: any): EntityTarget<any>|undefined {
         const entityRepositoryMetadataArgs = getMetadataArgsStorage().entityRepositories.find(repository => {
-            return repository.target === (customRepository instanceof Function ? customRepository : (customRepository as any).constructor);
+            return repository.target === (typeof customRepository === "function" ? customRepository : (customRepository as any).constructor);
         });
         if (!entityRepositoryMetadataArgs)
             throw new CustomRepositoryNotFoundError(customRepository);

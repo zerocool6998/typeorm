@@ -106,7 +106,7 @@ export function Column(typeOrOptions?: ((type?: any) => Function)|ColumnType|(Co
 
         // normalize parameters
         let type: ColumnType|undefined;
-        if (typeof typeOrOptions === "string" || typeOrOptions instanceof Function) {
+        if (typeof typeOrOptions === "string" || typeof typeOrOptions === "function") {
             type = <ColumnType> typeOrOptions;
 
         } else if (typeOrOptions) {
@@ -128,7 +128,7 @@ export function Column(typeOrOptions?: ((type?: any) => Function)|ColumnType|(Co
         if (options.type === "hstore" && !options.hstoreType)
             options.hstoreType = reflectMetadataType === Object ? "object" : "string";
 
-        if (typeOrOptions instanceof Function) { // register an embedded
+        if (typeof typeOrOptions === "function") { // register an embedded
             getMetadataArgsStorage().embeddeds.push({
                 target: object.constructor,
                 propertyName: propertyName,

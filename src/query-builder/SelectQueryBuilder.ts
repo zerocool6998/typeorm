@@ -135,7 +135,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         if (Array.isArray(selection)) {
             this.expressionMap.selects = selection.map(selection => ({ selection: selection }));
 
-        } else if (selection instanceof Function) {
+        } else if (typeof selection === "function") {
             const subQueryBuilder = selection(this.subQuery());
             this.setParameters(subQueryBuilder.getParameters());
             this.expressionMap.selects.push({ selection: subQueryBuilder.getQuery(), aliasName: selectionAliasName });
@@ -172,7 +172,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         if (Array.isArray(selection)) {
             this.expressionMap.selects = this.expressionMap.selects.concat(selection.map(selection => ({ selection: selection })));
 
-        } else if (selection instanceof Function) {
+        } else if (typeof selection === "function") {
             const subQueryBuilder = selection(this.subQuery());
             this.setParameters(subQueryBuilder.getParameters());
             this.expressionMap.selects.push({ selection: subQueryBuilder.getQuery(), aliasName: selectionAliasName });
@@ -1399,7 +1399,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
         } else {
             let subQuery: string = "";
-            if (entityOrProperty instanceof Function) {
+            if (typeof entityOrProperty === "function") {
                 const subQueryBuilder: SelectQueryBuilder<any> = (entityOrProperty as any)(((this as any) as SelectQueryBuilder<any>).subQuery());
                 this.setParameters(subQueryBuilder.getParameters());
                 subQuery = subQueryBuilder.getQuery();
@@ -1407,7 +1407,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
             } else {
                 subQuery = entityOrProperty;
             }
-            const isSubQuery = entityOrProperty instanceof Function || entityOrProperty.substr(0, 1) === "(" && entityOrProperty.substr(-1) === ")";
+            const isSubQuery = typeof entityOrProperty === "function" || entityOrProperty.substr(0, 1) === "(" && entityOrProperty.substr(-1) === ")";
             joinAttribute.alias = this.expressionMap.createAlias({
                 type: "join",
                 name: aliasName,

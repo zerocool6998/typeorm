@@ -684,7 +684,7 @@ export class PostgresDriver implements Driver {
 
             }
 
-            if (value instanceof Function) {
+            if (typeof value === "function") {
                 return value();
             }
 

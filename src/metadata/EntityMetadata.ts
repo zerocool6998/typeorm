@@ -551,7 +551,7 @@ export class EntityMetadata {
         const pojo = options && options.pojo === true ? true : false;
         // if target is set to a function (e.g. class) that can be created then create it
         let ret: any;
-        if (this.target instanceof Function && !pojo) {
+        if (typeof this.target === "function" && !pojo) {
             if (!options?.fromDeserializer || this.isAlwaysUsingConstructor) {
                 ret = new (<any> this.target)();
             } else {
@@ -864,7 +864,7 @@ export class EntityMetadata {
         }
         this.givenTableName = this.tableMetadataArgs.type === "entity-child" && this.parentEntityMetadata ? this.parentEntityMetadata.givenTableName : this.tableMetadataArgs.name;
         this.synchronize = this.tableMetadataArgs.synchronize === false ? false : true;
-        this.targetName = this.tableMetadataArgs.target instanceof Function ? (this.tableMetadataArgs.target as any).name : this.tableMetadataArgs.target;
+        this.targetName = typeof this.tableMetadataArgs.target === "function" ? (this.tableMetadataArgs.target as any).name : this.tableMetadataArgs.target;
         if (this.tableMetadataArgs.type === "closure-junction") {
             this.tableNameWithoutPrefix = namingStrategy.closureJunctionTableName(this.givenTableName!);
         } else if (this.tableMetadataArgs.type === "entity-child" && this.parentEntityMetadata) {
@@ -882,7 +882,7 @@ export class EntityMetadata {
         this.expression = this.tableMetadataArgs.expression;
         this.withoutRowid = this.tableMetadataArgs.withoutRowid === true ? true : false;
         this.tablePath = this.connection.driver.buildTableName(this.tableName, this.schema, this.database);
-        this.orderBy = (this.tableMetadataArgs.orderBy instanceof Function) ? this.tableMetadataArgs.orderBy(this.propertiesMap) : this.tableMetadataArgs.orderBy; // todo: is propertiesMap available here? Looks like its not
+        this.orderBy = (typeof this.tableMetadataArgs.orderBy === "function") ? this.tableMetadataArgs.orderBy(this.propertiesMap) : this.tableMetadataArgs.orderBy; // todo: is propertiesMap available here? Looks like its not
 
         if (entitySkipConstructor !== undefined) {
             this.isAlwaysUsingConstructor = !entitySkipConstructor;

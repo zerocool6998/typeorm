@@ -40,7 +40,7 @@ export class OrmUtils {
     static uniq<T, K extends keyof T>(array: T[], criteriaOrProperty?: ((item: T) => any) | K): T[] {
         return array.reduce((uniqueArray, item) => {
             let found: boolean = false;
-            if (criteriaOrProperty instanceof Function) {
+            if (typeof criteriaOrProperty=== "function") {
                 const itemValue = criteriaOrProperty(item);
                 found = !!uniqueArray.find(uniqueItem => criteriaOrProperty(uniqueItem) === itemValue);
 
@@ -323,7 +323,7 @@ export class OrmUtils {
 
         // Fix the buffer compare bug.
         // See: https://github.com/typeorm/typeorm/issues/3654
-        if ((typeof x.equals === "function" || x.equals instanceof Function) && x.equals(y))
+        if ((typeof x.equals === "function" || typeof x.equals === "function") && x.equals(y))
             return true;
 
         // Works in case when functions are created in constructor.

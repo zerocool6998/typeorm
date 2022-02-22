@@ -363,7 +363,7 @@ export class SqlServerDriver implements Driver {
 
             }
 
-            if (value instanceof Function) {
+            if (typeof value === "function") {
                 return value();
 
             }

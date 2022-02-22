@@ -6,7 +6,7 @@ import {TypeORMError} from "./TypeORMError";
 export class CustomRepositoryNotFoundError extends TypeORMError {
     constructor(repository: any) {
         super(
-            `Custom repository ${repository instanceof Function ? repository.name : repository.constructor.name } was not found. ` +
+            `Custom repository ${typeof repository === "function" ? repository.name : repository.constructor.name } was not found. ` +
             `Did you forgot to put @EntityRepository decorator on it?`
         );
     }

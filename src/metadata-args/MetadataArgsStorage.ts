@@ -188,8 +188,8 @@ export class MetadataArgsStorage {
 
     filterSingleTableChildren(target: Function|string): TableMetadataArgs[] {
         return this.tables.filter(table => {
-            return table.target instanceof Function
-                && target instanceof Function
+            return typeof table.target === "function"
+                && typeof target === "function"
                 && MetadataUtils.isInherited(table.target, target)
                 && table.type === "entity-child";
         });

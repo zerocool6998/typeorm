@@ -400,12 +400,12 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                     let value = column.getEntityValue(valuesSet);
                     if (column.referencedColumn && value instanceof Object && !(value instanceof Buffer)) {
                         value = column.referencedColumn.getEntityValue(value);
-                    } else if (!(value instanceof Function)) {
+                    } else if (!(typeof value === "function")) {
                         value = this.connection.driver.preparePersistentValue(value, column);
                     }
 
                     // todo: duplication zone
-                    if (value instanceof Function) { // support for SQL expressions in update query
+                    if (typeof value === "function") { // support for SQL expressions in update query
                         updateColumnAndValues.push(this.escape(column.databaseName) + " = " + value());
                     } else if (this.connection.driver.options.type === "sap" && value === null) {
                         updateColumnAndValues.push(this.escape(column.databaseName) + " = NULL");
@@ -453,7 +453,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 let value = valuesSet[key];
 
                 // todo: duplication zone
-                if (value instanceof Function) { // support for SQL expressions in update query
+                if (typeof value === "function") { // support for SQL expressions in update query
                     updateColumnAndValues.push(this.escape(key) + " = " + value());
                 } else if (this.connection.driver.options.type === "sap" && value === null) {
                     updateColumnAndValues.push(this.escape(key) + " = NULL");

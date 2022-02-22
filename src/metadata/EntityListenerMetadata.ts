@@ -60,7 +60,7 @@ export class EntityListenerMetadata {
      */
     isAllowed(entity: ObjectLiteral) { // todo: create in entity metadata method like isInherited?
         return this.entityMetadata.target === entity.constructor || // todo: .constructor won't work for entity schemas, but there are no entity listeners in schemas since there are no objects, right?
-            (this.entityMetadata.target instanceof Function && entity.constructor.prototype instanceof this.entityMetadata.target); // todo: also need to implement entity schema inheritance
+            (typeof this.entityMetadata.target === "function" && entity.constructor.prototype instanceof this.entityMetadata.target); // todo: also need to implement entity schema inheritance
     }
 
     /**

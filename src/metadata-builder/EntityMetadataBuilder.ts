@@ -81,8 +81,8 @@ export class EntityMetadataBuilder {
         // after all metadatas created we set child entity metadatas for table inheritance
         entityMetadatas.forEach(metadata => {
             metadata.childEntityMetadatas = entityMetadatas.filter(childMetadata => {
-                return metadata.target instanceof Function
-                    && childMetadata.target instanceof Function
+                return typeof metadata.target === "function"
+                    && typeof childMetadata.target === "function"
                     && MetadataUtils.isInherited(childMetadata.target, metadata.target);
             });
         });
@@ -251,7 +251,7 @@ export class EntityMetadataBuilder {
 
         // add lazy initializer for entity relations
         entityMetadatas
-            .filter(metadata => metadata.target instanceof Function)
+            .filter(metadata => typeof metadata.target === "function")
             .forEach(entityMetadata => {
                 entityMetadata.relations
                     .filter(relation => relation.isLazy)
@@ -297,7 +297,7 @@ export class EntityMetadataBuilder {
         // we take all "inheritance tree" from a target entity to collect all stored metadata args
         // (by decorators or inside entity schemas). For example for target Post < ContentModel < Unit
         // it will be an array of [Post, ContentModel, Unit] and we can then get all metadata args of those classes
-        const inheritanceTree: any[] = tableArgs.target instanceof Function
+        const inheritanceTree: any[] = typeof tableArgs.target === "function"
             ? MetadataUtils.getInheritanceTree(tableArgs.target)
             : [tableArgs.target]; // todo: implement later here inheritance for string-targets
 
@@ -310,7 +310,7 @@ export class EntityMetadataBuilder {
             singleTableChildrenTargets = this.metadataArgsStorage
                 .filterSingleTableChildren(tableArgs.target)
                 .map(args => args.target)
-                .filter(target => target instanceof Function);
+                .filter(target => typeof target === "function");
 
             inheritanceTree.push(...singleTableChildrenTargets);
         }
@@ -474,7 +474,7 @@ export class EntityMetadataBuilder {
             // for single table children we reuse relations created for their parents
             if (entityMetadata.tableType === "entity-child") {
                 const parentRelation = entityMetadata.parentEntityMetadata.ownRelations.find(relation => relation.propertyName === args.propertyName)!;
-                const type = args.type instanceof Function ? (args.type as () => any)() : args.type;
+                const type = typeof args.type === "function" ? (args.type as () => any)() : args.type;
                 if (parentRelation.type !== type) {
                     const clone = Object.create(parentRelation);
                     clone.type = type;
@@ -574,7 +574,7 @@ export class EntityMetadataBuilder {
     protected createEmbeddedsRecursively(entityMetadata: EntityMetadata, embeddedArgs: EmbeddedMetadataArgs[]): EmbeddedMetadata[] {
         return embeddedArgs.map(embeddedArgs => {
             const embeddedMetadata = new EmbeddedMetadata({ entityMetadata: entityMetadata, args: embeddedArgs });
-            const targets: any[] = embeddedMetadata.type instanceof Function
+            const targets: any[] = typeof embeddedMetadata.type === "function"
                 ? MetadataUtils.getInheritanceTree(embeddedMetadata.type)
                 : [embeddedMetadata.type]; // todo: implement later here inheritance for string-targets
 

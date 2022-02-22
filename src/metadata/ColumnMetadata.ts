@@ -642,10 +642,10 @@ export class ColumnMetadata {
         } else { // no embeds - no problems. Simply return column name by property name of the entity
             if (this.relationMetadata && this.referencedColumn) {
                 const relatedEntity = this.relationMetadata.getEntityValue(entity);
-                if (relatedEntity && relatedEntity instanceof Object && !(relatedEntity instanceof FindOperator) && !(relatedEntity instanceof Function) && !(relatedEntity instanceof Buffer)) {
+                if (relatedEntity && relatedEntity instanceof Object && !(relatedEntity instanceof FindOperator) && !(typeof relatedEntity === "function") && !(relatedEntity instanceof Buffer)) {
                     value = this.referencedColumn.getEntityValue(relatedEntity);
 
-                } else if (entity[this.propertyName] && entity[this.propertyName] instanceof Object && !(entity[this.propertyName] instanceof FindOperator) && !(entity[this.propertyName] instanceof Function) && !(entity[this.propertyName] instanceof Buffer) && !(entity[this.propertyName] instanceof Date)) {
+                } else if (entity[this.propertyName] && entity[this.propertyName] instanceof Object && !(entity[this.propertyName] instanceof FindOperator) && !(typeof entity[this.propertyName] === "function") && !(entity[this.propertyName] instanceof Buffer) && !(entity[this.propertyName] instanceof Date)) {
                     value = this.referencedColumn.getEntityValue(entity[this.propertyName]);
 
                 } else {

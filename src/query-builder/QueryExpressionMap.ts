@@ -364,7 +364,7 @@ export class QueryExpressionMap {
         let aliasName = options.name;
         if (!aliasName && options.tablePath)
             aliasName = options.tablePath;
-        if (!aliasName && options.target instanceof Function)
+        if (!aliasName && typeof options.target === "function")
             aliasName = options.target.name;
         if (!aliasName && typeof options.target === "string")
             aliasName = options.target;

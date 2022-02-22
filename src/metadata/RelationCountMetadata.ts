@@ -73,7 +73,7 @@ export class RelationCountMetadata {
      * This builder method should be used only after entity metadata, its properties map and all relations are build.
      */
     build() {
-        const propertyPath = this.relationNameOrFactory instanceof Function ? this.relationNameOrFactory(this.entityMetadata.propertiesMap) : this.relationNameOrFactory;
+        const propertyPath = typeof this.relationNameOrFactory === "function" ? this.relationNameOrFactory(this.entityMetadata.propertiesMap) : this.relationNameOrFactory;
         const relation = this.entityMetadata.findRelationWithPropertyPath(propertyPath);
         if (!relation)
             throw new TypeORMError(`Cannot find relation ${propertyPath}. Wrong relation specified for @RelationCount decorator.`);

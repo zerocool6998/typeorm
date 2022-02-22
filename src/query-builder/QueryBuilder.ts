@@ -213,7 +213,7 @@ export abstract class QueryBuilder<Entity> {
         const updateSet = maybeUpdateSet ? maybeUpdateSet : entityOrTableNameUpdateSet as ObjectLiteral|undefined;
         entityOrTableNameUpdateSet = entityOrTableNameUpdateSet instanceof EntitySchema ? entityOrTableNameUpdateSet.options.name : entityOrTableNameUpdateSet;
 
-        if (entityOrTableNameUpdateSet instanceof Function || typeof entityOrTableNameUpdateSet === "string") {
+        if (typeof entityOrTableNameUpdateSet === "function" || typeof entityOrTableNameUpdateSet === "string") {
             const mainAlias = this.createFromAlias(entityOrTableNameUpdateSet);
             this.expressionMap.setMainAlias(mainAlias);
         }
@@ -342,7 +342,7 @@ export abstract class QueryBuilder<Entity> {
      * The key for this parametere may contain numbers, letters, underscores, or periods.
      */
     setParameter(key: string, value: any): this {
-        if (value instanceof Function) {
+        if (typeof value === "function") {
             throw new TypeORMError(`Function parameter isn't supported in the parameters. Please check "${key}" parameter.`);
         }
 
@@ -1193,7 +1193,7 @@ export abstract class QueryBuilder<Entity> {
             };
         }
 
-        if (where instanceof Function) {
+        if (typeof where === "function") {
             return where(this);
         }
 
