@@ -29,13 +29,13 @@ import type {MssqlParameter} from "../driver/sqlserver/MssqlParameter";
 
 export class InstanceChecker {
     static isMssqlParameter(obj: unknown): obj is MssqlParameter {
-        return this.check(obj, "MssqlParameter")
+        return this.check(obj, "MssqlParameter");
     }
     static isEntityMetadata(obj: unknown): obj is EntityMetadata {
-        return this.check(obj, "EntityMetadata")
+        return this.check(obj, "EntityMetadata");
     }
     static isColumnMetadata(obj: unknown): obj is ColumnMetadata {
-        return this.check(obj, "ColumnMetadata")
+        return this.check(obj, "ColumnMetadata");
     }
     static isQueryBuilder(obj: unknown): obj is QueryBuilder<any> {
         return this.check(obj, "QueryBuilder")
@@ -44,79 +44,79 @@ export class InstanceChecker {
             || this.check(obj, "DeleteQueryBuilder")
             || this.check(obj, "UpdateQueryBuilder")
             || this.check(obj, "SoftDeleteQueryBuilder")
-            || this.check(obj, "RelationQueryBuilder")
+            || this.check(obj, "RelationQueryBuilder");
     }
     static isSelectQueryBuilder(obj: unknown): obj is SelectQueryBuilder<any> {
-        return this.check(obj, "SelectQueryBuilder")
+        return this.check(obj, "SelectQueryBuilder");
     }
     static isInsertQueryBuilder(obj: unknown): obj is InsertQueryBuilder<any> {
-        return this.check(obj, "InsertQueryBuilder")
+        return this.check(obj, "InsertQueryBuilder");
     }
     static isDeleteQueryBuilder(obj: unknown): obj is DeleteQueryBuilder<any> {
-        return this.check(obj, "DeleteQueryBuilder")
+        return this.check(obj, "DeleteQueryBuilder");
     }
     static isUpdateQueryBuilder(obj: unknown): obj is UpdateQueryBuilder<any> {
-        return this.check(obj, "UpdateQueryBuilder")
+        return this.check(obj, "UpdateQueryBuilder");
     }
     static isSoftDeleteQueryBuilder(obj: unknown): obj is SoftDeleteQueryBuilder<any> {
-        return this.check(obj, "SoftDeleteQueryBuilder")
+        return this.check(obj, "SoftDeleteQueryBuilder");
     }
     static isRelationQueryBuilder(obj: unknown): obj is RelationQueryBuilder<any> {
-        return this.check(obj, "RelationQueryBuilder")
+        return this.check(obj, "RelationQueryBuilder");
     }
     static isBrackets(obj: unknown): obj is Brackets {
-        return this.check(obj, "Brackets") || this.check(obj, "NotBrackets")
+        return this.check(obj, "Brackets") || this.check(obj, "NotBrackets");
     }
     static isNotBrackets(obj: unknown): obj is NotBrackets {
-        return this.check(obj, "NotBrackets")
+        return this.check(obj, "NotBrackets");
     }
     static isSubject(obj: unknown): obj is Subject {
-        return this.check(obj, "Subject")
+        return this.check(obj, "Subject");
     }
     static isRdbmsSchemaBuilder(obj: unknown): obj is RdbmsSchemaBuilder {
-        return this.check(obj, "RdbmsSchemaBuilder")
+        return this.check(obj, "RdbmsSchemaBuilder");
     }
     static isMongoEntityManager(obj: unknown): obj is MongoEntityManager {
-        return this.check(obj, "MongoEntityManager")
+        return this.check(obj, "MongoEntityManager");
     }
     static isSqljsEntityManager(obj: unknown): obj is SqljsEntityManager {
-        return this.check(obj, "SqljsEntityManager")
+        return this.check(obj, "SqljsEntityManager");
     }
     static isEntitySchema(obj: unknown): obj is EntitySchema {
-        return this.check(obj, "EntitySchema")
+        return this.check(obj, "EntitySchema");
     }
     static isFindOperator(obj: unknown): obj is FindOperator<any> {
-        return this.check(obj, "FindOperator") || this.check(obj, "EqualOperator")
+        return this.check(obj, "FindOperator") || this.check(obj, "EqualOperator");
     }
     static isEqualOperator(obj: unknown): obj is EqualOperator<any> {
-        return this.check(obj, "EqualOperator")
+        return this.check(obj, "EqualOperator");
     }
     static isQuery(obj: unknown): obj is Query {
-        return this.check(obj, "Query")
+        return this.check(obj, "Query");
     }
     static isTable(obj: unknown): obj is Table {
-        return this.check(obj, "Table")
+        return this.check(obj, "Table");
     }
     static isTableCheck(obj: unknown): obj is TableCheck {
-        return this.check(obj, "TableCheck")
+        return this.check(obj, "TableCheck");
     }
     static isTableColumn(obj: unknown): obj is TableColumn {
-        return this.check(obj, "TableColumn")
+        return this.check(obj, "TableColumn");
     }
     static isTableExclusion(obj: unknown): obj is TableExclusion {
-        return this.check(obj, "TableExclusion")
+        return this.check(obj, "TableExclusion");
     }
     static isTableForeignKey(obj: unknown): obj is TableForeignKey {
-        return this.check(obj, "TableForeignKey")
+        return this.check(obj, "TableForeignKey");
     }
     static isTableIndex(obj: unknown): obj is TableIndex {
-        return this.check(obj, "TableIndex")
+        return this.check(obj, "TableIndex");
     }
     static isTableUnique(obj: unknown): obj is TableUnique {
-        return this.check(obj, "TableUnique")
+        return this.check(obj, "TableUnique");
     }
     static isView(obj: unknown): obj is View {
-        return this.check(obj, "View")
+        return this.check(obj, "View");
     }
 
     private static check(obj: unknown, name: string) {
