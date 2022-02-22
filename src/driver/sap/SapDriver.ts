@@ -23,6 +23,7 @@ import {SapQueryRunner} from "./SapQueryRunner";
 import {ReplicationMode} from "../types/ReplicationMode";
 import {DriverUtils} from "../DriverUtils";
 import {View} from "../../schema-builder/view/View";
+import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
  * Organizes communication with SAP Hana DBMS.
@@ -383,7 +384,7 @@ export class SapDriver implements Driver {
         const driverDatabase = this.database;
         const driverSchema = this.schema;
 
-        if (target instanceof Table || target instanceof View) {
+        if (InstanceChecker.isTable(target) || InstanceChecker.isView(target)) {
             const parsed = this.parseTableName(target.name);
 
             return {
@@ -393,7 +394,7 @@ export class SapDriver implements Driver {
             };
         }
 
-        if (target instanceof TableForeignKey) {
+        if (InstanceChecker.isTableForeignKey(target)) {
             const parsed = this.parseTableName(target.referencedTableName);
 
             return {
@@ -403,7 +404,7 @@ export class SapDriver implements Driver {
             };
         }
 
-        if (target instanceof EntityMetadata) {
+        if (InstanceChecker.isEntityMetadata(target)) {
             // EntityMetadata tableName is never a path
 
             return {

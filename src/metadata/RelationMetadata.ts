@@ -10,8 +10,8 @@ import {OnUpdateType} from "./types/OnUpdateType";
 import {OnDeleteType} from "./types/OnDeleteType";
 import {PropertyTypeFactory} from "./types/PropertyTypeInFunction";
 import {TypeORMError} from "../error";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Contains all information about some entity's relation.
@@ -321,7 +321,7 @@ export class RelationMetadata {
         if (typeof args.type === "function") {
             this.type = typeof args.type === "function" ? (args.type as () => any)() : args.type;
 
-        } else if (args.type instanceof EntitySchema) {
+        } else if (InstanceChecker.isEntitySchema(args.type)) {
             this.type = args.type.options.name;
 
         } else if (ObjectUtils.isObject(args.type) && typeof (args.type as any).name === "string") {

@@ -6,6 +6,7 @@ import {Driver} from "../../driver/Driver";
  * Foreign key from the database stored in this class.
  */
 export class TableForeignKey {
+    readonly "@instanceof" = Symbol.for("TableForeignKey");
 
     // -------------------------------------------------------------------------
     // Public Properties

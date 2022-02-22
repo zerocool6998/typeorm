@@ -35,16 +35,16 @@ import {DeleteResult} from "../query-builder/result/DeleteResult";
 import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
 import {ObjectUtils} from "../util/ObjectUtils";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {getMetadataArgsStorage} from "../globals";
 import {UpsertOptions} from "../repository/UpsertOptions";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Entity manager supposed to work with any entity, automatically find its repository and call its methods,
  * whatever entity type are you passing.
  */
 export class EntityManager {
-    readonly "@instanceof" = Symbol("EntityManager");
+    readonly "@instanceof" = Symbol.for("EntityManager");
 
     // -------------------------------------------------------------------------
     // Public Properties
@@ -326,11 +326,11 @@ export class EntityManager {
     save<Entity, T extends DeepPartial<Entity>>(targetOrEntity: (T|T[])|EntityTarget<Entity>, maybeEntityOrOptions?: T|T[], maybeOptions?: SaveOptions): Promise<T|T[]> {
 
         // normalize mixed parameters
-        let target = (arguments.length > 1 && (typeof targetOrEntity === "function" || targetOrEntity instanceof EntitySchema || typeof targetOrEntity === "string")) ? targetOrEntity as Function|string : undefined;
+        let target = (arguments.length > 1 && (typeof targetOrEntity === "function" || InstanceChecker.isEntitySchema(targetOrEntity) || typeof targetOrEntity === "string")) ? targetOrEntity as Function|string : undefined;
         const entity: T|T[] = target ? maybeEntityOrOptions as T|T[] : targetOrEntity as T|T[];
         const options = target ? maybeOptions : maybeEntityOrOptions as SaveOptions;
 
-        if (target instanceof EntitySchema)
+        if (InstanceChecker.isEntitySchema(target))
             target = target.options.name;
 
         // if user passed empty array of entities then we don't need to do anything
@@ -409,11 +409,11 @@ export class EntityManager {
     softRemove<Entity, T extends DeepPartial<Entity>>(targetOrEntity: (T|T[])|EntityTarget<Entity>, maybeEntityOrOptions?: T|T[], maybeOptions?: SaveOptions): Promise<T|T[]> {
 
         // normalize mixed parameters
-        let target = (arguments.length > 1 && (typeof targetOrEntity === "function" || targetOrEntity instanceof EntitySchema || typeof targetOrEntity === "string")) ? targetOrEntity as Function|string : undefined;
+        let target = (arguments.length > 1 && (typeof targetOrEntity === "function" || InstanceChecker.isEntitySchema(targetOrEntity) || typeof targetOrEntity === "string")) ? targetOrEntity as Function|string : undefined;
         const entity: T|T[] = target ? maybeEntityOrOptions as T|T[] : targetOrEntity as T|T[];
         const options = target ? maybeOptions : maybeEntityOrOptions as SaveOptions;
 
-        if (target instanceof EntitySchema)
+        if (InstanceChecker.isEntitySchema(target))
             target = target.options.name;
 
         // if user passed empty array of entities then we don't need to do anything
@@ -452,11 +452,11 @@ export class EntityManager {
     recover<Entity, T extends DeepPartial<Entity>>(targetOrEntity: (T|T[])|EntityTarget<Entity>, maybeEntityOrOptions?: T|T[], maybeOptions?: SaveOptions): Promise<T|T[]> {
 
         // normalize mixed parameters
-        let target = (arguments.length > 1 && (typeof targetOrEntity === "function" || targetOrEntity instanceof EntitySchema || typeof targetOrEntity === "string")) ? targetOrEntity as Function|string : undefined;
+        let target = (arguments.length > 1 && (typeof targetOrEntity === "function" || InstanceChecker.isEntitySchema(targetOrEntity) || typeof targetOrEntity === "string")) ? targetOrEntity as Function|string : undefined;
         const entity: T|T[] = target ? maybeEntityOrOptions as T|T[] : targetOrEntity as T|T[];
         const options = target ? maybeOptions : maybeEntityOrOptions as SaveOptions;
 
-        if (target instanceof EntitySchema)
+        if (InstanceChecker.isEntitySchema(target))
             target = target.options.name;
 
         // if user passed empty array of entities then we don't need to do anything

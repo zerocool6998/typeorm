@@ -23,6 +23,7 @@ import {DriverUtils} from "../driver/DriverUtils";
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements WhereExpressionBuilder {
+    readonly "@instanceof" = Symbol.for("UpdateQueryBuilder");
 
     // -------------------------------------------------------------------------
     // Constructor

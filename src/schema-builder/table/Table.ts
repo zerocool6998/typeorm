@@ -13,6 +13,7 @@ import {TableExclusion} from "./TableExclusion";
  * Table in the database represented in this class.
  */
 export class Table {
+    readonly "@instanceof" = Symbol.for("Table");
 
     // -------------------------------------------------------------------------
     // Public Properties

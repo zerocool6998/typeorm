@@ -26,6 +26,7 @@ import {Table} from "../../schema-builder/table/Table";
 import {View} from "../../schema-builder/view/View";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
 import {ObjectUtils} from "../../util/ObjectUtils";
+import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
  * Organizes communication with PostgreSQL DBMS.
@@ -723,7 +724,7 @@ export class PostgresDriver implements Driver {
         const driverDatabase = this.database;
         const driverSchema = this.schema;
 
-        if (target instanceof Table || target instanceof View) {
+        if (InstanceChecker.isTable(target) || InstanceChecker.isView(target)) {
             const parsed = this.parseTableName(target.name);
 
             return {
@@ -733,7 +734,7 @@ export class PostgresDriver implements Driver {
             };
         }
 
-        if (target instanceof TableForeignKey) {
+        if (InstanceChecker.isTableForeignKey(target)) {
             const parsed = this.parseTableName(target.referencedTableName);
 
             return {
@@ -743,7 +744,7 @@ export class PostgresDriver implements Driver {
             };
         }
 
-        if (target instanceof EntityMetadata) {
+        if (InstanceChecker.isEntityMetadata(target)) {
             // EntityMetadata tableName is never a path
 
             return {

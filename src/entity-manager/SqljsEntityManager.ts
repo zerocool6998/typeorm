@@ -8,7 +8,7 @@ import {SqljsDriver} from "../driver/sqljs/SqljsDriver";
  * that are unique to Sql.js.
  */
 export class SqljsEntityManager extends EntityManager {
-    readonly "@instanceof" = Symbol("SqljsEntityManager");
+    readonly "@instanceof" = Symbol.for("SqljsEntityManager");
 
     private driver: SqljsDriver;
 

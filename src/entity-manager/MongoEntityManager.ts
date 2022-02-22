@@ -62,7 +62,7 @@ import {ObjectUtils} from "../util/ObjectUtils";
  * This implementation is used for MongoDB driver which has some specifics in its EntityManager.
  */
 export class MongoEntityManager extends EntityManager {
-    readonly "@instanceof" = Symbol("MongoEntityManager");
+    readonly "@instanceof" = Symbol.for("MongoEntityManager");
 
     get mongoQueryRunner(): MongoQueryRunner {
         return (this.connection.driver as MongoDriver).queryRunner as MongoQueryRunner;

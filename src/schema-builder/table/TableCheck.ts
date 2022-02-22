@@ -5,6 +5,7 @@ import {CheckMetadata} from "../../metadata/CheckMetadata";
  * Database's table check constraint stored in this class.
  */
 export class TableCheck {
+    readonly "@instanceof" = Symbol.for("TableCheck");
 
     // -------------------------------------------------------------------------
     // Public Properties

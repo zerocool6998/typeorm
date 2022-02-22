@@ -14,6 +14,7 @@ import {EntityMetadata} from "../metadata/EntityMetadata";
 import {TableForeignKey} from "../schema-builder/table/TableForeignKey";
 import {OrmUtils} from "../util/OrmUtils";
 import {MetadataTableType} from "../driver/types/MetadataTableType";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 export abstract class BaseQueryRunner {
 
@@ -500,9 +501,9 @@ export abstract class BaseQueryRunner {
      * Executes sql used special for schema build.
      */
     protected async executeQueries(upQueries: Query|Query[], downQueries: Query|Query[]): Promise<void> {
-        if (upQueries instanceof Query)
+        if (InstanceChecker.isQuery(upQueries))
             upQueries = [upQueries];
-        if (downQueries instanceof Query)
+        if (InstanceChecker.isQuery(downQueries))
             downQueries = [downQueries];
 
         this.sqlInMemory.upQueries.push(...upQueries);

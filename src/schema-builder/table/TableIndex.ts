@@ -5,6 +5,7 @@ import {TableIndexOptions} from "../options/TableIndexOptions";
  * Database's table index stored in this class.
  */
 export class TableIndex {
+    readonly "@instanceof" = Symbol.for("TableIndex");
 
     // -------------------------------------------------------------------------
     // Public Properties

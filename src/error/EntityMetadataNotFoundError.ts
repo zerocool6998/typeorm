@@ -1,7 +1,7 @@
 import {EntityTarget} from "../common/EntityTarget";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "./TypeORMError";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 export class EntityMetadataNotFoundError extends TypeORMError {
     constructor(target: EntityTarget<any>) {
@@ -11,7 +11,7 @@ export class EntityMetadataNotFoundError extends TypeORMError {
     }
 
     private stringifyTarget(target: EntityTarget<any>): string {
-        if (target instanceof EntitySchema) {
+        if (InstanceChecker.isEntitySchema(target)) {
             return target.options.name;
         } else if (typeof target === "function") {
             return target.name;

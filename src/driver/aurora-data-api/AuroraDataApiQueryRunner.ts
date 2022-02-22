@@ -23,6 +23,7 @@ import {IsolationLevel} from "../types/IsolationLevel";
 import {TableExclusion} from "../../schema-builder/table/TableExclusion";
 import {TypeORMError} from "../../error";
 import {MetadataTableType} from "../types/MetadataTableType";
+import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
  * Runs queries on a single mysql database connection.
@@ -243,7 +244,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      */
     async hasColumn(tableOrName: Table|string, column: TableColumn|string): Promise<boolean> {
         const parsedTableName = this.driver.parseTableName(tableOrName);
-        const columnName = column instanceof TableColumn ? column.name : column;
+        const columnName = InstanceChecker.isTableColumn(column) ? column.name : column;
         const sql = `SELECT * FROM \`INFORMATION_SCHEMA\`.\`COLUMNS\` WHERE \`TABLE_SCHEMA\` = '${parsedTableName.database}' AND \`TABLE_NAME\` = '${parsedTableName.tableName}' AND \`COLUMN_NAME\` = '${columnName}'`;
         const result = await this.query(sql);
         return result.length ? true : false;
@@ -356,7 +357,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Drops the view.
      */
     async dropView(target: View|string): Promise<void> {
-        const viewName = target instanceof View ? target.name : target;
+        const viewName = InstanceChecker.isView(target) ? target.name : target;
         const view = await this.getCachedView(viewName);
 
         const upQueries: Query[] = [];
@@ -374,7 +375,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
     async renameTable(oldTableOrName: Table|string, newTableName: string): Promise<void> {
         const upQueries: Query[] = [];
         const downQueries: Query[] = [];
-        const oldTable = oldTableOrName instanceof Table ? oldTableOrName : await this.getCachedTable(oldTableOrName);
+        const oldTable = InstanceChecker.isTable(oldTableOrName) ? oldTableOrName : await this.getCachedTable(oldTableOrName);
         const newTable = oldTable.clone();
 
         const { database } = this.driver.parseTableName(oldTable);
@@ -445,7 +446,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Creates a new column from the column in the table.
      */
     async addColumn(tableOrName: Table|string, column: TableColumn): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const clonedTable = table.clone();
         const upQueries: Query[] = [];
         const downQueries: Query[] = [];
@@ -526,13 +527,13 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Renames column in the given table.
      */
     async renameColumn(tableOrName: Table|string, oldTableColumnOrName: TableColumn|string, newTableColumnOrName: TableColumn|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const oldColumn = oldTableColumnOrName instanceof TableColumn ? oldTableColumnOrName : table.columns.find(c => c.name === oldTableColumnOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const oldColumn = InstanceChecker.isTableColumn(oldTableColumnOrName) ? oldTableColumnOrName : table.columns.find(c => c.name === oldTableColumnOrName);
         if (!oldColumn)
             throw new TypeORMError(`Column "${oldTableColumnOrName}" was not found in the "${table.name}" table.`);
 
         let newColumn: TableColumn|undefined = undefined;
-        if (newTableColumnOrName instanceof TableColumn) {
+        if (InstanceChecker.isTableColumn(newTableColumnOrName)) {
             newColumn = newTableColumnOrName;
         } else {
             newColumn = oldColumn.clone();
@@ -546,12 +547,12 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Changes a column in the table.
      */
     async changeColumn(tableOrName: Table|string, oldColumnOrName: TableColumn|string, newColumn: TableColumn): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         let clonedTable = table.clone();
         const upQueries: Query[] = [];
         const downQueries: Query[] = [];
 
-        const oldColumn = oldColumnOrName instanceof TableColumn
+        const oldColumn = InstanceChecker.isTableColumn(oldColumnOrName)
             ? oldColumnOrName
             : table.columns.find(column => column.name === oldColumnOrName);
         if (!oldColumn)
@@ -741,8 +742,8 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Drops column in the table.
      */
     async dropColumn(tableOrName: Table|string, columnOrName: TableColumn|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const column = columnOrName instanceof TableColumn ? columnOrName : table.findColumnByName(columnOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const column = InstanceChecker.isTableColumn(columnOrName) ? columnOrName : table.findColumnByName(columnOrName);
         if (!column)
             throw new TypeORMError(`Column "${columnOrName}" was not found in table "${table.name}"`);
 
@@ -835,7 +836,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Creates a new primary key.
      */
     async createPrimaryKey(tableOrName: Table|string, columnNames: string[]): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const clonedTable = table.clone();
 
         const up = this.createPrimaryKeySql(table, columnNames);
@@ -853,7 +854,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Updates composite primary keys.
      */
     async updatePrimaryKeys(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const clonedTable = table.clone();
         const columnNames = columns.map(column => column.name);
         const upQueries: Query[] = [];
@@ -911,7 +912,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Drops a primary key.
      */
     async dropPrimaryKey(tableOrName: Table|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const up = this.dropPrimaryKeySql(table);
         const down = this.createPrimaryKeySql(table, table.primaryColumns.map(column => column.name));
         await this.executeQueries(up, down);
@@ -1008,7 +1009,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Creates a new foreign key.
      */
     async createForeignKey(tableOrName: Table|string, foreignKey: TableForeignKey): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
 
         // new FK may be passed without name. In this case we generate FK name manually.
         if (!foreignKey.name)
@@ -1032,8 +1033,8 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Drops a foreign key.
      */
     async dropForeignKey(tableOrName: Table|string, foreignKeyOrName: TableForeignKey|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const foreignKey = foreignKeyOrName instanceof TableForeignKey ? foreignKeyOrName : table.foreignKeys.find(fk => fk.name === foreignKeyOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const foreignKey = InstanceChecker.isTableForeignKey(foreignKeyOrName) ? foreignKeyOrName : table.foreignKeys.find(fk => fk.name === foreignKeyOrName);
         if (!foreignKey)
             throw new TypeORMError(`Supplied foreign key was not found in table ${table.name}`);
 
@@ -1055,7 +1056,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Creates a new index.
      */
     async createIndex(tableOrName: Table|string, index: TableIndex): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
 
         // new index may be passed without name. In this case we generate index name manually.
         if (!index.name)
@@ -1079,8 +1080,8 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Drops an index.
      */
     async dropIndex(tableOrName: Table|string, indexOrName: TableIndex|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const index = indexOrName instanceof TableIndex ? indexOrName : table.indices.find(i => i.name === indexOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const index = InstanceChecker.isTableIndex(indexOrName) ? indexOrName : table.indices.find(i => i.name === indexOrName);
         if (!index)
             throw new TypeORMError(`Supplied index ${indexOrName} was not found in table ${table.name}`);
 
@@ -1551,7 +1552,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      */
     protected async deleteViewDefinitionSql(viewOrPath: View|string): Promise<Query> {
         const currentDatabase = await this.getCurrentDatabase();
-        const viewName = viewOrPath instanceof View ? viewOrPath.name : viewOrPath;
+        const viewName = InstanceChecker.isView(viewOrPath) ? viewOrPath.name : viewOrPath;
         return this.deleteTypeormMetadataSql({ type: MetadataTableType.VIEW, schema: currentDatabase, name: viewName });
     }
 
@@ -1574,7 +1575,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Builds drop index sql.
      */
     protected dropIndexSql(table: Table, indexOrName: TableIndex|string): Query {
-        let indexName = indexOrName instanceof TableIndex ? indexOrName.name : indexOrName;
+        let indexName = InstanceChecker.isTableIndex(indexOrName) ? indexOrName.name : indexOrName;
         return new Query(`DROP INDEX \`${indexName}\` ON ${this.escapePath(table)}`);
     }
 
@@ -1613,7 +1614,7 @@ export class AuroraDataApiQueryRunner extends BaseQueryRunner implements QueryRu
      * Builds drop foreign key sql.
      */
     protected dropForeignKeySql(table: Table, foreignKeyOrName: TableForeignKey|string): Query {
-        const foreignKeyName = foreignKeyOrName instanceof TableForeignKey ? foreignKeyOrName.name : foreignKeyOrName;
+        const foreignKeyName = InstanceChecker.isTableForeignKey(foreignKeyOrName) ? foreignKeyOrName.name : foreignKeyOrName;
         return new Query(`ALTER TABLE ${this.escapePath(table)} DROP FOREIGN KEY \`${foreignKeyName}\``);
     }
 

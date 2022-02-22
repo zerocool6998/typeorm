@@ -25,6 +25,7 @@ import {Table} from "../../schema-builder/table/Table";
 import {View} from "../../schema-builder/view/View";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
 import {ObjectUtils} from "../../util/ObjectUtils";
+import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
  * Organizes communication with Cockroach DBMS.
@@ -480,7 +481,7 @@ export class CockroachDriver implements Driver {
         const driverDatabase = this.database;
         const driverSchema = this.schema;
 
-        if (target instanceof Table || target instanceof View) {
+        if (InstanceChecker.isTable(target) || InstanceChecker.isView(target)) {
             // name is sometimes a path
             const parsed = this.parseTableName(target.name);
 
@@ -491,7 +492,7 @@ export class CockroachDriver implements Driver {
             };
         }
 
-        if (target instanceof TableForeignKey) {
+        if (InstanceChecker.isTableForeignKey(target)) {
             // referencedTableName is sometimes a path
             const parsed = this.parseTableName(target.referencedTableName);
 
@@ -502,7 +503,7 @@ export class CockroachDriver implements Driver {
             };
         }
 
-        if (target instanceof EntityMetadata) {
+        if (InstanceChecker.isEntityMetadata(target)) {
             // EntityMetadata tableName is never a path
 
             return {

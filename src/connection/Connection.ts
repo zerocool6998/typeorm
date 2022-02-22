@@ -30,13 +30,13 @@ import {QueryResultCacheFactory} from "../cache/QueryResultCacheFactory";
 import {QueryResultCache} from "../cache/QueryResultCache";
 import {SqljsEntityManager} from "../entity-manager/SqljsEntityManager";
 import {RelationLoader} from "../query-builder/RelationLoader";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {ObjectUtils} from "../util/ObjectUtils";
 import {IsolationLevel} from "../driver/types/IsolationLevel";
 import {ReplicationMode} from "../driver/types/ReplicationMode";
 import {TypeORMError} from "../error/TypeORMError";
 import {RelationIdLoader} from "../query-builder/RelationIdLoader";
 import {DriverUtils} from "../driver/DriverUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Connection is a single database ORM connection to a specific database.
@@ -147,7 +147,7 @@ export class Connection {
      * Available only in mongodb connections.
      */
     get mongoManager(): MongoEntityManager {
-        if (!(this.manager instanceof MongoEntityManager))
+        if (!InstanceChecker.isMongoEntityManager(this.manager))
             throw new TypeORMError(`MongoEntityManager is only available for MongoDB databases.`);
 
         return this.manager as MongoEntityManager;
@@ -159,10 +159,10 @@ export class Connection {
      * Available only in connection with the sqljs driver.
      */
     get sqljsManager(): SqljsEntityManager {
-        if (!(this.manager instanceof SqljsEntityManager))
+        if (!InstanceChecker.isSqljsEntityManager(this.manager))
             throw new TypeORMError(`SqljsEntityManager is only available for Sqljs databases.`);
 
-        return this.manager as SqljsEntityManager;
+        return this.manager;
     }
 
     // -------------------------------------------------------------------------
@@ -419,7 +419,7 @@ export class Connection {
      * Executes raw SQL query and returns raw database results.
      */
     async query(query: string, parameters?: any[], queryRunner?: QueryRunner): Promise<any> {
-        if (this instanceof MongoEntityManager)
+        if (InstanceChecker.isMongoEntityManager(this.manager))
             throw new TypeORMError(`Queries aren't supported by MongoDB.`);
 
         if (queryRunner && queryRunner.isReleased)
@@ -450,7 +450,7 @@ export class Connection {
      * Creates a new query builder that can be used to build a SQL query.
      */
     createQueryBuilder<Entity>(entityOrRunner?: EntityTarget<Entity>|QueryRunner, alias?: string, queryRunner?: QueryRunner): SelectQueryBuilder<Entity> {
-        if (this instanceof MongoEntityManager)
+        if (InstanceChecker.isMongoEntityManager(this.manager))
             throw new TypeORMError(`Query Builder is not supported by MongoDB.`);
 
         if (alias) {
@@ -513,7 +513,7 @@ export class Connection {
         return this.entityMetadatas.find(metadata => {
             if (metadata.target === target)
                 return true;
-            if (target instanceof EntitySchema) {
+            if (InstanceChecker.isEntitySchema(target)) {
                 return metadata.name === target.options.name;
             }
             if (typeof target === "string") {

@@ -9,7 +9,6 @@ import {InsertValuesMissingError} from "../error/InsertValuesMissingError";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {ReturningResultsEntityUpdator} from "./ReturningResultsEntityUpdator";
 import {BroadcasterResult} from "../subscriber/BroadcasterResult";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "../error";
 import {v4 as uuidv4} from "uuid";
 import {InsertOrUpdateOptions} from "./InsertOrUpdateOptions";
@@ -17,11 +16,13 @@ import {SqlServerDriver} from "../driver/sqlserver/SqlServerDriver";
 import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
 import {DriverUtils} from "../driver/DriverUtils";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
+    readonly "@instanceof" = Symbol.for("InsertQueryBuilder");
 
     // -------------------------------------------------------------------------
     // Public Implemented Methods
@@ -180,7 +181,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
      * Specifies INTO which entity's table insertion will be executed.
      */
     into<T>(entityTarget: EntityTarget<T>, columns?: string[]): InsertQueryBuilder<T> {
-        entityTarget = entityTarget instanceof EntitySchema ? entityTarget.options.name : entityTarget;
+        entityTarget = InstanceChecker.isEntitySchema(entityTarget) ? entityTarget.options.name : entityTarget;
         const mainAlias = this.createFromAlias(entityTarget);
         this.expressionMap.setMainAlias(mainAlias);
         this.expressionMap.insertColumns = columns || [];

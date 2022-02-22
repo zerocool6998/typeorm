@@ -8,7 +8,7 @@ import {Table} from "../schema-builder/table/Table";
  */
 export class DefaultNamingStrategy implements NamingStrategyInterface {
     private getTableName(tableOrName: Table | string): string {
-        if (tableOrName instanceof Table) {
+        if (typeof tableOrName !== "string") {
             tableOrName = tableOrName.name;
         }
 

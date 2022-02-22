@@ -5,6 +5,7 @@ import {WhereExpressionBuilder} from "./WhereExpressionBuilder";
  * Allows to use brackets in WHERE expressions for better syntax.
  */
 export class Brackets {
+    readonly "@instanceof" = Symbol.for("Brackets");
 
     /**
      * WHERE expression that will be taken into brackets.

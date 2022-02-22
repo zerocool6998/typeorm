@@ -28,6 +28,7 @@ import {ObjectUtils} from "../util/ObjectUtils";
  * Contains all entity metadata.
  */
 export class EntityMetadata {
+    readonly "@instanceof" = Symbol.for("EntityMetadata");
 
     // -------------------------------------------------------------------------
     // Properties

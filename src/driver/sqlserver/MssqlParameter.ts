@@ -4,6 +4,7 @@
  * @see https://github.com/patriksimek/node-mssql#data-types
  */
 export class MssqlParameter {
+    readonly "@instanceof" = Symbol.for("MssqlParameter");
 
     // -------------------------------------------------------------------------
     // Public Properties

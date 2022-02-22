@@ -1,7 +1,7 @@
 import {EntityTarget} from "../common/EntityTarget";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "./TypeORMError";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Thrown when no result could be found in methods which are not allowed to return undefined or an empty set.
@@ -15,7 +15,7 @@ export class EntityNotFoundError extends TypeORMError {
     }
 
     private stringifyTarget(target: EntityTarget<any>): string {
-        if (target instanceof EntitySchema) {
+        if (InstanceChecker.isEntitySchema(target)) {
             return target.options.name;
         } else if (typeof target === "function") {
             return target.name;

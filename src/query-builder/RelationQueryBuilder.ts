@@ -10,6 +10,7 @@ import {ObjectUtils} from "../util/ObjectUtils";
  * todo: add transactions everywhere
  */
 export class RelationQueryBuilder<Entity> extends QueryBuilder<Entity> {
+    readonly "@instanceof" = Symbol.for("RelationQueryBuilder");
 
     // -------------------------------------------------------------------------
     // Public Implemented Methods

@@ -5,6 +5,7 @@ import {ExclusionMetadata} from "../../metadata/ExclusionMetadata";
  * Database's table exclusion constraint stored in this class.
  */
 export class TableExclusion {
+    readonly "@instanceof" = Symbol.for("TableExclusion");
 
     // -------------------------------------------------------------------------
     // Public Properties

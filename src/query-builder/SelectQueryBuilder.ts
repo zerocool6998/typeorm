@@ -41,16 +41,16 @@ import {FindOptionsWhere} from "../find-options/FindOptionsWhere";
 import {FindOptionsUtils} from "../find-options/FindOptionsUtils";
 import {FindOptionsRelations} from "../find-options/FindOptionsRelations";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
-import {FindOperator} from "../find-options/FindOperator";
 import {OrmUtils} from "../util/OrmUtils";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
-import {EqualOperator} from "../find-options/EqualOperator";
-import { AuroraDataApiDriver } from "../driver/aurora-data-api/AuroraDataApiDriver";
+import {AuroraDataApiDriver} from "../driver/aurora-data-api/AuroraDataApiDriver";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements WhereExpressionBuilder {
+    readonly "@instanceof" = Symbol.for("SelectQueryBuilder");
 
     protected findOptions: FindManyOptions = {};
     protected selects: string[] = [];
@@ -2740,7 +2740,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
                     // todo: we need to handle other operators as well?
                     let parameterValue = where[key];
-                    if (where[key] instanceof EqualOperator) {
+                    if (InstanceChecker.isEqualOperator(where[key])) {
                         parameterValue = where[key].value;
                     }
                     if (column.transformer) {
@@ -2803,7 +2803,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                         }
                     }
 
-                    if (where[key] instanceof FindOperator) {
+                    if (InstanceChecker.isFindOperator(where[key])) {
                         if (where[key].type === "moreThan" || where[key].type === "lessThan") {
                             const sqlOperator = where[key].type === "moreThan" ? ">" : "<";
                             // basically relation count functionality

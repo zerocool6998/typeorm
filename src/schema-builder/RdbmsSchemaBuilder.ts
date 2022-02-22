@@ -33,6 +33,8 @@ import {DriverUtils} from "../driver/DriverUtils";
  * 9. create indices which are missing in db yet, and drops indices which exist in the db, but does not exist in the metadata anymore
  */
 export class RdbmsSchemaBuilder implements SchemaBuilder {
+    readonly "@instanceof" = Symbol.for("RdbmsSchemaBuilder");
+
     /**
      * Used to execute schema creation queries in a single connection.
      */

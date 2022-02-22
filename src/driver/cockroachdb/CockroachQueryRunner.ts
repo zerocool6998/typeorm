@@ -25,6 +25,7 @@ import {TableExclusion} from "../../schema-builder/table/TableExclusion";
 import {ReplicationMode} from "../types/ReplicationMode";
 import {TypeORMError} from "../../error";
 import {MetadataTableType} from "../types/MetadataTableType";
+import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
  * Runs queries on a single postgres database connection.
@@ -497,7 +498,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops the view.
      */
     async dropView(target: View|string): Promise<void> {
-        const viewName = target instanceof View ? target.name : target;
+        const viewName = InstanceChecker.isView(target) ? target.name : target;
         const view = await this.getCachedView(viewName);
 
         const upQueries: Query[] = [];
@@ -515,7 +516,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
     async renameTable(oldTableOrName: Table|string, newTableName: string): Promise<void> {
         const upQueries: Query[] = [];
         const downQueries: Query[] = [];
-        const oldTable = oldTableOrName instanceof Table ? oldTableOrName : await this.getCachedTable(oldTableOrName);
+        const oldTable = InstanceChecker.isTable(oldTableOrName) ? oldTableOrName : await this.getCachedTable(oldTableOrName);
         const newTable = oldTable.clone();
 
         const { schema: schemaName, tableName: oldTableName } = this.driver.parseTableName(oldTable);
@@ -585,7 +586,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new column from the column in the table.
      */
     async addColumn(tableOrName: Table|string, column: TableColumn): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const clonedTable = table.clone();
         const upQueries: Query[] = [];
         const downQueries: Query[] = [];
@@ -671,13 +672,13 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Renames column in the given table.
      */
     async renameColumn(tableOrName: Table|string, oldTableColumnOrName: TableColumn|string, newTableColumnOrName: TableColumn|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const oldColumn = oldTableColumnOrName instanceof TableColumn ? oldTableColumnOrName : table.columns.find(c => c.name === oldTableColumnOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const oldColumn = InstanceChecker.isTableColumn(oldTableColumnOrName) ? oldTableColumnOrName : table.columns.find(c => c.name === oldTableColumnOrName);
         if (!oldColumn)
             throw new TypeORMError(`Column "${oldTableColumnOrName}" was not found in the "${table.name}" table.`);
 
         let newColumn;
-        if (newTableColumnOrName instanceof TableColumn) {
+        if (InstanceChecker.isTableColumn(newTableColumnOrName)) {
             newColumn = newTableColumnOrName;
         } else {
             newColumn = oldColumn.clone();
@@ -691,12 +692,12 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Changes a column in the table.
      */
     async changeColumn(tableOrName: Table|string, oldTableColumnOrName: TableColumn|string, newColumn: TableColumn): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         let clonedTable = table.clone();
         const upQueries: Query[] = [];
         const downQueries: Query[] = [];
 
-        const oldColumn = oldTableColumnOrName instanceof TableColumn
+        const oldColumn = InstanceChecker.isTableColumn(oldTableColumnOrName)
             ? oldTableColumnOrName
             : table.columns.find(column => column.name === oldTableColumnOrName);
         if (!oldColumn)
@@ -923,8 +924,8 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops column in the table.
      */
     async dropColumn(tableOrName: Table|string, columnOrName: TableColumn|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const column = columnOrName instanceof TableColumn ? columnOrName : table.findColumnByName(columnOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const column = InstanceChecker.isTableColumn(columnOrName) ? columnOrName : table.findColumnByName(columnOrName);
         if (!column)
             throw new TypeORMError(`Column "${columnOrName}" was not found in table "${table.name}"`);
 
@@ -1004,7 +1005,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new primary key.
      */
     async createPrimaryKey(tableOrName: Table|string, columnNames: string[]): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const clonedTable = table.clone();
 
         const up = this.createPrimaryKeySql(table, columnNames);
@@ -1024,7 +1025,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Updates composite primary keys.
      */
     async updatePrimaryKeys(tableOrName: Table|string, columns: TableColumn[]): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const clonedTable = table.clone();
         const columnNames = columns.map(column => column.name);
         const upQueries: Query[] = [];
@@ -1057,7 +1058,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops a primary key.
      */
     async dropPrimaryKey(tableOrName: Table|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
         const up = this.dropPrimaryKeySql(table);
         const down = this.createPrimaryKeySql(table, table.primaryColumns.map(column => column.name));
         await this.executeQueries(up, down);
@@ -1070,7 +1071,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates new unique constraint.
      */
     async createUniqueConstraint(tableOrName: Table|string, uniqueConstraint: TableUnique): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
 
         // new unique constraint may be passed without name. In this case we generate unique name manually.
         if (!uniqueConstraint.name)
@@ -1097,8 +1098,8 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops unique constraint.
      */
     async dropUniqueConstraint(tableOrName: Table|string, uniqueOrName: TableUnique|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const uniqueConstraint = uniqueOrName instanceof TableUnique ? uniqueOrName : table.uniques.find(u => u.name === uniqueOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const uniqueConstraint = InstanceChecker.isTableUnique(uniqueOrName) ? uniqueOrName : table.uniques.find(u => u.name === uniqueOrName);
         if (!uniqueConstraint)
             throw new TypeORMError(`Supplied unique constraint was not found in table ${table.name}`);
 
@@ -1123,7 +1124,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates new check constraint.
      */
     async createCheckConstraint(tableOrName: Table|string, checkConstraint: TableCheck): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
 
         // new unique constraint may be passed without name. In this case we generate unique name manually.
         if (!checkConstraint.name)
@@ -1147,8 +1148,8 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops check constraint.
      */
     async dropCheckConstraint(tableOrName: Table|string, checkOrName: TableCheck|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const checkConstraint = checkOrName instanceof TableCheck ? checkOrName : table.checks.find(c => c.name === checkOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const checkConstraint = InstanceChecker.isTableCheck(checkOrName) ? checkOrName : table.checks.find(c => c.name === checkOrName);
         if (!checkConstraint)
             throw new TypeORMError(`Supplied check constraint was not found in table ${table.name}`);
 
@@ -1198,7 +1199,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new foreign key.
      */
     async createForeignKey(tableOrName: Table|string, foreignKey: TableForeignKey): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
 
         // new FK may be passed without name. In this case we generate FK name manually.
         if (!foreignKey.name)
@@ -1223,8 +1224,8 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops a foreign key from the table.
      */
     async dropForeignKey(tableOrName: Table|string, foreignKeyOrName: TableForeignKey|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const foreignKey = foreignKeyOrName instanceof TableForeignKey ? foreignKeyOrName : table.foreignKeys.find(fk => fk.name === foreignKeyOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const foreignKey = InstanceChecker.isTableForeignKey(foreignKeyOrName) ? foreignKeyOrName : table.foreignKeys.find(fk => fk.name === foreignKeyOrName);
         if (!foreignKey)
             throw new TypeORMError(`Supplied foreign key was not found in table ${table.name}`);
 
@@ -1247,7 +1248,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Creates a new index.
      */
     async createIndex(tableOrName: Table|string, index: TableIndex): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
 
         // new index may be passed without name. In this case we generate index name manually.
         if (!index.name)
@@ -1287,8 +1288,8 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Drops an index from the table.
      */
     async dropIndex(tableOrName: Table|string, indexOrName: TableIndex|string): Promise<void> {
-        const table = tableOrName instanceof Table ? tableOrName : await this.getCachedTable(tableOrName);
-        const index = indexOrName instanceof TableIndex ? indexOrName : table.indices.find(i => i.name === indexOrName);
+        const table = InstanceChecker.isTable(tableOrName) ? tableOrName : await this.getCachedTable(tableOrName);
+        const index = InstanceChecker.isTableIndex(indexOrName) ? indexOrName : table.indices.find(i => i.name === indexOrName);
         if (!index)
             throw new TypeORMError(`Supplied index ${indexOrName} was not found in table ${table.name}`);
 
@@ -1842,7 +1843,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Builds drop index sql.
      */
     protected dropIndexSql(table: Table, indexOrName: TableIndex|TableUnique|string): Query {
-        let indexName = (indexOrName instanceof TableIndex || indexOrName instanceof TableUnique) ? indexOrName.name : indexOrName;
+        let indexName = (InstanceChecker.isTableIndex(indexOrName) || InstanceChecker.isTableUnique(indexOrName)) ? indexOrName.name : indexOrName;
         return new Query(`DROP INDEX ${this.escapePath(table)}@"${indexName}" CASCADE`);
     }
 
@@ -1876,7 +1877,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Builds drop unique constraint sql.
      */
     protected dropUniqueConstraintSql(table: Table, uniqueOrName: TableUnique|string): Query {
-        const uniqueName = uniqueOrName instanceof TableUnique ? uniqueOrName.name : uniqueOrName;
+        const uniqueName = InstanceChecker.isTableUnique(uniqueOrName) ? uniqueOrName.name : uniqueOrName;
         return new Query(`ALTER TABLE ${this.escapePath(table)} DROP CONSTRAINT "${uniqueName}"`);
     }
 
@@ -1891,7 +1892,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Builds drop check constraint sql.
      */
     protected dropCheckConstraintSql(table: Table, checkOrName: TableCheck|string): Query {
-        const checkName = checkOrName instanceof TableCheck ? checkOrName.name : checkOrName;
+        const checkName = InstanceChecker.isTableCheck(checkOrName) ? checkOrName.name : checkOrName;
         return new Query(`ALTER TABLE ${this.escapePath(table)} DROP CONSTRAINT "${checkName}"`);
     }
 
@@ -1915,7 +1916,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
      * Builds drop foreign key sql.
      */
     protected dropForeignKeySql(table: Table, foreignKeyOrName: TableForeignKey|string): Query {
-        const foreignKeyName = foreignKeyOrName instanceof TableForeignKey ? foreignKeyOrName.name : foreignKeyOrName;
+        const foreignKeyName = InstanceChecker.isTableForeignKey(foreignKeyOrName) ? foreignKeyOrName.name : foreignKeyOrName;
         return new Query(`ALTER TABLE ${this.escapePath(table)} DROP CONSTRAINT "${foreignKeyName}"`);
     }
 
@@ -1925,7 +1926,7 @@ export class CockroachQueryRunner extends BaseQueryRunner implements QueryRunner
     protected buildSequenceName(table: Table, columnOrName: TableColumn|string): string {
         const { tableName } = this.driver.parseTableName(table);
 
-        const columnName = columnOrName instanceof TableColumn ? columnOrName.name : columnOrName;
+        const columnName = InstanceChecker.isTableColumn(columnOrName) ? columnOrName.name : columnOrName;
 
         return `${tableName}_${columnName}_seq`;
     }

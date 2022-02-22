@@ -4,7 +4,6 @@ import {SubjectTopoligicalSorter} from "./SubjectTopoligicalSorter";
 import {SubjectChangedColumnsComputer} from "./SubjectChangedColumnsComputer";
 import {SubjectWithoutIdentifierError} from "../error/SubjectWithoutIdentifierError";
 import {SubjectRemovedAndUpdatedError} from "../error/SubjectRemovedAndUpdatedError";
-import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
 import {MongoEntityManager} from "../entity-manager/MongoEntityManager";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {SaveOptions} from "../repository/SaveOptions";
@@ -16,6 +15,7 @@ import {MaterializedPathSubjectExecutor} from "./tree/MaterializedPathSubjectExe
 import {OrmUtils} from "../util/OrmUtils";
 import {UpdateResult} from "../query-builder/result/UpdateResult";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Executes all database operations (inserts, updated, deletes) that must be executed
@@ -294,9 +294,8 @@ export class SubjectExecutor {
             }
 
             // for mongodb we have a bit different insertion logic
-            if (this.queryRunner instanceof MongoQueryRunner) {
-                const manager = this.queryRunner.manager as MongoEntityManager;
-                const insertResult = await manager.insert(subjects[0].metadata.target, bulkInsertMaps);
+            if (InstanceChecker.isMongoEntityManager(this.queryRunner.manager)) {
+                const insertResult = await this.queryRunner.manager.insert(subjects[0].metadata.target, bulkInsertMaps);
                 subjects.forEach((subject, index) => {
                     subject.identifier = insertResult.identifiers[index];
                     subject.generatedMap = insertResult.generatedMaps[index];
@@ -385,7 +384,7 @@ export class SubjectExecutor {
                 throw new SubjectWithoutIdentifierError(subject);
 
             // for mongodb we have a bit different updation logic
-            if (this.queryRunner instanceof MongoQueryRunner) {
+            if (InstanceChecker.isMongoEntityManager(this.queryRunner.manager)) {
                 const partialEntity = this.cloneMongoSubjectEntity(subject);
                 if (subject.metadata.objectIdColumn && subject.metadata.objectIdColumn.propertyName) {
                     delete partialEntity[subject.metadata.objectIdColumn.propertyName];
@@ -507,7 +506,7 @@ export class SubjectExecutor {
             });
 
             // for mongodb we have a bit different updation logic
-            if (this.queryRunner instanceof MongoQueryRunner) {
+            if (InstanceChecker.isMongoEntityManager(this.queryRunner.manager)) {
                 const manager = this.queryRunner.manager as MongoEntityManager;
                 await manager.delete(subjects[0].metadata.target, deleteMaps);
 
@@ -563,7 +562,7 @@ export class SubjectExecutor {
             let updateResult: UpdateResult;
 
             // for mongodb we have a bit different updation logic
-            if (this.queryRunner instanceof MongoQueryRunner) {
+            if (InstanceChecker.isMongoEntityManager(this.queryRunner.manager)) {
                 const partialEntity = this.cloneMongoSubjectEntity(subject);
                 if (subject.metadata.objectIdColumn && subject.metadata.objectIdColumn.propertyName) {
                     delete partialEntity[subject.metadata.objectIdColumn.propertyName];
@@ -646,7 +645,7 @@ export class SubjectExecutor {
             let updateResult: UpdateResult;
 
             // for mongodb we have a bit different updation logic
-            if (this.queryRunner instanceof MongoQueryRunner) {
+            if (InstanceChecker.isMongoEntityManager(this.queryRunner.manager)) {
                 const partialEntity = this.cloneMongoSubjectEntity(subject);
                 if (subject.metadata.objectIdColumn && subject.metadata.objectIdColumn.propertyName) {
                     delete partialEntity[subject.metadata.objectIdColumn.propertyName];
@@ -760,7 +759,7 @@ export class SubjectExecutor {
             });
 
             // mongo _id remove
-            if (this.queryRunner instanceof MongoQueryRunner) {
+            if (InstanceChecker.isMongoEntityManager(this.queryRunner.manager)) {
                 if (subject.metadata.objectIdColumn
                     && subject.metadata.objectIdColumn.databaseName
                     && subject.metadata.objectIdColumn.databaseName !== subject.metadata.objectIdColumn.propertyName

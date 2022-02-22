@@ -4,6 +4,7 @@ import {TableColumnOptions} from "../options/TableColumnOptions";
  * Table's columns in the database represented in this class.
  */
 export class TableColumn {
+    readonly "@instanceof" = Symbol.for("TableColumn");
 
     // -------------------------------------------------------------------------
     // Public Properties

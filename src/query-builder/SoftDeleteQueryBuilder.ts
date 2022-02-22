@@ -12,14 +12,15 @@ import {OrderByCondition} from "../find-options/OrderByCondition";
 import {LimitOnUpdateNotSupportedError} from "../error/LimitOnUpdateNotSupportedError";
 import {MissingDeleteDateColumnError} from "../error/MissingDeleteDateColumnError";
 import {UpdateValuesMissingError} from "../error/UpdateValuesMissingError";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {TypeORMError} from "../error";
 import {DriverUtils} from "../driver/DriverUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export class SoftDeleteQueryBuilder<Entity> extends QueryBuilder<Entity> implements WhereExpressionBuilder {
+    readonly "@instanceof" = Symbol.for("SoftDeleteQueryBuilder");
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -128,7 +129,7 @@ export class SoftDeleteQueryBuilder<Entity> extends QueryBuilder<Entity> impleme
      * Also sets a main string alias of the selection data.
      */
     from<T>(entityTarget: EntityTarget<T>, aliasName?: string): SoftDeleteQueryBuilder<T> {
-        entityTarget = entityTarget instanceof EntitySchema ? entityTarget.options.name : entityTarget;
+        entityTarget = InstanceChecker.isEntitySchema(entityTarget) ? entityTarget.options.name : entityTarget;
         const mainAlias = this.createFromAlias(entityTarget, aliasName);
         this.expressionMap.setMainAlias(mainAlias);
         return (this as any) as SoftDeleteQueryBuilder<T>;

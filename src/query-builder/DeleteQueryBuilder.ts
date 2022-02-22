@@ -7,12 +7,13 @@ import {WhereExpressionBuilder} from "./WhereExpressionBuilder";
 import {Brackets} from "./Brackets";
 import {DeleteResult} from "./result/DeleteResult";
 import {ReturningStatementNotSupportedError} from "../error/ReturningStatementNotSupportedError";
-import {EntitySchema} from "../entity-schema/EntitySchema";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export class DeleteQueryBuilder<Entity> extends QueryBuilder<Entity> implements WhereExpressionBuilder {
+    readonly "@instanceof" = Symbol.for("DeleteQueryBuilder");
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -98,7 +99,7 @@ export class DeleteQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
      * Also sets a main string alias of the selection data.
      */
     from<T>(entityTarget: EntityTarget<T>, aliasName?: string): DeleteQueryBuilder<T> {
-        entityTarget = entityTarget instanceof EntitySchema ? entityTarget.options.name : entityTarget;
+        entityTarget = InstanceChecker.isEntitySchema(entityTarget) ? entityTarget.options.name : entityTarget;
         const mainAlias = this.createFromAlias(entityTarget, aliasName);
         this.expressionMap.setMainAlias(mainAlias);
         return (this as any) as DeleteQueryBuilder<T>;

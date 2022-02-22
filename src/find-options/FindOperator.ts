@@ -1,5 +1,6 @@
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {FindOperatorType} from "./FindOperatorType";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 type SqlGeneratorType = (aliasPath: string) => string;
 
@@ -7,6 +8,7 @@ type SqlGeneratorType = (aliasPath: string) => string;
  * Find Operator used in Find Conditions.
  */
 export class FindOperator<T> {
+    readonly "@instanceof" = Symbol.for("FindOperator");
 
     // -------------------------------------------------------------------------
     // Private Properties
@@ -58,7 +60,7 @@ export class FindOperator<T> {
         this._value = value;
         this._useParameter = useParameter;
         this._multipleParameters = multipleParameters;
-        this._getSql = getSql; 
+        this._getSql = getSql;
         this._objectLiteralParameters = objectLiteralParameters;
     }
 
@@ -71,7 +73,7 @@ export class FindOperator<T> {
      * Extracts final value if value is another find operator.
      */
     get useParameter(): boolean {
-        if (this._value instanceof FindOperator)
+        if (InstanceChecker.isFindOperator(this._value))
             return this._value.useParameter;
 
         return this._useParameter;
@@ -82,7 +84,7 @@ export class FindOperator<T> {
      * Extracts final value if value is another find operator.
      */
     get multipleParameters(): boolean {
-        if (this._value instanceof FindOperator)
+        if (InstanceChecker.isFindOperator(this._value))
             return this._value.multipleParameters;
 
         return this._multipleParameters;
@@ -99,7 +101,7 @@ export class FindOperator<T> {
      * Gets the final value needs to be used as parameter value.
      */
     get value(): T {
-        if (this._value instanceof FindOperator)
+        if (InstanceChecker.isFindOperator(this._value))
             return this._value.value;
 
         return this._value;
@@ -109,7 +111,7 @@ export class FindOperator<T> {
      * Gets ObjectLiteral parameters.
      */
     get objectLiteralParameters(): ObjectLiteral|undefined {
-        if (this._value instanceof FindOperator)
+        if (InstanceChecker.isFindOperator(this._value))
             return this._value.objectLiteralParameters;
 
         return this._objectLiteralParameters;
@@ -120,7 +122,7 @@ export class FindOperator<T> {
      * Gets the child FindOperator if it exists
      */
     get child(): FindOperator<T>|undefined {
-        if (this._value instanceof FindOperator)
+        if (InstanceChecker.isFindOperator(this._value))
             return this._value;
 
         return undefined;
@@ -130,7 +132,7 @@ export class FindOperator<T> {
      * Gets the SQL generator
      */
     get getSql(): SqlGeneratorType|undefined {
-        if (this._value instanceof FindOperator)
+        if (InstanceChecker.isFindOperator(this._value))
             return this._value.getSql;
 
         return this._getSql;

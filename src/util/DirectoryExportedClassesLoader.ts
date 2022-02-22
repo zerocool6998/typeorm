@@ -1,9 +1,9 @@
 import glob from "glob";
 import {PlatformTools} from "../platform/PlatformTools";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {Logger} from "../logger/Logger";
 import {importOrRequireFile} from "./ImportUtils";
 import {ObjectUtils} from "./ObjectUtils";
+import {InstanceChecker} from "./InstanceChecker";
 
 /**
  * Loads all exported classes from the given directory.
@@ -14,7 +14,7 @@ export async function importClassesFromDirectories(logger: Logger, directories: 
     const classesNotFoundMessage = "No classes were found using the provided glob pattern: ";
     const classesFoundMessage = "All classes found using provided glob pattern";
     function loadFileClasses(exported: any, allLoaded: Function[]) {
-        if (typeof exported === "function" || exported instanceof EntitySchema) {
+        if (typeof exported === "function" || InstanceChecker.isEntitySchema(exported)) {
             allLoaded.push(exported);
 
         } else if (Array.isArray(exported)) {

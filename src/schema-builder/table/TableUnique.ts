@@ -5,6 +5,7 @@ import {UniqueMetadata} from "../../metadata/UniqueMetadata";
  * Database's table unique constraint stored in this class.
  */
 export class TableUnique {
+    readonly "@instanceof" = Symbol.for("TableUnique");
 
     // -------------------------------------------------------------------------
     // Public Properties

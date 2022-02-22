@@ -21,6 +21,7 @@ import {TypeORMError} from "../../error";
 import {Table} from "../../schema-builder/table/Table";
 import {View} from "../../schema-builder/view/View";
 import {TableForeignKey} from "../../schema-builder/table/TableForeignKey";
+import {InstanceChecker} from "../../util/InstanceChecker";
 
 /**
  * Organizes communication with MySQL DBMS.
@@ -455,7 +456,7 @@ export class AuroraDataApiDriver implements Driver {
         const driverDatabase = this.database;
         const driverSchema = undefined;
 
-        if (target instanceof Table || target instanceof View) {
+        if (InstanceChecker.isTable(target) || InstanceChecker.isView(target)) {
             const parsed = this.parseTableName(target.name);
 
             return {
@@ -465,7 +466,7 @@ export class AuroraDataApiDriver implements Driver {
             };
         }
 
-        if (target instanceof TableForeignKey) {
+        if (InstanceChecker.isTableForeignKey(target)) {
             const parsed = this.parseTableName(target.referencedTableName);
 
             return {
@@ -475,7 +476,7 @@ export class AuroraDataApiDriver implements Driver {
             };
         }
 
-        if (target instanceof EntityMetadata) {
+        if (InstanceChecker.isEntityMetadata(target)) {
             // EntityMetadata tableName is never a path
 
             return {

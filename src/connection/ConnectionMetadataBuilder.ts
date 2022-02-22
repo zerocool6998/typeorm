@@ -9,6 +9,7 @@ import {Connection} from "./Connection";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {EntitySubscriberInterface} from "../subscriber/EntitySubscriberInterface";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Builds migration instances, subscriber instances and entity metadatas for the given classes.
@@ -53,12 +54,12 @@ export class ConnectionMetadataBuilder {
         // todo: instead we need to merge multiple metadata args storages
 
         const [entityClassesOrSchemas, entityDirectories] = OrmUtils.splitClassesAndStrings(entities || []);
-        const entityClasses: Function[] = entityClassesOrSchemas.filter(entityClass => (entityClass instanceof EntitySchema) === false) as any;
-        const entitySchemas: EntitySchema<any>[] = entityClassesOrSchemas.filter(entityClass => entityClass instanceof EntitySchema) as any;
+        const entityClasses: Function[] = entityClassesOrSchemas.filter(entityClass => !InstanceChecker.isEntitySchema(entityClass)) as any;
+        const entitySchemas: EntitySchema<any>[] = entityClassesOrSchemas.filter(entityClass => InstanceChecker.isEntitySchema(entityClass)) as any;
 
         const allEntityClasses = [...entityClasses, ...(await importClassesFromDirectories(this.connection.logger, entityDirectories))];
         allEntityClasses.forEach(entityClass => { // if we have entity schemas loaded from directories
-            if (entityClass instanceof EntitySchema) {
+            if (InstanceChecker.isEntitySchema(entityClass)) {
                 entitySchemas.push(entityClass);
             }
         });

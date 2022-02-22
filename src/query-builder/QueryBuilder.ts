@@ -14,7 +14,6 @@ import {Brackets} from "./Brackets";
 import {QueryDeepPartialEntity} from "./QueryPartialEntity";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
-import {EntitySchema} from "../entity-schema/EntitySchema";
 import {FindOperator} from "../find-options/FindOperator";
 import {In} from "../find-options/operator/In";
 import {TypeORMError} from "../error";
@@ -23,6 +22,7 @@ import {NotBrackets} from "./NotBrackets";
 import {EntityPropertyNotFoundError} from "../error/EntityPropertyNotFoundError";
 import {ReturningType} from "../driver/Driver";
 import {OracleDriver} from "../driver/oracle/OracleDriver";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 // todo: completely cover query builder with tests
 // todo: entityOrProperty can be target name. implement proper behaviour if it is.
@@ -43,6 +43,7 @@ import {OracleDriver} from "../driver/oracle/OracleDriver";
  * Allows to build complex sql queries in a fashion way and execute those queries.
  */
 export abstract class QueryBuilder<Entity> {
+    readonly "@instanceof" = Symbol.for("QueryBuilder");
 
     // -------------------------------------------------------------------------
     // Public Properties
@@ -95,7 +96,7 @@ export abstract class QueryBuilder<Entity> {
      * QueryBuilder can be initialized from given Connection and QueryRunner objects or from given other QueryBuilder.
      */
     constructor(connectionOrQueryBuilder: Connection|QueryBuilder<any>, queryRunner?: QueryRunner) {
-        if (connectionOrQueryBuilder instanceof QueryBuilder) {
+        if (InstanceChecker.isQueryBuilder(connectionOrQueryBuilder)) {
             this.connection = connectionOrQueryBuilder.connection;
             this.queryRunner = connectionOrQueryBuilder.queryRunner;
             this.expressionMap = connectionOrQueryBuilder.expressionMap.clone();
@@ -166,7 +167,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const SelectQueryBuilderCls = require("./SelectQueryBuilder").SelectQueryBuilder;
-        if (this instanceof SelectQueryBuilderCls)
+        if (InstanceChecker.isSelectQueryBuilder(this))
             return this as any;
 
         return new SelectQueryBuilderCls(this);
@@ -180,7 +181,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const InsertQueryBuilderCls = require("./InsertQueryBuilder").InsertQueryBuilder;
-        if (this instanceof InsertQueryBuilderCls)
+        if (InstanceChecker.isInsertQueryBuilder(this))
             return this as any;
 
         return new InsertQueryBuilderCls(this);
@@ -211,7 +212,7 @@ export abstract class QueryBuilder<Entity> {
      */
     update(entityOrTableNameUpdateSet?: EntityTarget<any>|ObjectLiteral, maybeUpdateSet?: ObjectLiteral): UpdateQueryBuilder<any> {
         const updateSet = maybeUpdateSet ? maybeUpdateSet : entityOrTableNameUpdateSet as ObjectLiteral|undefined;
-        entityOrTableNameUpdateSet = entityOrTableNameUpdateSet instanceof EntitySchema ? entityOrTableNameUpdateSet.options.name : entityOrTableNameUpdateSet;
+        entityOrTableNameUpdateSet = InstanceChecker.isEntitySchema(entityOrTableNameUpdateSet) ? entityOrTableNameUpdateSet.options.name : entityOrTableNameUpdateSet;
 
         if (typeof entityOrTableNameUpdateSet === "function" || typeof entityOrTableNameUpdateSet === "string") {
             const mainAlias = this.createFromAlias(entityOrTableNameUpdateSet);
@@ -223,7 +224,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const UpdateQueryBuilderCls = require("./UpdateQueryBuilder").UpdateQueryBuilder;
-        if (this instanceof UpdateQueryBuilderCls)
+        if (InstanceChecker.isUpdateQueryBuilder(this))
             return this as any;
 
         return new UpdateQueryBuilderCls(this);
@@ -237,7 +238,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const DeleteQueryBuilderCls = require("./DeleteQueryBuilder").DeleteQueryBuilder;
-        if (this instanceof DeleteQueryBuilderCls)
+        if (InstanceChecker.isDeleteQueryBuilder(this))
             return this as any;
 
         return new DeleteQueryBuilderCls(this);
@@ -248,7 +249,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const SoftDeleteQueryBuilderCls = require("./SoftDeleteQueryBuilder").SoftDeleteQueryBuilder;
-        if (this instanceof SoftDeleteQueryBuilderCls)
+        if (InstanceChecker.isSoftDeleteQueryBuilder(this))
             return this as any;
 
         return new SoftDeleteQueryBuilderCls(this);
@@ -259,7 +260,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const SoftDeleteQueryBuilderCls = require("./SoftDeleteQueryBuilder").SoftDeleteQueryBuilder;
-        if (this instanceof SoftDeleteQueryBuilderCls)
+        if (InstanceChecker.isSoftDeleteQueryBuilder(this))
             return this as any;
 
         return new SoftDeleteQueryBuilderCls(this);
@@ -292,7 +293,7 @@ export abstract class QueryBuilder<Entity> {
 
         // loading it dynamically because of circular issue
         const RelationQueryBuilderCls = require("./RelationQueryBuilder").RelationQueryBuilder;
-        if (this instanceof RelationQueryBuilderCls)
+        if (InstanceChecker.isRelationQueryBuilder(this))
             return this as any;
 
         return new RelationQueryBuilderCls(this);
@@ -989,7 +990,7 @@ export abstract class QueryBuilder<Entity> {
 
             // There's times where we don't actually want to traverse deeper.
             // If the value is a `FindOperator`, or null, or not an object, then we don't, for example.
-            if (entity[key] === null || typeof entity[key] !== "object" || entity[key] instanceof FindOperator) {
+            if (entity[key] === null || typeof entity[key] !== "object" || InstanceChecker.isFindOperator(entity[key])) {
                 paths.push(path);
                 continue;
             }
@@ -1100,7 +1101,7 @@ export abstract class QueryBuilder<Entity> {
     }
 
     protected getWherePredicateCondition(aliasPath: string, parameterValue: any): WhereClauseCondition {
-        if (parameterValue instanceof FindOperator) {
+        if (InstanceChecker.isFindOperator(parameterValue)) {
             let parameters: any[] = [];
             if (parameterValue.useParameter) {
                 if (parameterValue.objectLiteralParameters) {
@@ -1173,7 +1174,7 @@ export abstract class QueryBuilder<Entity> {
             return where;
         }
 
-        if (where instanceof Brackets) {
+        if (InstanceChecker.isBrackets(where)) {
             const whereQueryBuilder = this.createQueryBuilder();
 
             whereQueryBuilder.parentQueryBuilder = this;
@@ -1188,7 +1189,7 @@ export abstract class QueryBuilder<Entity> {
             where.whereFactory(whereQueryBuilder as any);
 
             return {
-                operator: where instanceof NotBrackets ? "not" : "brackets",
+                operator: InstanceChecker.isNotBrackets(where) ? "not" : "brackets",
                 condition: whereQueryBuilder.expressionMap.wheres
             };
         }

@@ -4,9 +4,9 @@ import {Migration} from "./Migration";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {MssqlParameter} from "../driver/sqlserver/MssqlParameter";
-import {RdbmsSchemaBuilder} from "../schema-builder/RdbmsSchemaBuilder";
 import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
 import {TypeORMError} from "../error";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Executes migrations: runs pending and reverts previously executed migrations.
@@ -162,7 +162,7 @@ export class MigrationExecutor {
         // create the typeorm_metadata table if necessary
         const schemaBuilder = this.connection.driver.createSchemaBuilder();
 
-        if (schemaBuilder instanceof RdbmsSchemaBuilder) {
+        if (InstanceChecker.isRdbmsSchemaBuilder(schemaBuilder)) {
             await schemaBuilder.createMetadataTableIfNecessary(queryRunner);
         }
 

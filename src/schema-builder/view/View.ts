@@ -5,6 +5,7 @@ import {ViewOptions} from "../options/ViewOptions";
  * View in the database represented in this class.
  */
 export class View {
+    readonly "@instanceof" = Symbol.for("View");
 
     // -------------------------------------------------------------------------
     // Public Properties

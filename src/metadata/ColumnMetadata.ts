@@ -7,14 +7,15 @@ import {ColumnMetadataArgs} from "../metadata-args/ColumnMetadataArgs";
 import {Connection} from "../connection/Connection";
 import {OrmUtils} from "../util/OrmUtils";
 import {ValueTransformer} from "../decorator/options/ValueTransformer";
-import {FindOperator} from "../find-options/FindOperator";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * This metadata contains all information about entity's column.
  */
 export class ColumnMetadata {
+    readonly "@instanceof" = Symbol.for("ColumnMetadata");
 
     // ---------------------------------------------------------------------
     // Public Properties
@@ -623,10 +624,10 @@ export class ColumnMetadata {
             if (embeddedObject) {
                 if (this.relationMetadata && this.referencedColumn) {
                     const relatedEntity = this.relationMetadata.getEntityValue(embeddedObject);
-                    if (relatedEntity && ObjectUtils.isObject(relatedEntity) && !(relatedEntity instanceof FindOperator) && !(Buffer.isBuffer(relatedEntity))) {
+                    if (relatedEntity && ObjectUtils.isObject(relatedEntity) && !(InstanceChecker.isFindOperator(relatedEntity)) && !(Buffer.isBuffer(relatedEntity))) {
                         value = this.referencedColumn.getEntityValue(relatedEntity);
 
-                    } else if (embeddedObject[this.propertyName] && ObjectUtils.isObject(embeddedObject[this.propertyName]) && !(embeddedObject[this.propertyName] instanceof FindOperator) && !(Buffer.isBuffer(embeddedObject[this.propertyName])) && !(embeddedObject[this.propertyName] instanceof Date)) {
+                    } else if (embeddedObject[this.propertyName] && ObjectUtils.isObject(embeddedObject[this.propertyName]) && !(InstanceChecker.isFindOperator(embeddedObject[this.propertyName])) && !(Buffer.isBuffer(embeddedObject[this.propertyName])) && !(embeddedObject[this.propertyName] instanceof Date)) {
                         value = this.referencedColumn.getEntityValue(embeddedObject[this.propertyName]);
 
                     } else {
@@ -647,10 +648,10 @@ export class ColumnMetadata {
         } else { // no embeds - no problems. Simply return column name by property name of the entity
             if (this.relationMetadata && this.referencedColumn) {
                 const relatedEntity = this.relationMetadata.getEntityValue(entity);
-                if (relatedEntity && ObjectUtils.isObject(relatedEntity) && !(relatedEntity instanceof FindOperator) && !(typeof relatedEntity === "function") && !(Buffer.isBuffer(relatedEntity))) {
+                if (relatedEntity && ObjectUtils.isObject(relatedEntity) && !(InstanceChecker.isFindOperator(relatedEntity)) && !(typeof relatedEntity === "function") && !(Buffer.isBuffer(relatedEntity))) {
                     value = this.referencedColumn.getEntityValue(relatedEntity);
 
-                } else if (entity[this.propertyName] && ObjectUtils.isObject(entity[this.propertyName]) && !(entity[this.propertyName] instanceof FindOperator) && !(typeof entity[this.propertyName] === "function") && !(Buffer.isBuffer(entity[this.propertyName])) && !(entity[this.propertyName] instanceof Date)) {
+                } else if (entity[this.propertyName] && ObjectUtils.isObject(entity[this.propertyName]) && !(InstanceChecker.isFindOperator(entity[this.propertyName])) && !(typeof entity[this.propertyName] === "function") && !(Buffer.isBuffer(entity[this.propertyName])) && !(entity[this.propertyName] instanceof Date)) {
                     value = this.referencedColumn.getEntityValue(entity[this.propertyName]);
 
                 } else {

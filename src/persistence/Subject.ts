@@ -5,6 +5,7 @@ import {OrmUtils} from "../util/OrmUtils";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {ObjectUtils} from "../util/ObjectUtils";
+import {InstanceChecker} from "../util/InstanceChecker";
 
 /**
  * Subject is a subject of persistence.
@@ -17,6 +18,7 @@ import {ObjectUtils} from "../util/ObjectUtils";
  * Having this collection of subjects we can perform database queries.
  */
 export class Subject {
+    readonly "@instanceof" = Symbol.for("Subject");
 
     // -------------------------------------------------------------------------
     // Properties
@@ -226,7 +228,7 @@ export class Subject {
         const changeMapsWithoutValues: SubjectChangeMap[] = [];
         const changeSet = this.changeMaps.reduce((updateMap, changeMap) => {
             let value = changeMap.value;
-            if (value instanceof Subject) {
+            if (InstanceChecker.isSubject(value)) {
 
                 // referenced columns can refer on values both which were just inserted and which were present in the model
                 // if entity was just inserted valueSets must contain all values from the entity and values just inserted in the database
