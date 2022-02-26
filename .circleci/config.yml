@@ -85,7 +85,7 @@ jobs:
       - checkout
       - install-packages:
           cache-key: node12
-      - run: lint --check "./src/**/*.ts" "./test/**/*.ts" "./sample/**/*.ts"
+      - run: npm run lint
 
   build:
     working_directory: ~/typeorm
