@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Cat} from "./entity/Cat";
 import {Dog} from "./entity/Dog";
 
 describe("github issues > #620 Feature Request: Flexibility in Foreign Key names", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

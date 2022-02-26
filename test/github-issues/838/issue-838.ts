@@ -1,13 +1,13 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Flight} from "./entity/Flight";
 import {expect} from "chai";
 
 describe.skip("github issues > #838 Time zones for timestamp columns are incorrectly fetched and persisted in PostgreSQL", () => {
 
-    let connections: Connection[];
-    let postgresConnection: Connection;
+    let connections: DataSource[];
+    let postgresConnection: DataSource;
     const testDateString = "1989-08-16T10:00:00+03:00";
 
     before(async () => {

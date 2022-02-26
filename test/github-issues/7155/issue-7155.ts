@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {Connection, ObjectLiteral, TreeRepository} from "../../../src";
+import {DataSource, ObjectLiteral, TreeRepository} from "../../../src";
 import {NestedSetMultipleRootError} from "../../../src/error/NestedSetMultipleRootError";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {
@@ -25,7 +25,7 @@ import {
 } from "./entity/SqlServerTreeEntities";
 
 describe("github issues > #7155", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => (connections = await generateConnections()));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));
@@ -2092,7 +2092,7 @@ describe("github issues > #7155", () => {
 
 
 describe("github issues > #7155 > tree relations", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({
@@ -2223,7 +2223,7 @@ function isResultExpected(results: ObjectLiteral[], expectedResults: ObjectLiter
     });
 }
 
-async function generateConnections(): Promise<Connection[]> {
+async function generateConnections(): Promise<DataSource[]> {
     const connections = await Promise.all([createTestingConnections({
         entities: [__dirname + "/entity/Remaining*{.js,.ts}"],
         enabledDrivers: ["mysql", "postgres"]
@@ -2232,7 +2232,7 @@ async function generateConnections(): Promise<Connection[]> {
         enabledDrivers: ["mssql"]
     })]);
 
-    let result: Connection[] = [];
+    let result: DataSource[] = [];
     for (const connection of connections) {
         result = result.concat(connection);
     }
@@ -2240,7 +2240,7 @@ async function generateConnections(): Promise<Connection[]> {
     return result;
 }
 
-function getEntity(connection: Connection, type: EntityType): any {
+function getEntity(connection: DataSource, type: EntityType): any {
     if (connection.driver.options.type === "mssql") {
         return entityMap[type]["mssql"];
     }

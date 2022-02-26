@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { expect } from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { User } from "./entity/User";
 import { Role } from "./entity/Role";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../../utils/test-utils";
 
 describe("github issues > #6265 `fix: resolve issue with find with relations returns soft-deleted entities", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         connections = await createTestingConnections({

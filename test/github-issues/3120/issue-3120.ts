@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Address} from "./entity/Address";
 import {ActionDetails} from "./entity/ActionDetails";
 import {ActionLog} from "./entity/ActionLog";
@@ -9,7 +9,7 @@ import {Person} from "./entity/Person";
 
 describe("github issues > #3120 Add relation option \"createForeignKeyConstraints\"", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         subscribers: [__dirname + "/subscriber/*{.js,.ts}"],
@@ -29,7 +29,7 @@ describe("github issues > #3120 Add relation option \"createForeignKeyConstraint
         expect(joinTable!.foreignKeys.length).to.be.equal(2);
 
     })));
-    
+
     it("should not create foreign key for relation with createForeignKeyConstraints equal false", () => Promise.all(connections.map(async function(connection) {
 
         const queryRunner = connection.createQueryRunner();
@@ -53,7 +53,7 @@ describe("github issues > #3120 Add relation option \"createForeignKeyConstraint
                 fakeAddresses.push(fakeRecord);
             }
             await connection.manager.save(fakeAddresses);
-            
+
             const fakePeople: Person[] = [];
             for (let i = 0; i < 8; i++) {
                 const fakeRecord = new Person();
@@ -61,7 +61,7 @@ describe("github issues > #3120 Add relation option \"createForeignKeyConstraint
                 fakePeople.push(fakeRecord);
             }
             await connection.manager.save(fakePeople);
-            
+
             const fakeDetails: ActionDetails[] = [];
             for (let i = 0; i < 8; i++) {
                 const fakeRecord = new ActionDetails();
@@ -69,7 +69,7 @@ describe("github issues > #3120 Add relation option \"createForeignKeyConstraint
                 fakeDetails.push(fakeRecord);
             }
             await connection.manager.save(fakeDetails);
-            
+
             const fakeLogs: ActionLog[] = [];
             for (let i = 0; i < 8; i++) {
                 const fakeRecord = new ActionLog();
@@ -109,7 +109,7 @@ describe("github issues > #3120 Add relation option \"createForeignKeyConstraint
                 where: { action: "Test Log #1" },
                 relations: ["person", "actionDetails", "addresses"]
             });
-    
+
             loadedLog.person.name.should.be.equal("Test Person #1");
             loadedLog.actionDetails.description.should.be.equal("Test Details #1");
             loadedLog.addresses.length.should.be.equal(3);

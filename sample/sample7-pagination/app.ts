@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {PostCategory} from "./entity/PostCategory";
 import {PostAuthor} from "./entity/PostAuthor";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -19,10 +19,10 @@ createConnection(options).then(connection => {
 
     let postRepository = connection.getRepository(Post);
     const posts: Post[] = [];
-    
+
     let author = new PostAuthor();
     author.name = "Umed";
-    
+
     for (let i = 0; i < 100; i++) {
 
         let category1 = new PostCategory();
@@ -39,7 +39,7 @@ createConnection(options).then(connection => {
 
         posts.push(post);
     }
-    
+
     const qb = postRepository
         .createQueryBuilder("p")
         .leftJoinAndSelect("p.author", "author")
@@ -60,7 +60,7 @@ createConnection(options).then(connection => {
         .then(totalCount => {
             console.log("total post count: ", totalCount);
             console.log("now lets try to load it with same repository method:");
-            
+
             return postRepository.findAndCount();
         })
         .then(entitiesWithCount => {

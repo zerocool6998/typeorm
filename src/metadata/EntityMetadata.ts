@@ -1,6 +1,6 @@
 import {QueryRunner, SelectQueryBuilder} from "..";
 import {ObjectLiteral} from "../common/ObjectLiteral";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {CannotCreateEntityIdMapError} from "../error/CannotCreateEntityIdMapError";
 import {OrderByCondition} from "../find-options/OrderByCondition";
 import {TableMetadataArgs} from "../metadata-args/TableMetadataArgs";
@@ -37,7 +37,7 @@ export class EntityMetadata {
     /**
      * Connection where this entity metadata is created.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Metadata arguments used to build this entity metadata.
@@ -99,7 +99,7 @@ export class EntityMetadata {
      * View's expression.
      * Used in views
      */
-    expression?: string|((connection: Connection) => SelectQueryBuilder<any>);
+    expression?: string|((connection: DataSource) => SelectQueryBuilder<any>);
 
     /**
      * View's dependencies.
@@ -521,7 +521,7 @@ export class EntityMetadata {
     // ---------------------------------------------------------------------
 
     constructor(options: {
-        connection: Connection,
+        connection: DataSource,
         inheritanceTree?: Function[],
         inheritancePattern?: "STI"/*|"CTI"*/,
         tableTree?: TreeMetadataArgs,

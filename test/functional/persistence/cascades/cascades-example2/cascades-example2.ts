@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {Question} from "./entity/Question";
 import {Answer} from "./entity/Answer";
 import {Photo} from "./entity/Photo";
@@ -8,7 +8,7 @@ import {User} from "./entity/User";
 
 describe("persistence > cascades > example 2", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

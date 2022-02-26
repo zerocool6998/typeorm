@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 
 describe("github issues > #3422 cannot save to nested-tree table if schema is used in postgres", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

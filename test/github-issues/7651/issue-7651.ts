@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Order } from "./entity/order";
 import { OrderTestEntity } from "./entity/order-test.entity";
@@ -7,7 +7,7 @@ import { OrderTestEntity } from "./entity/order-test.entity";
 describe("github issues > #7651 Enum that contains functions is not accordingly translated to SQL", () => {
 
     describe("entity", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],
             schemaCreate: true,
@@ -51,7 +51,7 @@ describe("github issues > #7651 Enum that contains functions is not accordingly 
     });
 
     describe("schema", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],
             schemaCreate: false,

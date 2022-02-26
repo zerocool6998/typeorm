@@ -1,9 +1,9 @@
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Test} from "./entity/Test";
 
 describe("github issues > #2333 datetime column showing changed on every schema:sync run", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["mysql", "mariadb"],
         schemaCreate: false,

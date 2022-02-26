@@ -1,11 +1,11 @@
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {SubUser} from "./entity/User";
 import {expect} from "chai";
 
 describe("github issues > #2253 - inserting multiple child entities fails", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],

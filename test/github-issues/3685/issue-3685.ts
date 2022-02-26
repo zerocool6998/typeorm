@@ -1,11 +1,11 @@
 import {expect} from "chai";
-import {Brackets, Connection} from "../../../src";
+import {Brackets, DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {User} from "./entity/user";
 
 describe("github issues > #3685 Brackets syntax failed when use where with object literal", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         dropSchema: true,

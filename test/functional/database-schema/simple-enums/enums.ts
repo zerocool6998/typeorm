@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import { Connection } from "../../../../src";
+import { DataSource } from "../../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../../utils/test-utils";
 import { SimpleEnumEntity, NumericEnum, StringEnum, HeterogeneousEnum, StringNumericEnum } from "./entity/SimpleEnumEntity";
 
 describe("database schema > simple-enums", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

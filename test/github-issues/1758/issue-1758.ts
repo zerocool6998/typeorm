@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 
 describe("github issues > #1758 Synchronization bug in PostgreSQL bug occurs when we explicitly state the default schema as 'public'", () => {
 
     describe("postgres, cockroachdb", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [__dirname + "/entity/*{.js,.ts}"],
@@ -23,7 +23,7 @@ describe("github issues > #1758 Synchronization bug in PostgreSQL bug occurs whe
     })
 
     describe("mssql", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [__dirname + "/entity/*{.js,.ts}"],

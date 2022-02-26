@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Simple} from "./entity/Simple";
 import {Complex} from "./entity/Complex";
 
 describe("github issues > #2103 query builder regression", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: true,

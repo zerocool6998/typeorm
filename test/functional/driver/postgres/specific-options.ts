@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {expect} from "chai";
 
 describe("postgres specific options", () => {
-  let connections: Connection[];
+  let connections: DataSource[];
   before(async () => connections = await createTestingConnections({
     enabledDrivers: ["postgres"],
     driverSpecific: {

@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {Post} from "./entity/Post";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 
 describe("github issues > #970 Mongo Bad Sort Specification", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Post],
         enabledDrivers: ["mongodb"]

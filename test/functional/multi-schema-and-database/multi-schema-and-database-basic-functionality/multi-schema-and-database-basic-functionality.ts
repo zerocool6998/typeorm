@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
@@ -14,7 +14,7 @@ describe("multi-schema-and-database > basic-functionality", () => {
 
     describe("custom-table-schema", () => {
 
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [Post, User, Category],
@@ -168,7 +168,7 @@ describe("multi-schema-and-database > basic-functionality", () => {
 
     describe("custom-table-schema-and-database", () => {
 
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [Question, Answer],
@@ -255,7 +255,7 @@ describe("multi-schema-and-database > basic-functionality", () => {
 
     describe("custom-database", () => {
 
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [Person],

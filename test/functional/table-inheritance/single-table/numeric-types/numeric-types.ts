@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {Student} from "./entity/Student";
 import {Teacher} from "./entity/Teacher";
 import {Person} from "./entity/Person";
 
 describe("table-inheritance > single-table > numeric types", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Person, Student, Teacher]
     }));

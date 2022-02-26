@@ -1,5 +1,5 @@
 import {EntityManager} from "../../entity-manager/EntityManager";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {QueryRunner} from "../../query-runner/QueryRunner";
 
 /**
@@ -10,7 +10,7 @@ export interface TransactionStartEvent {
     /**
      * Connection used in the event.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * QueryRunner used in the event transaction.

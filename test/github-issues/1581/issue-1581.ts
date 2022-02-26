@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {User} from "./entity/User";
 import {Product} from "./entity/Product";
 import {DeliverySlot} from "./entity/DeliverySlot";
@@ -9,7 +9,7 @@ import {OrderItem} from "./entity/OrderItem";
 
 describe.skip("github issues > #1581 Composite key breaks OneToMany relation", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql"]

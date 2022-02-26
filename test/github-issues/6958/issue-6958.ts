@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { PostgresDriver } from "../../../src/driver/postgres/PostgresDriver";
 import { expect } from "chai";
 
 describe("github issues > #6958 Promises never get resolved in specific cases", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
     }));

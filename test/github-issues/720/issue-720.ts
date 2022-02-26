@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Participant} from "./entity/Participant";
 import {expect} from "chai";
 import {Message} from "./entity/Message";
@@ -9,7 +9,7 @@ import {Locale} from "./entity/Locale";
 
 describe("github issues > #720 `.save()` not updating composite key with Postgres", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres"]

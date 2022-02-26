@@ -1,7 +1,7 @@
 import {createConnection} from "../globals";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {PlatformTools} from "../platform/PlatformTools";
 import * as yargs from "yargs";
 import chalk from "chalk";
@@ -33,7 +33,7 @@ export class QueryCommand implements yargs.CommandModule {
 
     async handler(args: yargs.Arguments) {
 
-        let connection: Connection|undefined = undefined;
+        let connection: DataSource|undefined = undefined;
         let queryRunner: QueryRunner|undefined = undefined;
         try {
 
@@ -69,8 +69,8 @@ export class QueryCommand implements yargs.CommandModule {
 
         } catch (err) {
             if (queryRunner) await (queryRunner as QueryRunner).release();
-            if (connection) await (connection as Connection).close();
-            
+            if (connection) await (connection as DataSource).close();
+
             PlatformTools.logCmdErr("Error during query execution:", err);
             process.exit(1);
         }

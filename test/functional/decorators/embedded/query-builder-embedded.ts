@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {Counters} from "./entity/Counters";
 
 describe("decorators > embedded", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     beforeEach(() => createTestingConnections({
         entities: [Post, Counters]
     }).then(all => connections = all));

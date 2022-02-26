@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {Post} from "./entity/Post";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 
 // skipped because there is no way to get column collation from SQLite table schema
 describe.skip("database schema > column collation > sqlite", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

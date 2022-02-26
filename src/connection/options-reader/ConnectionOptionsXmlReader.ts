@@ -1,6 +1,6 @@
 import {parseString as xmlParser} from 'xml2js';
 import {PlatformTools} from "../../platform/PlatformTools";
-import {ConnectionOptions} from "../ConnectionOptions";
+import {DataSourceOptions} from "../../data-source/DataSourceOptions";
 
 /**
  * Reads connection options defined in the xml file.
@@ -14,7 +14,7 @@ export class ConnectionOptionsXmlReader {
     /**
      * Reads connection options from given xml file.
      */
-    async read(path: string): Promise<ConnectionOptions[]> {
+    async read(path: string): Promise<DataSourceOptions[]> {
         const xml = await this.readXml(path);
         return (xml.connection as any[]).map(connection => {
             return {

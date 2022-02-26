@@ -1,7 +1,7 @@
 import "../../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {
-    Connection,
+    DataSource,
     LockNotSupportedOnGivenDriverError,
     NoVersionOrUpdateDateColumnError,
     OptimisticLockCanNotBeUsedError,
@@ -18,7 +18,7 @@ import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("repository > find options > locking", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

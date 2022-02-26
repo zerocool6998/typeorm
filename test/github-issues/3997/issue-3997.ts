@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Photo} from "./entity/Photo";
 import {User} from "./entity/User";
 
 describe("github issues > #3997 synchronize=true always failing when using decimal column type with a foreign key constraint", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         schemaCreate: false,
         dropSchema: true,

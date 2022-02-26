@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 
 describe("sqlite driver > throws an error when queried after closing connection", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [],
         enabledDrivers: ["sqlite"],

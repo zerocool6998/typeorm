@@ -1,11 +1,11 @@
 import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import First from "./entity/first";
 import Second from "./entity/second";
 
 describe("github issues > #4958 getRepository returns results from another Repo", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [First, Second],
         enabledDrivers: ["sqlite"]

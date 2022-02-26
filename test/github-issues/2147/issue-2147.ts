@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {User} from "./entity/User";
 
 // TODO: wrong test
 describe.skip("github issues > #2147 Lazy load JoinColumn with multiple columns name property is ignored for second reference column", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
          entities: [__dirname + "/entity/*{.js,.ts}"],
          schemaCreate: true,

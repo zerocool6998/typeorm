@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
 import {Tag} from "./entity/Tag";
 
 describe("relations > multiple-primary-keys > one-to-one", () => {
-    
-    let connections: Connection[];
+
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

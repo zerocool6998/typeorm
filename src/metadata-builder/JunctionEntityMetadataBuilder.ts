@@ -1,5 +1,5 @@
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {IndexMetadata} from "../metadata/IndexMetadata";
@@ -18,7 +18,7 @@ export class JunctionEntityMetadataBuilder {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private connection: Connection) {
+    constructor(private connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

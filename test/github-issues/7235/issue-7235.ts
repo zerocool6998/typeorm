@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Animal} from "./entity/Animal";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {VersionUtils} from "../../../src/util/VersionUtils";
 
@@ -15,7 +15,7 @@ describe('github issues > #7235 Use "INSERT...RETURNING" in MariaDB.', () => {
             }
         }));
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
@@ -27,7 +27,7 @@ describe('github issues > #7235 Use "INSERT...RETURNING" in MariaDB.', () => {
     after(() => closeTestingConnections(connections));
 
     it("should allow `DELETE...RETURNING` on MariaDB >= 10.0.5",
-        runOnSpecificVersion("10.0.5", async (connection: Connection) => {
+        runOnSpecificVersion("10.0.5", async (connection: DataSource) => {
             const animalRepository = connection.getRepository(Animal);
 
             await animalRepository
@@ -54,7 +54,7 @@ describe('github issues > #7235 Use "INSERT...RETURNING" in MariaDB.', () => {
     );
 
     it("should allow `INSERT...RETURNING` on MariaDB >= 10.5.0",
-        runOnSpecificVersion("10.5.0", async (connection: Connection) => {
+        runOnSpecificVersion("10.5.0", async (connection: DataSource) => {
             const animalRepository = connection.getRepository(Animal);
             const insertDogFox = await animalRepository
                 .createQueryBuilder()

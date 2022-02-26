@@ -5,10 +5,10 @@ import {
     closeTestingConnections,
     reloadTestingDatabases
 } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 
 describe("github issues > #4701 Duplicate migrations are executed.", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         migrations: [__dirname + "/migration/*.js"],
         enabledDrivers: ["postgres"],

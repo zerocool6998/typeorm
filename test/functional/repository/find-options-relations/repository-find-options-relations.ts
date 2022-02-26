@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import "../../../utils/test-setup"
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {User} from "./entity/User";
 import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
@@ -15,7 +15,7 @@ describe("repository > find options > relations", () => {
     // Configuration
     // -------------------------------------------------------------------------
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

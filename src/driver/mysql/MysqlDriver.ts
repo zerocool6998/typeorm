@@ -7,7 +7,7 @@ import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
 import {DateUtils} from "../../util/DateUtils";
 import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {RdbmsSchemaBuilder} from "../../schema-builder/RdbmsSchemaBuilder";
 import {MysqlConnectionOptions} from "./MysqlConnectionOptions";
 import {MappedColumnTypes} from "../types/MappedColumnTypes";
@@ -38,7 +38,7 @@ export class MysqlDriver implements Driver {
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Mysql underlying library.
@@ -325,7 +325,7 @@ export class MysqlDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         this.connection = connection;
         this.options = {
             legacySpatialSupport: true,

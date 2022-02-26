@@ -4,7 +4,7 @@ import {EntityMetadata} from "./EntityMetadata";
 import {EmbeddedMetadataArgs} from "../metadata-args/EmbeddedMetadataArgs";
 import {RelationIdMetadata} from "./RelationIdMetadata";
 import {RelationCountMetadata} from "./RelationCountMetadata";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {EntityListenerMetadata} from "./EntityListenerMetadata";
 import {IndexMetadata} from "./IndexMetadata";
 import {UniqueMetadata} from "./UniqueMetadata";
@@ -211,7 +211,7 @@ export class EmbeddedMetadata {
     // Builder Methods
     // ---------------------------------------------------------------------
 
-    build(connection: Connection): this {
+    build(connection: DataSource): this {
         this.embeddeds.forEach(embedded => embedded.build(connection));
         this.prefix = this.buildPrefix(connection);
         this.parentPropertyNames = this.buildParentPropertyNames();
@@ -256,7 +256,7 @@ export class EmbeddedMetadata {
         throw new TypeORMError(`Invalid prefix option given for ${this.entityMetadata.targetName}#${this.propertyName}`);
     }
 
-    protected buildPrefix(connection: Connection): string {
+    protected buildPrefix(connection: DataSource): string {
         if (connection.driver.options.type === "mongodb")
             return this.propertyName;
 

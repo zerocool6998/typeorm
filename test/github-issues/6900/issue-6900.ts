@@ -4,12 +4,12 @@ import {
     setupTestingConnections
 } from "../../utils/test-utils";
 import {MongoDriver} from "../../../src/driver/mongodb/MongoDriver";
-import {Connection, ConnectionOptions, createConnection, MongoClient} from "../../../src";
+import {DataSource, DataSourceOptions, createConnection, MongoClient} from "../../../src";
 import {Warn} from "./entity/Warn";
 import {MongoConnectionOptions} from "../../../src/driver/mongodb/MongoConnectionOptions";
 
 describe("github issues > #6900 MongoDB ConnectionManager doesn't select given database, creates new database \"test\" instead", () => {
-    let connections: Connection[] = [];
+    let connections: DataSource[] = [];
     afterEach(async () => {
         await closeTestingConnections(connections);
         connections.length = 0;
@@ -29,7 +29,7 @@ describe("github issues > #6900 MongoDB ConnectionManager doesn't select given d
             ...options[0],
             url: `mongodb://${host}`,
             database: 'foo'
-        } as ConnectionOptions);
+        } as DataSourceOptions);
         connections.push(connection);
 
         await reloadTestingDatabases(connections);
@@ -56,7 +56,7 @@ describe("github issues > #6900 MongoDB ConnectionManager doesn't select given d
             entities: [ Warn ],
             url: `mongodb://${host}`,
             database: 'foo'
-        } as ConnectionOptions);
+        } as DataSourceOptions);
         connections.push(connection);
 
         await reloadTestingDatabases(connections);

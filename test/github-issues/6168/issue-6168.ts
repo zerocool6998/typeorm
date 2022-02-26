@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Table} from "../../../src/schema-builder/table/Table";
 import { QueryRunner } from "../../../src";
@@ -57,7 +57,7 @@ const createTables = async (queryRunner: QueryRunner, dbName: string) => {
 
 describe("github issues > #6168 fix multiple foreign keys with the same name in a mysql multi-tenanted DB", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],
@@ -98,7 +98,7 @@ describe("github issues > #6168 fix multiple foreign keys with the same name in 
 
         expect(categoryTable.foreignKeys.length).to.eq(1);
         expect(categoryTable.foreignKeys[0].name).to.eq("FK_CATEGORY_QUESTION");
-        expect(categoryTable.foreignKeys[0].columnNames.length).to.eq(1);  // before the fix this was 2, one for each schema 
+        expect(categoryTable.foreignKeys[0].columnNames.length).to.eq(1);  // before the fix this was 2, one for each schema
         expect(categoryTable.foreignKeys[0].columnNames[0]).to.eq("questionId");
 
         expect(questionTable.foreignKeys.length).to.eq(0);

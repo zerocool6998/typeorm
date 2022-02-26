@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { closeTestingConnections, createTestingConnections } from "../../utils/test-utils";
 import {Person} from "./entity/Person";
 import {User} from "./entity/User";
 
 describe.skip("github issues > #2758 Insert fails when related OneToOne entity's primary key is also a foreign key", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

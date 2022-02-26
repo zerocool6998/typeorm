@@ -1,4 +1,4 @@
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 
 import {Role} from "./entity/Role";
@@ -7,7 +7,7 @@ import {EventRole} from "./entity/EventRole";
 
 // todo: fix later (refactor persistence)
 describe.skip("github issues > #1926 Update fails for entity with compound relation-based primary key on OneToMany relationship", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres"],

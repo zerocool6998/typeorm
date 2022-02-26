@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {File} from "./entity/file.entity";
 import {TreeRepository} from "../../../src";
 
 describe("github issues > #2518 TreeRepository.findDescendantsTree does not load descendants when relationship id property exist", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
         (connections = await createTestingConnections({

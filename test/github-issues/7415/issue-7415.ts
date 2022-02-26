@@ -4,13 +4,13 @@ import {
     closeTestingConnections,
     reloadTestingDatabases,
 } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { Category } from "./entity/Category";
 import { Slug } from "./entity/Slug";
 import { expect } from "chai";
 
 describe("github issues > #7415 Tree entities with embedded primary columns are not built correctly", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

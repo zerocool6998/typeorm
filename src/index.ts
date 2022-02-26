@@ -125,12 +125,12 @@ export * from "./driver/types/DatabaseType";
 export * from "./driver/types/ReplicationMode";
 export * from "./driver/sqlserver/MssqlParameter";
 
-export * from "./data-source";
+// export * from "./data-source";
 
 export {ConnectionOptionsReader} from "./connection/ConnectionOptionsReader";
-export {Connection} from "./connection/Connection";
+export {DataSource} from "./data-source/DataSource";
 export {ConnectionManager} from "./connection/ConnectionManager";
-export {ConnectionOptions} from "./connection/ConnectionOptions";
+export {DataSourceOptions} from "./data-source/DataSourceOptions";
 export {Driver} from "./driver/Driver";
 export {QueryBuilder} from "./query-builder/QueryBuilder";
 export {SelectQueryBuilder} from "./query-builder/SelectQueryBuilder";

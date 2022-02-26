@@ -1,5 +1,5 @@
 import sinon from "sinon";
-import {ConnectionOptions, ConnectionOptionsReader, DatabaseType} from "../../../src";
+import {DataSourceOptions, ConnectionOptionsReader, DatabaseType} from "../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -12,13 +12,13 @@ import {Post} from "./entity/Post";
 import {resultsTemplates} from "./templates/result-templates-create";
 
 describe("commands - migration create", () => {
-    let connectionOptions: ConnectionOptions[];
+    let connectionOptions: DataSourceOptions[];
     let createFileStub: sinon.SinonStub;
     let timerStub: sinon.SinonFakeTimers;
     let getConnectionOptionsStub: sinon.SinonStub;
     let migrationCreateCommand: MigrationCreateCommand;
     let connectionOptionsReader: ConnectionOptionsReader;
-    let baseConnectionOptions: ConnectionOptions;
+    let baseConnectionOptions: DataSourceOptions;
 
     const enabledDrivers = [
         "postgres",

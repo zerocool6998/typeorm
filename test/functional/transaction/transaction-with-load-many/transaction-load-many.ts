@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {Post} from "./entity/Post";
 import {MysqlDriver} from "../../../../src/driver/mysql/MysqlDriver";
 import {PostgresDriver} from "../../../../src/driver/postgres/PostgresDriver";
@@ -9,7 +9,7 @@ import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("transaction > transaction with load many", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres", "mariadb", "mysql"]

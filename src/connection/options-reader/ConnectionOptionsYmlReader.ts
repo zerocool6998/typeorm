@@ -1,6 +1,6 @@
 import ymlParser from 'js-yaml';
 import {PlatformTools} from "../../platform/PlatformTools";
-import {ConnectionOptions} from "../ConnectionOptions";
+import {DataSourceOptions} from "../../data-source/DataSourceOptions";
 
 /**
  * Reads connection options defined in the yml file.
@@ -14,7 +14,7 @@ export class ConnectionOptionsYmlReader {
     /**
      * Reads connection options from given yml file.
      */
-    async read(path: string): Promise<ConnectionOptions[]> {
+    async read(path: string): Promise<DataSourceOptions[]> {
         const contentsBuffer = PlatformTools.readFileSync(path);
         const contents = contentsBuffer.toString();
 

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -11,7 +11,7 @@ import { Post } from "./entity/Post";
 import { PostCategory } from "./entity/PostCategory";
 
 describe("other issues > getId should not return undefined for composite primary keys with lazy relations", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

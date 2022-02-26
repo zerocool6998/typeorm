@@ -1,12 +1,12 @@
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {Test} from "./entity/Test";
 import {AmbigiousPrimaryKey} from "./entity/AmbigiousPrimaryKey";
 
 describe("query builder > count", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Test, AmbigiousPrimaryKey],
         schemaCreate: true,

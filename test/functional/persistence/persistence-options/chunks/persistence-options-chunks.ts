@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {Post} from "./entity/Post";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 
 describe("persistence > persistence options > chunks", () => {
 
@@ -9,7 +9,7 @@ describe("persistence > persistence options > chunks", () => {
     // Configuration
     // -------------------------------------------------------------------------
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({ __dirname, enabledDrivers: ["postgres"] }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

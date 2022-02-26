@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {PostEntity} from "./entity/PostEntity";
 import {CategoryEntity} from "./entity/CategoryEntity";
 
 describe("entity schemas > basic functionality", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [
             PostEntity,

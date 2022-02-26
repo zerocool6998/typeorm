@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 
 import { createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
 
@@ -8,7 +8,7 @@ import { Post as Post2 } from "./entity/post_with_null_2.entity"
 
 describe("github issues > #6950 postgres: Inappropiate migration generated for `default: null`", () => {
     describe("null default", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             schemaCreate: false,
             dropSchema: true,
@@ -34,7 +34,7 @@ describe("github issues > #6950 postgres: Inappropiate migration generated for `
     })
 
     describe("null default and nullable", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             schemaCreate: false,
             dropSchema: true,

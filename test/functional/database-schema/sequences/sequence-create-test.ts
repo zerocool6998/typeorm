@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {expect} from "chai";
 
 import {Person} from "./entity/Person";
 
 describe("sequences > creating a sequence and marking the column as generated", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Person],
         enabledDrivers: ["postgres"],
@@ -26,7 +26,7 @@ describe("sequences > creating a sequence and marking the column as generated", 
             expect(table!.findColumnByName("Id")!.isGenerated).to.be.true;
 
         })));
-            
+
     });
 
 });

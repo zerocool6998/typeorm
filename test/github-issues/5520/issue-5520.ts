@@ -2,13 +2,13 @@ import "reflect-metadata";
 
 import { assert } from "chai";
 
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { TestChild } from "./entity/TestChild";
 import { TestParent } from "./entity/TestParent";
 
 describe("github issues > #5520 save does not return generated id if object to save contains a many to one relationship with an undefined id", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

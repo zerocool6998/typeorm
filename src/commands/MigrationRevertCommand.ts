@@ -1,6 +1,6 @@
 import {createConnection} from "../globals";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import * as yargs from "yargs";
 import {PlatformTools} from "../platform/PlatformTools";
 
@@ -37,7 +37,7 @@ export class MigrationRevertCommand implements yargs.CommandModule {
             console.log("'migrations:revert' is deprecated, please use 'migration:revert' instead");
         }
 
-        let connection: Connection|undefined = undefined;
+        let connection: DataSource|undefined = undefined;
         try {
             const connectionOptionsReader = new ConnectionOptionsReader({
                 root: process.cwd(),
@@ -76,7 +76,7 @@ export class MigrationRevertCommand implements yargs.CommandModule {
             await connection.close();
 
         } catch (err) {
-            if (connection) await (connection as Connection).close();
+            if (connection) await (connection as DataSource).close();
 
             PlatformTools.logCmdErr("Error during migration revert:", err);
             process.exit(1);

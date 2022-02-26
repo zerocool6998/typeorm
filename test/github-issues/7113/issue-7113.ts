@@ -1,12 +1,12 @@
 import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {Configuration} from "./entity/Configuration";
 
 describe("github issues > #7113 Soft deleted docs still being pulled in Mongodb", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: true,

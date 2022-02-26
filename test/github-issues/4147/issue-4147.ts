@@ -3,12 +3,12 @@ import {
     createTestingConnections,
     reloadTestingDatabases
 } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { EntitySchema } from "../../../src";
 import { Post, PostSchema } from "./entity/Post";
 
 describe("github issues > #4147 `SQLITE_ERROR: near \"-\": syntax error` when use sqlite, simple-enum", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

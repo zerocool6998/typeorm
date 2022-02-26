@@ -5,7 +5,7 @@ import {TableIndex} from "./table/TableIndex";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {EntityMetadata} from "../metadata/EntityMetadata";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {SchemaBuilder} from "./SchemaBuilder";
 import {SqlInMemory} from "../driver/SqlInMemory";
 import {TableUtils} from "./util/TableUtils";
@@ -48,7 +48,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

@@ -4,14 +4,14 @@ import {
     createTestingConnections,
     reloadTestingDatabases,
 } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { Post } from "./entity/Post";
 import sinon from "sinon";
 import { SelectQueryBuilder } from "../../../src";
 import { assert } from "chai";
 
 describe("github issues > #6266 Many identical selects after insert bunch of items", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     const posts: Post[] = [
         {
             title: "Post 1",

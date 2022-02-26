@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src/index";
+import { DataSource } from "../../../src/index";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -16,7 +16,7 @@ describe("mssql > add lock clause for MSSQL select with join clause", () => {
     // -------------------------------------------------------------------------
 
     // connect to db
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(
         async () =>

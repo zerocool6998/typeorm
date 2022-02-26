@@ -3,12 +3,12 @@ import * as fs from "fs";
 import {expect} from "chai";
 import {getSqljsManager} from "../../../src/index";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 
 describe("sqljs driver > load", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Post],
         schemaCreate: true,

@@ -3,13 +3,13 @@ import {
     createTestingConnections,
     closeTestingConnections,
 } from "../../utils/test-utils";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { User } from "./entity/UserEntity";
 
 import { expect } from "chai";
 
 describe("github issues > #8370 Add support for Postgres GENERATED ALWAYS AS IDENTITY", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

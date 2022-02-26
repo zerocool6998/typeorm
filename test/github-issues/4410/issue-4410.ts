@@ -1,12 +1,12 @@
 import appRootPath from "app-root-path";
 import sinon from "sinon";
-import { Connection, FileLogger } from "../../../src";
+import { DataSource, FileLogger } from "../../../src";
 import { createTestingConnections, reloadTestingDatabases, closeTestingConnections, TestingOptions } from "../../utils/test-utils";
 import { Username } from "./entity/Username";
 import { PlatformTools } from "../../../src/platform/PlatformTools";
 
 describe("github issues > #4410 allow custom filepath for FileLogger", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     let stub: sinon.SinonStub;
 
     const testingOptions: TestingOptions = {

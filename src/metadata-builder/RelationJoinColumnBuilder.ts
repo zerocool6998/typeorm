@@ -3,7 +3,7 @@ import {UniqueMetadata} from "../metadata/UniqueMetadata";
 import {ForeignKeyMetadata} from "../metadata/ForeignKeyMetadata";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {JoinColumnMetadataArgs} from "../metadata-args/JoinColumnMetadataArgs";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {TypeORMError} from "../error";
 import {DriverUtils} from "../driver/DriverUtils";
 
@@ -43,7 +43,7 @@ export class RelationJoinColumnBuilder {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private connection: Connection) {
+    constructor(private connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

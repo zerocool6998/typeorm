@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import { expect } from "chai";
 
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import {
   closeTestingConnections,
   createTestingConnections,
@@ -12,7 +12,7 @@ import { Bar } from "./entity/Bar";
 import { Foo } from "./entity/Foo";
 
 describe("github issues > #2251 - Unexpected behavior when passing duplicate entities to repository.save()", () => {
-  let connections: Connection[];
+  let connections: DataSource[];
   before(
     async () =>
       (connections = await createTestingConnections({

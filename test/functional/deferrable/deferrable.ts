@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Company} from "./entity/Company";
 import {Office} from "./entity/Office";
 import {User} from "./entity/User";
@@ -8,7 +8,7 @@ import {expect} from "chai";
 
 describe("deferrable fk constraints should be check at the end of transaction (#2191)", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres"]

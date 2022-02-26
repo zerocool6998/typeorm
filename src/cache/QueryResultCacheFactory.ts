@@ -1,7 +1,7 @@
 import {RedisQueryResultCache} from "./RedisQueryResultCache";
 import {DbQueryResultCache} from "./DbQueryResultCache";
 import {QueryResultCache} from "./QueryResultCache";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {TypeORMError} from "../error/TypeORMError";
 
 /**
@@ -13,7 +13,7 @@ export class QueryResultCacheFactory {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

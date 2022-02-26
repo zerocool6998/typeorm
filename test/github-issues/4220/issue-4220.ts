@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {User} from "./entity/User";
 
 describe("github issues > #4220 Fix the bug when using buffer as the key.", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: true,
@@ -45,8 +45,8 @@ describe("github issues > #4220 Fix the bug when using buffer as the key.", () =
         [...Array(10)].map((_, index) => {
             const user = new User();
             user.name = "random-name";
-            user.id = Buffer.from(ids[index], "hex");  
-            return user;   
+            user.id = Buffer.from(ids[index], "hex");
+            return user;
         }).map(user => repo.save(user))
       );
 

@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {User} from "../../functional/query-builder/update/entity/User";
 import {EntityPropertyNotFoundError} from "../../../src/error/EntityPropertyNotFoundError";
 
 describe("github issues > #3416 Unknown fields are stripped from WHERE clause", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [User]
     }));

@@ -1,4 +1,4 @@
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {RelationMetadata} from "../metadata/RelationMetadata";
@@ -15,7 +15,7 @@ export class RelationLoader {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private connection: Connection) {
+    constructor(private connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

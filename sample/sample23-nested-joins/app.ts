@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {Author} from "./entity/Author";
 import {Category} from "./entity/Category";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -19,13 +19,13 @@ const options: ConnectionOptions = {
 createConnection(options).then(connection => {
 
     let postRepository = connection.getRepository(Post);
-    
+
     let category1 = new Category();
     category1.name = "category #1";
-    
+
     let category2 = new Category();
     category2.name = "category #2";
-    
+
     let post = new Post();
     post.text = "Hello how are you?";
     post.title = "hello";
@@ -57,7 +57,7 @@ createConnection(options).then(connection => {
             post.categories.push(category3);
 
             post.author = author2;
-            
+
             return postRepository.save(post);
         })
         .then(updatedPost => {

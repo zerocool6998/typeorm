@@ -1,5 +1,5 @@
 import sinon from "sinon";
-import { ConnectionOptions, ConnectionOptionsReader, DatabaseType } from "../../../src";
+import { DataSourceOptions, ConnectionOptionsReader, DatabaseType } from "../../../src";
 import { setupTestingConnections, createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Username } from "./entity/Username";
 import { CommandUtils } from "../../../src/commands/CommandUtils";
@@ -8,12 +8,12 @@ import { Post } from "./entity/Post";
 import { resultsTemplates } from "./results-templates";
 
 describe("github issues > #4415 allow beautify generated migrations", () => {
-    let connectionOptions: ConnectionOptions[];
+    let connectionOptions: DataSourceOptions[];
     let createFileStub: sinon.SinonStub;
     let getConnectionOptionsStub: sinon.SinonStub;
     let migrationGenerateCommand: MigrationGenerateCommand;
     let connectionOptionsReader: ConnectionOptionsReader;
-    let baseConnectionOptions: ConnectionOptions;
+    let baseConnectionOptions: DataSourceOptions;
 
     const enabledDrivers = [
         "postgres",
@@ -93,7 +93,7 @@ describe("github issues > #4415 allow beautify generated migrations", () => {
                 "connection": connectionOption.name,
                 "pretty": true
             }));
-            
+
             // compare against "pretty" test strings in results-templates.ts
             for (const pretty of resultsTemplates[connectionOption.type as string].pretty) {
                 sinon.assert.calledWith(

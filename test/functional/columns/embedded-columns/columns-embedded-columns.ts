@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {SimplePost} from "./entity/SimplePost";
 import {SimpleCounters} from "./entity/SimpleCounters";
@@ -9,7 +9,7 @@ import {Post} from "./entity/Post";
 
 describe("columns > embedded columns", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

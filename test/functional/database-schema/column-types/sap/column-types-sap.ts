@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Post} from "./entity/Post";
-import {Connection} from "../../../../../src";
+import {DataSource} from "../../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {PostWithOptions} from "./entity/PostWithOptions";
 import {PostWithoutTypes} from "./entity/PostWithoutTypes";
@@ -8,7 +8,7 @@ import {DateUtils} from "../../../../../src/util/DateUtils";
 
 describe("database schema > column types > sap", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

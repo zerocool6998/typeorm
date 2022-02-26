@@ -6,7 +6,7 @@ import {
     reloadTestingDatabases,
     sleep
 } from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {User} from "./entity/User";
 import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
@@ -18,7 +18,7 @@ import {readFile, unlink} from "fs";
 
 describe("repository > find options", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));
@@ -204,7 +204,7 @@ describe("repository > find options", () => {
 });
 
 describe("repository > find options > comment", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     const logPath = "find_comment_test.log";
 
     before(async () => {
@@ -237,7 +237,7 @@ describe("repository > find options > comment", () => {
 
 
 describe("repository > find options > cache", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         cache: true

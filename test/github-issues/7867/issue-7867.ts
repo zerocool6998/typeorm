@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Example } from "./entity/Example";
 import { expect } from "chai";
@@ -7,7 +7,7 @@ import { expect } from "chai";
 describe("github issues > #7867 Column not renamed when schema/database is set", () => {
 
     describe('schema is set', () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [ Example ],
@@ -44,7 +44,7 @@ describe("github issues > #7867 Column not renamed when schema/database is set",
     });
 
     describe('database is set', () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [ Example ],

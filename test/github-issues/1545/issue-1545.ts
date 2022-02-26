@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import "../../utils/test-setup";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { createTestingConnections, reloadTestingDatabases, closeTestingConnections } from "../../utils/test-utils";
 import { ValidationModel } from "./entity/ValidationModel";
 import { MainModel } from "./entity/MainModel";
@@ -10,7 +10,7 @@ import { DataModel } from "./entity/DataModel";
 //  due to complexity of cascades, it was skipped fow now
 describe.skip("github issues > #1545 Typeorm runs insert query instead of update query on save of existing entity for ManyToOne relationships", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres"]

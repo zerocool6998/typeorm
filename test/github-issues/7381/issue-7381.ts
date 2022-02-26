@@ -1,9 +1,9 @@
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {PushLog} from "./entity/PushLog";
 
 describe("github issues > #7381 Infinite same ALTERs upon startup (mysql, ver 0.2.30)", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["mysql", "mariadb"],
         schemaCreate: false,

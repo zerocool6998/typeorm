@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Document} from "./entity/Document";
 
 describe("benchmark > bulk-save > case2", () => {
-    
-    let connections: Connection[];
+
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({ __dirname, enabledDrivers: ["postgres"] }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

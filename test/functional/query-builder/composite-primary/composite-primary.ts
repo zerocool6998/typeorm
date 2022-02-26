@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {Foo} from "./entity/Foo";
 import {Bar} from "./entity/Bar";
 import {expect} from "chai";
 
 describe("query builder > composite primary", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [ Foo, Bar ],
         enabledDrivers: ["postgres"]

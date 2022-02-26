@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
@@ -11,7 +11,7 @@ describe("persistence > one-to-many", function() {
     // Setup
     // -------------------------------------------------------------------------
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(() => {
         return createTestingConnections({
             entities: [Post, Category],

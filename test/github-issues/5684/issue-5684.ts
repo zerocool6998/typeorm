@@ -1,13 +1,13 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection, In} from "../../../src";
+import {DataSource, In} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Company} from "./entity/Company";
 import {User} from "./entity/User";
 
 describe("github issues > #5684 eager relation skips children relations", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [User, Company],
         schemaCreate: true,

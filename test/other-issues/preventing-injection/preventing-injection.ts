@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Post} from "./entity/Post";
 import {expect} from "chai";
 import {EntityPropertyNotFoundError} from "../../../src/error/EntityPropertyNotFoundError";
 
 describe("other issues > preventing-injection", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

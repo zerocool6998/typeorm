@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {ColumnMetadataArgs} from "../../../src/metadata-args/ColumnMetadataArgs";
 import {ColumnMetadata} from "../../../src/metadata/ColumnMetadata";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
@@ -7,7 +7,7 @@ import {Post} from "./entity/Post";
 
 describe("schema builder > add column", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

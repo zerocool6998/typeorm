@@ -1,4 +1,4 @@
-import {ConnectionOptions} from "../ConnectionOptions";
+import {DataSourceOptions} from "../../data-source/DataSourceOptions";
 import {PlatformTools} from "../../platform/PlatformTools";
 import {OrmUtils} from "../../util/OrmUtils";
 
@@ -16,7 +16,7 @@ export class ConnectionOptionsEnvReader {
     /**
      * Reads connection options from environment variables.
      */
-    async read(): Promise<ConnectionOptions[]> {
+    async read(): Promise<DataSourceOptions[]> {
         return [{
             type: PlatformTools.getEnvVariable("TYPEORM_CONNECTION") || (PlatformTools.getEnvVariable("TYPEORM_URL") ? PlatformTools.getEnvVariable("TYPEORM_URL").split("://")[0] : undefined),
             url: PlatformTools.getEnvVariable("TYPEORM_URL"),

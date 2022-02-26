@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { User } from "./entity/user";
 import { Message } from "./entity/message";
 
 describe("github issues > #7851 Updating (using save method) a ManyToOne relation sets the object.relation_id to null", () => {
 
-  let connections: Connection[];
+  let connections: DataSource[];
   before(async () => {
       connections = await createTestingConnections({
           enabledDrivers: ["mysql"],

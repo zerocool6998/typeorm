@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Year} from "./entity/year";
 import {Month} from "./entity/month";
 import {User} from "./entity/user";
@@ -8,7 +8,7 @@ import {UserMonth} from "./entity/user-month";
 
 describe.skip("github issues > #1685 JoinColumn from JoinColum is not considered when inserting new value", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: true,

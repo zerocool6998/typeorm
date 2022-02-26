@@ -6,7 +6,7 @@ import {SaveOptions} from "./SaveOptions";
 import {FindOneOptions} from "../find-options/FindOneOptions";
 import {RemoveOptions} from "./RemoveOptions";
 import {FindManyOptions} from "../find-options/FindManyOptions";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {ObjectType} from "../common/ObjectType";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
 import {InsertResult} from "../query-builder/result/InsertResult";
@@ -31,7 +31,7 @@ export class BaseEntity {
      * Connection used in all static methods of the BaseEntity.
      */
     // @ts-ignore: Unused variable which is actually used
-    private static usedConnection?: Connection;
+    private static usedConnection?: DataSource;
 
     // -------------------------------------------------------------------------
     // Public Methods
@@ -91,7 +91,7 @@ export class BaseEntity {
     /**
      * Sets connection to be used by entity.
      */
-    static useConnection(connection: Connection) {
+    static useConnection(connection: DataSource) {
         this.usedConnection = connection;
     }
 
@@ -99,7 +99,7 @@ export class BaseEntity {
      * Gets current entity's Repository.
      */
     static getRepository<T extends BaseEntity>(this: ObjectType<T>): Repository<T> {
-        const connection: Connection = (this as any).usedConnection || getConnection();
+        const connection: DataSource = (this as any).usedConnection || getConnection();
         return connection.getRepository<T>(this);
     }
 

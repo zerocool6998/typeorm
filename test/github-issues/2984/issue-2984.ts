@@ -1,11 +1,11 @@
 import "reflect-metadata";
 
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 
 describe("github issues > #2984 Discriminator conflict reported even for non-inherited tables", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/**/*{.js,.ts}"],
     }));

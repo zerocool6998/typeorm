@@ -1,13 +1,13 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection, ObjectLiteral} from "../../../src";
+import {DataSource, ObjectLiteral} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {FruitEnum} from "./enum/FruitEnum";
 
 describe("github issues > #3694 Sync enums on schema sync", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql", "postgres"]

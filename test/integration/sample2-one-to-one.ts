@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../src/connection/Connection";
+import {DataSource} from "../../src/data-source/DataSource";
 import {createConnection} from "../../src/index";
 import {Repository} from "../../src/repository/Repository";
 import {PostDetails} from "../../sample/sample2-one-to-one/entity/PostDetails";
@@ -19,7 +19,7 @@ describe("one-to-one", function() {
     // -------------------------------------------------------------------------
 
     // connect to db
-    let connection: Connection;
+    let connection: DataSource;
     before(async function() {
         const options = setupSingleTestingConnection("mysql", {
             entities: [Post, PostDetails, PostCategory, PostMetadata, PostImage, PostInformation, PostAuthor],

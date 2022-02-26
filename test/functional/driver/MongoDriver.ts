@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import sinon from "sinon";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {DriverUtils} from "../../../src/driver/DriverUtils";
 import {MongoDriver} from "../../../src/driver/mongodb/MongoDriver";
 
@@ -12,7 +12,7 @@ describe("MongoDriver", () => {
         // url from the actual call afterwards.
         const driver = new MongoDriver({
             options
-        } as Connection);
+        } as DataSource);
         const connect = sinon.fake();
         driver.mongodb = {
             ...driver.mongodb,

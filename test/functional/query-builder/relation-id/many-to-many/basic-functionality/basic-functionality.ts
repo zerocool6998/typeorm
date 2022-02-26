@@ -5,7 +5,7 @@ import {
     createTestingConnections,
     reloadTestingDatabases
 } from "../../../../../utils/test-utils";
-import {Connection} from "../../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../../src/data-source/DataSource";
 import {Tag} from "./entity/Tag";
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
@@ -13,7 +13,7 @@ import {Image} from "./entity/Image";
 
 describe("query builder > relation-id > many-to-many > basic-functionality", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

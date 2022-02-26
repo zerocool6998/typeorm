@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Migration} from "../../../src/migration/Migration";
 import {QueryFailedError} from "../../../src/error/QueryFailedError";
 
 describe("github issues > #2875 Option to run migrations in 1-transaction-per-migration mode", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         __dirname,
         schemaCreate: false,

@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { TestCreate } from "./entity/TestCreate";
 
 describe("entity-metadata > create", () => {
     describe("without entitySkipConstructor", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
                 enabledDrivers: [ "sqlite" ],
                 entities: [
@@ -42,7 +42,7 @@ describe("entity-metadata > create", () => {
     })
 
     describe("with entitySkipConstructor", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: [ "sqlite" ],
             entities: [

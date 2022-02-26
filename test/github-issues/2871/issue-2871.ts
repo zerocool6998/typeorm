@@ -2,14 +2,14 @@ import "reflect-metadata";
 import {expect} from "chai";
 
 import {closeTestingConnections, reloadTestingDatabases, setupSingleTestingConnection} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {createConnection, Repository} from "../../../src";
 
 import {Bar} from "./entity/Bar";
 import {DocumentEnum} from "./documentEnum";
 
 describe("github issues > #2871 Empty enum array is returned as array with single empty string", () => {
-  let connection: Connection;
+  let connection: DataSource;
   let repository: Repository<Bar>;
 
   before(async () => {

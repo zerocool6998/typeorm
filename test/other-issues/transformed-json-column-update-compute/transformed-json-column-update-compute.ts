@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import { DummyJSONEntity } from "./entity/json-entity";
 import { DummyJSONBEntity } from "./entity/jsonb-entity";
 
 describe("other issues > correctly compute change for transformed json / jsonb columns", () => {
 
-	let connections: Connection[];
+	let connections: DataSource[];
 	before(async () => connections = await createTestingConnections({
 		entities: [__dirname + "/entity/*{.js,.ts}"],
 		schemaCreate: true,

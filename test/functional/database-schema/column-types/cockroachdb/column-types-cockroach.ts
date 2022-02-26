@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../../src";
+import {DataSource} from "../../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {PostWithOptions} from "./entity/PostWithOptions";
@@ -7,7 +7,7 @@ import {PostWithoutTypes} from "./entity/PostWithoutTypes";
 
 describe("database schema > column types > cockroachdb", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

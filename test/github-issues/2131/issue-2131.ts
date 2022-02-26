@@ -4,12 +4,12 @@ import {
     createTestingConnections,
     reloadTestingDatabases,
 } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import { Post } from "./entity/Post";
 
 describe("github issues > #2131 InsertResult return the same primary key", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     const posts: Post[] = [{
         id: null,
         title: "Post 1",

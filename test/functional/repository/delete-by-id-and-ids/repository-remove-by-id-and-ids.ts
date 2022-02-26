@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 
@@ -10,7 +10,7 @@ describe("repository > deleteById methods", function() {
     // Configuration
     // -------------------------------------------------------------------------
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

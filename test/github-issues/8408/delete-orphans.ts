@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Connection, Repository } from "../../../src/index";
+import { DataSource, Repository } from "../../../src/index";
 import { reloadTestingDatabases, createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
 import { expect } from "chai";
 import { Category } from "./entity/Category";
@@ -12,7 +12,7 @@ describe("persistence > delete orphans", () => {
     // -------------------------------------------------------------------------
 
     // connect to db
-    let connections: Connection[] = [];
+    let connections: DataSource[] = [];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],

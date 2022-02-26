@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import "../../../utils/test-setup"
-import {Connection, LessThan, MoreThan} from "../../../../src";
+import {DataSource, LessThan, MoreThan} from "../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Author} from "./entity/Author";
 import {Counters} from "./entity/Counters";
@@ -10,7 +10,7 @@ import {prepareData} from "./find-options-test-utils";
 
 describe("find options > where", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({ __dirname }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

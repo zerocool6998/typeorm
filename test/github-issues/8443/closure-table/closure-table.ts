@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {Category} from "./entity/Category";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 
 describe("github issues > #8443 QueryFailedError when tree entity with JoinColumn > closure-table", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Category]
     }));

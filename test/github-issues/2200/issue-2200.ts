@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Booking} from "./entity/Booking";
 import {NamingStrategyUnderTest} from "./naming/NamingStrategyUnderTest";
 
 
 describe("github issue > #2200 Bug - Issue with snake_case naming strategy", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     let namingStrategy = new NamingStrategyUnderTest();
 
     before(async () => connections = await createTestingConnections({

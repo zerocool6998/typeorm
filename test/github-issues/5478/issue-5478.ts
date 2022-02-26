@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {expect} from "chai";
 import {UserEntity} from "./entity/UserEntity";
 
 describe("github issues > #5478 Setting enumName doesn't change how migrations get generated", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         migrations: [],
         enabledDrivers: ["postgres"],

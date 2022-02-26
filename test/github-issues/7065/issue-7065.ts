@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import "../../utils/test-setup";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { expect } from "chai";
 import { Contact, Email, Phone, User } from "./entity";
 
@@ -13,7 +13,7 @@ import { Contact, Email, Phone, User } from "./entity";
 
 describe("github issues > #7065 ChildEntity type relationship produces unexpected results", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Contact, Email, Phone, User],
         schemaCreate: true,

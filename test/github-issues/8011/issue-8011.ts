@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { expect } from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -9,7 +9,7 @@ import {
 import { Example } from "./entity/Example";
 
 describe("github issues > #8011 Enum values with multiple apostrophes not properly escaped in MySQL", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         connections = await createTestingConnections({

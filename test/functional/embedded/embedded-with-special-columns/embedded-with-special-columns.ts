@@ -2,7 +2,7 @@ import "reflect-metadata";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
 import {Counters} from "./entity/Counters";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -13,7 +13,7 @@ import {Subcounters} from "../embedded-many-to-one-case2/entity/Subcounters";
 
 describe("embedded > embedded-with-special-columns", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Animal} from "./entity/Animal";
 import {NamingStrategyUnderTest} from "./naming/NamingStrategyUnderTest";
 import {ColumnMetadata} from "../../../src/metadata/ColumnMetadata";
@@ -9,7 +9,7 @@ import {ColumnMetadata} from "../../../src/metadata/ColumnMetadata";
 
 describe("github issue > #1282 FEATURE REQUEST - Naming strategy joinTableColumnName if it is called from the owning or owned (inverse) context ", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     let namingStrategy = new NamingStrategyUnderTest();
 
     before(async () => connections = await createTestingConnections({

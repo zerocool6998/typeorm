@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection, QueryRunner} from "../../../src";
+import {DataSource, QueryRunner} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 import {Document} from "./entity/Document";
@@ -8,7 +8,7 @@ import {Album} from "./entity/Album";
 import {Photo} from "./entity/Photo";
 
 describe("github issues > #5898 Postgres primary key of type uuid: default value migration/sync not working", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     const getColumnDefault = async (queryRunner: QueryRunner, tableName: string, columnName: string): Promise<string|null> => {
         const query = `SELECT "column_default"` +
             ` FROM "information_schema"."columns"` +

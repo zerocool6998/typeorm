@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {ClusterCluster as ClusterClusterPg} from "./entity/TestPostgres";
 import {ClusterCluster as ClusterClusterMssql} from "./entity/TestMssql";
 
 describe("github issues > #7276 Schema sync not able to find diff correctly and executes same queries on every run", () => {
     describe("postgres", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["postgres"],
             schemaCreate: false,
@@ -30,7 +30,7 @@ describe("github issues > #7276 Schema sync not able to find diff correctly and 
     })
 
     describe("mssql", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["mssql"],
             schemaCreate: false,

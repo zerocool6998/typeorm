@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Message, MessageType} from "./entity/Message";
 import {Recipient} from "./entity/Recipient";
 import {User} from "./entity/User";
@@ -8,7 +8,7 @@ import {Chat} from "./entity/Chat";
 
 describe("github issues > #1551 complex example of cascades + multiple primary keys = persistence order", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({ __dirname, enabledDrivers: ["mysql"] }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

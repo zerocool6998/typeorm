@@ -1,12 +1,12 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Test} from "./entity/Test";
 
 describe("columns > comments", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Test],
         // Only supported on postgres, cockroachdb, and mysql

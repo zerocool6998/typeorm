@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Person} from "./entity/Person";
 import {Men} from "./entity/Men";
 import {Women} from "./entity/Women";
 
 describe("github issues > #3857 Schema inheritance when STI pattern is used", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
         entities: [__dirname + "/entity/*{.js,.ts}"],

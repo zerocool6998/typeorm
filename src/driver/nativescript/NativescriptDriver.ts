@@ -2,7 +2,7 @@ import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
 import {NativescriptConnectionOptions} from "./NativescriptConnectionOptions";
 import {NativescriptQueryRunner} from "./NativescriptQueryRunner";
 import {QueryRunner} from "../../query-runner/QueryRunner";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
 import {ColumnType} from "../types/ColumnTypes";
@@ -32,7 +32,7 @@ export class NativescriptDriver extends AbstractSqliteDriver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
 
         this.connection = connection;

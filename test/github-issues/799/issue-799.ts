@@ -3,11 +3,11 @@ import * as assert from "assert";
 import {createConnection} from "../../../src/index";
 import rimraf from "rimraf";
 import {dirname} from "path";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {getTypeOrmConfig} from "../../utils/test-utils";
 
 describe("github issues > #799 sqlite: 'database' path should be created", () => {
-    let connection: Connection;
+    let connection: DataSource;
 
     const path = `${__dirname}/tmp/sqlitedb.db`;
     const cleanup = (done: () => void) => {

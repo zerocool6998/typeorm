@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection, Equal} from "../../../src";
+import {DataSource, Equal} from "../../../src";
 import {Post, Uuid} from "./entity/Post";
 
 describe("github issues > #1748 PrimaryColumn combined with transformer leads to error on save", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Post],
         dropSchema: true

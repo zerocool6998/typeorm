@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import {Foo} from "./entity/Foo";
 import {Bar} from "./entity/Bar";
 
 describe("github issues > #4060 Fail to insert entity with Buffer type of primary column under some circumstances.", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             enabledDrivers: ["mysql", "mariadb"],

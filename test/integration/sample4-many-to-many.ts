@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../src/connection/Connection";
+import {DataSource} from "../../src/data-source/DataSource";
 import {createConnection} from "../../src/index";
 import {Repository} from "../../src/repository/Repository";
 import {PostDetails} from "../../sample/sample4-many-to-many/entity/PostDetails";
@@ -17,7 +17,7 @@ describe("many-to-many", function() {
     // -------------------------------------------------------------------------
 
     // connect to db
-    let connection: Connection;
+    let connection: DataSource;
     before(async function() {
         const options = setupSingleTestingConnection("mysql", {
             entities: [__dirname + "/../../sample/sample4-many-to-many/entity/*"],

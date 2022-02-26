@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {PostIncrement} from "./entity/PostIncrement";
 import {PostUuid} from "./entity/PostUuid";
@@ -12,7 +12,7 @@ import {PostEmbedded} from "./entity/PostEmbedded";
 
 describe("persistence > entity updation", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({ __dirname }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

@@ -1,6 +1,6 @@
 import {createConnection} from "../globals";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import * as yargs from "yargs";
 import chalk from "chalk";
 import {PlatformTools} from "../platform/PlatformTools";
@@ -29,7 +29,7 @@ export class CacheClearCommand implements yargs.CommandModule {
 
     async handler(args: yargs.Arguments) {
 
-        let connection: Connection|undefined = undefined;
+        let connection: DataSource|undefined = undefined;
         try {
             const connectionOptionsReader = new ConnectionOptionsReader({
                 root: process.cwd(),
@@ -56,7 +56,7 @@ export class CacheClearCommand implements yargs.CommandModule {
             if (connection) await connection.close();
 
         } catch (err) {
-            if (connection) await (connection as Connection).close();
+            if (connection) await (connection as DataSource).close();
 
             PlatformTools.logCmdErr("Error during cache clear.", err);
 

@@ -1,10 +1,10 @@
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Product} from "./entity/Product";
 
 describe("github issues > #1981 Boolean values not casted properly when used in .find() condition", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["sqlite", "better-sqlite3"],

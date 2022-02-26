@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import { ShortTableName } from "./entity/ShortTableName";
 import { ReallyReallyVeryVeryVeryLongTableName } from "./entity/ReallyReallyVeryVeryVeryLongTableName";
@@ -15,7 +15,7 @@ import { QueryFailedError } from "../../../src/error/QueryFailedError";
  * by changing the NAMEDATALEN constant in src/include/pg_config_manual.h."
  */
 describe("github issues > #7106 shorten sequence names (for RDBMS with a limit) when they are longer than 63 characters", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres"]

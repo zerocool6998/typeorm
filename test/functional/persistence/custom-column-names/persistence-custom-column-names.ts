@@ -1,7 +1,7 @@
 import {expect} from "chai";
 import "reflect-metadata";
 import {getConnectionManager} from "../../../../src";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Repository} from "../../../../src/repository/Repository";
 import {setupSingleTestingConnection} from "../../../utils/test-utils";
 import {Category} from "./entity/Category";
@@ -15,7 +15,7 @@ describe("persistence > custom-column-names", function() {
     // -------------------------------------------------------------------------
 
     // connect to db
-    let connection: Connection;
+    let connection: DataSource;
     before(async () => {
         const options = setupSingleTestingConnection("mysql", {
             entities: [Post, Category, CategoryMetadata]

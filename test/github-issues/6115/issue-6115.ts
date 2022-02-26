@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection, createConnection} from "../../../src";
+import {DataSource, createConnection} from "../../../src";
 import {closeTestingConnections, createTestingConnections, setupSingleTestingConnection} from "../../utils/test-utils";
 import {fail} from "assert";
 import {expect} from "chai";
 
 describe("github issues > #6115 Down migration for enums with defaults are wrong", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
         entities: [__dirname + "/entity/v1/*{.js,.ts}"],

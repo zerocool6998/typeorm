@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import {Post, User} from "./entities"
 
 describe("github issues > #7079 Error when sorting by an embedded entity while using join and skip/take", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Post, User],
         schemaCreate: true,

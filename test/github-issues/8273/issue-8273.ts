@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection, QueryRunner} from "../../../src";
+import {DataSource, QueryRunner} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {User} from "./entity/User";
 
 describe("github issues > #8273 Adding @Generated('uuid') doesn't update column default in PostgreSQL", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     const getColumnDefault = async (queryRunner: QueryRunner, columnName: string): Promise<string|null> => {
         const query = `SELECT "column_default"`+
             ` FROM "information_schema"."columns"`+

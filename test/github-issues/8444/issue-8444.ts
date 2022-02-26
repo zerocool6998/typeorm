@@ -2,14 +2,14 @@ import "reflect-metadata";
 import { expect } from "chai";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {StrictlyInitializedEntity} from "./entity/StrictlyInitializedEntity";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 
 describe("github issues > #8444 entitySkipConstructor not working", () => {
 
     describe("without entitySkipConstructor", () => {
 
         it("createTestingConnections should fail with 'someColumn cannot be undefined.'", async () => {
-            async function bootstrapWithoutEntitySkipConstructor(): Promise<Connection[]> {
+            async function bootstrapWithoutEntitySkipConstructor(): Promise<DataSource[]> {
                 return await createTestingConnections({
                     driverSpecific: {
                         entitySkipConstructor: false,
@@ -28,7 +28,7 @@ describe("github issues > #8444 entitySkipConstructor not working", () => {
 
     describe("with entitySkipConstructor", () => {
 
-        let connections: Connection[] = [];
+        let connections: DataSource[] = [];
         afterEach(() => closeTestingConnections(connections));
 
         it("createTestingConnections should succeed", async () => {

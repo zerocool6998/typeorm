@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {expect} from "chai";
 
 describe("query runner > implicit results", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/view/*{.js,.ts}"],

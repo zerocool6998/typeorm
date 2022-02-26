@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {TaskNotification} from "./entity/TaskNotification";
 
 describe("github issues > #7647 Duplicate migrations when using 'enumName' ColumnOption in an 'enum' type Postgres", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
         schemaCreate: false,

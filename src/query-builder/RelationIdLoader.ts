@@ -1,6 +1,6 @@
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {SelectQueryBuilder} from "./SelectQueryBuilder";
 
@@ -13,7 +13,7 @@ export class RelationIdLoader {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private connection: Connection) {
+    constructor(private connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {EntityMetadata} from "../../../../../src/metadata/EntityMetadata";
 import {IndexMetadata} from "../../../../../src/metadata/IndexMetadata";
 import {expect} from "chai";
@@ -8,7 +8,7 @@ import {PersonSchema} from "./entity/Person";
 
 describe("entity-schema > indices > basic", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [<any>PersonSchema],
     }));

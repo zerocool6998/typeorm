@@ -8,7 +8,7 @@ import {CockroachConnectionCredentialsOptions} from "./CockroachConnectionCreden
 import {CockroachConnectionOptions} from "./CockroachConnectionOptions";
 import {DateUtils} from "../../util/DateUtils";
 import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {RdbmsSchemaBuilder} from "../../schema-builder/RdbmsSchemaBuilder";
 import {MappedColumnTypes} from "../types/MappedColumnTypes";
 import {ColumnType} from "../types/ColumnTypes";
@@ -39,7 +39,7 @@ export class CockroachDriver implements Driver {
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Cockroach underlying library.
@@ -244,7 +244,7 @@ export class CockroachDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         this.connection = connection;
         this.options = connection.options as CockroachConnectionOptions;
         this.isReplicated = this.options.replication ? true : false;

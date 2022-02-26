@@ -1,5 +1,5 @@
 import {ObjectLiteral} from "../common/ObjectLiteral";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {MssqlParameter} from "../driver/sqlserver/MssqlParameter";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {Table} from "../schema-builder/table/Table";
@@ -25,7 +25,7 @@ export class DbQueryResultCache implements QueryResultCache {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
 
         const { schema } = (this.connection.driver.options as any);
         const database = this.connection.driver.database;

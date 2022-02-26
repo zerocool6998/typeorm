@@ -2,7 +2,7 @@ import {expect} from "chai";
 import "reflect-metadata";
 import {Album} from "./entity/Album";
 import {Category} from "./entity/Category";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Photo} from "./entity/Photo";
 import {PhotoAlbumCategory} from "./entity/PhotoAlbumCategory";
@@ -11,7 +11,7 @@ import {PostCategory} from "./entity/PostCategory";
 
 describe("view entity > general", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"]
     }));

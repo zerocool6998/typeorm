@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { EntityMetadata } from "../../../src";
 import { Person } from "./entity/person";
 
 describe("github issues > #197 Fails to drop indexes when removing fields", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: false,

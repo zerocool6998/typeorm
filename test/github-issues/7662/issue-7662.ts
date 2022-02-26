@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import {
     createTestingConnections,
     closeTestingConnections,
@@ -8,7 +8,7 @@ import { MemoryLogger } from "./memory-logger";
 
 describe("github issues > #7662 postgres extensions installation should be optional", function () {
     it("should NOT install extensions if option is disabled", async function () {
-        let connection: Connection | null = null;
+        let connection: DataSource | null = null;
         try {
             const connections = await createTestingConnections({
                 entities: [`${__dirname}/entity/*{.js,.ts}`],
@@ -44,7 +44,7 @@ describe("github issues > #7662 postgres extensions installation should be optio
     });
 
     it("should install extensions if option is undefined", async function () {
-        let connections: Connection[] = [];
+        let connections: DataSource[] = [];
         try {
             connections = await createTestingConnections({
                 entities: [`${__dirname}/entity/*{.js,.ts}`],
@@ -73,7 +73,7 @@ describe("github issues > #7662 postgres extensions installation should be optio
     });
 
     it("should install extensions if option is enabled", async function () {
-        let connections: Connection[] = [];
+        let connections: DataSource[] = [];
         try {
             connections = await createTestingConnections({
                 entities: [`${__dirname}/entity/*{.js,.ts}`],

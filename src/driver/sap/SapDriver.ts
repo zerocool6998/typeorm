@@ -1,6 +1,6 @@
 import {
     ColumnType,
-    Connection,
+    DataSource,
     EntityMetadata,
     ObjectLiteral,
     Table,
@@ -39,7 +39,7 @@ export class SapDriver implements Driver {
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Hana Pool instance.
@@ -216,7 +216,7 @@ export class SapDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         this.connection = connection;
         this.options = connection.options as SapConnectionOptions;
         this.loadDependencies();

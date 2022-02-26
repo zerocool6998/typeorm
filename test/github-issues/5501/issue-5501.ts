@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Post } from "./entity/Post";
 import { expect } from "chai";
 
 describe("github issues > #5501 Incorrect data loading from JSON string for column type 'simple-json'", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [Post],

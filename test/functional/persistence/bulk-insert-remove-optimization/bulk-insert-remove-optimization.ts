@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
@@ -11,7 +11,7 @@ describe("persistence > bulk-insert-remove-optimization", function() {
     // Configuration
     // -------------------------------------------------------------------------
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({ __dirname }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));

@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../../src";
+import {DataSource} from "../../../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../../../utils/test-utils";
 import {User} from "./entity/User";
 import {Setting} from "./entity/Setting";
@@ -10,7 +10,7 @@ import {Setting} from "./entity/Setting";
  */
 describe("relations > multiple-primary-keys > one-to-many", () => {
 
-	let connections: Connection[];
+	let connections: DataSource[];
 
 	before(async () => connections = await createTestingConnections({
 		entities: [User,Setting],
@@ -20,7 +20,7 @@ describe("relations > multiple-primary-keys > one-to-many", () => {
 
 	after(() => closeTestingConnections(connections));
 
-	function insertSimpleTestData(connection: Connection) {
+	function insertSimpleTestData(connection: DataSource) {
 		const userRepo = connection.getRepository(User);
 		// const settingRepo = connection.getRepository(Setting);
 

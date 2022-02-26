@@ -5,14 +5,14 @@ import {MongoQueryRunner} from "./MongoQueryRunner";
 import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
 import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {MongoConnectionOptions} from "./MongoConnectionOptions";
 import {MappedColumnTypes} from "../types/MappedColumnTypes";
 import {ColumnType} from "../types/ColumnTypes";
 import {MongoSchemaBuilder} from "../../schema-builder/MongoSchemaBuilder";
 import {DataTypeDefaults} from "../types/DataTypeDefaults";
 import {TableColumn} from "../../schema-builder/table/TableColumn";
-import {ConnectionOptions} from "../../connection/ConnectionOptions";
+import {DataSourceOptions} from "../../data-source/DataSourceOptions";
 import {EntityMetadata} from "../../metadata/EntityMetadata";
 import {ObjectUtils} from "../../util/ObjectUtils";
 import {ApplyValueTransformers} from "../../util/ApplyValueTransformers";
@@ -217,7 +217,7 @@ export class MongoDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
         this.options = connection.options as MongoConnectionOptions;
 
         // validate options to make sure everything is correct and driver will be able to establish connection
@@ -456,7 +456,7 @@ export class MongoDriver implements Driver {
     /**
      * Validate driver options to make sure everything is correct and driver will be able to establish connection.
      */
-    protected validateOptions(options: ConnectionOptions) { // todo: fix
+    protected validateOptions(options: DataSourceOptions) { // todo: fix
         // if (!options.url) {
         //     if (!options.database)
         //         throw new DriverOptionNotSetError("database");

@@ -2,7 +2,7 @@ import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
 import {CapacitorConnectionOptions} from "./CapacitorConnectionOptions";
 import {CapacitorQueryRunner} from "./CapacitorQueryRunner";
 import {QueryRunner} from "../../query-runner/QueryRunner";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {DriverOptionNotSetError, DriverPackageNotInstalledError,} from "../../error";
 import {ReplicationMode} from "../types/ReplicationMode";
 
@@ -14,7 +14,7 @@ export class CapacitorDriver extends AbstractSqliteDriver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
 
         this.database = this.options.database;

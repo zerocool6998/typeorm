@@ -1,15 +1,15 @@
 import {AuroraDataApiQueryRunner} from "./AuroraDataApiQueryRunner";
-import {Connection} from "../../connection/Connection";
-import {ConnectionOptions, QueryRunner} from "../..";
+import {DataSource} from "../../data-source/DataSource";
+import {DataSourceOptions, QueryRunner} from "../..";
 import {ReplicationMode} from "../types/ReplicationMode";
 
 /**
  * Organizes communication with MySQL DBMS.
  */
-export class AuroraDataApiConnection extends Connection {
+export class AuroraDataApiConnection extends DataSource {
     queryRunnter: AuroraDataApiQueryRunner;
 
-    constructor(options: ConnectionOptions, queryRunner: AuroraDataApiQueryRunner) {
+    constructor(options: DataSourceOptions, queryRunner: AuroraDataApiQueryRunner) {
         super(options);
         this.queryRunnter = queryRunner;
     }

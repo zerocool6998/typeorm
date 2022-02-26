@@ -1,4 +1,4 @@
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {EntityManager} from "./EntityManager";
 import {EntityTarget} from "../common/EntityTarget";
 import {
@@ -72,7 +72,7 @@ export class MongoEntityManager extends EntityManager {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
     }
 

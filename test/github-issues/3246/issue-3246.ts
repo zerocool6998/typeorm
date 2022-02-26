@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import { Order } from "./entity/Order";
 import { OrderCustomer } from "./entity/OrderCustomer";
@@ -10,7 +10,7 @@ import { BrokerRepository } from "./repository/BrokerRepository";
 
 describe("github issues > #3246 Saving an entity with a 1:1 cascading insert does not return id if entity has nullable many:one relationship", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Order, OrderCustomer, Broker],
         enabledDrivers: ["postgres"],

@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { Foo } from "./entity/Foo";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 
 describe("github issues > #3534: store regexp", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

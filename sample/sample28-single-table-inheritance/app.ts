@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Employee} from "./entity/Employee";
 import {Homesitter} from "./entity/Homesitter";
 import {Student} from "./entity/Student";
 import {Person} from "./entity/Person";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,

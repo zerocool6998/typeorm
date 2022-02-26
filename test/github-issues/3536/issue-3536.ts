@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { closeTestingConnections, createTestingConnections } from "../../utils/test-utils";
 import { Roles } from "./entity/Roles";
 
 describe("github issues > #3536 Sync only works once for enums on entities with capital letters in entity name", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {ForeignKeyMetadata} from "../../../src/metadata/ForeignKeyMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import { Album } from "./entity/Album";
@@ -7,7 +7,7 @@ import { Photo } from "./entity/Photo";
 
 describe("schema builder > custom-db-and-schema-sync", () => {
     describe("custom database", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [ Album, Photo ],
@@ -76,7 +76,7 @@ describe("schema builder > custom-db-and-schema-sync", () => {
     })
 
     describe("custom schema", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 enabledDrivers: [ "postgres", "sap" ],
@@ -205,7 +205,7 @@ describe("schema builder > custom-db-and-schema-sync", () => {
     })
 
     describe("custom database and schema", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => {
             connections = await createTestingConnections({
                 entities: [ Album, Photo ],

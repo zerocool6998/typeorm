@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { expect } from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { TestEntity } from "./entity/test.entity";
 
 describe("github issues > #7760 Mongodb: When field is null in db, typeorm query sets it to undefined", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             enabledDrivers: ["mongodb"],

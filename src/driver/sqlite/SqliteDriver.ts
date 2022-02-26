@@ -4,7 +4,7 @@ import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstal
 import {SqliteQueryRunner} from "./SqliteQueryRunner";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {SqliteConnectionOptions} from "./SqliteConnectionOptions";
 import {ColumnType} from "../types/ColumnTypes";
 import {QueryRunner} from "../../query-runner/QueryRunner";
@@ -36,7 +36,7 @@ export class SqliteDriver extends AbstractSqliteDriver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
 
         this.connection = connection;

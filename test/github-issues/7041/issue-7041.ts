@@ -4,12 +4,12 @@ import {
     closeTestingConnections,
     reloadTestingDatabases,
 } from "../../utils/test-utils";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { expect } from "chai";
 import { Organization, Admin, User, OrganizationMembership } from "./entity";
 
 describe("github issues > #7041 When requesting nested relations on foreign key primary entities, relation becomes empty entity rather than null", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

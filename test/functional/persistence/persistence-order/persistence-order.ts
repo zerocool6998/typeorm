@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
 import {ConnectionMetadataBuilder} from "../../../../src/connection/ConnectionMetadataBuilder";
@@ -12,7 +12,7 @@ describe("persistence > order of persistence execution operations", () => {
     describe("should throw exception when non-resolvable circular relations found", function() {
 
         it("should throw CircularRelationsError", async () => {
-            const connection = new Connection({ // dummy connection options, connection won't be established anyway
+            const connection = new DataSource({ // dummy connection options, connection won't be established anyway
                 type: "mysql",
                 host: "localhost",
                 username: "test",
@@ -31,7 +31,7 @@ describe("persistence > order of persistence execution operations", () => {
 
     describe.skip("should persist all entities in correct order", function() {
 
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],
         }));

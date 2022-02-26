@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {User} from "./entity/User";
 import {expect} from "chai";
 import {AccessToken} from "./entity/AccessToken";
 
 describe.skip("github issues > #56 relationships only work when both primary keys have the same name", () => { // skipped because of CI error. todo: needs investigation
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

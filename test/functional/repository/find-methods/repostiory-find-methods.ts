@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {User} from "./model/User";
 import {EntityNotFoundError} from "../../../../src/error/EntityNotFoundError";
@@ -9,7 +9,7 @@ import {UserEntity} from "./schema/UserEntity";
 
 describe("repository > find methods", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Post, UserEntity],
     }));

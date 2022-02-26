@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {IndexMetadata} from "../../../src/metadata/IndexMetadata";
 import {UniqueMetadata} from "../../../src/metadata/UniqueMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
@@ -9,7 +9,7 @@ import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("schema builder > change unique constraint", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

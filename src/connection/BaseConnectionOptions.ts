@@ -3,7 +3,7 @@ import {LoggerOptions} from "../logger/LoggerOptions";
 import {NamingStrategyInterface} from "../naming-strategy/NamingStrategyInterface";
 import {DatabaseType} from "../driver/types/DatabaseType";
 import {Logger} from "../logger/Logger";
-import {Connection} from "./Connection";
+import {DataSource} from "../data-source/DataSource";
 import {QueryResultCache} from "../cache/QueryResultCache";
 import {MixedList} from "../common/MixedList";
 
@@ -163,7 +163,7 @@ export interface BaseConnectionOptions {
         /**
          * Factory function for custom cache providers that implement QueryResultCache.
          */
-        readonly provider?: (connection: Connection) => QueryResultCache;
+        readonly provider?: (connection: DataSource) => QueryResultCache;
 
         /**
          * Configurable table name for "database" type cache.

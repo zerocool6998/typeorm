@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Category} from "./entity/Category";
 import {User} from "./entity/User";
 import {Post} from "./entity/Post";
 
 describe("query builder > distinct on", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
@@ -16,7 +16,7 @@ describe("query builder > distinct on", () => {
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));
 
-    async function prepareData(connection: Connection) {
+    async function prepareData(connection: DataSource) {
         const users = [
           {
             name: "Dion"

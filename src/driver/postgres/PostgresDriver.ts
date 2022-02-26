@@ -1,5 +1,5 @@
 import {ObjectLiteral} from "../../common/ObjectLiteral";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {ConnectionIsNotSetError} from "../../error/ConnectionIsNotSetError";
 import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
@@ -39,7 +39,7 @@ export class PostgresDriver implements Driver {
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Postgres underlying library.
@@ -283,7 +283,7 @@ export class PostgresDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection?: Connection) {
+    constructor(connection?: DataSource) {
         if (!connection) {
             return;
         }

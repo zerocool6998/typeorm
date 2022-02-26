@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../../utils/test-utils";
 import {ViewC} from "./entity/ViewC";
 import {ViewA} from "./entity/ViewA";
@@ -8,7 +8,7 @@ import {ViewB} from "./entity/ViewB";
 import {TestEntity} from "./entity/Test";
 
 describe("views dependencies", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
         schemaCreate: true,

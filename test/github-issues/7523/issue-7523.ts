@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {ChildEntity1, ChildEntity2} from "./entity/Test";
 
 describe("github issues > #7523 Do not create duplicate CREATE TYPE migration query when same 'enumName's are exists", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
         schemaCreate: false,

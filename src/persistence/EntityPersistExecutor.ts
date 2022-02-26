@@ -5,7 +5,7 @@ import {MustBeEntityError} from "../error/MustBeEntityError";
 import {SubjectExecutor} from "./SubjectExecutor";
 import {CannotDetermineEntityError} from "../error/CannotDetermineEntityError";
 import {QueryRunner} from "../query-runner/QueryRunner";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {Subject} from "./Subject";
 import {OneToManySubjectBuilder} from "./subject-builder/OneToManySubjectBuilder";
 import {OneToOneInverseSideSubjectBuilder} from "./subject-builder/OneToOneInverseSideSubjectBuilder";
@@ -23,7 +23,7 @@ export class EntityPersistExecutor {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection,
+    constructor(protected connection: DataSource,
                 protected queryRunner: QueryRunner|undefined,
                 protected mode: "save"|"remove"|"soft-remove"|"recover",
                 protected target: Function|string|undefined,

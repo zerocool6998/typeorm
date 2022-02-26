@@ -1,6 +1,6 @@
 import "../../../utils/test-setup";
 import { expect } from 'chai';
-import { Connection } from "../../../../src/connection/Connection";
+import { DataSource } from "../../../../src/data-source/DataSource";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -59,7 +59,7 @@ describe("multi-database > basic-functionality", () => {
 
     describe("multiple databases", () => {
 
-        let connections: Connection[];
+        let connections: DataSource[];
         const tempPath = path.resolve(appRoot.path, "temp");
         const attachAnswerPath = path.join(tempPath, "filename-sqlite.attach.db");
         const attachAnswerHandle = filepathToName("filename-sqlite.attach.db");

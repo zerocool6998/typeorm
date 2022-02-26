@@ -1,5 +1,5 @@
 import {
-    Connection,
+    DataSource,
     EntitySubscriberInterface,
     EventSubscriber,
 } from "../../../../src";
@@ -50,7 +50,7 @@ describe("entity subscriber > transaction flow", () => {
         }
     }
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         subscribers: [PostSubscriber],
         dropSchema: true,

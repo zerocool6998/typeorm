@@ -1,6 +1,6 @@
 import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 
 import { assert } from "chai";
 
@@ -10,7 +10,7 @@ import PostAttachment, { PostAttachmentSchema } from "./entity/PostAttachment";
 
 describe("github issues > #6399 Combining ManyToOne, Cascade, & Composite Primary Key causes Unique Constraint issues", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [PostSchema, PostTagSchema, PostAttachmentSchema],
         enabledDrivers: ["sqlite"],

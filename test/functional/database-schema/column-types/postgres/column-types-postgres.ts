@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {PostWithOptions} from "./entity/PostWithOptions";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {PostWithoutTypes} from "./entity/PostWithoutTypes";
 import {Post} from "./entity/Post";
 
 describe("database schema > column types > postgres", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

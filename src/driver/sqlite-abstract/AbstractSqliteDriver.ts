@@ -2,7 +2,7 @@ import {Driver} from "../Driver";
 import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
 import {DateUtils} from "../../util/DateUtils";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {RdbmsSchemaBuilder} from "../../schema-builder/RdbmsSchemaBuilder";
 import {MappedColumnTypes} from "../types/MappedColumnTypes";
 import {ColumnType} from "../types/ColumnTypes";
@@ -40,7 +40,7 @@ export abstract class AbstractSqliteDriver implements Driver {
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Sqlite has a single QueryRunner because it works on a single database connection.
@@ -235,7 +235,7 @@ export abstract class AbstractSqliteDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         this.connection = connection;
         this.options = connection.options as BaseConnectionOptions;
 

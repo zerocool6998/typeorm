@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {PostDetails} from "./entity/PostDetails";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mssql",
     host: "192.168.1.10",
     username: "sa",

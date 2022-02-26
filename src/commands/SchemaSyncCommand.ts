@@ -1,5 +1,5 @@
 import {createConnection} from "../globals";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
 import * as yargs from "yargs";
 import chalk from "chalk";
@@ -29,7 +29,7 @@ export class SchemaSyncCommand implements yargs.CommandModule {
 
     async handler(args: yargs.Arguments) {
 
-        let connection: Connection|undefined = undefined;
+        let connection: DataSource|undefined = undefined;
         try {
             const connectionOptionsReader = new ConnectionOptionsReader({
                 root: process.cwd(),
@@ -49,7 +49,7 @@ export class SchemaSyncCommand implements yargs.CommandModule {
             console.log(chalk.green("Schema synchronization finished successfully."));
 
         } catch (err) {
-            if (connection) await (connection as Connection).close();
+            if (connection) await (connection as DataSource).close();
 
             PlatformTools.logCmdErr("Error during schema synchronization:", err);
             process.exit(1);

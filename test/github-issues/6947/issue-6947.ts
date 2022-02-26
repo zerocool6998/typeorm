@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Category } from "./entity/Category";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -8,7 +8,7 @@ import {
 } from "../../../test/utils/test-utils";
 
 describe("github issues > #6947 Custom primary column for TreeRepository based entities unable to get tree descendants", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

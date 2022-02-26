@@ -4,12 +4,12 @@ import {
     closeTestingConnections,
     reloadTestingDatabases,
 } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import { JSONBKeyTest } from "./entity/test";
 
 describe("github issues > #6833 Entities with JSON key columns are incorrectly grouped", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [JSONBKeyTest],
         dropSchema: true,

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import Sinon from "sinon";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -9,7 +9,7 @@ import {
 import { Comment } from "./entities";
 
 describe("github issues > #5919 Caching won't work with replication enabled", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     beforeEach(async () => {
         connections = await createTestingConnections({

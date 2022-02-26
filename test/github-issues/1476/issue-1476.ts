@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { expect } from "chai";
 
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Plan } from "./entity/Plan";
 import { Item } from "./entity/Item";
@@ -9,7 +9,7 @@ import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("github issues > #1476 subqueries", () => {
 
-    let connections: Connection[] = [];
+    let connections: DataSource[] = [];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql", "mariadb", "sqlite", "better-sqlite3", "sqljs"]

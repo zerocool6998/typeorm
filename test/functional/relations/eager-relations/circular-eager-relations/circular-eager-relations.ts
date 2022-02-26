@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {EntityMetadataValidator} from "../../../../../src/metadata-builder/EntityMetadataValidator";
 import {ConnectionMetadataBuilder} from "../../../../../src/connection/ConnectionMetadataBuilder";
 import {expect} from "chai";
@@ -7,7 +7,7 @@ import {expect} from "chai";
 describe("relations > eager relations > circular eager relations", () => {
 
     it("should throw error if eager: true is set on both sides of relationship", async () => {
-        const connection = new Connection({ // dummy connection options, connection won't be established anyway
+        const connection = new DataSource({ // dummy connection options, connection won't be established anyway
             type: "mysql",
             host: "localhost",
             username: "test",

@@ -3,7 +3,7 @@ import {closeTestingConnections, createTestingConnections, reloadTestingDatabase
 import {
     Any,
     Between,
-    Connection,
+    DataSource,
     Equal,
     ILike,
     In,
@@ -22,7 +22,7 @@ import {expect} from "chai";
 
 describe("repository > find options > operators", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

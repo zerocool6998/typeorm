@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import {Connection, Table} from "../../../src";
+import {DataSource, Table} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {TableCheck} from "../../../src/schema-builder/table/TableCheck";
 import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("query runner > create check constraint", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

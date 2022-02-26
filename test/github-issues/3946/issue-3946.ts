@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
 import {Image} from "./entity/Image";
 
 describe("github issues > #3946 loadRelationCountAndMap fails cause made a wrong IN calculation, when primary key is string", () => {
-    
-    let connections: Connection[];
+
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

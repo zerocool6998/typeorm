@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {SomeEntity} from "./entity/SomeEntity";
 
 describe("github issues > #4897 [MSSQL] Enum column definition removes and recreates constraint overwritting existing data", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         migrations: [],
         enabledDrivers: ["mssql", "sqlite"],

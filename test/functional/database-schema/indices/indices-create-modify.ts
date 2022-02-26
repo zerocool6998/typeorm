@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection, EntityMetadata} from "../../../../src";
+import {DataSource, EntityMetadata} from "../../../../src";
 import {IndexMetadata} from "../../../../src/metadata/IndexMetadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 
@@ -8,7 +8,7 @@ import {Person} from "./entity/Person";
 
 describe("database schema > indices > reading index from entity and updating database", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

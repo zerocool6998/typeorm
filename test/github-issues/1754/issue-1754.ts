@@ -1,12 +1,12 @@
 import {Cliente} from "./entity/cliente";
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {TipoCliente} from "./entity/tipo-cliente";
 
 describe("github issue #1754 Repository.save() always updating ManyToOne relation", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql"]

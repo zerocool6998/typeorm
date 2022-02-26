@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {User} from "./entity/User";
 import {Role} from "./entity/Role";
 import {createTestingConnections, reloadTestingDatabases, closeTestingConnections} from "../../utils/test-utils";
 
 describe("github issues > #5174 `selectQueryBuilder.take` messes up the query when using the `ids` parameter", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         connections = await createTestingConnections({

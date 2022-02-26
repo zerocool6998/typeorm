@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Category } from "./entity/Category";
 import { Site } from "./entity/Site";
@@ -8,7 +8,7 @@ import { Member } from "./entity/Member";
 
 describe("github issues > #8076 Add relation options to all tree queries (missing ones)", () => {
 
-  let connections: Connection[];
+  let connections: DataSource[];
 
   before(async () => connections = await createTestingConnections({
     entities: [Category, Site, Member],

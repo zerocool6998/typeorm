@@ -1,10 +1,10 @@
 import {MetadataArgsStorage} from "./metadata-args/MetadataArgsStorage";
 import {PlatformTools} from "./platform/PlatformTools";
-import {ConnectionOptions} from "./connection/ConnectionOptions";
+import {DataSourceOptions} from "./data-source/DataSourceOptions";
 import {ConnectionOptionsReader} from "./connection/ConnectionOptionsReader";
 import {ConnectionManager} from "./connection/ConnectionManager";
 import {getFromContainer} from "./container";
-import {Connection} from "./connection/Connection";
+import {DataSource} from "./data-source/DataSource";
 import {EntityManager} from "./entity-manager/EntityManager";
 import {MongoEntityManager} from "./entity-manager/MongoEntityManager";
 import {SqljsEntityManager} from "./entity-manager/SqljsEntityManager";
@@ -40,7 +40,7 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
  *
  * @deprecated
  */
-export async function getConnectionOptions(connectionName: string = "default"): Promise<ConnectionOptions> {
+export async function getConnectionOptions(connectionName: string = "default"): Promise<DataSourceOptions> {
     return new ConnectionOptionsReader().get(connectionName);
 }
 
@@ -59,21 +59,21 @@ export function getConnectionManager(): ConnectionManager {
  *
  * @deprecated
  */
-export async function createConnection(): Promise<Connection>;
+export async function createConnection(): Promise<DataSource>;
 
 /**
  * Creates a new connection from the ormconfig file with a given name.
  *
  * @deprecated
  */
-export async function createConnection(name: string): Promise<Connection>;
+export async function createConnection(name: string): Promise<DataSource>;
 
 /**
  * Creates a new connection and registers it in the manager.
  *
  * @deprecated
  */
-export async function createConnection(options: ConnectionOptions): Promise<Connection>;
+export async function createConnection(options: DataSourceOptions): Promise<DataSource>;
 
 /**
  * Creates a new connection and registers it in the manager.
@@ -84,9 +84,9 @@ export async function createConnection(options: ConnectionOptions): Promise<Conn
  *
  * @deprecated
  */
-export async function createConnection(optionsOrName?: any): Promise<Connection> {
+export async function createConnection(optionsOrName?: any): Promise<DataSource> {
     const connectionName = typeof optionsOrName === "string" ? optionsOrName : "default";
-    const options = ObjectUtils.isObject(optionsOrName) ? optionsOrName as ConnectionOptions : await getConnectionOptions(connectionName);
+    const options = ObjectUtils.isObject(optionsOrName) ? optionsOrName as DataSourceOptions : await getConnectionOptions(connectionName);
     return getConnectionManager().create(options).connect();
 }
 
@@ -99,7 +99,7 @@ export async function createConnection(optionsOrName?: any): Promise<Connection>
  *
  * @deprecated
  */
-export async function createConnections(options?: ConnectionOptions[]): Promise<Connection[]> {
+export async function createConnections(options?: DataSourceOptions[]): Promise<DataSource[]> {
     if (!options)
         options = await new ConnectionOptionsReader().all();
     const connections = options.map(options => getConnectionManager().create(options));
@@ -116,7 +116,7 @@ export async function createConnections(options?: ConnectionOptions[]): Promise<
  *
  * @deprecated
  */
-export function getConnection(connectionName: string = "default"): Connection {
+export function getConnection(connectionName: string = "default"): DataSource {
     return getConnectionManager().get(connectionName);
 }
 

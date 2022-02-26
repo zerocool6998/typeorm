@@ -1,4 +1,4 @@
-import {Connection, SelectQueryBuilder} from "..";
+import {DataSource, SelectQueryBuilder} from "..";
 import {OrderByCondition} from "../find-options/OrderByCondition";
 import {TableType} from "../metadata/types/TableTypes";
 
@@ -54,7 +54,7 @@ export interface TableMetadataArgs {
     /**
      * View expression.
      */
-    expression?: string|((connection: Connection) => SelectQueryBuilder<any>);
+    expression?: string|((connection: DataSource) => SelectQueryBuilder<any>);
 
     /**
      * View dependencies.

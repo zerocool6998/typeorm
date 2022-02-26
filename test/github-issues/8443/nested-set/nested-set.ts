@@ -1,13 +1,13 @@
 import "../../../utils/test-setup";
 import "reflect-metadata";
 import {Category} from "./entity/Category";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
 
 describe("github issues > #8443 QueryFailedError when tree entity with JoinColumn > nested-set", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Category]
     }));

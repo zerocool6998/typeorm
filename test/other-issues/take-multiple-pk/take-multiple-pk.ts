@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import {expect} from "chai";
 
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {
   closeTestingConnections,
   createTestingConnections,
@@ -12,7 +12,7 @@ import {Role} from "./entity/Role";
 import {User} from "./entity/User";
 
 describe("other issues > using take with multiple primary keys", () => {
-  let connections: Connection[];
+  let connections: DataSource[];
   before(
     async () =>
       (connections = await createTestingConnections({

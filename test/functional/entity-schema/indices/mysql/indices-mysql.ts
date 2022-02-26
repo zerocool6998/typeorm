@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {PersonSchema} from "./entity/Person";
 
 describe("entity-schema > indices > mysql", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [<any>PersonSchema],
         enabledDrivers: ["mysql"]

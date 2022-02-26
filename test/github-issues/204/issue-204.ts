@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {Record} from "./entity/Record";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {RecordData} from "./entity/RecordData";
 
 describe("github issues > #204 jsonb array is not persisted correctly", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Record],
         enabledDrivers: ["postgres"] // because only postgres supports jsonb type

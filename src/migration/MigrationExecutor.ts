@@ -1,5 +1,5 @@
 import {Table} from "../schema-builder/table/Table";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {Migration} from "./Migration";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryRunner} from "../query-runner/QueryRunner";
@@ -38,7 +38,7 @@ export class MigrationExecutor {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection,
+    constructor(protected connection: DataSource,
                 protected queryRunner?: QueryRunner) {
 
         const { schema } = this.connection.driver.options as any;

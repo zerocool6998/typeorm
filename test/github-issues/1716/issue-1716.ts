@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { Connection } from "../../../src/connection/Connection";
-import { ConnectionOptions } from "../../../src/connection/ConnectionOptions";
+import { DataSource } from "../../../src/data-source/DataSource";
+import { DataSourceOptions } from "../../../src/data-source/DataSourceOptions";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases, getTypeOrmConfig } from "../../utils/test-utils";
 import { expect } from "chai";
 
@@ -23,7 +23,7 @@ const convertPropsToISOStrings = (obj: any, props: string[]) => {
 
 const isDriverEnabled = (driver: string) => {
     const ormConfigConnectionOptionsArray = getTypeOrmConfig();
-    const config = ormConfigConnectionOptionsArray.find((options: ConnectionOptions) => options.name === driver);
+    const config = ormConfigConnectionOptionsArray.find((options: DataSourceOptions) => options.name === driver);
     return config && !config.skip;
 };
 
@@ -36,7 +36,7 @@ describe("github issues > #1716 send timestamp to database without converting it
             return;
         }
 
-        let connections: Connection[];
+        let connections: DataSource[];
 
         before(async () => {
             connections = await createTestingConnections({
@@ -129,7 +129,7 @@ describe("github issues > #1716 send timestamp to database without converting it
             return;
         }
 
-        let connections: Connection[];
+        let connections: DataSource[];
 
         before(async () => {
             connections = await createTestingConnections({
@@ -203,7 +203,7 @@ describe("github issues > #1716 send timestamp to database without converting it
             return;
         }
 
-        let connections: Connection[];
+        let connections: DataSource[];
 
         before(async () => {
             connections = await createTestingConnections({
@@ -277,7 +277,7 @@ describe("github issues > #1716 send timestamp to database without converting it
             return;
         }
 
-        let connections: Connection[];
+        let connections: DataSource[];
 
         before(async () => {
             connections = await createTestingConnections({

@@ -1,13 +1,13 @@
 import "../../utils/test-setup";
 import {createTestingConnections, closeTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Child1} from "./enity/Child1";
 import {Child2} from "./enity/Child2";
 import {Root} from "./enity/Root";
 import {Shared} from "./enity/Shared";
 
 describe("github issues > #5691 RelationId is too slow", () => {
-    const setupFixtures = async (connection: Connection, allChild2: Array<Child2>): Promise<void> => {
+    const setupFixtures = async (connection: DataSource, allChild2: Array<Child2>): Promise<void> => {
         const root = new Root();
         root.allChild2 = allChild2;
         await connection.getRepository(Root).save(root);
@@ -42,7 +42,7 @@ describe("github issues > #5691 RelationId is too slow", () => {
         }
     };
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [
             Root,

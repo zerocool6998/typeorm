@@ -1,4 +1,4 @@
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -7,7 +7,7 @@ import {
 import { Limit, MyTable } from "./entity/my-table.entity";
 
 describe("github issues > #8644 BUG - Special keyword column name for simple-enum in sqlite", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(
         async () =>

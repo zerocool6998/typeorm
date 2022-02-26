@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -8,7 +8,7 @@ import {
 import {Role, User} from "./entity/UserEntity";
 
 describe("github issues > #5275 Enums with spaces are not converted properly.", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

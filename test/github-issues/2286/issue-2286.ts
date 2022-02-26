@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import { Post } from "./entity/Post";
 import { Example } from "./entity/Example";
@@ -8,7 +8,7 @@ import { Between } from "../../../src";
 
 describe("github issues > #2286 find operators like MoreThan and LessThan doesn't work properly for date fields", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [ Post, Example ],
         schemaCreate: true,

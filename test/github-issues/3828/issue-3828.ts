@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { MyEntity } from "./entity/Entity";
 
 describe("github issues > #3828 Conflicting PR to fix postgres schema:log with uppercase table names and enums", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         connections = await createTestingConnections({

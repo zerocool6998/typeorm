@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mongodb",
     host: "localhost",
     database: "test",

@@ -1,7 +1,7 @@
 import {Driver} from "../Driver";
 import {PostgresDriver} from "../postgres/PostgresDriver";
 import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {AuroraDataApiPostgresConnectionOptions} from "../aurora-data-api-pg/AuroraDataApiPostgresConnectionOptions";
 import {AuroraDataApiPostgresQueryRunner} from "../aurora-data-api-pg/AuroraDataApiPostgresQueryRunner";
 import {ReplicationMode} from "../types/ReplicationMode";
@@ -24,7 +24,7 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
     /**
      * Connection used by driver.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Aurora Data API underlying library.
@@ -56,7 +56,7 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super();
         this.connection = connection;
         this.options = connection.options as AuroraDataApiPostgresConnectionOptions;

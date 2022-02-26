@@ -1,4 +1,4 @@
-import {Connection, Driver, EntityMetadata, SelectQueryBuilder} from "../..";
+import {DataSource, Driver, EntityMetadata, SelectQueryBuilder} from "../..";
 import {ViewOptions} from "../options/ViewOptions";
 
 /**
@@ -35,7 +35,7 @@ export class View {
     /**
      * View definition.
      */
-    expression: string | ((connection: Connection) => SelectQueryBuilder<any>);
+    expression: string | ((connection: DataSource) => SelectQueryBuilder<any>);
 
     // -------------------------------------------------------------------------
     // Constructor

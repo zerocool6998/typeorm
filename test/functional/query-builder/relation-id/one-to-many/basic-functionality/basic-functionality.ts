@@ -5,14 +5,14 @@ import {
     createTestingConnections,
     reloadTestingDatabases
 } from "../../../../../utils/test-utils";
-import {Connection} from "../../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../../src/data-source/DataSource";
 import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
 import {Image} from "./entity/Image";
 
 describe("query builder > relation-id > one-to-many > basic-functionality", () => {
-    
-    let connections: Connection[];
+
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

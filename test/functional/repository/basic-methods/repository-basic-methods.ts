@@ -6,7 +6,7 @@ import {
     reloadTestingDatabases,
     sleep
 } from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {QueryBuilder} from "../../../../src/query-builder/QueryBuilder";
 import {User} from "./model/User";
@@ -36,7 +36,7 @@ describe("repository > basic methods", () => {
     const UserEntity = new EntitySchema<any>(userSchema);
     const QuestionEntity = new EntitySchema<any>(questionSchema as any);
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

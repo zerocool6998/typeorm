@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection, Table} from "../../../src";
+import {DataSource, Table} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {TableExclusion} from "../../../src/schema-builder/table/TableExclusion";
 
 describe("query runner > create exclusion constraint", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

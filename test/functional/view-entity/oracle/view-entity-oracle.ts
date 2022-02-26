@@ -1,14 +1,14 @@
 import {expect} from "chai";
 import "reflect-metadata";
 import {Category} from "./entity/Category";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {PostCategory} from "./entity/PostCategory";
 
 describe("view entity > oracle", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["oracle"]

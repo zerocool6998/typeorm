@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {Category} from "./entity/Category";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Product} from "./entity/Product";
 
 describe("tree tables > materialized-path", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Product, Category],
         logging: true,

@@ -13,7 +13,7 @@ import {TableMetadataArgs} from "../metadata-args/TableMetadataArgs";
 import {JunctionEntityMetadataBuilder} from "./JunctionEntityMetadataBuilder";
 import {ClosureJunctionEntityMetadataBuilder} from "./ClosureJunctionEntityMetadataBuilder";
 import {RelationJoinColumnBuilder} from "./RelationJoinColumnBuilder";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {EntityListenerMetadata} from "../metadata/EntityListenerMetadata";
 import {UniqueMetadata} from "../metadata/UniqueMetadata";
 import {CheckMetadata} from "../metadata/CheckMetadata";
@@ -49,7 +49,7 @@ export class EntityMetadataBuilder {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private connection: Connection,
+    constructor(private connection: DataSource,
                 private metadataArgsStorage: MetadataArgsStorage) {
 
         this.junctionEntityMetadataBuilder = new JunctionEntityMetadataBuilder(connection);

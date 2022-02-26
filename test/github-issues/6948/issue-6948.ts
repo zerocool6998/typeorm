@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Category } from "./entity/Category";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -8,7 +8,7 @@ import {
 } from "../../../test/utils/test-utils";
 
 describe("github issues > #6948 TreeRepository's findRoots query incorrectly when using a custom primary key", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

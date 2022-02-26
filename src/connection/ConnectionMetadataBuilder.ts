@@ -5,7 +5,7 @@ import {MigrationInterface} from "../migration/MigrationInterface";
 import {getMetadataArgsStorage} from "../globals";
 import {EntityMetadataBuilder} from "../metadata-builder/EntityMetadataBuilder";
 import {EntitySchemaTransformer} from "../entity-schema/EntitySchemaTransformer";
-import {Connection} from "./Connection";
+import {DataSource} from "../data-source/DataSource";
 import {EntitySchema} from "../entity-schema/EntitySchema";
 import {EntityMetadata} from "../metadata/EntityMetadata";
 import {EntitySubscriberInterface} from "../subscriber/EntitySubscriberInterface";
@@ -20,7 +20,7 @@ export class ConnectionMetadataBuilder {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

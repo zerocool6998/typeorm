@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {LetterBox} from "./entity/LetterBox";
 
@@ -8,7 +8,7 @@ import {LetterBox} from "./entity/LetterBox";
 describe("github issues > #3702 MySQL Spatial Type Support : GeomFromText function is not supported", () => {
 
     describe("when legacySpatialSupport: true", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
 
         before(async () => connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],
@@ -58,7 +58,7 @@ describe("github issues > #3702 MySQL Spatial Type Support : GeomFromText functi
 
 
     describe("when legacySpatialSupport: false", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
 
         before(async () => connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

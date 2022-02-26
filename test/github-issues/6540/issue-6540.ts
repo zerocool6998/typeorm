@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {Order} from "./entity/order.entity.ts";
 import {OrderProduct} from "./entity/order-product.entity.ts";
 
 describe("github issues > #6540 Enum not resolved if it is from an external file", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["mysql", "mariadb"],
         schemaCreate: false,

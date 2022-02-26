@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import * as assert from "assert";
 import {createConnection, getConnectionOptions} from "../../../src/index";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {getTypeOrmConfig} from "../../utils/test-utils";
 
 describe("github issues > #798 sqlite: 'database' path in ormconfig.json is not relative", () => {
-    let connection: Connection;
+    let connection: DataSource;
     const oldCwd = process.cwd();
 
     before(function () {

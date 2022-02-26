@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { createTestingConnections, closeTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { expect } from "chai";
 import { Dummy } from "./entity/dummy";
 import { Dummy2 } from "./entity/dummy2";
 
 describe("github issues > #2364 should generate id value if @Column generated:true is set", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
 
     it("should generate id value", async () => {

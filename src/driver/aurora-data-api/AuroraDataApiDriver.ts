@@ -5,7 +5,7 @@ import {ObjectLiteral} from "../../common/ObjectLiteral";
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
 import {DateUtils} from "../../util/DateUtils";
 import {PlatformTools} from "../../platform/PlatformTools";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {RdbmsSchemaBuilder} from "../../schema-builder/RdbmsSchemaBuilder";
 import {AuroraDataApiConnectionOptions} from "./AuroraDataApiConnectionOptions";
 import {MappedColumnTypes} from "../types/MappedColumnTypes";
@@ -32,7 +32,7 @@ export class AuroraDataApiDriver implements Driver {
     // Public Properties
     // -------------------------------------------------------------------------
 
-    connection: Connection;
+    connection: DataSource;
     /**
      * Aurora Data API underlying library.
      */
@@ -315,7 +315,7 @@ export class AuroraDataApiDriver implements Driver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         this.connection = connection;
         this.options = connection.options as AuroraDataApiConnectionOptions;
 

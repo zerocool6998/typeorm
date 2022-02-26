@@ -2,7 +2,7 @@ import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
 import {ExpoConnectionOptions} from "./ExpoConnectionOptions";
 import {ExpoQueryRunner} from "./ExpoQueryRunner";
 import {QueryRunner} from "../../query-runner/QueryRunner";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {ReplicationMode} from "../types/ReplicationMode";
 
@@ -13,7 +13,7 @@ export class ExpoDriver extends AbstractSqliteDriver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
 
         this.database = this.options.database;

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import "../../../utils/test-setup"
-import {Connection, Not} from "../../../../src";
+import {DataSource, Not} from "../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {prepareData} from "./find-options-test-utils";
@@ -8,7 +8,7 @@ import {expect} from "chai";
 
 describe("find options > order", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         __dirname,
     }));

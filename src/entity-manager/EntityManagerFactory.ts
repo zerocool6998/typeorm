@@ -1,4 +1,4 @@
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {EntityManager} from "./EntityManager";
 import {MongoEntityManager} from "./MongoEntityManager";
 import {SqljsEntityManager} from "./SqljsEntityManager";
@@ -12,7 +12,7 @@ export class EntityManagerFactory {
     /**
      * Creates a new entity manager depend on a given connection's driver.
      */
-    create(connection: Connection, queryRunner?: QueryRunner): EntityManager {
+    create(connection: DataSource, queryRunner?: QueryRunner): EntityManager {
         if (connection.driver.options.type === "mongodb")
             return new MongoEntityManager(connection);
 

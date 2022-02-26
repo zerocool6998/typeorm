@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {Category} from "./entity/Category";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "sqlite",
     database: "temp/sqlitedb.db",
     logging: ["query", "error"],

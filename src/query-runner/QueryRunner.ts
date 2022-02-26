@@ -2,7 +2,7 @@ import {TableColumn} from "../schema-builder/table/TableColumn";
 import {Table} from "../schema-builder/table/Table";
 import {TableForeignKey} from "../schema-builder/table/TableForeignKey";
 import {TableIndex} from "../schema-builder/table/TableIndex";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {ReadStream} from "../platform/PlatformTools";
 import {EntityManager} from "../entity-manager/EntityManager";
 import {ObjectLiteral} from "../common/ObjectLiteral";
@@ -24,7 +24,7 @@ export interface QueryRunner {
     /**
      * Connection used by this query runner.
      */
-    readonly connection: Connection;
+    readonly connection: DataSource;
 
     /**
      * Broadcaster used on this query runner to broadcast entity events.

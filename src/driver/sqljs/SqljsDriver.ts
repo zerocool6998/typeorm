@@ -2,7 +2,7 @@ import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
 import {SqljsConnectionOptions} from "./SqljsConnectionOptions";
 import {SqljsQueryRunner} from "./SqljsQueryRunner";
 import {QueryRunner} from "../../query-runner/QueryRunner";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {PlatformTools} from "../../platform/PlatformTools";
@@ -27,7 +27,7 @@ export class SqljsDriver extends AbstractSqliteDriver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
 
         // If autoSave is enabled by user, location or autoSaveCallback have to be set

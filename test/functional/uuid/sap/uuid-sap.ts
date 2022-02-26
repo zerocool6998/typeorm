@@ -1,13 +1,13 @@
 import {expect} from "chai";
 import "reflect-metadata";
-import {Connection} from "../../../../src";
+import {DataSource} from "../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {Question} from "./entity/Question";
 
 describe("uuid-mysql", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

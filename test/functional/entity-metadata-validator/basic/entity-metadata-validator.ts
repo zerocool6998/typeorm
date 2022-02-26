@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {ConnectionMetadataBuilder} from "../../../../src/connection/ConnectionMetadataBuilder";
 import {EntityMetadataValidator} from "../../../../src/metadata-builder/EntityMetadataValidator";
 import {expect} from "chai";
@@ -7,7 +7,7 @@ import {expect} from "chai";
 describe("entity-metadata-validator", () => {
 
     it("should throw error if relation count decorator used with ManyToOne or OneToOne relations", async () => {
-        const connection = new Connection({ // dummy connection options, connection won't be established anyway
+        const connection = new DataSource({ // dummy connection options, connection won't be established anyway
             type: "mysql",
             host: "localhost",
             username: "test",

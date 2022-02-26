@@ -5,13 +5,13 @@ import {
     reloadTestingDatabases,
     setupSingleTestingConnection
 } from "../../utils/test-utils";
-import { Connection, createConnection } from "../../../src";
+import { DataSource, createConnection } from "../../../src";
 import { fail } from "assert";
 import { Query } from "../../../src/driver/Query";
 import { MysqlConnectionOptions } from "../../../src/driver/mysql/MysqlConnectionOptions";
 
 describe("github issues > #6442 JoinTable does not respect inverseJoinColumns referenced column width", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         return connections = await createTestingConnections({

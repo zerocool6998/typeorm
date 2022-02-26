@@ -1,7 +1,7 @@
 import {ColumnMetadata} from "../metadata/ColumnMetadata";
 import {QueryBuilder} from "./QueryBuilder";
 import {ObjectLiteral} from "../common/ObjectLiteral";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {WhereExpressionBuilder} from "./WhereExpressionBuilder";
 import {Brackets} from "./Brackets";
@@ -29,7 +29,7 @@ export class UpdateQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connectionOrQueryBuilder: Connection|QueryBuilder<any>, queryRunner?: QueryRunner) {
+    constructor(connectionOrQueryBuilder: DataSource|QueryBuilder<any>, queryRunner?: QueryRunner) {
         super(connectionOrQueryBuilder as any, queryRunner);
         this.expressionMap.aliasNamePrefixingEnabled = false;
     }

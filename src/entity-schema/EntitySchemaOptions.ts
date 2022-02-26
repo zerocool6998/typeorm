@@ -1,4 +1,4 @@
-import {Connection, EntitySchemaEmbeddedColumnOptions, SelectQueryBuilder} from "..";
+import {DataSource, EntitySchemaEmbeddedColumnOptions, SelectQueryBuilder} from "..";
 import {EntitySchemaIndexOptions} from "./EntitySchemaIndexOptions";
 import {EntitySchemaColumnOptions} from "./EntitySchemaColumnOptions";
 import {EntitySchemaRelationOptions} from "./EntitySchemaRelationOptions";
@@ -111,6 +111,6 @@ export class EntitySchemaOptions<T> {
     /**
      * View expression.
      */
-    expression?: string|((connection: Connection) => SelectQueryBuilder<any>);
+    expression?: string|((connection: DataSource) => SelectQueryBuilder<any>);
 
 }

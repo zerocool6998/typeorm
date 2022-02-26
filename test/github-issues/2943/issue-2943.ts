@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { expect } from "chai";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
 import { Test } from "./entity/Test";
 
 describe("github issues > #2943 Inappropriate migration generated", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         connections = await createTestingConnections({

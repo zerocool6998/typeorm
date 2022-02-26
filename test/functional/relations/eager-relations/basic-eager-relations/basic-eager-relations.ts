@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {User} from "./entity/User";
 import {Profile} from "./entity/Profile";
@@ -9,14 +9,14 @@ import {Category} from "./entity/Category";
 
 describe("relations > eager relations > basic", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));
     beforeEach(() => reloadTestingDatabases(connections));
     after(() => closeTestingConnections(connections));
 
-    async function prepareData(connection: Connection) {
+    async function prepareData(connection: DataSource) {
         const profile = new Profile();
         profile.about = "I cut trees!";
         await connection.manager.save(profile);

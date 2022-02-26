@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import "../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Parent} from "./entity/Parent";
 import {Child} from "./entity/Child";
 import {expect} from "chai";
 
 describe("github issues > #1055 ind with relations not working, correct syntax causes type error", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql"] // only one driver is enabled because this example uses lazy relations

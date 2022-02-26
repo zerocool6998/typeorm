@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {Post} from "./entity/Post";
 import {createTestingConnections, reloadTestingDatabases, closeTestingConnections} from "../../utils/test-utils";
 
 describe("github issues > #7100 MSSQL error when user requests additional columns to be returned", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         connections = await createTestingConnections({

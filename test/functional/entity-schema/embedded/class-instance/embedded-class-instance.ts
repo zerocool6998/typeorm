@@ -1,4 +1,4 @@
-import {Connection} from "../../../../../src";
+import {DataSource} from "../../../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {UserEntitySchema} from "./entity/User";
 import {expect} from "chai";
@@ -6,7 +6,7 @@ import {Name} from "./entity/Name";
 
 describe("entity-schema > embedded - class-instance", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [UserEntitySchema],
     }));

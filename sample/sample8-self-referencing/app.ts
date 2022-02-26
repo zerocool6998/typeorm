@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Category} from "./entity/Category";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -15,10 +15,10 @@ const options: ConnectionOptions = {
 
 createConnection(options).then(connection => {
     let categoryRepository = connection.getRepository(Category);
-    
+
     let category1 = new Category();
     category1.name = "category #1";
-    
+
     let mainCategory = new Category();
     mainCategory.manyCategories = [];
     mainCategory.name = "main category";

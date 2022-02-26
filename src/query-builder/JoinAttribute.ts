@@ -1,5 +1,5 @@
 import {EntityMetadata} from "../metadata/EntityMetadata";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {RelationMetadata} from "../metadata/RelationMetadata";
 import {QueryBuilderUtils} from "./QueryBuilderUtils";
 import {QueryExpressionMap} from "./QueryExpressionMap";
@@ -51,7 +51,7 @@ export class JoinAttribute {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(private connection: Connection,
+    constructor(private connection: DataSource,
                 private queryExpressionMap: QueryExpressionMap,
                 joinAttribute?: JoinAttribute) {
         ObjectUtils.assign(this, joinAttribute || {});

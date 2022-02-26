@@ -5,12 +5,12 @@ import {
     createTestingConnections,
 } from "../../utils/test-utils";
 
-import { Connection } from "../../../src/connection/Connection";
+import { DataSource } from "../../../src/data-source/DataSource";
 import { afterEach } from "mocha";
 import { expect } from "chai";
 
 describe("github issues > #4956 create typeorm_metatable when running migrations.", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     afterEach(async () => {
         await closeTestingConnections(connections);

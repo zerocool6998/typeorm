@@ -1,4 +1,4 @@
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {FindManyOptions} from "../find-options/FindManyOptions";
 import {EntityTarget} from "../common/EntityTarget";
 import {ObjectType} from "../common/ObjectType";
@@ -52,7 +52,7 @@ export class EntityManager {
     /**
      * Connection used by this entity manager.
      */
-    readonly connection: Connection;
+    readonly connection: DataSource;
 
     /**
      * Custom query runner to be used for operations in this entity manager.
@@ -83,7 +83,7 @@ export class EntityManager {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection, queryRunner?: QueryRunner) {
+    constructor(connection: DataSource, queryRunner?: QueryRunner) {
         this.connection = connection;
         if (queryRunner) {
             this.queryRunner = queryRunner;

@@ -2,12 +2,12 @@ import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {User} from "./entity/User";
 import {SpecificUser} from "./entity/SpecificUser";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 
 describe("github issue > #1326 Wrong behavior w/ the same table names in different databases", () => {
 
-    let connections: Connection[] = [];
+    let connections: DataSource[] = [];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql"]

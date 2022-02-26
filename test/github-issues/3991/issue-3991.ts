@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {Post as CockroachPost} from "./entity/cockroachdb/Post";
 import {Post as MssqlPost} from "./entity/mssql/Post";
@@ -10,7 +10,7 @@ import {Post as SqlitePost} from "./entity/sqlite/Post";
 
 describe("github issues > #3991 Migration keeps changing @CreateDateColumn/@UpdateDateColumn timestamp column to same definition", () => {
     describe("postgres", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["postgres"],
             schemaCreate: false,
@@ -34,7 +34,7 @@ describe("github issues > #3991 Migration keeps changing @CreateDateColumn/@Upda
     })
 
     describe("cockroachdb", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["cockroachdb"],
             schemaCreate: false,
@@ -58,7 +58,7 @@ describe("github issues > #3991 Migration keeps changing @CreateDateColumn/@Upda
     })
 
     describe("oracle", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["oracle"],
             schemaCreate: false,
@@ -82,7 +82,7 @@ describe("github issues > #3991 Migration keeps changing @CreateDateColumn/@Upda
     })
 
     describe("sqlite", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["sqlite"],
             schemaCreate: false,
@@ -106,7 +106,7 @@ describe("github issues > #3991 Migration keeps changing @CreateDateColumn/@Upda
     })
 
     describe("mysql, mariadb", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["mysql", "mariadb"],
             schemaCreate: false,
@@ -130,7 +130,7 @@ describe("github issues > #3991 Migration keeps changing @CreateDateColumn/@Upda
     })
 
     describe("mssql", () => {
-        let connections: Connection[];
+        let connections: DataSource[];
         before(async () => connections = await createTestingConnections({
             enabledDrivers: ["mssql"],
             schemaCreate: false,

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Connection, In} from "../../../src";
+import {DataSource, In} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Product} from "./entity/Product";
 import {Ticket} from "./entity/Ticket";
@@ -7,7 +7,7 @@ import {TicketProduct} from "./entity/TicketProduct";
 
 describe("github issues > #2298 - Repository filtering not considering related columns as filter", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

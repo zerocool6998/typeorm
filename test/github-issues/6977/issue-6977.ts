@@ -1,5 +1,5 @@
 import { closeTestingConnections, createTestingConnections, reloadTestingDatabases } from "../../utils/test-utils";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { expect } from "chai";
 
 import { Embedded } from "./entity/Embedded";
@@ -7,7 +7,7 @@ import { User } from "./entity/User";
 
 describe("github issues > #6977 Relation columns in embedded entities are not prefixed", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [User, Embedded],
     }));

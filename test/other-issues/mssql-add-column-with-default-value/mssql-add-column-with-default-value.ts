@@ -1,10 +1,10 @@
 
 import { createTestingConnections, closeTestingConnections } from "../../utils/test-utils";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import { Post } from "./entity/Post-Succeed";
 
 describe("mssql -> add column to existing table", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     beforeEach(async () => {
         connections = (await createTestingConnections({

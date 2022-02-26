@@ -1,6 +1,6 @@
-import {Connection} from "./Connection";
+import {DataSource} from "../data-source/DataSource";
 import {ConnectionNotFoundError} from "../error/ConnectionNotFoundError";
-import {ConnectionOptions} from "./ConnectionOptions";
+import {DataSourceOptions} from "../data-source/DataSourceOptions";
 import {AlreadyHasActiveConnectionError} from "../error/AlreadyHasActiveConnectionError";
 
 /**
@@ -13,14 +13,14 @@ export class ConnectionManager {
     /**
      * List of connections registered in this connection manager.
      */
-    get connections(): Connection[] {
+    get connections(): DataSource[] {
         return Array.from(this.connectionMap.values());
     }
 
     /**
      * Internal lookup to quickly get from a connection name to the Connection object.
      */
-    private readonly connectionMap: Map<string, Connection> = new Map();
+    private readonly connectionMap: Map<string, DataSource> = new Map();
 
     // -------------------------------------------------------------------------
     // Public Methods
@@ -38,7 +38,7 @@ export class ConnectionManager {
      * If connection name is not given then it will get a default connection.
      * Throws error if connection with the given name was not found.
      */
-    get(name: string = "default"): Connection {
+    get(name: string = "default"): DataSource {
         const connection = this.connectionMap.get(name);
         if (!connection)
             throw new ConnectionNotFoundError(name);
@@ -50,7 +50,7 @@ export class ConnectionManager {
      * Creates a new connection based on the given connection options and registers it in the manager.
      * Connection won't be established, you'll need to manually call connect method to establish connection.
      */
-    create(options: ConnectionOptions): Connection {
+    create(options: DataSourceOptions): DataSource {
         // check if such connection is already registered
         const existConnection = this.connectionMap.get(options.name || "default");
         if (existConnection) {
@@ -60,7 +60,7 @@ export class ConnectionManager {
         }
 
         // create a new connection
-        const connection = new Connection(options);
+        const connection = new DataSource(options);
         this.connectionMap.set(connection.name, connection);
         return connection;
     }

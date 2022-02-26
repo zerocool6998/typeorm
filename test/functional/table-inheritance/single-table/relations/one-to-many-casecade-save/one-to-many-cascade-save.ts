@@ -5,14 +5,14 @@ import {
     reloadTestingDatabases
 } from "../../../../../utils/test-utils";
 import {expect} from "chai";
-import {Connection} from "../../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../../src/data-source/DataSource";
 import {Faculty} from "./entity/Faculty";
 import {Professor} from "./entity/Professor";
 import {Researcher} from "./entity/Researcher";
 
 describe("table-inheritance > single-table > relations > one-to-many-cascade-save", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"]
     }));

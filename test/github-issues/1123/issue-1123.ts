@@ -1,11 +1,11 @@
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {EntitySchema} from "../../../src";
 import {Author, AuthorSchema} from "./entity/Author";
 import {Post, PostSchema} from "./entity/Post";
 
 describe("github issues > #1123 load relation eagerly by setting isEager property", () => {
-  let connections: Connection[];
+  let connections: DataSource[];
   before(
     async () =>
       (connections = await createTestingConnections({
@@ -16,7 +16,7 @@ describe("github issues > #1123 load relation eagerly by setting isEager propert
   beforeEach(() => reloadTestingDatabases(connections));
   after(() => closeTestingConnections(connections));
 
-  async function prepareData(connection: Connection) {
+  async function prepareData(connection: DataSource) {
     const author = new Author();
     author.id = 1;
     author.name = "Jane Doe";

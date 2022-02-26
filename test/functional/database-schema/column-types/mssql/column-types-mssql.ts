@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Post} from "./entity/Post";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {PostWithOptions} from "./entity/PostWithOptions";
 import {PostWithoutTypes} from "./entity/PostWithoutTypes";
@@ -9,7 +9,7 @@ import {FruitEnum} from "./enum/FruitEnum";
 
 describe("database schema > column types > mssql", () => { // https://github.com/tediousjs/tedious/issues/722
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

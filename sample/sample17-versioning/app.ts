@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -21,7 +21,7 @@ createConnection(options).then(connection => {
     post.title = "hello";
 
     let postRepository = connection.getRepository(Post);
-    
+
     postRepository
         .save(post)
         .then(post => {
@@ -29,7 +29,7 @@ createConnection(options).then(connection => {
             console.log(`Post's version is ${post.version}. Lets change post's text and update it:`);
             post.title = "updating title";
             return postRepository.save(post);
-            
+
         }).then(post => {
             console.log(`Post has been updated. Post's version is ${post.version}`);
         });

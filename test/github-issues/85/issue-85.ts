@@ -1,11 +1,11 @@
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {Document} from "./entity/Document";
 import {expect} from "chai";
 
 describe("github issues > #85 - Column option insert: false, update: false", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],

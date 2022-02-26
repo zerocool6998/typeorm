@@ -1,12 +1,12 @@
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {assert} from "chai";
 import {User} from "./entity/User";
 import {TournamentUserParticipant} from "./entity/TournamentUserParticipant";
 import {TournamentSquadParticipant} from "./entity/TournamentSquadParticipant";
 
 describe("github issues > #1972 STI problem - empty columns", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],

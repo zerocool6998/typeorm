@@ -1,4 +1,4 @@
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {SchemaBuilder} from "./SchemaBuilder";
 import {MongoQueryRunner} from "../driver/mongodb/MongoQueryRunner";
 import {SqlInMemory} from "../driver/SqlInMemory";
@@ -24,7 +24,7 @@ export class MongoSchemaBuilder implements SchemaBuilder {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
     }
 
     // -------------------------------------------------------------------------

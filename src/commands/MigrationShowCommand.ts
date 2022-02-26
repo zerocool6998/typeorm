@@ -1,6 +1,6 @@
 import {createConnection} from "../globals";
 import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import * as process from "process";
 import * as yargs from "yargs";
 import {PlatformTools} from "../platform/PlatformTools";
@@ -28,7 +28,7 @@ export class MigrationShowCommand implements yargs.CommandModule {
   }
 
   async handler(args: yargs.Arguments) {
-    let connection: Connection|undefined = undefined;
+    let connection: DataSource|undefined = undefined;
     try {
       const connectionOptionsReader = new ConnectionOptionsReader({
         root: process.cwd(),
@@ -49,7 +49,7 @@ export class MigrationShowCommand implements yargs.CommandModule {
       process.exit(0);
 
     } catch (err) {
-      if (connection) await (connection as Connection).close();
+      if (connection) await (connection as DataSource).close();
       PlatformTools.logCmdErr("Error during migration show:", err);
       process.exit(1);
     }

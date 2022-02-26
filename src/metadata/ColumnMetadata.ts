@@ -4,7 +4,7 @@ import {EmbeddedMetadata} from "./EmbeddedMetadata";
 import {RelationMetadata} from "./RelationMetadata";
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {ColumnMetadataArgs} from "../metadata-args/ColumnMetadataArgs";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {OrmUtils} from "../util/OrmUtils";
 import {ValueTransformer} from "../decorator/options/ValueTransformer";
 import {ApplyValueTransformers} from "../util/ApplyValueTransformers";
@@ -317,7 +317,7 @@ export class ColumnMetadata {
     // ---------------------------------------------------------------------
 
     constructor(options: {
-        connection: Connection,
+        connection: DataSource,
         entityMetadata: EntityMetadata,
         embeddedMetadata?: EmbeddedMetadata,
         referencedColumn?: ColumnMetadata,
@@ -733,7 +733,7 @@ export class ColumnMetadata {
     // Builder Methods
     // ---------------------------------------------------------------------
 
-    build(connection: Connection): this {
+    build(connection: DataSource): this {
         this.propertyPath = this.buildPropertyPath();
         this.propertyAliasName = this.propertyPath.replace(".", "_");
         this.databaseName = this.buildDatabaseName(connection);
@@ -774,7 +774,7 @@ export class ColumnMetadata {
         return path;
     }
 
-    protected buildDatabaseName(connection: Connection): string {
+    protected buildDatabaseName(connection: DataSource): string {
         let propertyNames = this.embeddedMetadata ? this.embeddedMetadata.parentPrefixes : [];
         if (connection.driver.options.type === "mongodb") // we don't need to include embedded name for the mongodb column names
             propertyNames = [];

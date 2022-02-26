@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {UserMeta} from "./entity/UserMeta";
 import {User} from "./entity/User";
 
 describe("github issues > #8158 Typeorm creates migration that creates already existing unique constraint", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         migrations: [],
         schemaCreate: false,

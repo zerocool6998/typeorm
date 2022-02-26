@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {PostWithRelation} from "./entity/PostWithRelation";
 
 // This test is neccessary because finding with eager relation will be run in the different way
 describe(`repository > the global condtion of "non-deleted" with eager relation`, () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

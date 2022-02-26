@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {PostgresConnectionOptions} from "../../../src/driver/postgres/PostgresConnectionOptions";
 
 describe.skip("github issues > #114 Can not be parsed correctly the URL of pg.", () => {
 
-    let connection: Connection;
+    let connection: DataSource;
     before(() => {
-        connection = new Connection({ // Dummy Connection, won't be established
+        connection = new DataSource({ // Dummy Connection, won't be established
             type: "postgres",
             url: "postgres://test:test@localhost:5432/test",
         });

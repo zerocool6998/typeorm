@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {expect} from "chai";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Post} from "./entity/Post";
 import {Table, TableColumn} from "../../../src";
 
 describe("github issues > #1997 enum type not working in postgres when defined in a custom schema", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["postgres"],

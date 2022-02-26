@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "reflect-metadata";
-import { Connection } from "../../../src";
+import { DataSource } from "../../../src";
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -11,7 +11,7 @@ import { Grandchild } from "./entity/Grandchild";
 import { Parent } from "./entity/Parent";
 
 describe("github issues > #8018 Non-unique relation property names causes entity mixup in query results", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
             (connections = await createTestingConnections({

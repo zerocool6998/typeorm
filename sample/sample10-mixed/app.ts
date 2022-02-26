@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {PostDetails} from "./entity/PostDetails";
 import {Image} from "./entity/Image";
 import {Cover} from "./entity/Cover";
 import {Category} from "./entity/Category";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -22,17 +22,17 @@ createConnection(options).then(connection => {
 
     let postCover = new Cover();
     postCover.url = "http://covers.com/post.jpg";
-    
+
     let details = new PostDetails();
     details.meta = "hello";
     details.comment = "wow";
-    
+
     let category1 = new Category();
     category1.description = "about post1";
-    
+
     let category2 = new Category();
     category2.description = "about post2";
-    
+
     let image = new Image();
     image.name = "post.jpg";
 
@@ -43,7 +43,7 @@ createConnection(options).then(connection => {
     post.details = details;
     post.images.push(image);
     post.categories = [category1, category2];
-    
+
     postRepository.save(post).then(result => {
 
         /*const qb = postRepository.createQueryBuilder("post")
@@ -53,7 +53,7 @@ createConnection(options).then(connection => {
             .leftJoinAndSelect("post.categories", "categories")
             .where("post.id=:id")
             .setParameter("id", 6);
-        
+
         return qb
             .getSingleResult()
             .then(post => {
@@ -62,11 +62,11 @@ createConnection(options).then(connection => {
                 let category1 = new Category();
                 category1.id = 12;
                 category1.description = "about cat#12";
-                
+
                 let category2 = new Category();
                 category2.id = 52;
                 category2.description = "about cat#52";
-                
+
                 let image = new Image();
                 image.name = "second image of the post";
 
@@ -83,9 +83,9 @@ createConnection(options).then(connection => {
     })
         .then(result => console.log(result))
         .catch(error => console.log(error.stack ? error.stack : error));
-    
+
     return;
-    
+
     /*const postJson = {
         id: 1,  // changed
         text: "This is post about hello", // changed
@@ -138,7 +138,7 @@ createConnection(options).then(connection => {
            //console.log("diff[0]: ", diff[0].removedRelations);
         })
         .catch(error => console.log(error.stack ? error.stack : error));
-    
+
     let qb = postRepository
         .createQueryBuilder("post")
         .addSelect("cover")
@@ -156,7 +156,7 @@ createConnection(options).then(connection => {
         .setParameter("id", 1)
         .setParameter("description", "cat2")
         .setParameter("meta", "sec image");
-    
+
     return qb
         .getSingleResult()
         .then(post => console.log(post))

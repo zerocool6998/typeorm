@@ -2,7 +2,7 @@ import {AbstractSqliteDriver} from "../sqlite-abstract/AbstractSqliteDriver";
 import {CordovaConnectionOptions} from "./CordovaConnectionOptions";
 import {CordovaQueryRunner} from "./CordovaQueryRunner";
 import {QueryRunner} from "../../query-runner/QueryRunner";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {DriverOptionNotSetError} from "../../error/DriverOptionNotSetError";
 import {DriverPackageNotInstalledError} from "../../error/DriverPackageNotInstalledError";
 import {ReplicationMode} from "../types/ReplicationMode";
@@ -21,7 +21,7 @@ export class CordovaDriver extends AbstractSqliteDriver {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection) {
+    constructor(connection: DataSource) {
         super(connection);
 
         // this.connection = connection;

@@ -1,6 +1,6 @@
 import {ObjectLiteral} from "../common/ObjectLiteral";
 import {QueryRunner} from "../query-runner/QueryRunner";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {QueryExpressionMap} from "./QueryExpressionMap";
 import {SelectQueryBuilder} from "./SelectQueryBuilder";
 import {UpdateQueryBuilder} from "./UpdateQueryBuilder";
@@ -52,7 +52,7 @@ export abstract class QueryBuilder<Entity> {
     /**
      * Connection on which QueryBuilder was created.
      */
-    readonly connection: Connection;
+    readonly connection: DataSource;
 
     /**
      * Contains all properties of the QueryBuilder that needs to be build a final query.
@@ -90,12 +90,12 @@ export abstract class QueryBuilder<Entity> {
     /**
      * QueryBuilder can be initialized from given Connection and QueryRunner objects or from given other QueryBuilder.
      */
-    constructor(connection: Connection, queryRunner?: QueryRunner);
+    constructor(connection: DataSource, queryRunner?: QueryRunner);
 
     /**
      * QueryBuilder can be initialized from given Connection and QueryRunner objects or from given other QueryBuilder.
      */
-    constructor(connectionOrQueryBuilder: Connection|QueryBuilder<any>, queryRunner?: QueryRunner) {
+    constructor(connectionOrQueryBuilder: DataSource|QueryBuilder<any>, queryRunner?: QueryRunner) {
         if (InstanceChecker.isQueryBuilder(connectionOrQueryBuilder)) {
             this.connection = connectionOrQueryBuilder.connection;
             this.queryRunner = connectionOrQueryBuilder.queryRunner;

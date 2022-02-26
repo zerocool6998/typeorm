@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection, Table} from "../../../src";
+import {DataSource, Table} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {DriverUtils} from "../../../src/driver/DriverUtils";
 
 describe("query runner > rename column", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => {
         connections = await createTestingConnections({
             entities: [__dirname + "/entity/*{.js,.ts}"],

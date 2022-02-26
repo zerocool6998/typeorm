@@ -5,12 +5,12 @@ import {
     reloadTestingDatabases,
     generateRandomText
 } from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {expect} from "chai";
 import {ThisIsARealLongNameForAnEntityBecauseThisIsNecessary} from "./entity/long-name.entity";
 
 describe("github issues > #8627 junction aliases are not unique", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(
         async () =>
         (connections = await createTestingConnections({

@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {Author} from "./entity/Author";
 import {Category} from "./entity/Category";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -24,7 +24,7 @@ createConnection(options).then(connection => {
 
     let author = authorRepository.create();
     author.name = "Umed";
-    
+
     let post = postRepository.create();
     post.text = "Hello how are you?";
     post.title = "hello";
@@ -41,7 +41,7 @@ createConnection(options).then(connection => {
             secondPost.text = "Second post";
             secondPost.title = "About second post";
             author.posts = Promise.resolve([secondPost]);
-            
+
             return authorRepository.save(author);
         })
         .then((author: any) => { // temporary
@@ -65,15 +65,15 @@ createConnection(options).then(connection => {
             return postRepository.save(posts[0]);
         })
         .then(posts => {
-            console.log("Two post's author has been removed.");  
+            console.log("Two post's author has been removed.");
             console.log("Now lets check many-to-many relations");
-            
+
             let category1 = categoryRepository.create();
             category1.name = "Hello category1";
-            
+
             let category2 = categoryRepository.create();
             category2.name = "Bye category2";
-            
+
             let post = postRepository.create();
             post.title = "Post & Categories";
             post.text = "Post with many categories";
@@ -81,7 +81,7 @@ createConnection(options).then(connection => {
                 category1,
                 category2
             ]);
-            
+
             return postRepository.save(post);
         })
         .then(posts => {

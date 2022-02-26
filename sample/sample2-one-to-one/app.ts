@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection} from "../../src/index";
+import {DataSourceOptions, createConnection} from "../../src/index";
 import {Post} from "./entity/Post";
 import {PostDetails} from "./entity/PostDetails";
 import {PostCategory} from "./entity/PostCategory";
@@ -8,7 +8,7 @@ import {PostImage} from "./entity/PostImage";
 import {PostInformation} from "./entity/PostInformation";
 import {PostAuthor} from "./entity/PostAuthor";
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -26,7 +26,7 @@ createConnection(options).then(connection => {
     details.authorName = "Umed";
     details.comment = "about post";
     details.metadata = "post,details,one-to-one";
-    
+
     let post = new Post();
     post.text = "hello how are you?";
     post.title = "hello";

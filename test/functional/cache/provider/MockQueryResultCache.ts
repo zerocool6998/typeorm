@@ -1,5 +1,5 @@
 import {ObjectLiteral} from "../../../../src/common/ObjectLiteral";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {PostgresConnectionOptions} from "../../../../src/driver/postgres/PostgresConnectionOptions";
 import {MssqlParameter} from "../../../../src/driver/sqlserver/MssqlParameter";
 import {SqlServerConnectionOptions} from "../../../../src/driver/sqlserver/SqlServerConnectionOptions";
@@ -23,7 +23,7 @@ export class MockQueryResultCache implements QueryResultCache {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection) {
+    constructor(protected connection: DataSource) {
 
         const options = <SqlServerConnectionOptions|PostgresConnectionOptions>this.connection.driver.options;
         const cacheOptions = typeof this.connection.options.cache === "object" ? this.connection.options.cache : {};

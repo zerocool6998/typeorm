@@ -14,7 +14,7 @@ import {ExpoDriver} from "./expo/ExpoDriver";
 import {AuroraDataApiDriver} from "./aurora-data-api/AuroraDataApiDriver";
 import {AuroraDataApiPostgresDriver} from "./aurora-data-api-pg/AuroraDataApiPostgresDriver";
 import {Driver} from "./Driver";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {SapDriver} from "./sap/SapDriver";
 import {BetterSqlite3Driver} from "./better-sqlite3/BetterSqlite3Driver";
 import {CapacitorDriver} from "./capacitor/CapacitorDriver";
@@ -27,7 +27,7 @@ export class DriverFactory {
     /**
      * Creates a new driver depend on a given connection's driver type.
      */
-    create(connection: Connection): Driver {
+    create(connection: DataSource): Driver {
         const {type} = connection.options;
         switch (type) {
             case "mysql":

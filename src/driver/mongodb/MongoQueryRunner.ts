@@ -38,7 +38,7 @@ import {
     UnorderedBulkOperation,
     UpdateWriteOpResult
 } from "./typings";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {ReadStream} from "../../platform/PlatformTools";
 import {MongoEntityManager} from "../../entity-manager/MongoEntityManager";
 import {SqlInMemory} from "../SqlInMemory";
@@ -61,7 +61,7 @@ export class MongoQueryRunner implements QueryRunner {
     /**
      * Connection used by this query runner.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Broadcaster used on this query runner to broadcast entity events.
@@ -111,7 +111,7 @@ export class MongoQueryRunner implements QueryRunner {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(connection: Connection, databaseConnection: MongoClient) {
+    constructor(connection: DataSource, databaseConnection: MongoClient) {
         this.connection = connection;
         this.databaseConnection = databaseConnection;
         this.broadcaster = new Broadcaster(this);

@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Foo} from "./entity/Foo";
 import {FooMetadata} from "./entity/FooMetadata";
 import {FooChildMetadata} from "./entity/FooChildMetadata";
 
 describe("github issues > #762 Nullable @Embedded inside @Embedded", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
     }));

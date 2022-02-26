@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {ConnectionOptions, createConnection, EntitySchema} from "../../src";
+import {DataSourceOptions, createConnection, EntitySchema} from "../../src";
 import {Post} from "./entity/Post";
 import {PostDetails} from "./entity/PostDetails";
 import {Category} from "./entity/Category";
@@ -12,7 +12,7 @@ const PostDetailsEntity = new EntitySchema<PostDetails>(require(__dirname + "/..
 const CategoryEntity = new EntitySchema<Category>(require(__dirname + "/../../../../sample/sample24-schemas/schemas/category.json"));
 const ImageEntity = new EntitySchema<Image>(require(__dirname + "/../../../../sample/sample24-schemas/schemas/image.json"));
 
-const options: ConnectionOptions = {
+const options: DataSourceOptions = {
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -43,7 +43,7 @@ createConnection(options).then(connection => {
         secondaryImages: [],
         categories: []
     };
-    
+
     postRepository
         .save(post)
         .then(result => {

@@ -1,5 +1,5 @@
-import {Connection} from "../../src/connection/Connection";
-import {ConnectionOptions} from "../../src/connection/ConnectionOptions";
+import {DataSource} from "../../src/data-source/DataSource";
+import {DataSourceOptions} from "../../src/data-source/DataSourceOptions";
 import {DatabaseType} from "../../src/driver/types/DatabaseType";
 import {EntitySchema} from "../../src/entity-schema/EntitySchema";
 import {createConnections} from "../../src/index";
@@ -11,7 +11,7 @@ import path from "path";
 /**
  * Interface in which data is stored in ormconfig.json of the project.
  */
-export type TestingConnectionOptions = ConnectionOptions & {
+export type TestingConnectionOptions = DataSourceOptions & {
 
     /**
      * Indicates if this connection should be skipped.
@@ -112,7 +112,7 @@ export interface TestingOptions {
         /**
          * Factory function for custom cache providers that implement QueryResultCache.
          */
-        readonly provider?: (connection: Connection) => QueryResultCache;
+        readonly provider?: (connection: DataSource) => QueryResultCache;
 
         /**
          * Used to provide mongodb / redis connection options.
@@ -152,7 +152,7 @@ export interface TestingOptions {
  * Creates a testing connection options for the given driver type based on the configuration in the ormconfig.json
  * and given options that can override some of its configuration for the test-specific use case.
  */
-export function setupSingleTestingConnection(driverType: DatabaseType, options: TestingOptions): ConnectionOptions|undefined {
+export function setupSingleTestingConnection(driverType: DatabaseType, options: TestingOptions): DataSourceOptions|undefined {
 
     const testingConnections = setupTestingConnections({
         name: options.name ? options.name : undefined,
@@ -202,7 +202,7 @@ export function getTypeOrmConfig(): TestingConnectionOptions[] {
  * Creates a testing connections options based on the configuration in the ormconfig.json
  * and given options that can override some of its configuration for the test-specific use case.
  */
-export function setupTestingConnections(options?: TestingOptions): ConnectionOptions[] {
+export function setupTestingConnections(options?: TestingOptions): DataSourceOptions[] {
     const ormConfigConnectionOptionsArray = getTypeOrmConfig();
 
     if (!ormConfigConnectionOptionsArray.length)
@@ -222,7 +222,7 @@ export function setupTestingConnections(options?: TestingOptions): ConnectionOpt
             return true;
         })
         .map(connectionOptions => {
-            let newOptions: any = Object.assign({}, connectionOptions as ConnectionOptions, {
+            let newOptions: any = Object.assign({}, connectionOptions as DataSourceOptions, {
                 name: options && options.name ? options.name : connectionOptions.name,
                 entities: options && options.entities ? options.entities : [],
                 migrations: options && options.migrations ? options.migrations : [],
@@ -261,7 +261,7 @@ export function setupTestingConnections(options?: TestingOptions): ConnectionOpt
  * Creates a testing connections based on the configuration in the ormconfig.json
  * and given options that can override some of its configuration for the test-specific use case.
  */
-export async function createTestingConnections(options?: TestingOptions): Promise<Connection[]> {
+export async function createTestingConnections(options?: TestingOptions): Promise<DataSource[]> {
     const connections = await createConnections(setupTestingConnections(options));
     await Promise.all(connections.map(async connection => {
         // create new databases
@@ -331,14 +331,14 @@ export async function createTestingConnections(options?: TestingOptions): Promis
 /**
  * Closes testing connections if they are connected.
  */
-export function closeTestingConnections(connections: Connection[]) {
+export function closeTestingConnections(connections: DataSource[]) {
     return Promise.all(connections.map(connection => connection && connection.isConnected ? connection.close() : undefined));
 }
 
 /**
  * Reloads all databases for all given connections.
  */
-export function reloadTestingDatabases(connections: Connection[]) {
+export function reloadTestingDatabases(connections: DataSource[]) {
     return Promise.all(connections.map(connection => connection.synchronize(true)));
 }
 

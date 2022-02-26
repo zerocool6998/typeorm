@@ -1,11 +1,11 @@
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {expect} from "chai";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import { Post, TargetPost } from "./entity/Post";
 import { Comment } from "./entity/Comment";
 
 describe("github issues > #6399 Process extraAppendedAndWhereCondition for inherited entity", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => {
         return connections = await createTestingConnections({

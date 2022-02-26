@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {TeamEntity} from "./entity/TeamEntity";
 import {UserEntity} from "./entity/UserEntity";
 
 describe("other issues > redundant cascade schema queries in many-to-many relation", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [TeamEntity, UserEntity],
         dropSchema: true,

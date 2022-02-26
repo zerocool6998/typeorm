@@ -1,5 +1,5 @@
 import {
-    Connection,
+    DataSource,
 } from "../../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../../utils/test-utils";
 import {expect} from "chai";
@@ -7,7 +7,7 @@ import { MockSubscriber } from "./subscribers/MockSubscriber";
 import { Example } from "./entity/Example";
 
 describe("entity subscriber > query data", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [ Example ],
         subscribers: [ MockSubscriber ],

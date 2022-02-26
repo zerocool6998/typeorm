@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {EntityManager} from "../../../src/entity-manager/EntityManager";
 import {
     createTestingConnections,
@@ -10,7 +10,7 @@ import {ChildEntity} from "./entity/ChildEntity";
 import {ParentEntity} from "./entity/ParentEntity";
 
 describe("github issues > #6815 RelationId() on nullable relation returns 'null' string", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
 
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],

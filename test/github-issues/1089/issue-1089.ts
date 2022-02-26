@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {Group} from "./entity/Group";
 
 describe("github issues > #1089 UUID in ClosureEntity", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         schemaCreate: false,

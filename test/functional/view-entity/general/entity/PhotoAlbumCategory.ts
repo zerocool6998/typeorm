@@ -1,4 +1,4 @@
-import {Connection} from "../../../../../src";
+import {DataSource} from "../../../../../src";
 import {ViewColumn} from "../../../../../src/decorator/columns/ViewColumn";
 import {ViewEntity} from "../../../../../src/decorator/entity-view/ViewEntity";
 import {Album} from "./Album";
@@ -6,7 +6,7 @@ import {Category} from "./Category";
 import {Photo} from "./Photo";
 
 @ViewEntity({
-    expression: (connection: Connection) => connection.createQueryBuilder()
+    expression: (connection: DataSource) => connection.createQueryBuilder()
         .select("photo.id", "id")
         .addSelect("photo.name", "name")
         .addSelect("photo.albumId", "albumId")

@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {closeTestingConnections, createTestingConnections} from "../../utils/test-utils";
 import {TestEntity} from "./entity/Test";
 
 describe("github issues > #7541 Column of type `enum` throws missing properties error", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         enabledDrivers: ["postgres"],
         schemaCreate: false,

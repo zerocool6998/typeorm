@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import "../../utils/test-setup";
 import {expect} from "chai";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {GroupWithVeryLongName} from "./entity/GroupWithVeryLongName";
 import {AuthorWithVeryLongName} from "./entity/AuthorWithVeryLongName";
@@ -16,7 +16,7 @@ import {CategoryWithVeryLongName} from "./entity/CategoryWithVeryLongName";
  * by changing the NAMEDATALEN constant in src/include/pg_config_manual.h."
  */
 describe("github issues > #3118 shorten alias names (for RDBMS with a limit) when they are longer than 63 characters", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql", "postgres", "cockroachdb", "sap", "mariadb", "mssql"]

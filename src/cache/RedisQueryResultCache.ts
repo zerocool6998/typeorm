@@ -1,7 +1,7 @@
 import {QueryResultCache} from "./QueryResultCache";
 import {QueryResultCacheOptions} from "./QueryResultCacheOptions";
 import {PlatformTools} from "../platform/PlatformTools";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {TypeORMError} from "../error/TypeORMError";
 
@@ -33,7 +33,7 @@ export class RedisQueryResultCache implements QueryResultCache {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection, clientType: "redis" | "ioredis" | "ioredis/cluster") {
+    constructor(protected connection: DataSource, clientType: "redis" | "ioredis" | "ioredis/cluster") {
         this.clientType = clientType;
         this.redis = this.loadRedis();
     }

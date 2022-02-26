@@ -1,6 +1,6 @@
 import appRootPath from "app-root-path";
 import path from "path";
-import {ConnectionOptions} from "./ConnectionOptions";
+import {DataSourceOptions} from "../data-source/DataSourceOptions";
 import {PlatformTools} from "../platform/PlatformTools";
 import {ConnectionOptionsEnvReader} from "./options-reader/ConnectionOptionsEnvReader";
 import {ConnectionOptionsYmlReader} from "./options-reader/ConnectionOptionsYmlReader";
@@ -40,7 +40,7 @@ export class ConnectionOptionsReader {
     /**
      * Returns all connection options read from the ormconfig.
      */
-    async all(): Promise<ConnectionOptions[]> {
+    async all(): Promise<DataSourceOptions[]> {
         const options = await this.load();
         if (!options)
             throw new TypeORMError(`No connection options were found in any orm configuration files.`);
@@ -52,7 +52,7 @@ export class ConnectionOptionsReader {
      * Gets a connection with a given name read from ormconfig.
      * If connection with such name would not be found then it throw error.
      */
-    async get(name: string): Promise<ConnectionOptions> {
+    async get(name: string): Promise<DataSourceOptions> {
         const allOptions = await this.all();
         const targetOptions = allOptions.find(options => options.name === name || (name === "default" && !options.name));
         if (!targetOptions)
@@ -82,8 +82,8 @@ export class ConnectionOptionsReader {
      *
      * todo: get in count NODE_ENV somehow
      */
-    protected async load(): Promise<ConnectionOptions[]|undefined> {
-        let connectionOptions: ConnectionOptions|ConnectionOptions[]|undefined = undefined;
+    protected async load(): Promise<DataSourceOptions[]|undefined> {
+        let connectionOptions: DataSourceOptions|DataSourceOptions[]|undefined = undefined;
 
         const fileFormats = ["env", "js", "mjs", "cjs", "ts", "mts", "cts", "json", "yml", "yaml", "xml"];
 
@@ -147,7 +147,7 @@ export class ConnectionOptionsReader {
     /**
      * Normalize connection options.
      */
-    protected normalizeConnectionOptions(connectionOptions: ConnectionOptions|ConnectionOptions[]): ConnectionOptions[] {
+    protected normalizeConnectionOptions(connectionOptions: DataSourceOptions|DataSourceOptions[]): DataSourceOptions[] {
         if (!(Array.isArray(connectionOptions)))
             connectionOptions = [connectionOptions];
 

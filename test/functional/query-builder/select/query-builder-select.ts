@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
 import {expect} from "chai";
-import {Connection, EntityNotFoundError, In, IsNull, Raw} from "../../../../src";
+import {DataSource, EntityNotFoundError, In, IsNull, Raw} from "../../../../src";
 import {Category} from "./entity/Category";
 import {Post} from "./entity/Post";
 import {Tag} from "./entity/Tag";
@@ -10,7 +10,7 @@ import {ExternalPost} from "./entity/ExternalPost";
 import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("query builder > select", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Category, Post, Tag, HeroImage, ExternalPost],
         enabledDrivers: ["sqlite"],

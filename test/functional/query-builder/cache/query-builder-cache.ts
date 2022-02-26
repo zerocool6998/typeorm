@@ -6,12 +6,12 @@ import {
     reloadTestingDatabases,
     sleep
 } from "../../../utils/test-utils";
-import {Connection} from "../../../../src/connection/Connection";
+import {DataSource} from "../../../../src/data-source/DataSource";
 import {User} from "./entity/User";
 
 describe("query builder > cache", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         cache: true,

@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import {expect} from "chai";
-import {Connection} from "../../../../../src/connection/Connection";
+import {DataSource} from "../../../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../../utils/test-utils";
 import {Post} from "./entity/Post";
 import {MongoRepository} from "../../../../../src/repository/MongoRepository";
 
 describe("mongodb > MongoRepository", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [Post],
         enabledDrivers: ["mongodb"]

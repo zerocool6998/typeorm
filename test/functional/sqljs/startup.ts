@@ -2,12 +2,12 @@ import "reflect-metadata";
 import * as path from "path";
 import {expect} from "chai";
 import {Post} from "./entity/Post";
-import {Connection} from "../../../src/connection/Connection";
+import {DataSource} from "../../../src/data-source/DataSource";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {PlatformTools} from "../../../src/platform/PlatformTools";
 
 describe("sqljs driver > startup", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     const pathToSqlite = path.resolve(__dirname, "startup.sqlite");
 
     before(async () => connections = await createTestingConnections({

@@ -1,5 +1,5 @@
 import {ColumnMetadata} from "../../metadata/ColumnMetadata";
-import {Connection} from "../../connection/Connection";
+import {DataSource} from "../../data-source/DataSource";
 import {RelationCountAttribute} from "./RelationCountAttribute";
 import {RelationCountLoadResult} from "./RelationCountLoadResult";
 import {QueryRunner} from "../../query-runner/QueryRunner";
@@ -10,7 +10,7 @@ export class RelationCountLoader {
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(protected connection: Connection,
+    constructor(protected connection: DataSource,
                 protected queryRunner: QueryRunner|undefined,
                 protected relationCountAttributes: RelationCountAttribute[]) {
     }
@@ -108,7 +108,7 @@ export class RelationCountLoader {
                 const inverseSideTableName = relationCountAttr.joinInverseSideMetadata.tableName;
                 const inverseSideTableAlias = relationCountAttr.alias || inverseSideTableName;
                 const junctionTableName = relationCountAttr.relation.junctionEntityMetadata!.tableName;
-                
+
                 const condition = junctionAlias + "." + firstJunctionColumn.propertyName + " IN (" + referenceColumnValues.map(vals => isNaN(vals) ? "'" + vals + "'" : vals) + ")" +
                     " AND " + junctionAlias + "." + secondJunctionColumn.propertyName + " = " + inverseSideTableAlias + "." + inverseJoinColumnName;
 

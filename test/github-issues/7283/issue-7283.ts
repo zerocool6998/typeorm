@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import {Connection} from "../../../src";
+import {DataSource} from "../../../src";
 import {createTestingConnections, closeTestingConnections} from "../../utils/test-utils";
 import {AccessEvent} from "./entity/AccessEvent";
 import {Employee} from "./entity/Employee";
 import {expect} from "chai";
 
 describe("github issues > #7283 Generating Migration on ManyToOne/OneToMany + Primary enum column results in missing enum type in migration output", () => {
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         migrations: [],
         enabledDrivers: ["mysql", "mariadb", "postgres"],

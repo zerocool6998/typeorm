@@ -3,7 +3,7 @@ import {Query} from "../driver/Query";
 import {SqlInMemory} from "../driver/SqlInMemory";
 import {SqlServerConnectionOptions} from "../driver/sqlserver/SqlServerConnectionOptions";
 import {View} from "../schema-builder/view/View";
-import {Connection} from "../connection/Connection";
+import {DataSource} from "../data-source/DataSource";
 import {Table} from "../schema-builder/table/Table";
 import {EntityManager} from "../entity-manager/EntityManager";
 import {TableColumn} from "../schema-builder/table/TableColumn";
@@ -25,7 +25,7 @@ export abstract class BaseQueryRunner {
     /**
      * Connection used by this query runner.
      */
-    connection: Connection;
+    connection: DataSource;
 
     /**
      * Entity manager working only with current query runner.

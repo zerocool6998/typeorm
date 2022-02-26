@@ -1,11 +1,11 @@
-import {Connection, Equal} from "../../../src";
+import {DataSource, Equal} from "../../../src";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../utils/test-utils";
 import {User} from "./entity/User";
 import {Photo} from "./entity/Photo";
 
 describe("github issues > #2031 Advanced find options with FKs", () => {
 
-    let connections: Connection[];
+    let connections: DataSource[];
     before(async () => connections = await createTestingConnections({
         entities: [__dirname + "/entity/*{.js,.ts}"],
         enabledDrivers: ["mysql"]
