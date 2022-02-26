@@ -1,17 +1,19 @@
-import "reflect-metadata";
+import "../../../utils/test-setup";
 import {closeTestingConnections, createTestingConnections, reloadTestingDatabases} from "../../../utils/test-utils";
-import {Connection} from "../../../../src";
+import {
+    Connection,
+    LockNotSupportedOnGivenDriverError,
+    NoVersionOrUpdateDateColumnError,
+    OptimisticLockCanNotBeUsedError,
+    OptimisticLockVersionMismatchError,
+    PessimisticLockTransactionRequiredError
+} from "../../../../src";
 import {PostWithVersion} from "./entity/PostWithVersion";
 import {expect} from "chai";
 import {PostWithoutVersionAndUpdateDate} from "./entity/PostWithoutVersionAndUpdateDate";
 import {PostWithUpdateDate} from "./entity/PostWithUpdateDate";
 import {PostWithVersionAndUpdatedDate} from "./entity/PostWithVersionAndUpdatedDate";
 import {Post} from "./entity/Post";
-import {OptimisticLockVersionMismatchError} from "../../../../src/error/OptimisticLockVersionMismatchError";
-import {OptimisticLockCanNotBeUsedError} from "../../../../src/error/OptimisticLockCanNotBeUsedError";
-import {NoVersionOrUpdateDateColumnError} from "../../../../src/error/NoVersionOrUpdateDateColumnError";
-import {PessimisticLockTransactionRequiredError} from "../../../../src/error/PessimisticLockTransactionRequiredError";
-import {LockNotSupportedOnGivenDriverError} from "../../../../src/error/LockNotSupportedOnGivenDriverError";
 import {DriverUtils} from "../../../../src/driver/DriverUtils";
 
 describe("repository > find options > locking", () => {

@@ -19,17 +19,12 @@ import {
 } from "../query-builder/transformer/PlainObjectToDatabaseEntityTransformer";
 import {
     CustomRepositoryCannotInheritRepositoryError,
-    CustomRepositoryNotFoundError,
-    TreeRepositoryNotSupportedError,
+    CustomRepositoryNotFoundError, TreeRepositoryNotSupportedError,
     TypeORMError
 } from "../error";
 import {AbstractRepository} from "../repository/AbstractRepository";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
-import {RepositoryNotFoundError} from "../error/RepositoryNotFoundError";
-import {RepositoryNotTreeError} from "../error/RepositoryNotTreeError";
-import {RepositoryFactory} from "../repository/RepositoryFactory";
-import {TreeRepositoryNotSupportedError} from "../error/TreeRepositoryNotSupportedError";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import {EntityPersistExecutor} from "../persistence/EntityPersistExecutor";
 import {ObjectID} from "../driver/mongodb/typings";
