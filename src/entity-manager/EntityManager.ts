@@ -26,6 +26,10 @@ import {
 import {AbstractRepository} from "../repository/AbstractRepository";
 import {QueryRunner} from "../query-runner/QueryRunner";
 import {SelectQueryBuilder} from "../query-builder/SelectQueryBuilder";
+import {RepositoryNotFoundError} from "../error/RepositoryNotFoundError";
+import {RepositoryNotTreeError} from "../error/RepositoryNotTreeError";
+import {RepositoryFactory} from "../repository/RepositoryFactory";
+import {TreeRepositoryNotSupportedError} from "../error/TreeRepositoryNotSupportedError";
 import {QueryDeepPartialEntity} from "../query-builder/QueryPartialEntity";
 import {EntityPersistExecutor} from "../persistence/EntityPersistExecutor";
 import {ObjectID} from "../driver/mongodb/typings";
@@ -125,25 +129,15 @@ export class EntityManager {
             throw new TypeORMError(`Transaction method requires callback in second paramter if isolation level is supplied.`);
         }
 
-        if (this.connection.driver.options.type === "mongodb")
-            throw new TypeORMError(`Transactions aren't supported by MongoDB.`);
-
         if (this.queryRunner && this.queryRunner.isReleased)
             throw new QueryRunnerProviderAlreadyReleasedError();
-
-        if (this.queryRunner && this.queryRunner.isTransactionActive)
-            throw new TypeORMError(`Cannot start transaction because its already started`);
 
         // if query runner is already defined in this class, it means this entity manager was already created for a single connection
         // if its not defined we create a new query runner - single connection where we'll execute all our operations
         const queryRunner = this.queryRunner || this.connection.createQueryRunner();
 
         try {
-            if (isolation) {
-                await queryRunner.startTransaction(isolation);
-              } else {
-                await queryRunner.startTransaction();
-              }
+            await queryRunner.startTransaction(isolation);
             const result = await runInTransaction(queryRunner.manager);
             await queryRunner.commitTransaction();
             return result;
