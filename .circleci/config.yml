@@ -77,7 +77,7 @@ commands:
             - node_modules
 
 jobs:
-  lint:
+  prettier:
     working_directory: ~/typeorm
     docker:
       - image: circleci/node:12
@@ -85,7 +85,7 @@ jobs:
       - checkout
       - install-packages:
           cache-key: node12
-      - run: npm run lint
+      - run: prettier --check "./src/**/*.ts" "./test/**/*.ts" "./sample/**/*.ts"
 
   build:
     working_directory: ~/typeorm
@@ -186,12 +186,12 @@ workflows:
   version: 2
   test:
     jobs:
-      - lint
+      - prettier
       - build
       - test:
           name: test (mysql mariadb postgres mssql mongodb sqlite better-sqlite3 sqljs) - Node v<< matrix.node-version >>
           requires:
-            - lint
+            - prettier
             - build
           databases: "mysql mariadb postgres mssql mongodb sqlite better-sqlite3 sqljs"
           matrix:
@@ -203,21 +203,21 @@ workflows:
       - test:
           name: test (cockroachdb) - Node v12
           requires:
-            - lint
+            - prettier
             - build
           databases: "cockroachdb"
           node-version: "12"
       - test:
           name: test (oracle) - Node v12
           requires:
-            - lint
+            - prettier
             - build
           databases: "oracle"
           node-version: "12"
       - test:
           name: test (postgres 12) - Node v12
           requires:
-            - lint
+            - prettier
             - build
           databases: "postgres-12"
           node-version: "12"
