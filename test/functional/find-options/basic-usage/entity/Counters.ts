@@ -1,13 +1,11 @@
-import {Column, JoinTable, ManyToMany} from "../../../../../src";
-import {Author} from "./Author";
+import { Column, JoinTable, ManyToMany } from "../../../../../src"
+import { Author } from "./Author"
 
 export class Counters {
-
     @Column()
-    likes: number;
+    likes: number
 
     @ManyToMany(() => Author)
     @JoinTable()
-    likedUsers: Author[];
-
+    likedUsers: Author[]
 }

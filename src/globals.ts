@@ -1,20 +1,20 @@
-import {MetadataArgsStorage} from "./metadata-args/MetadataArgsStorage";
-import {PlatformTools} from "./platform/PlatformTools";
-import {DataSourceOptions} from "./data-source/DataSourceOptions";
-import {ConnectionOptionsReader} from "./connection/ConnectionOptionsReader";
-import {ConnectionManager} from "./connection/ConnectionManager";
-import {getFromContainer} from "./container";
-import {DataSource} from "./data-source/DataSource";
-import {EntityManager} from "./entity-manager/EntityManager";
-import {MongoEntityManager} from "./entity-manager/MongoEntityManager";
-import {SqljsEntityManager} from "./entity-manager/SqljsEntityManager";
-import {EntityTarget} from "./common/EntityTarget";
-import {Repository} from "./repository/Repository";
-import {TreeRepository} from "./repository/TreeRepository";
-import {ObjectType} from "./common/ObjectType";
-import {MongoRepository} from "./repository/MongoRepository";
-import {SelectQueryBuilder} from "./query-builder/SelectQueryBuilder";
-import {ObjectUtils} from "./util/ObjectUtils";
+import { MetadataArgsStorage } from "./metadata-args/MetadataArgsStorage"
+import { PlatformTools } from "./platform/PlatformTools"
+import { DataSourceOptions } from "./data-source/DataSourceOptions"
+import { ConnectionOptionsReader } from "./connection/ConnectionOptionsReader"
+import { ConnectionManager } from "./connection/ConnectionManager"
+import { getFromContainer } from "./container"
+import { DataSource } from "./data-source/DataSource"
+import { EntityManager } from "./entity-manager/EntityManager"
+import { MongoEntityManager } from "./entity-manager/MongoEntityManager"
+import { SqljsEntityManager } from "./entity-manager/SqljsEntityManager"
+import { EntityTarget } from "./common/EntityTarget"
+import { Repository } from "./repository/Repository"
+import { TreeRepository } from "./repository/TreeRepository"
+import { ObjectType } from "./common/ObjectType"
+import { MongoRepository } from "./repository/MongoRepository"
+import { SelectQueryBuilder } from "./query-builder/SelectQueryBuilder"
+import { ObjectUtils } from "./util/ObjectUtils"
 
 /**
  * Gets metadata args storage.
@@ -28,11 +28,11 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
     // another reason is that when we run migrations typeorm is being called from a global package
     // and it may load entities which register decorators in typeorm of local package
     // this leads to impossibility of usage of entities in migrations and cli related operations
-    const globalScope = PlatformTools.getGlobalVariable();
+    const globalScope = PlatformTools.getGlobalVariable()
     if (!globalScope.typeormMetadataArgsStorage)
-        globalScope.typeormMetadataArgsStorage = new MetadataArgsStorage();
+        globalScope.typeormMetadataArgsStorage = new MetadataArgsStorage()
 
-    return globalScope.typeormMetadataArgsStorage;
+    return globalScope.typeormMetadataArgsStorage
 }
 
 /**
@@ -40,8 +40,10 @@ export function getMetadataArgsStorage(): MetadataArgsStorage {
  *
  * @deprecated
  */
-export async function getConnectionOptions(connectionName: string = "default"): Promise<DataSourceOptions> {
-    return new ConnectionOptionsReader().get(connectionName);
+export async function getConnectionOptions(
+    connectionName: string = "default",
+): Promise<DataSourceOptions> {
+    return new ConnectionOptionsReader().get(connectionName)
 }
 
 /**
@@ -50,7 +52,7 @@ export async function getConnectionOptions(connectionName: string = "default"): 
  * @deprecated
  */
 export function getConnectionManager(): ConnectionManager {
-    return getFromContainer(ConnectionManager);
+    return getFromContainer(ConnectionManager)
 }
 
 /**
@@ -59,21 +61,23 @@ export function getConnectionManager(): ConnectionManager {
  *
  * @deprecated
  */
-export async function createConnection(): Promise<DataSource>;
+export async function createConnection(): Promise<DataSource>
 
 /**
  * Creates a new connection from the ormconfig file with a given name.
  *
  * @deprecated
  */
-export async function createConnection(name: string): Promise<DataSource>;
+export async function createConnection(name: string): Promise<DataSource>
 
 /**
  * Creates a new connection and registers it in the manager.
  *
  * @deprecated
  */
-export async function createConnection(options: DataSourceOptions): Promise<DataSource>;
+export async function createConnection(
+    options: DataSourceOptions,
+): Promise<DataSource>
 
 /**
  * Creates a new connection and registers it in the manager.
@@ -84,10 +88,15 @@ export async function createConnection(options: DataSourceOptions): Promise<Data
  *
  * @deprecated
  */
-export async function createConnection(optionsOrName?: any): Promise<DataSource> {
-    const connectionName = typeof optionsOrName === "string" ? optionsOrName : "default";
-    const options = ObjectUtils.isObject(optionsOrName) ? optionsOrName as DataSourceOptions : await getConnectionOptions(connectionName);
-    return getConnectionManager().create(options).connect();
+export async function createConnection(
+    optionsOrName?: any,
+): Promise<DataSource> {
+    const connectionName =
+        typeof optionsOrName === "string" ? optionsOrName : "default"
+    const options = ObjectUtils.isObject(optionsOrName)
+        ? (optionsOrName as DataSourceOptions)
+        : await getConnectionOptions(connectionName)
+    return getConnectionManager().create(options).connect()
 }
 
 /**
@@ -99,15 +108,18 @@ export async function createConnection(optionsOrName?: any): Promise<DataSource>
  *
  * @deprecated
  */
-export async function createConnections(options?: DataSourceOptions[]): Promise<DataSource[]> {
-    if (!options)
-        options = await new ConnectionOptionsReader().all();
-    const connections = options.map(options => getConnectionManager().create(options));
+export async function createConnections(
+    options?: DataSourceOptions[],
+): Promise<DataSource[]> {
+    if (!options) options = await new ConnectionOptionsReader().all()
+    const connections = options.map((options) =>
+        getConnectionManager().create(options),
+    )
     // Do not use Promise.all or test 8522 will produce a dangling sqlite connection
     for (const connection of connections) {
         await connection.connect()
     }
-    return connections;
+    return connections
 }
 
 /**
@@ -117,7 +129,7 @@ export async function createConnections(options?: DataSourceOptions[]): Promise<
  * @deprecated
  */
 export function getConnection(connectionName: string = "default"): DataSource {
-    return getConnectionManager().get(connectionName);
+    return getConnectionManager().get(connectionName)
 }
 
 /**
@@ -127,7 +139,7 @@ export function getConnection(connectionName: string = "default"): DataSource {
  * @deprecated
  */
 export function getManager(connectionName: string = "default"): EntityManager {
-    return getConnectionManager().get(connectionName).manager;
+    return getConnectionManager().get(connectionName).manager
 }
 
 /**
@@ -136,8 +148,11 @@ export function getManager(connectionName: string = "default"): EntityManager {
  *
  * @deprecated
  */
-export function getMongoManager(connectionName: string = "default"): MongoEntityManager {
-    return getConnectionManager().get(connectionName).manager as MongoEntityManager;
+export function getMongoManager(
+    connectionName: string = "default",
+): MongoEntityManager {
+    return getConnectionManager().get(connectionName)
+        .manager as MongoEntityManager
 }
 
 /**
@@ -147,8 +162,11 @@ export function getMongoManager(connectionName: string = "default"): MongoEntity
  *
  * @deprecated
  */
-export function getSqljsManager(connectionName: string = "default"): SqljsEntityManager {
-    return getConnectionManager().get(connectionName).manager as SqljsEntityManager;
+export function getSqljsManager(
+    connectionName: string = "default",
+): SqljsEntityManager {
+    return getConnectionManager().get(connectionName)
+        .manager as SqljsEntityManager
 }
 
 /**
@@ -156,8 +174,13 @@ export function getSqljsManager(connectionName: string = "default"): SqljsEntity
  *
  * @deprecated
  */
-export function getRepository<Entity>(entityClass: EntityTarget<Entity>, connectionName: string = "default"): Repository<Entity> {
-    return getConnectionManager().get(connectionName).getRepository<Entity>(entityClass);
+export function getRepository<Entity>(
+    entityClass: EntityTarget<Entity>,
+    connectionName: string = "default",
+): Repository<Entity> {
+    return getConnectionManager()
+        .get(connectionName)
+        .getRepository<Entity>(entityClass)
 }
 
 /**
@@ -165,8 +188,13 @@ export function getRepository<Entity>(entityClass: EntityTarget<Entity>, connect
  *
  * @deprecated
  */
-export function getTreeRepository<Entity>(entityClass: EntityTarget<Entity>, connectionName: string = "default"): TreeRepository<Entity> {
-    return getConnectionManager().get(connectionName).getTreeRepository<Entity>(entityClass);
+export function getTreeRepository<Entity>(
+    entityClass: EntityTarget<Entity>,
+    connectionName: string = "default",
+): TreeRepository<Entity> {
+    return getConnectionManager()
+        .get(connectionName)
+        .getTreeRepository<Entity>(entityClass)
 }
 
 /**
@@ -174,8 +202,13 @@ export function getTreeRepository<Entity>(entityClass: EntityTarget<Entity>, con
  *
  * @deprecated
  */
-export function getCustomRepository<T>(customRepository: ObjectType<T>, connectionName: string = "default"): T {
-    return getConnectionManager().get(connectionName).getCustomRepository(customRepository);
+export function getCustomRepository<T>(
+    customRepository: ObjectType<T>,
+    connectionName: string = "default",
+): T {
+    return getConnectionManager()
+        .get(connectionName)
+        .getCustomRepository(customRepository)
 }
 
 /**
@@ -183,8 +216,13 @@ export function getCustomRepository<T>(customRepository: ObjectType<T>, connecti
  *
  * @deprecated
  */
-export function getMongoRepository<Entity>(entityClass: EntityTarget<Entity>, connectionName: string = "default"): MongoRepository<Entity> {
-    return getConnectionManager().get(connectionName).getMongoRepository<Entity>(entityClass);
+export function getMongoRepository<Entity>(
+    entityClass: EntityTarget<Entity>,
+    connectionName: string = "default",
+): MongoRepository<Entity> {
+    return getConnectionManager()
+        .get(connectionName)
+        .getMongoRepository<Entity>(entityClass)
 }
 
 /**
@@ -192,10 +230,16 @@ export function getMongoRepository<Entity>(entityClass: EntityTarget<Entity>, co
  *
  * @deprecated
  */
-export function createQueryBuilder<Entity>(entityClass?: EntityTarget<Entity>, alias?: string, connectionName: string = "default"): SelectQueryBuilder<Entity> {
+export function createQueryBuilder<Entity>(
+    entityClass?: EntityTarget<Entity>,
+    alias?: string,
+    connectionName: string = "default",
+): SelectQueryBuilder<Entity> {
     if (entityClass) {
-        return getRepository(entityClass, connectionName).createQueryBuilder(alias);
+        return getRepository(entityClass, connectionName).createQueryBuilder(
+            alias,
+        )
     }
 
-    return getConnection(connectionName).createQueryBuilder();
+    return getConnection(connectionName).createQueryBuilder()
 }

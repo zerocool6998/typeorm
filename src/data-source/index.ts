@@ -1,3 +1,2 @@
-export * from "./DataSource";
-export * from "./DataSourceOptions";
-
+export * from "./DataSource"
+export * from "./DataSourceOptions"

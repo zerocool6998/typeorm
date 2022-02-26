@@ -1,7 +1,7 @@
-import {DataSource} from "../data-source/DataSource";
-import {ConnectionNotFoundError} from "../error/ConnectionNotFoundError";
-import {DataSourceOptions} from "../data-source/DataSourceOptions";
-import {AlreadyHasActiveConnectionError} from "../error/AlreadyHasActiveConnectionError";
+import { DataSource } from "../data-source/DataSource"
+import { ConnectionNotFoundError } from "../error/ConnectionNotFoundError"
+import { DataSourceOptions } from "../data-source/DataSourceOptions"
+import { AlreadyHasActiveConnectionError } from "../error/AlreadyHasActiveConnectionError"
 
 /**
  * ConnectionManager is used to store and manage multiple orm connections.
@@ -14,13 +14,13 @@ export class ConnectionManager {
      * List of connections registered in this connection manager.
      */
     get connections(): DataSource[] {
-        return Array.from(this.connectionMap.values());
+        return Array.from(this.connectionMap.values())
     }
 
     /**
      * Internal lookup to quickly get from a connection name to the Connection object.
      */
-    private readonly connectionMap: Map<string, DataSource> = new Map();
+    private readonly connectionMap: Map<string, DataSource> = new Map()
 
     // -------------------------------------------------------------------------
     // Public Methods
@@ -30,7 +30,7 @@ export class ConnectionManager {
      * Checks if connection with the given name exist in the manager.
      */
     has(name: string): boolean {
-        return this.connectionMap.has(name);
+        return this.connectionMap.has(name)
     }
 
     /**
@@ -39,11 +39,10 @@ export class ConnectionManager {
      * Throws error if connection with the given name was not found.
      */
     get(name: string = "default"): DataSource {
-        const connection = this.connectionMap.get(name);
-        if (!connection)
-            throw new ConnectionNotFoundError(name);
+        const connection = this.connectionMap.get(name)
+        if (!connection) throw new ConnectionNotFoundError(name)
 
-        return connection;
+        return connection
     }
 
     /**
@@ -52,17 +51,20 @@ export class ConnectionManager {
      */
     create(options: DataSourceOptions): DataSource {
         // check if such connection is already registered
-        const existConnection = this.connectionMap.get(options.name || "default");
+        const existConnection = this.connectionMap.get(
+            options.name || "default",
+        )
         if (existConnection) {
             // if connection is registered and its not closed then throw an error
             if (existConnection.isConnected)
-                throw new AlreadyHasActiveConnectionError(options.name || "default");
+                throw new AlreadyHasActiveConnectionError(
+                    options.name || "default",
+                )
         }
 
         // create a new connection
-        const connection = new DataSource(options);
-        this.connectionMap.set(connection.name, connection);
-        return connection;
+        const connection = new DataSource(options)
+        this.connectionMap.set(connection.name, connection)
+        return connection
     }
-
 }

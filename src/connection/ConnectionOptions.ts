@@ -1,4 +1,4 @@
-import {DataSourceOptions} from "../data-source/DataSourceOptions";
+import { DataSourceOptions } from "../data-source/DataSourceOptions"
 
 /**
  * ConnectionOptions is an interface with settings and options for specific connection.
@@ -7,4 +7,4 @@ import {DataSourceOptions} from "../data-source/DataSourceOptions";
  *
  * @deprecated use DataSourceOptions instead
  */
-export type ConnectionOptions = DataSourceOptions;
+export type ConnectionOptions = DataSourceOptions

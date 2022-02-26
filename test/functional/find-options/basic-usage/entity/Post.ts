@@ -1,28 +1,33 @@
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "../../../../../src";
-import {Tag} from "./Tag";
-import {Author} from "./Author";
-import {Counters} from "./Counters";
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from "../../../../../src"
+import { Tag } from "./Tag"
+import { Author } from "./Author"
+import { Counters } from "./Counters"
 
 @Entity()
 export class Post {
-
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 
     @Column()
-    title: string;
+    title: string
 
     @Column()
-    text: string;
+    text: string
 
-    @ManyToMany(() => Tag, tag => tag.posts)
+    @ManyToMany(() => Tag, (tag) => tag.posts)
     @JoinTable()
-    tags: Tag[];
+    tags: Tag[]
 
     @ManyToOne(() => Author)
-    author: Author;
+    author: Author
 
     @Column(() => Counters)
-    counters: Counters;
-
+    counters: Counters
 }

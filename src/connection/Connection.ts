@@ -1,4 +1,4 @@
-import {DataSource} from "../data-source/DataSource";
+import { DataSource } from "../data-source/DataSource"
 
 /**
  * Connection is a single database ORM connection to a specific database.
@@ -7,6 +7,4 @@ import {DataSource} from "../data-source/DataSource";
  *
  * @deprecated
  */
-export class Connection extends DataSource {
-
-}
+export class Connection extends DataSource {}

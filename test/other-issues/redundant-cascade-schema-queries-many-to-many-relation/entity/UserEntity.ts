@@ -1,5 +1,5 @@
-import {EntitySchema} from "../../../../src";
-import {Team} from "./TeamEntity";
+import { EntitySchema } from "../../../../src"
+import { Team } from "./TeamEntity"
 
 export type User = {
     id: number
@@ -7,19 +7,19 @@ export type User = {
 }
 
 export const UserEntity = new EntitySchema<User>({
-    name: 'user',
+    name: "user",
     columns: {
         id: {
             primary: true,
-            type: 'int',
-            generated: 'increment',
+            type: "int",
+            generated: "increment",
         },
     },
     relations: {
         teams: {
-            type: 'many-to-many',
-            target: 'team',
-            inverseSide: 'users',
+            type: "many-to-many",
+            target: "team",
+            inverseSide: "users",
         },
     },
-});
+})

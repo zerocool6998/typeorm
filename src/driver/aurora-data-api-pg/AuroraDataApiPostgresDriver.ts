@@ -1,22 +1,24 @@
-import {Driver} from "../Driver";
-import {PostgresDriver} from "../postgres/PostgresDriver";
-import {PlatformTools} from "../../platform/PlatformTools";
-import {DataSource} from "../../data-source/DataSource";
-import {AuroraDataApiPostgresConnectionOptions} from "../aurora-data-api-pg/AuroraDataApiPostgresConnectionOptions";
-import {AuroraDataApiPostgresQueryRunner} from "../aurora-data-api-pg/AuroraDataApiPostgresQueryRunner";
-import {ReplicationMode} from "../types/ReplicationMode";
-import {ColumnMetadata} from "../../metadata/ColumnMetadata";
-import {ApplyValueTransformers} from "../../util/ApplyValueTransformers";
-import {DriverUtils} from "../DriverUtils";
+import { Driver } from "../Driver"
+import { PostgresDriver } from "../postgres/PostgresDriver"
+import { PlatformTools } from "../../platform/PlatformTools"
+import { DataSource } from "../../data-source/DataSource"
+import { AuroraDataApiPostgresConnectionOptions } from "../aurora-data-api-pg/AuroraDataApiPostgresConnectionOptions"
+import { AuroraDataApiPostgresQueryRunner } from "../aurora-data-api-pg/AuroraDataApiPostgresQueryRunner"
+import { ReplicationMode } from "../types/ReplicationMode"
+import { ColumnMetadata } from "../../metadata/ColumnMetadata"
+import { ApplyValueTransformers } from "../../util/ApplyValueTransformers"
+import { DriverUtils } from "../DriverUtils"
 
 abstract class PostgresWrapper extends PostgresDriver {
-    options: any;
+    options: any
 
-    abstract createQueryRunner(mode: ReplicationMode): any;
+    abstract createQueryRunner(mode: ReplicationMode): any
 }
 
-export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driver {
-
+export class AuroraDataApiPostgresDriver
+    extends PostgresWrapper
+    implements Driver
+{
     // -------------------------------------------------------------------------
     // Public Properties
     // -------------------------------------------------------------------------
@@ -24,19 +26,19 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
     /**
      * Connection used by driver.
      */
-    connection: DataSource;
+    connection: DataSource
 
     /**
      * Aurora Data API underlying library.
      */
-    DataApiDriver: any;
+    DataApiDriver: any
 
-    client: any;
+    client: any
 
     /**
      * Represent transaction support by this driver
      */
-    transactionSupport = "nested" as const;
+    transactionSupport = "nested" as const
 
     // -------------------------------------------------------------------------
     // Public Implemented Properties
@@ -45,37 +47,39 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
     /**
      * Connection options.
      */
-    options: AuroraDataApiPostgresConnectionOptions;
+    options: AuroraDataApiPostgresConnectionOptions
 
     /**
      * Master database used to perform all write queries.
      */
-    database?: string;
+    database?: string
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
     constructor(connection: DataSource) {
-        super();
-        this.connection = connection;
-        this.options = connection.options as AuroraDataApiPostgresConnectionOptions;
-        this.isReplicated = false;
+        super()
+        this.connection = connection
+        this.options =
+            connection.options as AuroraDataApiPostgresConnectionOptions
+        this.isReplicated = false
 
         // load data-api package
-        this.loadDependencies();
+        this.loadDependencies()
 
         this.client = new this.DataApiDriver(
             this.options.region,
             this.options.secretArn,
             this.options.resourceArn,
             this.options.database,
-            (query: string, parameters?: any[]) => this.connection.logger.logQuery(query, parameters),
+            (query: string, parameters?: any[]) =>
+                this.connection.logger.logQuery(query, parameters),
             this.options.serviceConfigOptions,
             this.options.formatOptions,
-        );
+        )
 
-        this.database = DriverUtils.buildDriverOptions(this.options).database;
+        this.database = DriverUtils.buildDriverOptions(this.options).database
     }
 
     // -------------------------------------------------------------------------
@@ -87,14 +91,12 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
      * Based on pooling options, it can either create connection immediately,
      * either create a pool and create connection when needed.
      */
-    async connect(): Promise<void> {
-    }
+    async connect(): Promise<void> {}
 
     /**
      * Closes connection with database.
      */
-    async disconnect(): Promise<void> {
-    }
+    async disconnect(): Promise<void> {}
 
     /**
      * Creates a query runner used to execute database queries.
@@ -107,40 +109,53 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
                 this.options.secretArn,
                 this.options.resourceArn,
                 this.options.database,
-                (query: string, parameters?: any[]) => this.connection.logger.logQuery(query, parameters),
+                (query: string, parameters?: any[]) =>
+                    this.connection.logger.logQuery(query, parameters),
                 this.options.serviceConfigOptions,
                 this.options.formatOptions,
             ),
-            mode
-        );
+            mode,
+        )
     }
 
     /**
      * Prepares given value to a value to be persisted, based on its column type and metadata.
      */
     preparePersistentValue(value: any, columnMetadata: ColumnMetadata): any {
-        if (this.options.formatOptions && this.options.formatOptions.castParameters === false) {
-            return super.preparePersistentValue(value, columnMetadata);
+        if (
+            this.options.formatOptions &&
+            this.options.formatOptions.castParameters === false
+        ) {
+            return super.preparePersistentValue(value, columnMetadata)
         }
 
         if (columnMetadata.transformer)
-            value = ApplyValueTransformers.transformTo(columnMetadata.transformer, value);
+            value = ApplyValueTransformers.transformTo(
+                columnMetadata.transformer,
+                value,
+            )
 
-        return this.client.preparePersistentValue(value, columnMetadata);
+        return this.client.preparePersistentValue(value, columnMetadata)
     }
 
     /**
      * Prepares given value to a value to be persisted, based on its column type and metadata.
      */
     prepareHydratedValue(value: any, columnMetadata: ColumnMetadata): any {
-        if (this.options.formatOptions && this.options.formatOptions.castParameters === false) {
-            return super.prepareHydratedValue(value, columnMetadata);
+        if (
+            this.options.formatOptions &&
+            this.options.formatOptions.castParameters === false
+        ) {
+            return super.prepareHydratedValue(value, columnMetadata)
         }
 
         if (columnMetadata.transformer)
-            value = ApplyValueTransformers.transformFrom(columnMetadata.transformer, value);
+            value = ApplyValueTransformers.transformFrom(
+                columnMetadata.transformer,
+                value,
+            )
 
-        return this.client.prepareHydratedValue(value, columnMetadata);
+        return this.client.prepareHydratedValue(value, columnMetadata)
     }
 
     // -------------------------------------------------------------------------
@@ -151,29 +166,31 @@ export class AuroraDataApiPostgresDriver extends PostgresWrapper implements Driv
      * If driver dependency is not given explicitly, then try to load it via "require".
      */
     protected loadDependencies(): void {
-        const driver = this.options.driver || PlatformTools.load("typeorm-aurora-data-api-driver");
-        const { pg } = driver;
+        const driver =
+            this.options.driver ||
+            PlatformTools.load("typeorm-aurora-data-api-driver")
+        const { pg } = driver
 
-        this.DataApiDriver = pg;
+        this.DataApiDriver = pg
     }
 
     /**
      * Executes given query.
      */
     protected executeQuery(connection: any, query: string) {
-        return this.connection.query(query);
+        return this.connection.query(query)
     }
 
     /**
      * Makes any action after connection (e.g. create extensions in Postgres driver).
      */
     async afterConnect(): Promise<void> {
-        const extensionsMetadata = await this.checkMetadataForExtensions();
+        const extensionsMetadata = await this.checkMetadataForExtensions()
 
         if (extensionsMetadata.hasExtensions) {
-            await this.enableExtensions(extensionsMetadata, this.connection);
+            await this.enableExtensions(extensionsMetadata, this.connection)
         }
 
-        return Promise.resolve();
+        return Promise.resolve()
     }
 }

@@ -1,14 +1,14 @@
-import {PrimaryGeneratedColumn} from "../../../../src";
-import {Entity} from "../../../../src/decorator/entity/Entity";
+import { PrimaryGeneratedColumn } from "../../../../src"
+import { Entity } from "../../../../src/decorator/entity/Entity"
 
 @Entity()
 export class AnotherReallyLongNameForAnEntityBecauseThisIsNecessaryB {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 }
 
 @Entity()
 export class AnotherRealLongNameForAnEntityBecauseThisIsNecessaryC {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 }

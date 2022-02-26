@@ -5,27 +5,27 @@ import {
     PrimaryGeneratedColumn,
     TableInheritance,
     ChildEntity,
-} from "../../../../src";
-import { Comment } from "./Comment";
+} from "../../../../src"
+import { Comment } from "./Comment"
 
 @Entity()
-@TableInheritance({column: {type: "string", name: "postType"}})
+@TableInheritance({ column: { type: "string", name: "postType" } })
 export class Post {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 
     @Column()
-    title: string;
+    title: string
 
     @Column()
-    postType: string = "BasePost";
+    postType: string = "BasePost"
 
     @OneToMany(() => Comment, (entity) => entity.post)
-    comments?: Comment[];
+    comments?: Comment[]
 }
 
 @ChildEntity("TargetPost")
 export class TargetPost extends Post {
     @Column()
-    postType: string = "TargetPost";
+    postType: string = "TargetPost"
 }

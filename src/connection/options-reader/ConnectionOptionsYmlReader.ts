@@ -1,6 +1,6 @@
-import ymlParser from 'js-yaml';
-import {PlatformTools} from "../../platform/PlatformTools";
-import {DataSourceOptions} from "../../data-source/DataSourceOptions";
+import ymlParser from "js-yaml"
+import { PlatformTools } from "../../platform/PlatformTools"
+import { DataSourceOptions } from "../../data-source/DataSourceOptions"
 
 /**
  * Reads connection options defined in the yml file.
@@ -8,7 +8,6 @@ import {DataSourceOptions} from "../../data-source/DataSourceOptions";
  * @deprecated
  */
 export class ConnectionOptionsYmlReader {
-
     // -------------------------------------------------------------------------
     // Public Methods
     // -------------------------------------------------------------------------
@@ -17,18 +16,20 @@ export class ConnectionOptionsYmlReader {
      * Reads connection options from given yml file.
      */
     async read(path: string): Promise<DataSourceOptions[]> {
-        const contentsBuffer = PlatformTools.readFileSync(path);
-        const contents = contentsBuffer.toString();
+        const contentsBuffer = PlatformTools.readFileSync(path)
+        const contents = contentsBuffer.toString()
 
-        const config = ymlParser.load(contents);
+        const config = ymlParser.load(contents)
 
-        if (!config || typeof config !== 'object' || config === null) {
-            return [];
+        if (!config || typeof config !== "object" || config === null) {
+            return []
         }
 
-        return Object.keys(config).map(connectionName => {
-            return Object.assign({ name: connectionName }, (config as any)[connectionName]);
-        });
+        return Object.keys(config).map((connectionName) => {
+            return Object.assign(
+                { name: connectionName },
+                (config as any)[connectionName],
+            )
+        })
     }
-
 }

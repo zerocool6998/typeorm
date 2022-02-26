@@ -1,33 +1,31 @@
-import {Entity} from "../../../../src/decorator/entity/Entity";
-import {Column} from "../../../../src/decorator/columns/Column";
-import {Post} from "./Post";
-import {ManyToOne} from "../../../../src/decorator/relations/ManyToOne";
-import {Category} from "./Category";
-import {PrimaryColumn} from "../../../../src";
+import { Entity } from "../../../../src/decorator/entity/Entity"
+import { Column } from "../../../../src/decorator/columns/Column"
+import { Post } from "./Post"
+import { ManyToOne } from "../../../../src/decorator/relations/ManyToOne"
+import { Category } from "./Category"
+import { PrimaryColumn } from "../../../../src"
 
 @Entity()
 export class PostCategory {
-
     @PrimaryColumn()
     postId: number
 
     @PrimaryColumn()
     categoryId: number
 
-    @ManyToOne(type => Post, post => post.categories, {
-        cascade: ["insert"]
+    @ManyToOne((type) => Post, (post) => post.categories, {
+        cascade: ["insert"],
     })
-    post: Post;
+    post: Post
 
-    @ManyToOne(type => Category, category => category.posts, {
-        cascade: ["insert"]
+    @ManyToOne((type) => Category, (category) => category.posts, {
+        cascade: ["insert"],
     })
-    category: Category;
+    category: Category
 
     @Column()
-    addedByAdmin: boolean;
+    addedByAdmin: boolean
 
     @Column()
-    addedByUser: boolean;
-
+    addedByUser: boolean
 }

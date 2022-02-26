@@ -1,18 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "../../../../src";
-import { PostReview } from "./PostReview";
-
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+} from "../../../../src"
+import { PostReview } from "./PostReview"
 
 @Entity()
 export class Post {
-
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 
     @Column()
-    title: string;
+    title: string
 
-    @OneToMany(type => PostReview, postReview => postReview.post, {
+    @OneToMany((type) => PostReview, (postReview) => postReview.post, {
         eager: true,
     })
-    reviews: PostReview[];
+    reviews: PostReview[]
 }

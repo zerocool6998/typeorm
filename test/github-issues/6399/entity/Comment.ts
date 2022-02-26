@@ -4,27 +4,23 @@ import {
     Column,
     PrimaryGeneratedColumn,
     JoinColumn,
-} from "../../../../src";
-import { Post } from "./Post";
+} from "../../../../src"
+import { Post } from "./Post"
 
 @Entity()
 export class Comment {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 
     @Column()
-    text: string;
+    text: string
 
     @Column()
-    postId: number;
+    postId: number
 
-    @ManyToOne(
-        () => Post,
-        (entity) => entity.comments,
-    )
+    @ManyToOne(() => Post, (entity) => entity.comments)
     @JoinColumn({
         name: "postId",
     })
-    post?: Post;
-
+    post?: Post
 }

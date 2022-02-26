@@ -1,5 +1,5 @@
-import {FindOperator} from "../FindOperator";
-import {EqualOperator} from "../EqualOperator";
+import { FindOperator } from "../FindOperator"
+import { EqualOperator } from "../EqualOperator"
 
 /**
  * Find Options Operator.
@@ -9,6 +9,6 @@ import {EqualOperator} from "../EqualOperator";
  *      { someField: Equal("value") }
  *      { uuid: Equal(new UUID()) }
  */
-export function Equal<T>(value: T|FindOperator<T>) {
-    return new EqualOperator(value);
+export function Equal<T>(value: T | FindOperator<T>) {
+    return new EqualOperator(value)
 }

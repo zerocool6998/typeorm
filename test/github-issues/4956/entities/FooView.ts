@@ -1,6 +1,6 @@
-import { DataSource, ViewColumn, ViewEntity } from "../../../../src";
+import { DataSource, ViewColumn, ViewEntity } from "../../../../src"
 
-import { Foo } from "./Foo";
+import { Foo } from "./Foo"
 
 @ViewEntity({
     name: "foo_view",
@@ -9,5 +9,5 @@ import { Foo } from "./Foo";
 })
 export class FooView {
     @ViewColumn()
-    updatedAt: Date;
+    updatedAt: Date
 }

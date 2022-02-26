@@ -1,19 +1,18 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "../../../../../src";
+import { Column, Entity, PrimaryGeneratedColumn } from "../../../../../src"
 
 export class EmbeddedEntityWithUniqueColumn {
     @Column({ nullable: true, unique: true })
-    id: string;
+    id: string
 
     @Column({ nullable: true })
-    value: string;
+    value: string
 }
-
 
 @Entity()
 export class EmbeddedUniqueConstraintEntity {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id: string
 
     @Column(() => EmbeddedEntityWithUniqueColumn)
-    embedded: EmbeddedEntityWithUniqueColumn;
+    embedded: EmbeddedEntityWithUniqueColumn
 }

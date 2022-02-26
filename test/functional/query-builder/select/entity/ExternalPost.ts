@@ -1,13 +1,13 @@
-import {Column, Entity, PrimaryColumn,} from "../../../../../src";
+import { Column, Entity, PrimaryColumn } from "../../../../../src"
 
 @Entity()
 export class ExternalPost {
     @PrimaryColumn()
-    outlet: string;
+    outlet: string
 
     @PrimaryColumn()
-    id: number;
+    id: number
 
     @Column()
-    title: string;
+    title: string
 }

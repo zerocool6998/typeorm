@@ -5,5 +5,5 @@ export interface ViewColumnOptions {
     /**
      * Column name in the database.
      */
-    name?: string;
+    name?: string
 }

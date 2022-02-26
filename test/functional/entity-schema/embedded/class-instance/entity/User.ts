@@ -1,10 +1,10 @@
-import {Name, NameEntitySchema} from "./Name";
-import {EntitySchema} from "../../../../../../src";
+import { Name, NameEntitySchema } from "./Name"
+import { EntitySchema } from "../../../../../../src"
 
 export class User {
-    id: string;
-    name: Name;
-    isActive: boolean;
+    id: string
+    name: Name
+    isActive: boolean
 }
 
 export const UserEntitySchema = new EntitySchema<User>({
@@ -17,13 +17,13 @@ export const UserEntitySchema = new EntitySchema<User>({
             generated: true,
         },
         isActive: {
-            type: Boolean
-        }
+            type: Boolean,
+        },
     },
     embeddeds: {
         name: {
             schema: NameEntitySchema,
             prefix: "name_",
         },
-    }
-});
+    },
+})

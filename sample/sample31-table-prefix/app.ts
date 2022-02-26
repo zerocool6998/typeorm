@@ -1,8 +1,8 @@
-import "reflect-metadata";
-import {DataSourceOptions, createConnection} from "../../src/index";
-import {Post} from "./entity/Post";
-import {Author} from "./entity/Author";
-import {Category} from "./entity/Category";
+import "reflect-metadata"
+import { DataSourceOptions, createConnection } from "../../src/index"
+import { Post } from "./entity/Post"
+import { Author } from "./entity/Author"
+import { Category } from "./entity/Category"
 
 const options: DataSourceOptions = {
     type: "sqlite",
@@ -11,29 +11,29 @@ const options: DataSourceOptions = {
     synchronize: true,
     logging: ["query", "error"],
     entities: [Post, Author, Category],
-};
+}
 
-createConnection(options).then(async connection => {
+createConnection(options)
+    .then(async (connection) => {
+        let category1 = new Category()
+        category1.name = "Animals"
 
-    let category1 = new Category();
-    category1.name = "Animals";
+        let category2 = new Category()
+        category2.name = "People"
 
-    let category2 = new Category();
-    category2.name = "People";
+        let author = new Author()
+        author.firstName = "Umed"
+        author.lastName = "Khudoiberdiev"
 
-    let author = new Author();
-    author.firstName = "Umed";
-    author.lastName = "Khudoiberdiev";
+        let post = new Post()
+        post.text = "Hello how are you?"
+        post.title = "hello"
+        post.author = author
+        post.categories = [category1, category2]
 
-    let post = new Post();
-    post.text = "Hello how are you?";
-    post.title = "hello";
-    post.author = author;
-    post.categories = [category1, category2];
+        let postRepository = connection.getRepository(Post)
 
-    let postRepository = connection.getRepository(Post);
-
-    await postRepository.save(post);
-    console.log("Post has been saved");
-
-}).catch(error => console.log("Error: ", error));
+        await postRepository.save(post)
+        console.log("Post has been saved")
+    })
+    .catch((error) => console.log("Error: ", error))

@@ -33,11 +33,10 @@
  * @deprecated
  */
 export interface JoinOptions {
-
     /**
      * Alias of the main entity.
      */
-    alias: string;
+    alias: string
 
     /**
      * Object where each key represents the LEFT JOIN alias,
@@ -45,7 +44,7 @@ export interface JoinOptions {
      *
      * The columns of the joined table are included in the selection.
      */
-    leftJoinAndSelect?: { [key: string]: string };
+    leftJoinAndSelect?: { [key: string]: string }
 
     /**
      * Object where each key represents the INNER JOIN alias,
@@ -53,7 +52,7 @@ export interface JoinOptions {
      *
      * The columns of the joined table are included in the selection.
      */
-    innerJoinAndSelect?: { [key: string]: string };
+    innerJoinAndSelect?: { [key: string]: string }
 
     /**
      * Object where each key represents the LEFT JOIN alias,
@@ -61,7 +60,7 @@ export interface JoinOptions {
      *
      * This method does not select the columns of the joined table.
      */
-    leftJoin?: { [key: string]: string };
+    leftJoin?: { [key: string]: string }
 
     /**
      * Object where each key represents the INNER JOIN alias,
@@ -69,6 +68,5 @@ export interface JoinOptions {
      *
      * This method does not select the columns of the joined table.
      */
-    innerJoin?: { [key: string]: string };
-
+    innerJoin?: { [key: string]: string }
 }

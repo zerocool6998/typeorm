@@ -1,19 +1,22 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "../../../../src";
-import {TicketProduct} from "./TicketProduct";
+import {
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from "../../../../src"
+import { TicketProduct } from "./TicketProduct"
 
 @Entity()
 export class Ticket {
-
     @PrimaryGeneratedColumn()
-    id: number;
+    id: number
 
     @Column()
-    shopId: string;
+    shopId: string
 
     @Column()
-    chainId: string;
+    chainId: string
 
-    @OneToMany(type => TicketProduct, ticketProduct => ticketProduct.ticket)
-    ticketItems: TicketProduct[];
-
+    @OneToMany((type) => TicketProduct, (ticketProduct) => ticketProduct.ticket)
+    ticketItems: TicketProduct[]
 }

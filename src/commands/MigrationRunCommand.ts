@@ -1,89 +1,93 @@
-import {createConnection} from "../globals";
-import {ConnectionOptionsReader} from "../connection/ConnectionOptionsReader";
-import {DataSource} from "../data-source/DataSource";
-import * as process from "process";
-import * as yargs from "yargs";
-import {PlatformTools} from "../platform/PlatformTools";
+import { createConnection } from "../globals"
+import { ConnectionOptionsReader } from "../connection/ConnectionOptionsReader"
+import { DataSource } from "../data-source/DataSource"
+import * as process from "process"
+import * as yargs from "yargs"
+import { PlatformTools } from "../platform/PlatformTools"
 
 /**
  * Runs migration command.
  */
 export class MigrationRunCommand implements yargs.CommandModule {
-
-    command = "migration:run";
-    describe = "Runs all pending migrations.";
-    aliases = "migrations:run";
+    command = "migration:run"
+    describe = "Runs all pending migrations."
+    aliases = "migrations:run"
 
     builder(args: yargs.Argv) {
         return args
             .option("connection", {
                 alias: "c",
                 default: "default",
-                describe: "Name of the connection on which run a query."
+                describe: "Name of the connection on which run a query.",
             })
             .option("transaction", {
                 alias: "t",
                 default: "default",
-                describe: "Indicates if transaction should be used or not for migration run. Enabled by default."
+                describe:
+                    "Indicates if transaction should be used or not for migration run. Enabled by default.",
             })
             .option("config", {
                 alias: "f",
                 default: "ormconfig",
-                describe: "Name of the file with connection configuration."
-            });
+                describe: "Name of the file with connection configuration.",
+            })
     }
 
     async handler(args: yargs.Arguments) {
         if (args._[0] === "migrations:run") {
-            console.log("'migrations:run' is deprecated, please use 'migration:run' instead");
+            console.log(
+                "'migrations:run' is deprecated, please use 'migration:run' instead",
+            )
         }
 
-        let connection: DataSource|undefined = undefined;
+        let connection: DataSource | undefined = undefined
         try {
             const connectionOptionsReader = new ConnectionOptionsReader({
                 root: process.cwd(),
-                configName: args.config as any
-            });
-            const connectionOptions = await connectionOptionsReader.get(args.connection as any);
+                configName: args.config as any,
+            })
+            const connectionOptions = await connectionOptionsReader.get(
+                args.connection as any,
+            )
             Object.assign(connectionOptions, {
                 subscribers: [],
                 synchronize: false,
                 migrationsRun: false,
                 dropSchema: false,
-                logging: ["query", "error", "schema"]
-            });
-            connection = await createConnection(connectionOptions);
+                logging: ["query", "error", "schema"],
+            })
+            connection = await createConnection(connectionOptions)
 
             const options = {
-                transaction: connectionOptions.migrationsTransactionMode ?? "all" as "all" | "none" | "each",
-            };
+                transaction:
+                    connectionOptions.migrationsTransactionMode ??
+                    ("all" as "all" | "none" | "each"),
+            }
 
             switch (args.t) {
                 case "all":
-                    options.transaction = "all";
-                    break;
+                    options.transaction = "all"
+                    break
                 case "none":
                 case "false":
-                    options.transaction = "none";
-                    break;
+                    options.transaction = "none"
+                    break
                 case "each":
-                    options.transaction = "each";
-                    break;
+                    options.transaction = "each"
+                    break
                 default:
-                    // noop
+                // noop
             }
 
-            await connection.runMigrations(options);
-            await connection.close();
+            await connection.runMigrations(options)
+            await connection.close()
             // exit process if no errors
-            process.exit(0);
-
+            process.exit(0)
         } catch (err) {
-            if (connection) await (connection as DataSource).close();
+            if (connection) await (connection as DataSource).close()
 
-            PlatformTools.logCmdErr("Error during migration run:", err);
-            process.exit(1);
+            PlatformTools.logCmdErr("Error during migration run:", err)
+            process.exit(1)
         }
     }
-
 }

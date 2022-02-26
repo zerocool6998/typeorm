@@ -1,39 +1,40 @@
-import {BaseConnectionOptions} from "../../connection/BaseConnectionOptions";
-import {AuroraDataApiConnectionCredentialsOptions} from "./AuroraDataApiConnectionCredentialsOptions";
+import { BaseConnectionOptions } from "../../connection/BaseConnectionOptions"
+import { AuroraDataApiConnectionCredentialsOptions } from "./AuroraDataApiConnectionCredentialsOptions"
 
 /**
  * MySQL specific connection options.
  *
  * @see https://github.com/mysqljs/mysql#connection-options
  */
-export interface AuroraDataApiConnectionOptions extends BaseConnectionOptions, AuroraDataApiConnectionCredentialsOptions {
-
+export interface AuroraDataApiConnectionOptions
+    extends BaseConnectionOptions,
+        AuroraDataApiConnectionCredentialsOptions {
     /**
      * Database type.
      */
-    readonly type: "aurora-data-api";
+    readonly type: "aurora-data-api"
 
-    readonly region: string;
+    readonly region: string
 
-    readonly secretArn: string;
+    readonly secretArn: string
 
-    readonly resourceArn: string;
+    readonly resourceArn: string
 
-    readonly database: string;
+    readonly database: string
 
     /**
      * The driver object
      * This defaults to require("typeorm-aurora-data-api-driver")
      */
-    readonly driver?: any;
+    readonly driver?: any
 
-    readonly serviceConfigOptions?: { [key: string]: any }; // pass optional AWS.ConfigurationOptions here
+    readonly serviceConfigOptions?: { [key: string]: any } // pass optional AWS.ConfigurationOptions here
 
-    readonly formatOptions?: { [key: string]: any, castParameters: boolean };
+    readonly formatOptions?: { [key: string]: any; castParameters: boolean }
 
     /**
      * Use spatial functions like GeomFromText and AsText which are removed in MySQL 8.
      * (Default: true)
      */
-    readonly legacySpatialSupport?: boolean;
+    readonly legacySpatialSupport?: boolean
 }

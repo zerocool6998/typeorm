@@ -1,17 +1,15 @@
-import {Column, Entity, PrimaryColumn} from "../../../../src";
+import { Column, Entity, PrimaryColumn } from "../../../../src"
 
 @Entity()
 export class Post {
-
     @PrimaryColumn()
-    id: number;
+    id: number
 
     @Column()
-    title: string;
+    title: string
 
     constructor(id?: number, title?: string) {
-        if (id) this.id = id;
-        if (title) this.title = title;
+        if (id) this.id = id
+        if (title) this.title = title
     }
-
 }

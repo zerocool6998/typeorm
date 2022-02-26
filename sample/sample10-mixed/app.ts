@@ -1,10 +1,10 @@
-import "reflect-metadata";
-import {DataSourceOptions, createConnection} from "../../src/index";
-import {Post} from "./entity/Post";
-import {PostDetails} from "./entity/PostDetails";
-import {Image} from "./entity/Image";
-import {Cover} from "./entity/Cover";
-import {Category} from "./entity/Category";
+import "reflect-metadata"
+import { DataSourceOptions, createConnection } from "../../src/index"
+import { Post } from "./entity/Post"
+import { PostDetails } from "./entity/PostDetails"
+import { Image } from "./entity/Image"
+import { Cover } from "./entity/Cover"
+import { Category } from "./entity/Category"
 
 const options: DataSourceOptions = {
     type: "mysql",
@@ -14,39 +14,41 @@ const options: DataSourceOptions = {
     password: "admin",
     database: "test",
     synchronize: true,
-    entities: [__dirname + "/entity/*"]
-};
+    entities: [__dirname + "/entity/*"],
+}
 
-createConnection(options).then(connection => {
-    let postRepository = connection.getRepository(Post);
+createConnection(options)
+    .then((connection) => {
+        let postRepository = connection.getRepository(Post)
 
-    let postCover = new Cover();
-    postCover.url = "http://covers.com/post.jpg";
+        let postCover = new Cover()
+        postCover.url = "http://covers.com/post.jpg"
 
-    let details = new PostDetails();
-    details.meta = "hello";
-    details.comment = "wow";
+        let details = new PostDetails()
+        details.meta = "hello"
+        details.comment = "wow"
 
-    let category1 = new Category();
-    category1.description = "about post1";
+        let category1 = new Category()
+        category1.description = "about post1"
 
-    let category2 = new Category();
-    category2.description = "about post2";
+        let category2 = new Category()
+        category2.description = "about post2"
 
-    let image = new Image();
-    image.name = "post.jpg";
+        let image = new Image()
+        image.name = "post.jpg"
 
-    let post = new Post();
-    post.title = "Hello post";
-    post.text = "Hello world of post#1";
-    post.cover = postCover;
-    post.details = details;
-    post.images.push(image);
-    post.categories = [category1, category2];
+        let post = new Post()
+        post.title = "Hello post"
+        post.text = "Hello world of post#1"
+        post.cover = postCover
+        post.details = details
+        post.images.push(image)
+        post.categories = [category1, category2]
 
-    postRepository.save(post).then(result => {
-
-        /*const qb = postRepository.createQueryBuilder("post")
+        postRepository
+            .save(post)
+            .then((result) => {
+                /*const qb = postRepository.createQueryBuilder("post")
             .leftJoinAndSelect("post.details", "details")
             .leftJoinAndSelect("post.images", "images")
            // .leftJoinAndSelect("post.coverId", "coverId")
@@ -80,13 +82,13 @@ createConnection(options).then(connection => {
             })
             .then(() => qb.getSingleResult())
             .then(reloadedPost => console.log("reloadedPost: ", reloadedPost));*/
-    })
-        .then(result => console.log(result))
-        .catch(error => console.log(error.stack ? error.stack : error));
+            })
+            .then((result) => console.log(result))
+            .catch((error) => console.log(error.stack ? error.stack : error))
 
-    return;
+        return
 
-    /*const postJson = {
+        /*const postJson = {
         id: 1,  // changed
         text: "This is post about hello", // changed
         title: "hello", // changed
@@ -163,7 +165,7 @@ createConnection(options).then(connection => {
         // .then(result => console.log(JSON.stringify(result, null, 4)))
         .catch(error => console.log(error.stack ? error.stack : error));*/
 
-    /*let details = new PostDetails();
+        /*let details = new PostDetails();
     details.comment = "This is post about hello";
     details.meta = "about-hello";
 
@@ -176,5 +178,5 @@ createConnection(options).then(connection => {
         .save(post)
         .then(post => console.log("Post has been saved"))
         .catch(error => console.log("Cannot save. Error: ", error));*/
-
-}).catch(error => console.log(error.stack ? error.stack : error));
+    })
+    .catch((error) => console.log(error.stack ? error.stack : error))
