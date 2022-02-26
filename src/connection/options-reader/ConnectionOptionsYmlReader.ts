@@ -4,6 +4,8 @@ import {DataSourceOptions} from "../../data-source/DataSourceOptions";
 
 /**
  * Reads connection options defined in the yml file.
+ *
+ * @deprecated
  */
 export class ConnectionOptionsYmlReader {
 

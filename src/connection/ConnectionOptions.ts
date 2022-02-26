@@ -7,4 +7,4 @@ import {DataSourceOptions} from "../data-source/DataSourceOptions";
  *
  * @deprecated use DataSourceOptions instead
  */
-export type ConnectionOptions = DataSourceOptions
+export type ConnectionOptions = DataSourceOptions;

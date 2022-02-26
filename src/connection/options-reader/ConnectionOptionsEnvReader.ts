@@ -6,6 +6,8 @@ import {OrmUtils} from "../../util/OrmUtils";
  * Reads connection options from environment variables.
  * Environment variables can have only a single connection.
  * Its strongly required to define TYPEORM_CONNECTION env variable.
+ *
+ * @deprecated
  */
 export class ConnectionOptionsEnvReader {
 

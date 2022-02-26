@@ -4,6 +4,8 @@ import {DataSourceOptions} from "../../data-source/DataSourceOptions";
 
 /**
  * Reads connection options defined in the xml file.
+ *
+ * @deprecated
  */
 export class ConnectionOptionsXmlReader {
 
