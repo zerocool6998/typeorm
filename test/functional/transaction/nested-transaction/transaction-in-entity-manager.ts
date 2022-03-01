@@ -135,13 +135,13 @@ describe("transaction > nested transaction", () => {
                         where: { title: condition.title },
                     })
                     if (condition.shouldExist) {
-                        expect(post).not.to.be.undefined
+                        expect(post).not.to.be.null
                         post!.should.be.eql({
                             id: condition.id,
                             title: condition.title,
                         })
                     } else {
-                        expect(post).to.be.undefined
+                        expect(post).to.be.null
                     }
                 }
             }),
@@ -210,7 +210,7 @@ describe("transaction > nested transaction", () => {
                     const post = await connection.manager.findOne(Post, {
                         where: { title: condition.title },
                     })
-                    expect(post).to.be.undefined
+                    expect(post).to.be.null
                 }
             }),
         ))
