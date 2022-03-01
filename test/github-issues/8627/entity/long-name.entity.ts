@@ -5,7 +5,9 @@ import {
     AnotherRealLongNameForAnEntityBecauseThisIsNecessaryC,
 } from "./other-long-name.entity"
 
-@Entity()
+@Entity({
+    name: "real_long_name_t1",
+})
 export class ThisIsARealLongNameForAnEntityBecauseThisIsNecessary {
     @PrimaryGeneratedColumn()
     id: number

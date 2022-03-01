@@ -17,7 +17,7 @@ import { Category } from "./entity/Category"
 import { DeepPartial } from "../../../../src/common/DeepPartial"
 import { EntitySchema, Like, Repository, TypeORMError } from "../../../../src"
 import { ExternalIdPrimaryKeyEntity } from "./entity/ExternalIdPrimaryKeyEntity"
-import { EmbeddedUniqueConstraintEntity } from "./entity/EmbeddedUniqueConstraintEntity"
+import { EmbeddedUQEntity } from "./entity/EmbeddedUQEntity"
 import { RelationAsPrimaryKey } from "./entity/RelationAsPrimaryKey"
 import { TwoUniqueColumnsEntity } from "./entity/TwoUniqueColumns"
 import { OneToOneRelationEntity } from "./entity/OneToOneRelation"
@@ -48,7 +48,7 @@ describe("repository > basic methods", () => {
                     UserEntity,
                     QuestionEntity,
                     ExternalIdPrimaryKeyEntity,
-                    EmbeddedUniqueConstraintEntity,
+                    EmbeddedUQEntity,
                     RelationAsPrimaryKey,
                     TwoUniqueColumnsEntity,
                     OneToOneRelationEntity,
@@ -702,9 +702,8 @@ describe("repository > basic methods", () => {
                     const externalIdObjects = connection.getRepository(
                         ExternalIdPrimaryKeyEntity,
                     )
-                    const embeddedConstraintObjects = connection.getRepository(
-                        EmbeddedUniqueConstraintEntity,
-                    )
+                    const embeddedConstraintObjects =
+                        connection.getRepository(EmbeddedUQEntity)
                     const externalId = "external-embedded"
 
                     // update properties of embedded
@@ -796,9 +795,8 @@ describe("repository > basic methods", () => {
                 connections.map(async (connection) => {
                     if (connection.driver.supportedUpsertType == null) return
 
-                    const embeddedConstraintObjects = connection.getRepository(
-                        EmbeddedUniqueConstraintEntity,
-                    )
+                    const embeddedConstraintObjects =
+                        connection.getRepository(EmbeddedUQEntity)
 
                     await embeddedConstraintObjects.upsert(
                         [

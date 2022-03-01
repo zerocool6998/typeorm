@@ -7,7 +7,7 @@ import {
 } from "../../../utils/test-utils"
 import { DataSource } from "../../../../src/data-source/DataSource"
 import { Post } from "./entity/Post"
-import { PostWithoutDeleteDateColumn } from "./entity/PostWithoutDeleteDateColumn"
+import { PostWithoutDeleteDate } from "./entity/PostWithoutDeleteDate"
 import { MissingDeleteDateColumnError } from "../../../../src/error/MissingDeleteDateColumnError"
 
 describe("repository > soft-remove", () => {
@@ -84,7 +84,7 @@ describe("repository > soft-remove", () => {
         Promise.all(
             connections.map(async (connection) => {
                 const postRepository = connection.getRepository(
-                    PostWithoutDeleteDateColumn,
+                    PostWithoutDeleteDate,
                 )
 
                 // save a new posts

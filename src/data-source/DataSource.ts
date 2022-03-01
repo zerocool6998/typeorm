@@ -498,6 +498,7 @@ export class DataSource {
             throw new TypeORMError(`Query Builder is not supported by MongoDB.`)
 
         if (alias) {
+            alias = DriverUtils.buildAlias(this.driver, alias)
             const metadata = this.getMetadata(
                 entityOrRunner as EntityTarget<Entity>,
             )

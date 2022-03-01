@@ -10,7 +10,7 @@ import { User } from "./entity/User"
 import { LimitOnUpdateNotSupportedError } from "../../../../src/error/LimitOnUpdateNotSupportedError"
 import { Not, IsNull } from "../../../../src"
 import { MissingDeleteDateColumnError } from "../../../../src/error/MissingDeleteDateColumnError"
-import { UserWithoutDeleteDateColumn } from "./entity/UserWithoutDeleteDateColumn"
+import { UserWithoutDeleteDate } from "./entity/UserWithoutDeleteDate"
 import { Photo } from "./entity/Photo"
 import { DriverUtils } from "../../../../src/driver/DriverUtils"
 
@@ -241,7 +241,7 @@ describe("query builder > soft-delete", () => {
     it("should throw error when delete date column is missing", () =>
         Promise.all(
             connections.map(async (connection) => {
-                const user = new UserWithoutDeleteDateColumn()
+                const user = new UserWithoutDeleteDate()
                 user.name = "Alex Messer"
 
                 await connection.manager.save(user)
@@ -251,7 +251,7 @@ describe("query builder > soft-delete", () => {
                     await connection
                         .createQueryBuilder()
                         .softDelete()
-                        .from(UserWithoutDeleteDateColumn)
+                        .from(UserWithoutDeleteDate)
                         .where("name = :name", { name: "Alex Messer" })
                         .execute()
                 } catch (err) {
@@ -264,7 +264,7 @@ describe("query builder > soft-delete", () => {
                     await connection
                         .createQueryBuilder()
                         .restore()
-                        .from(UserWithoutDeleteDateColumn)
+                        .from(UserWithoutDeleteDate)
                         .where("name = :name", { name: "Alex Messer" })
                         .execute()
                 } catch (err) {
