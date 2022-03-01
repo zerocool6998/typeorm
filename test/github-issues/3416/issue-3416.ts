@@ -26,8 +26,8 @@ describe("github issues > #3416 Unknown fields are stripped from WHERE clause", 
                 connections.map(async (connection) => {
                     let error: Error | undefined
                     try {
-                        // @ts-expect-error
                         await connection.manager.findOneBy(User, {
+                            // @ts-expect-error
                             unknownProp: "John Doe",
                         })
                     } catch (err) {
