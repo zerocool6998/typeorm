@@ -102,12 +102,12 @@ describe("repository > find options > locking", () => {
 
                 return connection.manager.transaction((entityManager) => {
                     return Promise.all([
-                        entityManager.getRepository(PostWithVersion).findOne({
+                        entityManager.getRepository(PostWithVersion).find({
                             where: { id: 1 },
                             lock: { mode: "pessimistic_read" },
                         }).should.not.be.rejected,
 
-                        entityManager.getRepository(PostWithVersion).findOne({
+                        entityManager.getRepository(PostWithVersion).find({
                             where: { id: 1 },
                             lock: { mode: "pessimistic_write" },
                         }).should.not.be.rejected,
@@ -139,7 +139,7 @@ describe("repository > find options > locking", () => {
 
                     return entityManager
                         .getRepository(PostWithVersion)
-                        .findOne({
+                        .find({
                             where: { id: 1 },
                             lock: { mode: "pessimistic_read" },
                         })
@@ -214,7 +214,7 @@ describe("repository > find options > locking", () => {
 
                     return entityManager
                         .getRepository(PostWithVersion)
-                        .findOne({
+                        .find({
                             where: { id: 1 },
                             lock: { mode: "pessimistic_write" },
                         })
