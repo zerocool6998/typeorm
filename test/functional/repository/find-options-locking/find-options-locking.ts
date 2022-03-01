@@ -137,12 +137,10 @@ describe("repository > find options > locking", () => {
                         return originalQuery(...args)
                     }
 
-                    return entityManager
-                        .getRepository(PostWithVersion)
-                        .find({
-                            where: { id: 1 },
-                            lock: { mode: "pessimistic_read" },
-                        })
+                    return entityManager.getRepository(PostWithVersion).find({
+                        where: { id: 1 },
+                        lock: { mode: "pessimistic_read" },
+                    })
                 })
 
                 if (DriverUtils.isMySQLFamily(connection.driver)) {
@@ -212,12 +210,10 @@ describe("repository > find options > locking", () => {
                         return originalQuery(...args)
                     }
 
-                    return entityManager
-                        .getRepository(PostWithVersion)
-                        .find({
-                            where: { id: 1 },
-                            lock: { mode: "pessimistic_write" },
-                        })
+                    return entityManager.getRepository(PostWithVersion).find({
+                        where: { id: 1 },
+                        lock: { mode: "pessimistic_write" },
+                    })
                 })
 
                 if (
