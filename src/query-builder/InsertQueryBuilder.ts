@@ -124,7 +124,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
                     )
                 ) {
                     this.expressionMap.extraReturningColumns =
-                        returningResultsEntityUpdator.getInsertionReturningColumns()
+                        this.expressionMap.mainAlias!.metadata.getInsertionReturningColumns()
                 }
 
                 returningColumns.push(

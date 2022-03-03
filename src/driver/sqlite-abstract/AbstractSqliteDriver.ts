@@ -467,6 +467,8 @@ export abstract class AbstractSqliteDriver implements Driver {
 
                 if (typeof value === "function") {
                     return value()
+                } else if (typeof value === "number") {
+                    return String(value)
                 }
 
                 if (value instanceof Date) {

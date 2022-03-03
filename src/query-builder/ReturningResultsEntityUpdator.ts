@@ -139,7 +139,7 @@ export class ReturningResultsEntityUpdator {
         entities: ObjectLiteral[],
     ): Promise<void> {
         const metadata = this.expressionMap.mainAlias!.metadata
-        const insertionColumns = this.getInsertionReturningColumns()
+        const insertionColumns = metadata.getInsertionReturningColumns()
 
         const generatedMaps = entities.map((entity, entityIndex) => {
             if (
@@ -256,30 +256,6 @@ export class ReturningResultsEntityUpdator {
             insertResult.identifiers.push(entityId)
             insertResult.generatedMaps.push(generatedMaps[entityIndex])
         })
-    }
-
-    /**
-     * Columns we need to be returned from the database when we insert entity.
-     */
-    getInsertionReturningColumns(): ColumnMetadata[] {
-        // for databases which support returning statement we need to return extra columns like id
-        // for other databases we don't need to return id column since its returned by a driver already
-        const needToCheckGenerated =
-            this.queryRunner.connection.driver.isReturningSqlSupported("insert")
-
-        // filter out the columns of which we need database inserted values to update our entity
-        return this.expressionMap.mainAlias!.metadata.columns.filter(
-            (column) => {
-                return (
-                    column.default !== undefined ||
-                    (needToCheckGenerated && column.isGenerated) ||
-                    column.isCreateDate ||
-                    column.isUpdateDate ||
-                    column.isDeleteDate ||
-                    column.isVersion
-                )
-            },
-        )
     }
 
     /**

@@ -1131,9 +1131,15 @@ export class SubjectExecutor {
     ): [{ [key: string]: Subject[] }, string[]] {
         const group: { [key: string]: Subject[] } = {}
         const keys: string[] = []
+        const hasReturningDependColumns = subjects.every((subject) => {
+            return subject.metadata.getInsertionReturningColumns().length > 0
+        })
         const groupingAllowed =
             type === "delete" ||
-            this.queryRunner.connection.driver.isReturningSqlSupported("insert")
+            this.queryRunner.connection.driver.isReturningSqlSupported(
+                "insert",
+            ) ||
+            hasReturningDependColumns === false
 
         subjects.forEach((subject, index) => {
             const key =
