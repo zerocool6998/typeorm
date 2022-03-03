@@ -1081,16 +1081,10 @@ export class EntityMetadata {
      * it means we cannot execute bulk inserts in some cases.
      */
     getInsertionReturningColumns(): ColumnMetadata[] {
-        // for databases which support returning statement we need to return extra columns like id
-        // for other databases we don't need to return id column since its returned by a driver already
-        const needToCheckGenerated =
-            this.connection.driver.isReturningSqlSupported("insert")
-
-        // filter out the columns of which we need database inserted values to update our entity
         return this.columns.filter((column) => {
             return (
                 column.default !== undefined ||
-                (needToCheckGenerated && column.isGenerated) ||
+                column.isGenerated ||
                 column.isCreateDate ||
                 column.isUpdateDate ||
                 column.isDeleteDate ||

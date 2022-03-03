@@ -1131,7 +1131,7 @@ export class SubjectExecutor {
     ): [{ [key: string]: Subject[] }, string[]] {
         const group: { [key: string]: Subject[] } = {}
         const keys: string[] = []
-        const hasReturningDependColumns = subjects.every((subject) => {
+        const hasReturningDependColumns = subjects.some((subject) => {
             return subject.metadata.getInsertionReturningColumns().length > 0
         })
         const groupingAllowed =

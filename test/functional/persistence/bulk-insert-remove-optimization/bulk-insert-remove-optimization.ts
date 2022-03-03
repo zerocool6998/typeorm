@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "../../../utils/test-setup"
 import { DataSource } from "../../../../src/data-source/DataSource"
 import { Post } from "./entity/Post"
 import { Category } from "./entity/Category"
@@ -17,7 +17,9 @@ describe("persistence > bulk-insert-remove-optimization", function () {
     let connections: DataSource[]
     before(
         async () =>
-            (connections = await createTestingConnections({ __dirname })),
+            (connections = await createTestingConnections({
+                __dirname,
+            })),
     )
     beforeEach(() => reloadTestingDatabases(connections))
     after(() => closeTestingConnections(connections))
