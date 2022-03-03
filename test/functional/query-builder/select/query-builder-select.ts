@@ -1,4 +1,4 @@
-import "reflect-metadata"
+import "../../../utils/test-setup"
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -451,7 +451,7 @@ describe("query builder > select", () => {
             Promise.all(
                 connections.map(async (connection) => {
                     await connection.getRepository(Post).save({
-                        id: 1,
+                        id: "1",
                         title: "Hello",
                         description: "World",
                         rating: 0,
@@ -459,11 +459,11 @@ describe("query builder > select", () => {
 
                     const entity = await connection
                         .createQueryBuilder(Post, "post")
-                        .where("post.id = :id", { id: 1 })
+                        .where("post.id = :id", { id: "1" })
                         .getOne()
 
                     expect(entity).not.to.be.null
-                    expect(entity!.id).to.equal(1)
+                    expect(entity!.id).to.equal("1")
                     expect(entity!.title).to.equal("Hello")
                 }),
             ))
@@ -472,7 +472,7 @@ describe("query builder > select", () => {
             Promise.all(
                 connections.map(async (connection) => {
                     await connection.getRepository(Post).save({
-                        id: 1,
+                        id: "1",
                         title: "Hello",
                         description: "World",
                         rating: 0,
@@ -480,7 +480,7 @@ describe("query builder > select", () => {
 
                     const entity = await connection
                         .createQueryBuilder(Post, "post")
-                        .where("post.id = :id", { id: 2 })
+                        .where("post.id = :id", { id: "2" })
                         .getOne()
 
                     expect(entity).to.be.null
@@ -491,7 +491,7 @@ describe("query builder > select", () => {
             Promise.all(
                 connections.map(async (connection) => {
                     await connection.getRepository(Post).save({
-                        id: 1,
+                        id: "1",
                         title: "Hello",
                         description: "World",
                         rating: 0,
@@ -499,10 +499,10 @@ describe("query builder > select", () => {
 
                     const entity = await connection
                         .createQueryBuilder(Post, "post")
-                        .where("post.id = :id", { id: 1 })
+                        .where("post.id = :id", { id: "1" })
                         .getOneOrFail()
 
-                    expect(entity.id).to.equal(1)
+                    expect(entity.id).to.equal("1")
                     expect(entity.title).to.equal("Hello")
                 }),
             ))
@@ -511,7 +511,7 @@ describe("query builder > select", () => {
             Promise.all(
                 connections.map(async (connection) => {
                     await connection.getRepository(Post).save({
-                        id: 1,
+                        id: "1",
                         title: "Hello",
                         description: "World",
                         rating: 0,
@@ -520,7 +520,7 @@ describe("query builder > select", () => {
                     await expect(
                         connection
                             .createQueryBuilder(Post, "post")
-                            .where("post.id = :id", { id: 2 })
+                            .where("post.id = :id", { id: "2" })
                             .getOneOrFail(),
                     ).to.be.rejectedWith(EntityNotFoundError)
                 }),
@@ -534,14 +534,14 @@ describe("query builder > select", () => {
                     const [sql, params] = connection
                         .createQueryBuilder(Post, "post")
                         .select("post.id")
-                        .whereInIds([1, 2, 5, 9])
+                        .whereInIds(["1", "2", "5", "9"])
                         .disableEscaping()
                         .getQueryAndParameters()
 
                     expect(sql).to.equal(
                         "SELECT post.id AS post_id FROM post post WHERE post.id IN (?, ?, ?, ?)",
                     )
-                    expect(params).to.eql([1, 2, 5, 9])
+                    expect(params).to.eql(["1", "2", "5", "9"])
                 }),
             ))
 
@@ -552,9 +552,9 @@ describe("query builder > select", () => {
                         .createQueryBuilder(ExternalPost, "post")
                         .select("post.id")
                         .whereInIds([
-                            { outlet: "foo", id: 1 },
-                            { outlet: "bar", id: 2 },
-                            { outlet: "baz", id: 5 },
+                            { outlet: "foo", id: "1" },
+                            { outlet: "bar", id: "2" },
+                            { outlet: "baz", id: "5" },
                         ])
                         .disableEscaping()
                         .getQueryAndParameters()
@@ -565,7 +565,7 @@ describe("query builder > select", () => {
                             "((post.outlet = ? AND post.id = ?)) OR " +
                             "((post.outlet = ? AND post.id = ?)))",
                     )
-                    expect(params).to.eql(["foo", 1, "bar", 2, "baz", 5])
+                    expect(params).to.eql(["foo", "1", "bar", "2", "baz", "5"])
                 }),
             ))
 
@@ -576,9 +576,9 @@ describe("query builder > select", () => {
                         .createQueryBuilder(ExternalPost, "post")
                         .select("post.id")
                         .whereInIds([
-                            { outlet: "foo", id: 1 },
-                            { outlet: "bar", id: 2 },
-                            { id: 5 },
+                            { outlet: "foo", id: "1" },
+                            { outlet: "bar", id: "2" },
+                            { id: "5" },
                         ])
                         .disableEscaping()
                         .getQueryAndParameters()
@@ -589,7 +589,7 @@ describe("query builder > select", () => {
                             "((post.outlet = ? AND post.id = ?)) OR " +
                             "(post.id = ?))",
                     )
-                    expect(params).to.eql(["foo", 1, "bar", 2, 5])
+                    expect(params).to.eql(["foo", "1", "bar", "2", "5"])
                 }),
             ))
     })

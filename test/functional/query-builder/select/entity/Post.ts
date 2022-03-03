@@ -6,7 +6,7 @@ import {
     ManyToMany,
     ManyToOne,
     OneToOne,
-    PrimaryGeneratedColumn,
+    PrimaryColumn,
     VersionColumn,
 } from "../../../../../src"
 import { Tag } from "./Tag"
@@ -15,8 +15,8 @@ import { HeroImage } from "./HeroImage"
 
 @Entity()
 export class Post {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn()
+    id: string
 
     @Column()
     title: string
