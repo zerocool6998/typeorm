@@ -132,7 +132,7 @@ describe("multi-database > basic-functionality", () => {
                         .getSql()
 
                     sql.should.be.equal(
-                        `SELECT "answer"."id" AS "answer_id", "answer"."text" AS "answer_text" FROM "${attachAnswerHandle}"."answer" "answer" WHERE "answer"."id" = ?`,
+                        `SELECT "answer"."id" AS "answer_id", "answer"."text" AS "answer_text" FROM "${attachAnswerHandle}"."answer" "answer" WHERE "answer"."id" = 1`,
                     )
                     table!.name.should.be.equal(tablePathAnswer)
                 }),
@@ -157,7 +157,7 @@ describe("multi-database > basic-functionality", () => {
                         .getSql()
 
                     sql.should.be.equal(
-                        `SELECT "user"."id" AS "user_id", "user"."name" AS "user_name" FROM "user" "user" WHERE "user"."id" = ?`,
+                        `SELECT "user"."id" AS "user_id", "user"."name" AS "user_name" FROM "user" "user" WHERE "user"."id" = 1`,
                     )
 
                     table!.name.should.be.equal(tablePathUser)
