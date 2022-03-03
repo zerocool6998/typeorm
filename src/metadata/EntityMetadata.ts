@@ -22,7 +22,7 @@ import { UniqueMetadata } from "./UniqueMetadata"
 import { ClosureTreeOptions } from "./types/ClosureTreeOptions"
 import { EntityPropertyNotFoundError } from "../error/EntityPropertyNotFoundError"
 import { ObjectUtils } from "../util/ObjectUtils"
-import { DriverUtils } from "../driver/DriverUtils"
+import { shorten } from "../util/StringUtils"
 
 /**
  * Contains all entity metadata.
@@ -984,11 +984,23 @@ export class EntityMetadata {
             // since it wouldn't make sense to have table names with random hash names,
             // it's really better if user specify custom table name into @Entity
             // also, for junction table it's possible to set a custom name using @JoinTable decorator
-            if (this.tableMetadataArgs.type === "junction") {
-                this.tableNameWithoutPrefix = DriverUtils.buildAlias(
-                    this.connection.driver,
-                    { joiner: "_" },
+            // if (this.tableMetadataArgs.type === "junction") {
+            //     this.tableNameWithoutPrefix = DriverUtils.buildAlias(
+            //         this.connection.driver,
+            //         { shorten: true, joiner: "_" },
+            //         this.tableNameWithoutPrefix,
+            //     )
+            // }
+
+            if (
+                this.connection.driver.maxAliasLength &&
+                this.connection.driver.maxAliasLength > 0 &&
+                this.tableNameWithoutPrefix.length >
+                    this.connection.driver.maxAliasLength
+            ) {
+                this.tableNameWithoutPrefix = shorten(
                     this.tableNameWithoutPrefix,
+                    { separator: "_", segmentLength: 3 },
                 )
             }
         }

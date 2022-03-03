@@ -9,7 +9,7 @@ import { TableIndex } from "../../schema-builder/table/TableIndex"
 import { QueryRunnerAlreadyReleasedError } from "../../error/QueryRunnerAlreadyReleasedError"
 import { View } from "../../schema-builder/view/View"
 import { Query } from "../Query"
-import { AuroraDataApiDriver } from "./AuroraDataApiDriver"
+import { AuroraMysqlDriver } from "./AuroraMysqlDriver"
 import { ReadStream } from "../../platform/PlatformTools"
 import { OrmUtils } from "../../util/OrmUtils"
 import { TableIndexOptions } from "../../schema-builder/options/TableIndexOptions"
@@ -27,7 +27,7 @@ import { InstanceChecker } from "../../util/InstanceChecker"
 /**
  * Runs queries on a single mysql database connection.
  */
-export class AuroraDataApiQueryRunner
+export class AuroraMysqlQueryRunner
     extends BaseQueryRunner
     implements QueryRunner
 {
@@ -39,7 +39,7 @@ export class AuroraDataApiQueryRunner
      * Database driver used by connection.
      */
 
-    driver: AuroraDataApiDriver
+    driver: AuroraMysqlDriver
 
     protected client: any
 
@@ -56,7 +56,7 @@ export class AuroraDataApiQueryRunner
     // Constructor
     // -------------------------------------------------------------------------
 
-    constructor(driver: AuroraDataApiDriver, client: any) {
+    constructor(driver: AuroraMysqlDriver, client: any) {
         super()
         this.driver = driver
         this.connection = driver.connection

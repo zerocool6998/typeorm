@@ -211,6 +211,10 @@ userRepository.find({
 
 ### BREAKING CHANGES
 
+* `aurora-data-api` driver now is called `aurora-mysql`
+
+* `aurora-data-api-pg` driver now is called `aurora-postgres`
+
 * prefix relation id columns contained in embedded entities ([#7432](https://github.com/typeorm/typeorm/pull/7432))
 
 * find by Date object in sqlite driver ([#7538](https://github.com/typeorm/typeorm/pull/7538))
@@ -1029,7 +1033,7 @@ export const MyDataSources = {
 
 ### Features
 
-* add AWS configurationOptions to aurora-data-api-pg connector ([#6106](https://github.com/typeorm/typeorm/issues/6106)) ([203f51d](https://github.com/typeorm/typeorm/commit/203f51d))
+* add AWS configurationOptions to aurora-postgres connector ([#6106](https://github.com/typeorm/typeorm/issues/6106)) ([203f51d](https://github.com/typeorm/typeorm/commit/203f51d))
 * add better-sqlite3 driver ([#6224](https://github.com/typeorm/typeorm/issues/6224)) ([2241451](https://github.com/typeorm/typeorm/commit/2241451))
 * add postgres connection timeout option ([#6160](https://github.com/typeorm/typeorm/issues/6160)) ([0072149](https://github.com/typeorm/typeorm/commit/0072149))
 * FileLogger accepts custom file path ([#6642](https://github.com/typeorm/typeorm/issues/6642)) ([c99ba40](https://github.com/typeorm/typeorm/commit/c99ba40)), closes [#4410](https://github.com/typeorm/typeorm/issues/4410)

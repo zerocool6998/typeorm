@@ -3,7 +3,7 @@
  *
  * @see https://github.com/mysqljs/mysql#connection-options
  */
-export interface AuroraDataApiConnectionCredentialsOptions {
+export interface AuroraMysqlConnectionCredentialsOptions {
     /**
      * Connection url where perform connection to.
      */

@@ -414,7 +414,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
         // Mysql does not support check constraints
         if (
             DriverUtils.isMySQLFamily(this.connection.driver) ||
-            this.connection.driver.options.type === "aurora-data-api"
+            this.connection.driver.options.type === "aurora-mysql"
         )
             return
 
@@ -813,7 +813,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
             if (
                 !(
                     DriverUtils.isMySQLFamily(this.connection.driver) ||
-                    this.connection.driver.options.type === "aurora-data-api"
+                    this.connection.driver.options.type === "aurora-mysql"
                 )
             ) {
                 for (const changedColumn of changedColumns) {
@@ -894,7 +894,7 @@ export class RdbmsSchemaBuilder implements SchemaBuilder {
         // Mysql does not support check constraints
         if (
             DriverUtils.isMySQLFamily(this.connection.driver) ||
-            this.connection.driver.options.type === "aurora-data-api"
+            this.connection.driver.options.type === "aurora-mysql"
         )
             return
 

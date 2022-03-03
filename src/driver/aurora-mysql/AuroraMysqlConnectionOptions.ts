@@ -1,18 +1,18 @@
 import { BaseConnectionOptions } from "../../connection/BaseConnectionOptions"
-import { AuroraDataApiConnectionCredentialsOptions } from "./AuroraDataApiConnectionCredentialsOptions"
+import { AuroraMysqlConnectionCredentialsOptions } from "./AuroraMysqlConnectionCredentialsOptions"
 
 /**
  * MySQL specific connection options.
  *
  * @see https://github.com/mysqljs/mysql#connection-options
  */
-export interface AuroraDataApiConnectionOptions
+export interface AuroraMysqlConnectionOptions
     extends BaseConnectionOptions,
-        AuroraDataApiConnectionCredentialsOptions {
+        AuroraMysqlConnectionCredentialsOptions {
     /**
      * Database type.
      */
-    readonly type: "aurora-data-api"
+    readonly type: "aurora-mysql"
 
     readonly region: string
 

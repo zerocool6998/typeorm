@@ -11,8 +11,8 @@ import { SqljsDriver } from "./sqljs/SqljsDriver"
 import { MysqlDriver } from "./mysql/MysqlDriver"
 import { PostgresDriver } from "./postgres/PostgresDriver"
 import { ExpoDriver } from "./expo/ExpoDriver"
-import { AuroraDataApiDriver } from "./aurora-data-api/AuroraDataApiDriver"
-import { AuroraDataApiPostgresDriver } from "./aurora-data-api-pg/AuroraDataApiPostgresDriver"
+import { AuroraMysqlDriver } from "./aurora-mysql/AuroraMysqlDriver"
+import { AuroraPostgresDriver } from "./aurora-postgres/AuroraPostgresDriver"
 import { Driver } from "./Driver"
 import { DataSource } from "../data-source/DataSource"
 import { SapDriver } from "./sap/SapDriver"
@@ -59,16 +59,16 @@ export class DriverFactory {
                 return new MongoDriver(connection)
             case "expo":
                 return new ExpoDriver(connection)
-            case "aurora-data-api":
-                return new AuroraDataApiDriver(connection)
-            case "aurora-data-api-pg":
-                return new AuroraDataApiPostgresDriver(connection)
+            case "aurora-mysql":
+                return new AuroraMysqlDriver(connection)
+            case "aurora-postgres":
+                return new AuroraPostgresDriver(connection)
             case "capacitor":
                 return new CapacitorDriver(connection)
             default:
                 throw new MissingDriverError(type, [
-                    "aurora-data-api",
-                    "aurora-data-api-pg",
+                    "aurora-mysql",
+                    "aurora-postgres",
                     "better-sqlite3",
                     "capacitor",
                     "cockroachdb",

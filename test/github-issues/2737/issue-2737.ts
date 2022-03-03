@@ -15,7 +15,7 @@ describe("github issues > #2737 MySQLDriver findChangedColumns (fields: width, p
             (connections = await createTestingConnections({
                 dropSchema: false,
                 entities: [__dirname + "/entity/*{.js,.ts}"],
-                enabledDrivers: ["mysql", "mariadb", "aurora-data-api"],
+                enabledDrivers: ["mysql", "mariadb", "aurora-mysql"],
                 schemaCreate: false,
                 cache: false,
                 driverSpecific: {

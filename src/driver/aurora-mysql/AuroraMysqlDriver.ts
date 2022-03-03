@@ -1,18 +1,18 @@
 import { Driver } from "../Driver"
 import { DriverUtils } from "../DriverUtils"
-import { AuroraDataApiQueryRunner } from "./AuroraDataApiQueryRunner"
+import { AuroraMysqlQueryRunner } from "./AuroraMysqlQueryRunner"
 import { ObjectLiteral } from "../../common/ObjectLiteral"
 import { ColumnMetadata } from "../../metadata/ColumnMetadata"
 import { DateUtils } from "../../util/DateUtils"
 import { PlatformTools } from "../../platform/PlatformTools"
-import { DataSource } from "../../data-source/DataSource"
+import { DataSource } from "../../data-source"
 import { RdbmsSchemaBuilder } from "../../schema-builder/RdbmsSchemaBuilder"
-import { AuroraDataApiConnectionOptions } from "./AuroraDataApiConnectionOptions"
+import { AuroraMysqlConnectionOptions } from "./AuroraMysqlConnectionOptions"
 import { MappedColumnTypes } from "../types/MappedColumnTypes"
 import { ColumnType } from "../types/ColumnTypes"
 import { DataTypeDefaults } from "../types/DataTypeDefaults"
 import { TableColumn } from "../../schema-builder/table/TableColumn"
-import { AuroraDataApiConnectionCredentialsOptions } from "./AuroraDataApiConnectionCredentialsOptions"
+import { AuroraMysqlConnectionCredentialsOptions } from "./AuroraMysqlConnectionCredentialsOptions"
 import { EntityMetadata } from "../../metadata/EntityMetadata"
 import { OrmUtils } from "../../util/OrmUtils"
 import { ApplyValueTransformers } from "../../util/ApplyValueTransformers"
@@ -26,12 +26,13 @@ import { InstanceChecker } from "../../util/InstanceChecker"
 /**
  * Organizes communication with MySQL DBMS.
  */
-export class AuroraDataApiDriver implements Driver {
+export class AuroraMysqlDriver implements Driver {
     // -------------------------------------------------------------------------
     // Public Properties
     // -------------------------------------------------------------------------
 
     connection: DataSource
+
     /**
      * Aurora Data API underlying library.
      */
@@ -57,7 +58,7 @@ export class AuroraDataApiDriver implements Driver {
     /**
      * Connection options.
      */
-    options: AuroraDataApiConnectionOptions
+    options: AuroraMysqlConnectionOptions
 
     /**
      * Database name used to perform all write queries.
@@ -315,7 +316,7 @@ export class AuroraDataApiDriver implements Driver {
 
     constructor(connection: DataSource) {
         this.connection = connection
-        this.options = connection.options as AuroraDataApiConnectionOptions
+        this.options = connection.options as AuroraMysqlConnectionOptions
 
         // load mysql package
         this.loadDependencies()
@@ -385,7 +386,7 @@ export class AuroraDataApiDriver implements Driver {
      * Creates a query runner used to execute database queries.
      */
     createQueryRunner(mode: ReplicationMode) {
-        return new AuroraDataApiQueryRunner(
+        return new AuroraMysqlQueryRunner(
             this,
             new this.DataApiDriver(
                 this.options.region,
@@ -1014,8 +1015,8 @@ export class AuroraDataApiDriver implements Driver {
      * Creates a new connection pool for a given database credentials.
      */
     protected createConnectionOptions(
-        options: AuroraDataApiConnectionOptions,
-        credentials: AuroraDataApiConnectionCredentialsOptions,
+        options: AuroraMysqlConnectionOptions,
+        credentials: AuroraMysqlConnectionCredentialsOptions,
     ): Promise<any> {
         credentials = Object.assign(
             {},

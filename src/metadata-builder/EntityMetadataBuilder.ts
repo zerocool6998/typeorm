@@ -194,7 +194,7 @@ export class EntityMetadataBuilder {
                                     this.connection.driver,
                                 ) ||
                                 this.connection.driver.options.type ===
-                                    "aurora-data-api" ||
+                                    "aurora-mysql" ||
                                 this.connection.driver.options.type ===
                                     "mssql" ||
                                 this.connection.driver.options.type === "sap"
@@ -767,7 +767,7 @@ export class EntityMetadataBuilder {
         // Mysql and SAP HANA stores unique constraints as unique indices.
         if (
             DriverUtils.isMySQLFamily(this.connection.driver) ||
-            this.connection.driver.options.type === "aurora-data-api" ||
+            this.connection.driver.options.type === "aurora-mysql" ||
             this.connection.driver.options.type === "sap"
         ) {
             const indices = this.metadataArgsStorage

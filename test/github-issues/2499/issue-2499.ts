@@ -25,7 +25,7 @@ describe("github issues > #2499 Postgres DELETE query result is useless", () => 
                     "mariadb",
                     "mssql",
                     "postgres",
-                    "aurora-data-api",
+                    "aurora-mysql",
                 ],
             })),
     )

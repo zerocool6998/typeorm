@@ -39,7 +39,7 @@ describe("github issues > #1099 BUG - QueryBuilder MySQL skip sql is wrong", () 
 
                 if (
                     DriverUtils.isMySQLFamily(connection.driver) ||
-                    connection.driver.options.type === "aurora-data-api" ||
+                    connection.driver.options.type === "aurora-mysql" ||
                     connection.driver.options.type === "sap"
                 ) {
                     await qb

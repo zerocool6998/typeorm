@@ -22,7 +22,7 @@ describe("github issues > #1308 Raw Postgresql Update query result is always an 
                     "postgres",
                     "mysql",
                     "mariadb",
-                    "aurora-data-api",
+                    "aurora-mysql",
                 ],
             })),
     )

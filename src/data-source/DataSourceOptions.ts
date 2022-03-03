@@ -10,9 +10,9 @@ import { SqljsConnectionOptions } from "../driver/sqljs/SqljsConnectionOptions"
 import { ReactNativeConnectionOptions } from "../driver/react-native/ReactNativeConnectionOptions"
 import { NativescriptConnectionOptions } from "../driver/nativescript/NativescriptConnectionOptions"
 import { ExpoConnectionOptions } from "../driver/expo/ExpoConnectionOptions"
-import { AuroraDataApiConnectionOptions } from "../driver/aurora-data-api/AuroraDataApiConnectionOptions"
+import { AuroraMysqlConnectionOptions } from "../driver/aurora-mysql/AuroraMysqlConnectionOptions"
 import { SapConnectionOptions } from "../driver/sap/SapConnectionOptions"
-import { AuroraDataApiPostgresConnectionOptions } from "../driver/aurora-data-api-pg/AuroraDataApiPostgresConnectionOptions"
+import { AuroraPostgresConnectionOptions } from "../driver/aurora-postgres/AuroraPostgresConnectionOptions"
 import { BetterSqlite3ConnectionOptions } from "../driver/better-sqlite3/BetterSqlite3ConnectionOptions"
 import { CapacitorConnectionOptions } from "../driver/capacitor/CapacitorConnectionOptions"
 
@@ -32,8 +32,8 @@ export type DataSourceOptions =
     | ReactNativeConnectionOptions
     | SqljsConnectionOptions
     | MongoConnectionOptions
-    | AuroraDataApiConnectionOptions
-    | AuroraDataApiPostgresConnectionOptions
+    | AuroraMysqlConnectionOptions
+    | AuroraPostgresConnectionOptions
     | ExpoConnectionOptions
     | BetterSqlite3ConnectionOptions
     | CapacitorConnectionOptions

@@ -3,12 +3,12 @@ import { BaseConnectionOptions } from "../../connection/BaseConnectionOptions"
 /**
  * Postgres-specific connection options.
  */
-export interface AuroraDataApiPostgresConnectionOptions
+export interface AuroraPostgresConnectionOptions
     extends BaseConnectionOptions {
     /**
      * Database type.
      */
-    readonly type: "aurora-data-api-pg"
+    readonly type: "aurora-postgres"
 
     readonly region: string
 

@@ -2,7 +2,7 @@ import { QueryRunnerAlreadyReleasedError } from "../../error/QueryRunnerAlreadyR
 import { TransactionNotStartedError } from "../../error/TransactionNotStartedError"
 import { QueryRunner } from "../../query-runner/QueryRunner"
 import { IsolationLevel } from "../types/IsolationLevel"
-import { AuroraDataApiPostgresDriver } from "./AuroraDataApiPostgresDriver"
+import { AuroraPostgresDriver } from "./AuroraPostgresDriver"
 import { PostgresQueryRunner } from "../postgres/PostgresQueryRunner"
 import { ReplicationMode } from "../types/ReplicationMode"
 import { QueryResult } from "../../query-runner/QueryResult"
@@ -18,7 +18,7 @@ class PostgresQueryRunnerWrapper extends PostgresQueryRunner {
 /**
  * Runs queries on a single postgres database connection.
  */
-export class AuroraDataApiPostgresQueryRunner
+export class AuroraPostgresQueryRunner
     extends PostgresQueryRunnerWrapper
     implements QueryRunner
 {
@@ -29,7 +29,7 @@ export class AuroraDataApiPostgresQueryRunner
     /**
      * Database driver used by connection.
      */
-    driver: AuroraDataApiPostgresDriver
+    driver: AuroraPostgresDriver
 
     protected client: any
 
@@ -47,7 +47,7 @@ export class AuroraDataApiPostgresQueryRunner
     // -------------------------------------------------------------------------
 
     constructor(
-        driver: AuroraDataApiPostgresDriver,
+        driver: AuroraPostgresDriver,
         client: any,
         mode: ReplicationMode,
     ) {

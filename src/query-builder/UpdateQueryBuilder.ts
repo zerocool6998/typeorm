@@ -13,7 +13,7 @@ import { OrderByCondition } from "../find-options/OrderByCondition"
 import { LimitOnUpdateNotSupportedError } from "../error/LimitOnUpdateNotSupportedError"
 import { UpdateValuesMissingError } from "../error/UpdateValuesMissingError"
 import { QueryDeepPartialEntity } from "./QueryPartialEntity"
-import { AuroraDataApiDriver } from "../driver/aurora-data-api/AuroraDataApiDriver"
+import { AuroraMysqlDriver } from "../driver/aurora-mysql/AuroraMysqlDriver"
 import { TypeORMError } from "../error"
 import { EntityPropertyNotFoundError } from "../error/EntityPropertyNotFoundError"
 import { SqlServerDriver } from "../driver/sqlserver/SqlServerDriver"
@@ -549,7 +549,7 @@ export class UpdateQueryBuilder<Entity>
                                     this.connection.driver,
                                 ) ||
                                     this.connection.driver.options.type ===
-                                        "aurora-data-api") &&
+                                        "aurora-mysql") &&
                                 this.connection.driver.spatialTypes.indexOf(
                                     column.type,
                                 ) !== -1
@@ -557,7 +557,7 @@ export class UpdateQueryBuilder<Entity>
                                 const useLegacy = (
                                     this.connection.driver as
                                         | MysqlDriver
-                                        | AuroraDataApiDriver
+                                        | AuroraMysqlDriver
                                 ).options.legacySpatialSupport
                                 const geomFromText = useLegacy
                                     ? "GeomFromText"
@@ -726,7 +726,7 @@ export class UpdateQueryBuilder<Entity>
         if (limit) {
             if (
                 DriverUtils.isMySQLFamily(this.connection.driver) ||
-                this.connection.driver.options.type === "aurora-data-api"
+                this.connection.driver.options.type === "aurora-mysql"
             ) {
                 return " LIMIT " + limit
             } else {

@@ -2,8 +2,8 @@ import { Driver } from "../Driver"
 import { PostgresDriver } from "../postgres/PostgresDriver"
 import { PlatformTools } from "../../platform/PlatformTools"
 import { DataSource } from "../../data-source/DataSource"
-import { AuroraDataApiPostgresConnectionOptions } from "../aurora-data-api-pg/AuroraDataApiPostgresConnectionOptions"
-import { AuroraDataApiPostgresQueryRunner } from "../aurora-data-api-pg/AuroraDataApiPostgresQueryRunner"
+import { AuroraPostgresConnectionOptions } from "./AuroraPostgresConnectionOptions"
+import { AuroraPostgresQueryRunner } from "./AuroraPostgresQueryRunner"
 import { ReplicationMode } from "../types/ReplicationMode"
 import { ColumnMetadata } from "../../metadata/ColumnMetadata"
 import { ApplyValueTransformers } from "../../util/ApplyValueTransformers"
@@ -15,7 +15,7 @@ abstract class PostgresWrapper extends PostgresDriver {
     abstract createQueryRunner(mode: ReplicationMode): any
 }
 
-export class AuroraDataApiPostgresDriver
+export class AuroraPostgresDriver
     extends PostgresWrapper
     implements Driver
 {
@@ -47,7 +47,7 @@ export class AuroraDataApiPostgresDriver
     /**
      * Connection options.
      */
-    options: AuroraDataApiPostgresConnectionOptions
+    options: AuroraPostgresConnectionOptions
 
     /**
      * Master database used to perform all write queries.
@@ -62,7 +62,7 @@ export class AuroraDataApiPostgresDriver
         super()
         this.connection = connection
         this.options =
-            connection.options as AuroraDataApiPostgresConnectionOptions
+            connection.options as AuroraPostgresConnectionOptions
         this.isReplicated = false
 
         // load data-api package
@@ -102,7 +102,7 @@ export class AuroraDataApiPostgresDriver
      * Creates a query runner used to execute database queries.
      */
     createQueryRunner(mode: ReplicationMode) {
-        return new AuroraDataApiPostgresQueryRunner(
+        return new AuroraPostgresQueryRunner(
             this,
             new this.DataApiDriver(
                 this.options.region,

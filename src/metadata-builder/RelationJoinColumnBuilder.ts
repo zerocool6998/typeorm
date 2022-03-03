@@ -206,7 +206,7 @@ export class RelationJoinColumnBuilder {
                                     this.connection.driver,
                                 ) ||
                                     this.connection.driver.options.type ===
-                                        "aurora-data-api") &&
+                                        "aurora-mysql") &&
                                 (referencedColumn.generationStrategy ===
                                     "uuid" ||
                                     referencedColumn.type === "uuid")

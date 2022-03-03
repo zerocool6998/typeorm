@@ -100,7 +100,7 @@ export class JunctionEntityMetadataBuilder {
                                 this.connection.driver,
                             ) ||
                                 this.connection.driver.options.type ===
-                                    "aurora-data-api") &&
+                                    "aurora-mysql") &&
                             (referencedColumn.generationStrategy === "uuid" ||
                                 referencedColumn.type === "uuid")
                                 ? "36"
@@ -162,7 +162,7 @@ export class JunctionEntityMetadataBuilder {
                                     this.connection.driver,
                                 ) ||
                                     this.connection.driver.options.type ===
-                                        "aurora-data-api") &&
+                                        "aurora-mysql") &&
                                 (inverseReferencedColumn.generationStrategy ===
                                     "uuid" ||
                                     inverseReferencedColumn.type === "uuid")

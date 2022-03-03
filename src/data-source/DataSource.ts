@@ -290,7 +290,7 @@ export class DataSource {
             if (
                 this.driver.options.type === "mssql" ||
                 DriverUtils.isMySQLFamily(this.driver) ||
-                this.driver.options.type === "aurora-data-api" ||
+                this.driver.options.type === "aurora-mysql" ||
                 DriverUtils.isSQLiteFamily(this.driver)
             ) {
                 const databases: string[] = []

@@ -74,8 +74,8 @@ describe("entity subscriber > transaction flow", () => {
             const queryRunner = await connection.createQueryRunner()
 
             if (
-                connection.driver.options.type === "aurora-data-api-pg" ||
-                connection.driver.options.type === "aurora-data-api"
+                connection.driver.options.type === "aurora-postgres" ||
+                connection.driver.options.type === "aurora-mysql"
             ) {
                 const startTransactionFn = sinon.spy(
                     queryRunner.startTransaction,
@@ -149,8 +149,8 @@ describe("entity subscriber > transaction flow", () => {
             await queryRunner.startTransaction()
 
             if (
-                connection.driver.options.type === "aurora-data-api-pg" ||
-                connection.driver.options.type === "aurora-data-api"
+                connection.driver.options.type === "aurora-postgres" ||
+                connection.driver.options.type === "aurora-mysql"
             ) {
                 const commitTransactionFn = sinon.spy(
                     queryRunner.commitTransaction,
@@ -213,8 +213,8 @@ describe("entity subscriber > transaction flow", () => {
             await queryRunner.startTransaction()
 
             if (
-                connection.driver.options.type === "aurora-data-api-pg" ||
-                connection.driver.options.type === "aurora-data-api"
+                connection.driver.options.type === "aurora-postgres" ||
+                connection.driver.options.type === "aurora-mysql"
             ) {
                 const rollbackTransactionFn = sinon.spy(
                     queryRunner.rollbackTransaction,

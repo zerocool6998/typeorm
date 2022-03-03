@@ -135,7 +135,7 @@ export class EntityMetadataValidator {
 
         if (
             DriverUtils.isMySQLFamily(driver) ||
-            driver.options.type === "aurora-data-api"
+            driver.options.type === "aurora-mysql"
         ) {
             const generatedColumns = entityMetadata.columns.filter(
                 (column) =>

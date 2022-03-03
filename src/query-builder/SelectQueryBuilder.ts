@@ -41,7 +41,7 @@ import { FindOptionsRelations } from "../find-options/FindOptionsRelations"
 import { ApplyValueTransformers } from "../util/ApplyValueTransformers"
 import { OrmUtils } from "../util/OrmUtils"
 import { EntityPropertyNotFoundError } from "../error/EntityPropertyNotFoundError"
-import { AuroraDataApiDriver } from "../driver/aurora-data-api/AuroraDataApiDriver"
+import { AuroraMysqlDriver } from "../driver/aurora-mysql/AuroraMysqlDriver"
 import { InstanceChecker } from "../util/InstanceChecker"
 
 /**
@@ -2423,7 +2423,7 @@ export class SelectQueryBuilder<Entity>
             if (offset) return prefix + " OFFSET " + offset + " ROWS"
         } else if (
             DriverUtils.isMySQLFamily(this.connection.driver) ||
-            this.connection.driver.options.type === "aurora-data-api" ||
+            this.connection.driver.options.type === "aurora-mysql" ||
             this.connection.driver.options.type === "sap"
         ) {
             if (limit && offset) return " LIMIT " + limit + " OFFSET " + offset
@@ -2505,7 +2505,7 @@ export class SelectQueryBuilder<Entity>
             case "pessimistic_read":
                 if (
                     DriverUtils.isMySQLFamily(driver) ||
-                    driver.options.type === "aurora-data-api"
+                    driver.options.type === "aurora-mysql"
                 ) {
                     return " LOCK IN SHARE MODE"
                 } else if (driver.options.type === "postgres") {
@@ -2520,7 +2520,7 @@ export class SelectQueryBuilder<Entity>
             case "pessimistic_write":
                 if (
                     DriverUtils.isMySQLFamily(driver) ||
-                    driver.options.type === "aurora-data-api" ||
+                    driver.options.type === "aurora-mysql" ||
                     driver.options.type === "oracle"
                 ) {
                     return " FOR UPDATE"
@@ -2646,12 +2646,12 @@ export class SelectQueryBuilder<Entity>
             ) {
                 if (
                     DriverUtils.isMySQLFamily(this.connection.driver) ||
-                    this.connection.driver.options.type === "aurora-data-api"
+                    this.connection.driver.options.type === "aurora-mysql"
                 ) {
                     const useLegacy = (
                         this.connection.driver as
                             | MysqlDriver
-                            | AuroraDataApiDriver
+                            | AuroraMysqlDriver
                     ).options.legacySpatialSupport
                     const asText = useLegacy ? "AsText" : "ST_AsText"
                     selectionPath = `${asText}(${selectionPath})`

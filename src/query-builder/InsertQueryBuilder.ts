@@ -13,7 +13,7 @@ import { TypeORMError } from "../error"
 import { v4 as uuidv4 } from "uuid"
 import { InsertOrUpdateOptions } from "./InsertOrUpdateOptions"
 import { SqlServerDriver } from "../driver/sqlserver/SqlServerDriver"
-import { AuroraDataApiDriver } from "../driver/aurora-data-api/AuroraDataApiDriver"
+import { AuroraMysqlDriver } from "../driver/aurora-mysql/AuroraMysqlDriver"
 import { DriverUtils } from "../driver/DriverUtils"
 import { ObjectUtils } from "../util/ObjectUtils"
 import { InstanceChecker } from "../util/InstanceChecker"
@@ -402,7 +402,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
 
         if (
             DriverUtils.isMySQLFamily(this.connection.driver) ||
-            this.connection.driver.options.type === "aurora-data-api"
+            this.connection.driver.options.type === "aurora-mysql"
         ) {
             query += `${this.expressionMap.onIgnore ? " IGNORE " : ""}`
         }
@@ -416,7 +416,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
             if (
                 !valuesExpression &&
                 (DriverUtils.isMySQLFamily(this.connection.driver) ||
-                    this.connection.driver.options.type === "aurora-data-api")
+                    this.connection.driver.options.type === "aurora-mysql")
             )
                 // special syntax for mysql DEFAULT VALUES insertion
                 query += "()"
@@ -443,7 +443,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
         } else {
             if (
                 DriverUtils.isMySQLFamily(this.connection.driver) ||
-                this.connection.driver.options.type === "aurora-data-api"
+                this.connection.driver.options.type === "aurora-mysql"
             ) {
                 // special syntax for mysql DEFAULT VALUES insertion
                 query += " VALUES ()"
@@ -614,7 +614,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
                     !DriverUtils.isMySQLFamily(this.connection.driver) &&
                     !(
                         this.connection.driver.options.type ===
-                        "aurora-data-api"
+                        "aurora-mysql"
                     ) &&
                     !(
                         this.connection.driver.options.type === "mssql" &&
@@ -805,7 +805,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
                                 this.connection.driver,
                             ) ||
                                 this.connection.driver.options.type ===
-                                    "aurora-data-api") &&
+                                    "aurora-mysql") &&
                             this.connection.driver.spatialTypes.indexOf(
                                 column.type,
                             ) !== -1
@@ -813,7 +813,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
                             const useLegacy = (
                                 this.connection.driver as
                                     | MysqlDriver
-                                    | AuroraDataApiDriver
+                                    | AuroraMysqlDriver
                             ).options.legacySpatialSupport
                             const geomFromText = useLegacy
                                 ? "GeomFromText"
