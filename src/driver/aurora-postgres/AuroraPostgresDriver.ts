@@ -15,10 +15,7 @@ abstract class PostgresWrapper extends PostgresDriver {
     abstract createQueryRunner(mode: ReplicationMode): any
 }
 
-export class AuroraPostgresDriver
-    extends PostgresWrapper
-    implements Driver
-{
+export class AuroraPostgresDriver extends PostgresWrapper implements Driver {
     // -------------------------------------------------------------------------
     // Public Properties
     // -------------------------------------------------------------------------
@@ -61,8 +58,7 @@ export class AuroraPostgresDriver
     constructor(connection: DataSource) {
         super()
         this.connection = connection
-        this.options =
-            connection.options as AuroraPostgresConnectionOptions
+        this.options = connection.options as AuroraPostgresConnectionOptions
         this.isReplicated = false
 
         // load data-api package

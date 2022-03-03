@@ -612,10 +612,7 @@ export class InsertQueryBuilder<Entity> extends QueryBuilder<Entity> {
                     !(this.connection.driver.options.type === "oracle") &&
                     !DriverUtils.isSQLiteFamily(this.connection.driver) &&
                     !DriverUtils.isMySQLFamily(this.connection.driver) &&
-                    !(
-                        this.connection.driver.options.type ===
-                        "aurora-mysql"
-                    ) &&
+                    !(this.connection.driver.options.type === "aurora-mysql") &&
                     !(
                         this.connection.driver.options.type === "mssql" &&
                         this.isOverridingAutoIncrementBehavior(column)
