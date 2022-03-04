@@ -2236,9 +2236,8 @@ export class CockroachQueryRunner
             })
             .join(", ")
 
-        const isAnotherTransactionActive = this.isTransactionActive;
-        if (!isAnotherTransactionActive)
-            await this.startTransaction()
+        const isAnotherTransactionActive = this.isTransactionActive
+        if (!isAnotherTransactionActive) await this.startTransaction()
         try {
             const selectViewDropsQuery =
                 `SELECT 'DROP VIEW IF EXISTS "' || schemaname || '"."' || viewname || '" CASCADE;' as "query" ` +
@@ -2264,8 +2263,7 @@ export class CockroachQueryRunner
                 sequenceDropQueries.map((q) => this.query(q["query"])),
             )
 
-            if (!isAnotherTransactionActive)
-                await this.commitTransaction()
+            if (!isAnotherTransactionActive) await this.commitTransaction()
         } catch (error) {
             try {
                 // we throw original error even if rollback thrown an error

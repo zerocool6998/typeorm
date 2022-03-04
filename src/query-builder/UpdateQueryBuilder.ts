@@ -495,7 +495,10 @@ export class UpdateQueryBuilder<Entity>
                     }
 
                     columns.forEach((column) => {
-                        if (!column.isUpdate || updatedColumns.includes(column)) {
+                        if (
+                            !column.isUpdate ||
+                            updatedColumns.includes(column)
+                        ) {
                             return
                         }
 

@@ -2848,9 +2848,8 @@ export class PostgresQueryRunner
             })
             .join(", ")
 
-        const isAnotherTransactionActive = this.isTransactionActive;
-        if (!isAnotherTransactionActive)
-            await this.startTransaction()
+        const isAnotherTransactionActive = this.isTransactionActive
+        if (!isAnotherTransactionActive) await this.startTransaction()
         try {
             const version = await this.getVersion()
             // drop views
@@ -2893,13 +2892,15 @@ export class PostgresQueryRunner
             // drop enum types
             await this.dropEnumTypes(schemaNamesString)
 
-            if (!isAnotherTransactionActive)
+            if (!isAnotherTransactionActive) {
                 await this.commitTransaction()
+            }
         } catch (error) {
             try {
                 // we throw original error even if rollback thrown an error
-                if (!isAnotherTransactionActive)
+                if (!isAnotherTransactionActive) {
                     await this.rollbackTransaction()
+                }
             } catch (rollbackError) {}
             throw error
         }
