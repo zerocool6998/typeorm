@@ -139,7 +139,17 @@ export class ReturningResultsEntityUpdator {
         entities: ObjectLiteral[],
     ): Promise<void> {
         const metadata = this.expressionMap.mainAlias!.metadata
-        const insertionColumns = metadata.getInsertionReturningColumns()
+        let insertionColumns = metadata.getInsertionReturningColumns()
+
+        // to prevent extra select SQL execution for databases not supporting RETURNING
+        // in the case if we have generated column and it's value returned by underlying driver
+        // we remove this column from the insertionColumns list
+        const needToCheckGenerated =
+            this.queryRunner.connection.driver.isReturningSqlSupported("insert")
+        insertionColumns = insertionColumns.filter((column) => {
+            if (!column.isGenerated) return true
+            return needToCheckGenerated === true
+        })
 
         const generatedMaps = entities.map((entity, entityIndex) => {
             if (
