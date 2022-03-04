@@ -1,4 +1,4 @@
-## [0.3.0]() (2022-03-01)
+## [0.3.0]() (2022-03-10)
 
 Changes in the version includes changes from the `next` branch and `typeorm@next` version.
 They were pending their migration from 2018. Finally, they are in the master branch and master version.
@@ -8,11 +8,11 @@ They were pending their migration from 2018. Finally, they are in the master bra
 * compilation `target` now is `es2020`. This requires Node.JS version `12.9.0`+
 
 * TypeORM now properly works when installed within different node_modules contexts
-(often happen if TypeORM is a dependency of another library or TypeORM is heavily used in monorepo projects)
+  (often happen if TypeORM is a dependency of another library or TypeORM is heavily used in monorepo projects)
 
 * `Connection` was renamed to `DataSource`.
-Old `Connection` is still there, but now it's deprecated. It will be removed in next version.
-New API:
+  Old `Connection` is still there, but now it's deprecated. It will be removed in next version.
+  New API:
 
 ```ts
 export const dataSource = new DataSource({
@@ -45,8 +45,8 @@ export const UserRepository = myDataSource.getRepository(UserEntity).extend({
 Old ways of custom repository creation were deprecated.
 
 * added new option on relation load strategy called `relationLoadStrategy`.
-Relation load strategy is used on entity load and their relations load when you query entities from the database.
-Used on `find*` methods and `QueryBuilder`. Value can be set to `join` or `query`.
+  Relation load strategy is used on entity load and their relations load when you query entities from the database.
+  Used on `find*` methods and `QueryBuilder`. Value can be set to `join` or `query`.
 
     * `join` loads relations using SQL's `JOIN`
     * `query` executes separate SQL queries for each relation
@@ -239,7 +239,7 @@ It's really better if user specify custom table name into `@Entity` decorator.
 Also, for junction table it's possible to set a custom name using `@JoinTable` decorator.
 
 * `findOne()` signature without parameters was dropped.
-If you need a single from the db you can use a following syntax:
+  If you need a single from the db you can use a following syntax:
 
 ```ts
 const [user] = await userRepository.find()
@@ -291,7 +291,7 @@ userRepository.findBy({
 This change was made to provide a more type-safe approach for data querying.
 
 * `findOne` and `QueryBuilder.getOne()` now return `null` instead of `undefined` in the case if it didn't find anything in the database.
-Logically it makes more sense to return `null`.
+  Logically it makes more sense to return `null`.
 
 * `findOne` now limits returning rows to 1 at database level.
 
@@ -302,7 +302,7 @@ Logically it makes more sense to return `null`.
 * `FindConditions` (`where` in `FindOptions`) was renamed to `FindOptionsWhere`.
 
 * `null` as value in `where` used in `find*` methods is not supported anymore.
-Now you must explicitly use `IsNull()` operator.
+  Now you must explicitly use `IsNull()` operator.
 
 Before:
 
@@ -328,7 +328,7 @@ This change was made to make it more transparent on how to add "IS NULL" stateme
 because before it bring too much confusion for ORM users.
 
 * if you had entity properties of a non-primitive type (except Buffer) defined as columns,
-then you won't be able to use it in `find*`'s `where`. Example:
+  then you won't be able to use it in `find*`'s `where`. Example:
 
 Before for the `@Column(/*...*/) membership: MembershipKind` you could have a query like:
 
@@ -349,18 +349,18 @@ userRepository.find({
 This change is due to type-safety improvement new `where` signature brings.
 
 * `order` in `FindOptions` (used in `find*` methods) doesn't support ordering by relations anymore.
-Define relation columns, and order by them instead.
+  Define relation columns, and order by them instead.
 
 * `where` in `FindOptions` (used in `find*` methods) previously supported `ObjectLiteral` and `string` types.
-Now both signatures were removed. ObjectLiteral was removed because it seriously breaks the type safety,
-and `string` doesn't make sense in the context of `FindOptions`. Use `QueryBuilder` instead.
+  Now both signatures were removed. ObjectLiteral was removed because it seriously breaks the type safety,
+  and `string` doesn't make sense in the context of `FindOptions`. Use `QueryBuilder` instead.
 
 * `MongoRepository` and `MongoEntityManager` now use new types called `MongoFindManyOptions` and `MongoFindOneOptions`
-for their `find*` methods.
+  for their `find*` methods.
 
 * `primary relation` (e.g. `@ManyToOne(() => User, { primary: true }) user: User`) support is removed.
-You still have an ability to use foreign keys as your primary keys,
-however now you must explicitly define a column marked as primary.
+  You still have an ability to use foreign keys as your primary keys,
+  however now you must explicitly define a column marked as primary.
 
 Example, before:
 
@@ -506,6 +506,20 @@ export const MyDataSources = {
 
 * `observers` - we will consider returning them back with new API in future versions
 * `alternative find operators` - using `$any`, `$in`, `$like` and other operators in `where` condition.
+
+## [0.2.45](https://github.com/typeorm/typeorm/compare/0.2.44...0.2.45) (2022-03-04)
+
+### Bug Fixes
+
+* allow clearing database inside a transaction ([#8712](https://github.com/typeorm/typeorm/issues/8712)) ([f3cfdd2](https://github.com/typeorm/typeorm/commit/f3cfdd264105ba8cf1c92832b4b95e5a3ca0ed09)), closes [#8527](https://github.com/typeorm/typeorm/issues/8527)
+* discard duplicated columns on update ([#8724](https://github.com/typeorm/typeorm/issues/8724)) ([0fc093d](https://github.com/typeorm/typeorm/commit/0fc093d168b54a0fd99bb411a730aad9be1858ac)), closes [#8723](https://github.com/typeorm/typeorm/issues/8723)
+* fix entityManager.getId for custom join table ([#8676](https://github.com/typeorm/typeorm/issues/8676)) ([33b2bd7](https://github.com/typeorm/typeorm/commit/33b2bd7acc55d6eb30bfe0681748d6b6abaff0b5)), closes [#7736](https://github.com/typeorm/typeorm/issues/7736)
+* force web bundlers to ignore index.mjs and use the browser ESM version directly ([#8710](https://github.com/typeorm/typeorm/issues/8710)) ([411fa54](https://github.com/typeorm/typeorm/commit/411fa54368c8940e94b1cbf7ab64b8d5377f9406)), closes [#8709](https://github.com/typeorm/typeorm/issues/8709)
+
+### Features
+
+* add nested transaction ([#8541](https://github.com/typeorm/typeorm/issues/8541)) ([6523526](https://github.com/typeorm/typeorm/commit/6523526003bab74a0df8f7d578790c1728b26057)), closes [#1505](https://github.com/typeorm/typeorm/issues/1505)
+* add transformer to ViewColumnOptions ([#8717](https://github.com/typeorm/typeorm/issues/8717)) ([96ac8f7](https://github.com/typeorm/typeorm/commit/96ac8f7eece06ae0a8b52ae7da740c92c0c0d4b9))
 
 ## [0.2.44](https://github.com/typeorm/typeorm/compare/0.2.43...0.2.44) (2022-02-23)
 

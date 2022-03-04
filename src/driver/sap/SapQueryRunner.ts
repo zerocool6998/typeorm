@@ -2348,7 +2348,9 @@ export class SapQueryRunner extends BaseQueryRunner implements QueryRunner {
             })
             .join(", ")
 
-        await this.startTransaction()
+        const isAnotherTransactionActive = this.isTransactionActive;
+        if (!isAnotherTransactionActive)
+            await this.startTransaction()
         try {
             // const selectViewDropsQuery = `SELECT 'DROP VIEW IF EXISTS "' || schemaname || '"."' || viewname || '" CASCADE;' as "query" ` +
             //     `FROM "pg_views" WHERE "schemaname" IN (${schemaNamesString}) AND "viewname" NOT IN ('geography_columns', 'geometry_columns', 'raster_columns', 'raster_overviews')`;
@@ -2364,11 +2366,13 @@ export class SapQueryRunner extends BaseQueryRunner implements QueryRunner {
                 dropTableQueries.map((q) => this.query(q["query"])),
             )
 
-            await this.commitTransaction()
+            if (!isAnotherTransactionActive)
+                await this.commitTransaction()
         } catch (error) {
             try {
                 // we throw original error even if rollback thrown an error
-                await this.rollbackTransaction()
+                if (!isAnotherTransactionActive)
+                    await this.rollbackTransaction()
             } catch (rollbackError) {}
             throw error
         }

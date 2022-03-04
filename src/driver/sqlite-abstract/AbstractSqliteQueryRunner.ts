@@ -1062,7 +1062,10 @@ export abstract class AbstractSqliteQueryRunner
         }
 
         await this.query(`PRAGMA foreign_keys = OFF;`)
-        await this.startTransaction()
+
+        const isAnotherTransactionActive = this.isTransactionActive;
+        if (!isAnotherTransactionActive)
+            await this.startTransaction()
         try {
             const selectViewDropsQuery = dbPath
                 ? `SELECT 'DROP VIEW "${dbPath}"."' || name || '";' as query FROM "${dbPath}"."sqlite_master" WHERE "type" = 'view'`
@@ -1074,20 +1077,18 @@ export abstract class AbstractSqliteQueryRunner
                 dropViewQueries.map((q) => this.query(q["query"])),
             )
 
-            const selectTableDropsQuery = dbPath
-                ? `SELECT 'DROP TABLE "${dbPath}"."' || name || '";' as query FROM "${dbPath}"."sqlite_master" WHERE "type" = 'table' AND "name" != 'sqlite_sequence'`
-                : `SELECT 'DROP TABLE "' || name || '";' as query FROM "sqlite_master" WHERE "type" = 'table' AND "name" != 'sqlite_sequence'`
-            const dropTableQueries: ObjectLiteral[] = await this.query(
-                selectTableDropsQuery,
-            )
-            await Promise.all(
-                dropTableQueries.map((q) => this.query(q["query"])),
-            )
-            await this.commitTransaction()
+            const selectTableDropsQuery = dbPath ? `SELECT 'DROP TABLE "${dbPath}"."' || name || '";' as query FROM "${dbPath}"."sqlite_master" WHERE "type" = 'table' AND "name" != 'sqlite_sequence'` : `SELECT 'DROP TABLE "' || name || '";' as query FROM "sqlite_master" WHERE "type" = 'table' AND "name" != 'sqlite_sequence'`
+            const dropTableQueries: ObjectLiteral[] = await this.query(selectTableDropsQuery)
+            await Promise.all(dropTableQueries.map(q => this.query(q["query"])))
+
+            if (!isAnotherTransactionActive)
+                await this.commitTransaction();
+
         } catch (error) {
             try {
                 // we throw original error even if rollback thrown an error
-                await this.rollbackTransaction()
+                if (!isAnotherTransactionActive)
+                    await this.rollbackTransaction()
             } catch (rollbackError) {}
             throw error
         } finally {

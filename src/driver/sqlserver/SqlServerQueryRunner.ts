@@ -2338,7 +2338,9 @@ export class SqlServerQueryRunner
             if (!isDatabaseExist) return Promise.resolve()
         }
 
-        await this.startTransaction()
+        const isAnotherTransactionActive = this.isTransactionActive;
+        if (!isAnotherTransactionActive)
+            await this.startTransaction()
         try {
             let allViewsSql = database
                 ? `SELECT * FROM "${database}"."INFORMATION_SCHEMA"."VIEWS"`
@@ -2439,11 +2441,13 @@ export class SqlServerQueryRunner
                 )
             }
 
-            await this.commitTransaction()
+            if (!isAnotherTransactionActive)
+                await this.commitTransaction()
         } catch (error) {
             try {
                 // we throw original error even if rollback thrown an error
-                await this.rollbackTransaction()
+                if (!isAnotherTransactionActive)
+                    await this.rollbackTransaction()
             } catch (rollbackError) {}
             throw error
         }

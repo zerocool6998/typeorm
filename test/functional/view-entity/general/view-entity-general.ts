@@ -123,17 +123,24 @@ describe("view entity > general", () => {
                 photoAlbumCategories[1].albumName.should.be.equal("BMW photos")
                 photoAlbumCategories[1].categoryName.should.be.equal("Cars")
 
-                const albumId =
-                    connection.driver.options.type === "cockroachdb" ? "1" : 1
-                const photoAlbumCategory = await connection.manager.findOneBy(
-                    PhotoAlbumCategory,
-                    { id: 1 },
-                )
-                photoAlbumCategory!.id.should.be.equal(photoId1)
-                photoAlbumCategory!.name.should.be.equal("BMW E39")
-                photoAlbumCategory!.albumName.should.be.equal("BMW photos")
-                photoAlbumCategory!.categoryName.should.be.equal("Cars")
-                photoAlbumCategory!.photoAlbumId.should.be.equal(albumId)
-            }),
-        ))
-})
+        const photoId2 = connection.driver instanceof CockroachDriver ? "2" : 2;
+        photoAlbumCategories[1].id.should.be.equal(photoId2);
+        photoAlbumCategories[1].name.should.be.equal("BMW E60");
+        photoAlbumCategories[1].albumName.should.be.equal("BMW photos");
+        photoAlbumCategories[1].categoryName.should.be.equal("Cars");
+
+        const albumId = connection.driver instanceof CockroachDriver ? "1" : 1;
+        const photoAlbumCategory = await connection.manager.findOne(PhotoAlbumCategory, { id: 1 });
+        photoAlbumCategory!.id.should.be.equal(photoId1);
+        photoAlbumCategory!.name.should.be.equal("BMW E39");
+        photoAlbumCategory!.albumName.should.be.equal("BMW photos");
+        photoAlbumCategory!.categoryName.should.be.equal("Cars");
+        photoAlbumCategory!.photoAlbumId.should.be.equal(albumId);
+
+        const photoAlbums = await connection.manager.find(PhotoAlbum);
+        const photoId3 = connection.driver instanceof CockroachDriver ? "3" : 3;
+        photoAlbums[0].id.should.be.equal(photoId3);
+        photoAlbums[0].name.should.be.equal('boeing737')
+        photoAlbums[0].albumName.should.be.equal('BOEING PHOTOS')
+    })));
+});

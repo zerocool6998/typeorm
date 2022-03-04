@@ -1,5 +1,11 @@
+import { ValueTransformer } from "../../../../../src";
 import { ViewColumn } from "../../../../../src/decorator/columns/ViewColumn"
 import { ViewEntity } from "../../../../../src/decorator/entity-view/ViewEntity"
+
+export const uppercase: ValueTransformer = {
+    to: (entityValue: string) => {},
+    from: (databaseValue: string) => databaseValue.toLocaleUpperCase()
+};
 
 @ViewEntity({
     expression: `
@@ -15,6 +21,6 @@ export class PostCategory {
     @ViewColumn({ name: "name" })
     postName: string
 
-    @ViewColumn()
+    @ViewColumn({ transformer: uppercase})
     categoryName: string
 }
