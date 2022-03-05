@@ -75,7 +75,9 @@
     "sql-server",
     "sql-server-orm",
     "oracle",
-    "oracle-orm"
+    "oracle-orm",
+    "cloud-spanner",
+    "cloud-spanner-orm"
   ],
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
@@ -136,6 +138,7 @@
     "typescript": "^4.2.2"
   },
   "peerDependencies": {
+    "@google-cloud/spanner": "^5.16.3",
     "@sap/hana-client": "^2.11.14",
     "better-sqlite3": "^7.1.2",
     "hdb-pool": "^0.1.6",
@@ -153,6 +156,9 @@
     "typeorm-aurora-data-api-driver": "^2.0.0"
   },
   "peerDependenciesMeta": {
+    "@google-cloud/spanner": {
+      "optional": true
+    },
     "@sap/hana-client": {
       "optional": true
     },

@@ -42,6 +42,12 @@ export class PlatformTools {
             switch (name) {
 
                 /**
+                * spanner
+                */
+                case "spanner":
+                    return require("@google-cloud/spanner");
+
+                /**
                 * mongodb
                 */
                 case "mongodb":

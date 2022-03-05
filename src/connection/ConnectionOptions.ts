@@ -15,6 +15,7 @@ import {SapConnectionOptions} from "../driver/sap/SapConnectionOptions";
 import {AuroraDataApiPostgresConnectionOptions} from "../driver/aurora-data-api-pg/AuroraDataApiPostgresConnectionOptions";
 import {BetterSqlite3ConnectionOptions} from "../driver/better-sqlite3/BetterSqlite3ConnectionOptions";
 import {CapacitorConnectionOptions} from "../driver/capacitor/CapacitorConnectionOptions";
+import {SpannerConnectionOptions} from "../driver/spanner/SpannerConnectionOptions";
 
 
 /**
@@ -39,4 +40,5 @@ export type ConnectionOptions =
     AuroraDataApiPostgresConnectionOptions|
     ExpoConnectionOptions|
     BetterSqlite3ConnectionOptions |
-    CapacitorConnectionOptions;
+    CapacitorConnectionOptions |
+    SpannerConnectionOptions;

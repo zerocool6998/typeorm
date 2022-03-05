@@ -18,6 +18,7 @@ import {Connection} from "../connection/Connection";
 import {SapDriver} from "./sap/SapDriver";
 import {BetterSqlite3Driver} from "./better-sqlite3/BetterSqlite3Driver";
 import {CapacitorDriver} from "./capacitor/CapacitorDriver";
+import {SpannerDriver} from "./spanner/SpannerDriver";
 
 /**
  * Helps to create drivers.
@@ -66,6 +67,8 @@ export class DriverFactory {
                 return new AuroraDataApiPostgresDriver(connection);
             case "capacitor":
                 return new CapacitorDriver(connection);
+            case "spanner":
+                return new SpannerDriver(connection);
             default:
                 throw new MissingDriverError(
                     type,
@@ -88,6 +91,7 @@ export class DriverFactory {
                         "sap",
                         "sqlite",
                         "sqljs",
+                        "spanner",
                     ]
                 );
         }

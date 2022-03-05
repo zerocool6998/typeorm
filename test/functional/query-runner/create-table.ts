@@ -12,34 +12,43 @@ import {AbstractSqliteDriver} from "../../../src/driver/sqlite-abstract/Abstract
 import {OracleDriver} from "../../../src/driver/oracle/OracleDriver";
 import {Photo} from "./entity/Photo";
 import {Book2, Book} from "./entity/Book";
-
-describe("query runner > create table", () => {
+import {SpannerDriver} from "../../../src/driver/spanner/SpannerDriver";
+process.env.SPANNER_EMULATOR_HOST = "localhost:9010"
+describe.only("query runner > create table", () => {
 
     let connections: Connection[];
     before(async () => {
         connections = await createTestingConnections({
+            enabledDrivers: ["spanner"],
             entities: [__dirname + "/entity/*{.js,.ts}"],
             dropSchema: true,
         });
     });
     after(() => closeTestingConnections(connections));
 
-    it("should correctly create table from simple object and revert creation", () => Promise.all(connections.map(async connection => {
-
+    it.only("should correctly create table from simple object and revert creation", () => Promise.all(connections.map(async connection => {
         const queryRunner = connection.createQueryRunner();
+
+        let idType = "int"
+        if (connection.driver instanceof AbstractSqliteDriver) {
+            idType = "integer"
+        } else if (connection.driver instanceof SpannerDriver) {
+            idType = "int64"
+        }
+
         const options: TableOptions = {
             name: "category",
             columns: [
                 {
                     name: "id",
-                    type: connection.driver instanceof AbstractSqliteDriver ? "integer" : "int",
+                    type: idType,
                     isPrimary: true,
-                    isGenerated: true,
-                    generationStrategy: "increment"
+                    isGenerated: connection.driver instanceof SpannerDriver ? false : true,
+                    generationStrategy: connection.driver instanceof SpannerDriver ? undefined : "increment"
                 },
                 {
                     name: "name",
-                    type: "varchar",
+                    type: connection.driver instanceof SpannerDriver ? "string" : "varchar",
                     isUnique: true,
                     isNullable: false
                 }
